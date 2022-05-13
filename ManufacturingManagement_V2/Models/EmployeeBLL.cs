@@ -1068,6 +1068,7 @@ namespace ManufacturingManagement_V2.Models
                 objmdl.EmpName = dr["EmpName"].ToString();
                 objmdl.ContactNo = dr["ContactNo"].ToString();
                 objmdl.PhoneExtNo = dr["PhoneExtNo"].ToString();
+                objmdl.Email = dr["Email"].ToString();
                 employees.Add(objmdl);
             }
             return employees;
