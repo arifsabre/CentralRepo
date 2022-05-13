@@ -1,0 +1,109 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.AccountMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Account Group List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.AcDesc)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.GrDesc)
+        </th>
+        <th style="width:80px;">Actions</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+
+            <td>
+                @if (item.Modif == false)
+                {
+                    <span style="color:blue;">@Html.DisplayFor(model => item.AcDesc)</span>
+                }
+                else
+                {
+                    @Html.DisplayFor(model => item.AcDesc)
+                }
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => item.GrDesc)
+            </td>
+
+            @if (item.Modif == true)
+            {
+                <td>
+                    @Html.ActionLink("Edit", "CreateUpdate", new { id = item.AcCode })
+                    @Html.ActionLink("Delete", null, null,
+                    new { onclick = "deleteGroup('" + item.AcCode + "')", style = "color:black;" })
+                </td>
+            }
+            else
+            {
+                <td>
+                    <span style="color:blue;">[Fixed]</span>
+                </td>
+            }
+
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            //document.getElementById("hfGrCode").value = '@ViewBag.grcode';
+            //document.getElementById("txtGrDesc").value = '@ViewBag.grdesc';
+        });
+    </script>
+
+    <script>
+        function deleteGroup(accode) {
+            var a = confirm("Are you sure to delete this group?");
+            if (a == false) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "AccountGroup")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    accode: accode
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+</script>
+
+}
+

@@ -1,0 +1,384 @@
+﻿@model ManufacturingManagement_V2.Models.CompanyMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Company Entry</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr><td colspan="3"><h5><b>Company Details</b></h5></td></tr>
+                <tr>
+                    @Html.HiddenFor(model => model.CompCode)
+                <td>@Html.LabelFor(model => model.CmpName)</td>
+                <td>
+                    @Html.EditorFor(model => model.CmpName)
+                @Html.ValidationMessageFor(model => model.CmpName)
+            </td>
+            <td>@Html.LabelFor(model => model.DispIndex)</td>
+            <td>
+                @Html.EditorFor(model => model.DispIndex)
+            @Html.ValidationMessageFor(model => model.DispIndex)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.ShortName)</td>
+                <td>
+                    @Html.EditorFor(model => model.ShortName)
+                @Html.ValidationMessageFor(model => model.ShortName)
+            </td>
+            <td>@Html.LabelFor(model => model.TdCmpCode)</td>
+            <td>
+                @Html.EditorFor(model => model.TdCmpCode)
+            @Html.ValidationMessageFor(model => model.TdCmpCode)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.CIN)</td>
+                <td>
+                    @Html.EditorFor(model => model.CIN)
+                @Html.ValidationMessageFor(model => model.CIN)
+            </td>
+            <td>@Html.LabelFor(model => model.CerEccNo)</td>
+            <td>
+                @Html.EditorFor(model => model.CerEccNo)
+            @Html.ValidationMessageFor(model => model.CerEccNo)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.PanNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.PanNo)
+                @Html.ValidationMessageFor(model => model.PanNo)
+            </td>
+            <td>@Html.LabelFor(model => model.StateCode)</td>
+            <td>
+                @Html.EditorFor(model => model.StateCode)
+            @Html.ValidationMessageFor(model => model.StateCode)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.GSTinNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.GSTinNo)
+                @Html.ValidationMessageFor(model => model.GSTinNo)
+            </td>
+            <td>@Html.LabelFor(model => model.GSTinDate)</td>
+            <td>
+                @Html.EditorFor(model => model.GSTinDate)
+            @Html.ValidationMessageFor(model => model.GSTinDate)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Address1)</td>
+                <td>
+                    @Html.EditorFor(model => model.Address1)
+                @Html.ValidationMessageFor(model => model.Address1)
+            </td>
+            <td>@Html.LabelFor(model => model.Address2)</td>
+            <td>
+                @Html.EditorFor(model => model.Address2)
+            @Html.ValidationMessageFor(model => model.Address2)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Address3)</td>
+                <td>
+                    @Html.EditorFor(model => model.Address3)
+                @Html.ValidationMessageFor(model => model.Address3)
+            </td>
+            <td>@Html.LabelFor(model => model.Website)</td>
+            <td>
+                @Html.EditorFor(model => model.Website)
+            @Html.ValidationMessageFor(model => model.Website)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.TinNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.TinNo)
+                @Html.ValidationMessageFor(model => model.TinNo)
+            </td>
+            <td>@Html.LabelFor(model => model.TinDate)</td>
+            <td>
+                @Html.EditorFor(model => model.TinDate)
+            @Html.ValidationMessageFor(model => model.TinDate)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.PhoneOff)</td>
+                <td>
+                    @Html.EditorFor(model => model.PhoneOff)
+                @Html.ValidationMessageFor(model => model.PhoneOff)
+            </td>
+            <td>@Html.LabelFor(model => model.PhoneResi)</td>
+            <td>
+                @Html.EditorFor(model => model.PhoneResi)
+            @Html.ValidationMessageFor(model => model.PhoneResi)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.FaxNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.FaxNo)
+                @Html.ValidationMessageFor(model => model.FaxNo)
+            </td>
+            <td>@Html.LabelFor(model => model.MobileNo)</td>
+            <td>
+                @Html.EditorFor(model => model.MobileNo)
+            @Html.ValidationMessageFor(model => model.MobileNo)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.ContPer)</td>
+                <td>
+                    @Html.EditorFor(model => model.ContPer)
+                @Html.ValidationMessageFor(model => model.ContPer)
+            </td>
+            <td>@Html.LabelFor(model => model.EMail)</td>
+            <td>
+                @Html.EditorFor(model => model.EMail)
+            @Html.ValidationMessageFor(model => model.EMail)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.Footer1)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Footer1)
+                @Html.ValidationMessageFor(model => model.Footer1)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.Footer2)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Footer2)
+                @Html.ValidationMessageFor(model => model.Footer2)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.Footer3)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Footer3)
+                @Html.ValidationMessageFor(model => model.Footer3)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.Footer4)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Footer4)
+                @Html.ValidationMessageFor(model => model.Footer4)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.Footer5)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Footer5)
+                @Html.ValidationMessageFor(model => model.Footer5)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.Footer6)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Footer6)
+                @Html.ValidationMessageFor(model => model.Footer6)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.Footer7)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Footer7)
+                @Html.ValidationMessageFor(model => model.Footer7)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.Footer8)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Footer8)
+                @Html.ValidationMessageFor(model => model.Footer8)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.Footer9)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Footer9)
+                @Html.ValidationMessageFor(model => model.Footer9)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.Footer10)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Footer10)
+                @Html.ValidationMessageFor(model => model.Footer10)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.CstNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.CstNo)
+                @Html.ValidationMessageFor(model => model.CstNo)
+            </td>
+            <td>@Html.LabelFor(model => model.CstDate)</td>
+            <td>
+                @Html.EditorFor(model => model.CstDate)
+            @Html.ValidationMessageFor(model => model.CstDate)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.BankName)</td>
+                <td>
+                    @Html.EditorFor(model => model.BankName)
+                @Html.ValidationMessageFor(model => model.BankName)
+            </td>
+            <td>@Html.LabelFor(model => model.AccountNo)</td>
+            <td>
+                @Html.EditorFor(model => model.AccountNo)
+            @Html.ValidationMessageFor(model => model.AccountNo)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.IfscCode)</td>
+                <td>
+                    @Html.EditorFor(model => model.IfscCode)
+                @Html.ValidationMessageFor(model => model.IfscCode)
+            </td>
+            <td>@Html.LabelFor(model => model.FRegNo)</td>
+            <td>
+                @Html.EditorFor(model => model.FRegNo)
+            @Html.ValidationMessageFor(model => model.FRegNo)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.EmployerAddress)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.EmployerAddress)
+                @Html.ValidationMessageFor(model => model.EmployerAddress)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.ManagerName)</td>
+                <td>
+                    @Html.EditorFor(model => model.ManagerName)
+                    @Html.ValidationMessageFor(model => model.ManagerName)
+                </td>
+                <td>@Html.LabelFor(model => model.SalaryAccountNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.SalaryAccountNo)
+                    @Html.ValidationMessageFor(model => model.SalaryAccountNo)
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">@Html.LabelFor(model => model.ManagerAddress)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.ManagerAddress)
+                @Html.ValidationMessageFor(model => model.ManagerAddress)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.PFNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.PFNo)
+                @Html.ValidationMessageFor(model => model.PFNo)
+            </td>
+            <td>@Html.LabelFor(model => model.ESICNo)</td>
+            <td>
+                @Html.EditorFor(model => model.ESICNo)
+            @Html.ValidationMessageFor(model => model.ESICNo)
+            </td>
+            </tr>
+            </table>
+        </div>
+    <h2>@ViewBag.Message</h2>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            @*$("#IsActive").attr("style", "width:55px;height:25px;");
+            $("#EmpName").attr("placeholder", "start typing, then select");
+            $("#HODUserName").attr("placeholder", "start typing, then select");
+            document.getElementById("Title").value = '@Model.Title';//note*@
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#EmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('EmpId').value = ui.item.Id;
+                @*$.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getAdvanceDeductionInfo", "Advance"))",
+                    data: { "newempid": ui.item.Id },
+                    success: function (data) {
+                        $('#lblAdvanceInfo').text(data.advanceinfo);
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });*@
+            }
+        });
+</script>
+
+    <script type="text/javascript">
+        $("#HODUserName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteHODUsersList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('HODUserId').value = ui.item.Id;
+            }
+        });
+</script>
+
+}
+

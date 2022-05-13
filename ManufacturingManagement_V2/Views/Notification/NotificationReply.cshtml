@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.NotificationUserMdl>
+@{
+    ViewBag.Title = "PRAG ERP Notification";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>View Response</b></h4>
+
+@*<h4><label id="lblInfo"></label></h4>*@
+
+@Html.Partial("NotificationLinks")
+
+@if (Model.Any()) 
+    {
+        <div style="font-size:16px;font-weight:bold;">
+        Notice Number: @Model.ElementAt(0).NoticeNo,&nbsp;
+        Date: @Html.ValueFor(model => @Model.ElementAt(0).NoticeDT, "{0:dd/MM/yyyy hh:mm tt}")
+        <br/>Notice: @Model.ElementAt(0).NoticeMsg</div>
+    }
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:25px;">
+            S.No.
+        </th>
+        <th style="width:220px;">
+            @Html.DisplayNameFor(model => model.ReceivingUsername)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.ReplyMsg)
+        </th>
+        <th style="width:60px;">
+            @Html.DisplayNameFor(model => model.IsAttended)
+        </th>
+        <th style="width:170px;">
+            @Html.DisplayNameFor(model => model.AttendedAT)
+        </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReceivingUsername)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReplyMsg)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsAttended)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AttendedAT)
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+

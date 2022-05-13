@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "User Manual";
+    Layout = "~/views/shared/LayoutHelpContent.cshtml";
+}
+
+<h2>PRAG ERP User Manual: Quality</h2>
+
+<table>
+    <tr>
+        <td style="width:7%;text-align:left;"><h3><label id="shDesc" style="color:blue;" onclick="ShowHideALL()">Show</label></h3></td>
+        <td style="text-align:left;font-size:10pt;"><h3>@Html.ActionLink("Back", null,null,new{@onclick="window.close()", @style="color:blue;"})</h3></td>
+    </tr>
+</table>
+
+<div style="font-family:Verdana;">
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv1)"><u>1. Entries</u></label>
+    </span>
+    <div id="MDiv1" style="display:block;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div1)">1. Calibration Entry</label></h4>
+        <div id="div1" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Calibration entry
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div2)">2. Deletion Entry (Calibration Item)</label></h4>
+        <div id="div2" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Deletion mark of calibration items which are unused or not usable. This entry stops display of the item for next calibration entry.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div3)">3. IMTE Type Master</label></h4>
+    <div id="div3" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Definition of IMTE types
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div4)">4. IMTE Master</label></h4>
+    <div id="div4" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Definition of IMTE master records for calibration
+    </div>
+
+</div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv2)"><u>2. Reports</u></label>
+    </span>
+    <div id="MDiv2" style="display:block;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div5)">1. Calibration View</label></h4>
+        <div id="div5" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Display of calibration entries
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div6)">2. Calibration Alert</label></h4>
+        <div id="div6" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Alert on calibration following within one month
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div7)">3. Calibration History</label></h4>
+        <div id="div7" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Display of calibration history
+        </div>
+</div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideALL() {
+            var all = document.getElementsByClassName("lnk");
+            var mx = all.length;
+            if (document.getElementById('shDesc').innerText == 'Show') {
+                document.getElementById('shDesc').innerHTML = 'Hide';
+                var x;
+                for (x = 0; x < mx ; x++) {
+                    all[x].style.display = "block";
+                }
+            }
+            else if (document.getElementById('shDesc').innerText == 'Hide') {
+                document.getElementById('shDesc').innerText = 'Show';
+                var x;
+                for (x = 0; x < mx ; x++) {
+                    all[x].style.display = "none";
+                }
+            }
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+
+}
+

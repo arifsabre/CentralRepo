@@ -1,0 +1,695 @@
+﻿@{
+    ViewBag.Title = "User Manual";
+    Layout = "~/views/shared/LayoutHelpContent.cshtml";
+}
+
+<h2>PRAG ERP User Manual: Marketing</h2>
+
+<table>
+    <tr>
+        <td style="width:7%;text-align:left;"><h3><label id="shDesc" style="color:blue;" onclick="ShowHideALL()">Show</label></h3></td>
+        <td style="text-align:left;font-size:10pt;"><h3>@Html.ActionLink("Back", null,null,new{@onclick="window.close()", @style="color:blue;"})</h3></td>
+    </tr>
+</table>
+
+<div style="font-family:Verdana;">
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv1)"><u>1. Tender</u></label>
+    </span>
+    <div id="MDiv1" style="display:none;margin-left:20px;">
+    
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div1)">1. NIT List Updation</label></h4>
+        <div id="div1" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is the procedure to get all published tenders on IREPS into our ERP tender databse.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div2)">2. Process NIT List</label></h4>
+        <div id="div2" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            From the list of NIT tenders, all considerable tenders are selected by this procedure.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div3)">3. View NIT List</label></h4>
+        <div id="div3" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            From this link we can view all marked, selected or attempted tenders as report.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div4)">4. Tender Entry</label></h4>
+        <div id="div4" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is tender entry checksheet.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div5)">5. View Tenders</label></h4>
+        <div id="div5" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is view page of all tenders which checksheet are generated and it displays 
+            the next steps completed for tender posting.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;"  onclick="ShowHideDiv(div6)">6. E-Tender Entry</label></h4>
+        <div id="div6" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is step-1 for tender posting.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div7)">7. E-Tender Item Entry</label></h4>
+        <div id="div7" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is step-2 for tender posting with items detail.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;"  onclick="ShowHideDiv(div8)">8. E-Tender Consignee Entry</label></h4>
+        <div id="div8" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is step-3 for tender posting with consignee detail for every item of tender.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div9)">9. Tender Checksheet Report</label></h4>
+        <div id="div9" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is tender checksheet report by tender entry.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div10)">10. E-Tender Report</label></h4>
+        <div id="div10" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is tender report after all tender posting steps are completed.
+        </div>
+
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv2)"><u>2. Purchase Order</u></label>
+    </span>
+    <div id="MDiv2" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div11)">1. Purchase Order Entry</label></h4>
+        <div id="div11" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Purchase order is entered here with all items and its DP detail.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div12)">2. View Purchase Order</label></h4>
+        <div id="div12" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            View page of all purchase orders entered.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div13)">3. Order Position & Supply Detail</label></h4>
+        <div id="div13" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays reports on order position and supply detail.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div14)">4. PO Checksheet Report</label></h4>
+        <div id="div14" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is PO Checksheet Report with log detail to verify entry of purchase order.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div15)">5. Order Execution Report</label></h4>
+        <div id="div15" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This report displays supply made for every individual item entered in purchase order.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div16)">6. Purchase Order Report</label></h4>
+        <div id="div16" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is purchase order report based on purchase order entry.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div17)">7. PO-wise Payment Status Report</label></h4>
+        <div id="div17" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays payment status report for individual purchase order.
+        </div>
+
+  </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv3)"><u>3. Sales</u></label>
+    </span>
+    <div id="MDiv3" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div18)">1. Sale Entry</label></h4>
+        <div id="div18" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is sale entry against purchase order.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div19)">2. View Sale</label></h4>
+        <div id="div19" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            View page for all sales entry.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div20)">3. Draft To Main</label></h4>
+        <div id="div20" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is the entry page from where draft or proforma invoices are 
+            converted into main sale invoice
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div21)">4. Sale Entry (Without -PO)</label></h4>
+        <div id="div21" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is sale entry made other than purchase order available.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div22)">5. Update Unloading</label></h4>
+        <div id="div22" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This to set unloading date and quantity for every dispatch. 
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div23)">6. Update ICDM</label></h4>
+        <div id="div23" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This to set inspection certificate/dispatch memo for every dispatch.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div24)">7. Sale Invoice Report</label></h4>
+        <div id="div24" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Sale Invoice Report
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div25)">8. Sale GST Report</label></h4>
+        <div id="div25" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Invoicewise GST report
+        </div>
+</div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv4)"><u>4. Payment Receipt</u></label>
+    </span>
+    <div id="MDiv4" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div26)">1. Receipt Entry</label></h4>
+        <div id="div26" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Payment receipt entry
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div27)">2. View Receipt</label></h4>
+        <div id="div27" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            View of payment receipts
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div28)">3. Pending Payment Report</label></h4>
+        <div id="div28" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Report for pending payments
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div29)">4. Payment Register</label></h4>
+        <div id="div29" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Payment register report
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div30)">5. Pending Security Deposit Report</label></h4>
+        <div id="div30" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Report on pending security deposits
+        </div>
+</div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv5)"><u>5. Document Files</u></label>
+    </span>
+    <div id="MDiv5" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div31)">1. Generate Dispatch Documents</label></h4>
+        <div id="div31" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Utility to prepare all dispatch papers/letters
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div32)">2. Upload/View Case Files</label></h4>
+        <div id="div32" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            To upload case files of purchase orders
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div33)">3. Upload Tender Files</label></h4>
+        <div id="div33" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            To upload tender document files
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div34)">4. Upload Dispatch Documents</label></h4>
+        <div id="div34" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Provision to upload dispatch documents
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div35)">5. Standards & Specifications</label></h4>
+        <div id="div35" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            To upload standards and specifications
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div36)">6. Upload Company Documents</label></h4>
+        <div id="div36" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            To upload company documents
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div37)">7. Upload Company Policies</label></h4>
+        <div id="div37" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            To upload company policies
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div38)">8. Item Documents</label></h4>
+        <div id="div38" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            To upload item documents
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div39)">9. Document Category/Type</label></h4>
+        <div id="div39" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Document category and type master creation
+        </div>
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv6)"><u>6. Dashboard Reports</u></label>
+    </span>
+    <div id="MDiv6" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div40)">1. Tenders Report</label></h4>
+        <div id="div40" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            <div>Report Variations:</div>
+            <div style="margin-left:20px;">
+               <br/>(a) Tender Alerts 
+               <br/>(b) Quoted Tenders
+               <br/>(c) To be quoted Tenders
+               <br/>(d) Not to be quoted Tenders
+               <br/>(e) PO Received Tenders
+            </div>
+            <div><br/>Report Options:</div>
+            <div style="margin-left:20px;">
+               <br/>(a) Company 
+               <br/>(b) Item Group
+               <br/>(c) Product 
+               <br/>(d) Railway
+               <br/>(e) Date Range
+            </div>
+            <div><br/>It includes Links for Individual Products as:</div>
+            <div style="margin-left:20px;">
+               <br/>(a) Uploaded Files 
+               <br/>(b) Tender Checksheet
+               <br/>(d) E-Tender Format
+               <br/>(e) LPR/LQR
+            </div>
+            <div><br/>and a link to View NIT List.</div>
+        </div>
+        
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div41)">2. Laspsed DP Report</label></h4>
+        <div id="div41" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays list of records which are not dispatched yet and there DP has been lapsed or going to be lapsed in next 5-days.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div42)">3. Pending PO's</label></h4>
+    <div id="div42" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Display list of records for DPs yet to dispatched till date.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div43)">4. Case Files</label></h4>
+    <div id="div43" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Displays uploaded case file document for purchase orders provided.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div44)">5. MA Required PO's</label></h4>
+    <div id="div44" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Displays list of purchase orders for which modify advise or any correction is required. 
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div45)">6. Dispatch Plan Report</label></h4>
+    <div id="div45" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Displays list of items to be dispatched, sorted on DP date.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div46)">7. Dispatchs (ALL)</label></h4>
+    <div id="div46" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Display list of all dispatches made for various types of filters provided.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div47)">8. Receipted Challan Pending</label></h4>
+    <div id="div47" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Displays list of dispatches for which receipted challan is awaited.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div48)">9. Payments (ALL)</label></h4>
+    <div id="div48" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Displays list of payments received against bills raised to railway.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div49)">10. Pending Payments</label></h4>
+    <div id="div49" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Displays list of pending payments against bills raised.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div50)">11. RO-IInd Pending</label></h4>
+    <div id="div50" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Dispalys list of dispatches for which RO-IInd is pending.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div51)">12. Payment Receipt</label></h4>
+    <div id="div51" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Displays report on payments received.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div52)">13. Delayed Payment Report</label></h4>
+    <div id="div52" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Displays report on delayed payment received from invoice date and billdate separately. 
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div53)">14. Delayed Supply Report</label></h4>
+    <div id="div53" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Displays report for delayed supplies from/before DP date.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div54)">15. Sales Report -1</label></h4>
+    <div id="div54" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Sales report with various filters provided by the user.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div55)">16. Sales Report -2</label></h4>
+    <div id="div55" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Another set of sales report with summary on PO and voucher types.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div56)">17. Products/Item Report</label></h4>
+    <div id="div56" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Products/Items report.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div57)">18. Receipted Challan Pending (RLY.)</label></h4>
+    <div id="div57" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Report for receipted challan pending from dispatch reports -railwaywise. 
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div58)">19. Pending Payements (RLY.)</label></h4>
+    <div id="div58" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Report for pending payment from payment reports -railwaywise.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div59)">20. Pending Payments (RLY.) - ALL Company</label></h4>
+    <div id="div59" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Report for pending payment from payment reports -railwaywise with all companies.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div60)">21. Sales Summary Report Group-wise</label></h4>
+    <div id="div60" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Financial year-wise sales summary report with item group.
+    </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div61)">22. Sales Summary Report Item-wise</label></h4>
+    <div id="div61" class="lnk" style="display:none;margin-left:50px;">
+        <br/>
+        Financial year-wise sales summary report with item group and item list.
+    </div>
+
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv7)"><u>7. Agent Reports</u></label>
+    </span>
+    <div id="MDiv7" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div62)">1. Pending Payments</label></h4>
+        <div id="div62" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Pending payment report agentwise on provided filters.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div63)">2. Correction Required POs</label></h4>
+        <div id="div63" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Correction required PO report agentwise on provided filters.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div64)">3. Pending Payments(Consigneewise Group)</label></h4>
+        <div id="div64" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Pending payment report agentwise on provided filters -grouped on consignee.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div65)">4. Pending Payments(Citywise Group) for Agents</label></h4>
+        <div id="div65" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Pending payment report agentwise on provided filters -citywise for agents.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div66)">5. Receipted Challan Pending</label></h4>
+        <div id="div66" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Receipted challan pending report agentwise on provided filters.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div67)">6. R-Note Pending</label></h4>
+        <div id="div67" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            R-Note pending report agentwise on provided filters.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div68)">7. Purchase Orders</label></h4>
+        <div id="div68" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Purchase order report on provided filters.
+        </div>
+        
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv8)"><u>8. Alert Reports</u></label>
+    </span>
+    <div id="MDiv8" style="display:none;margin-left:20px;">
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div69)">1. Tender Posting Alert Report</label></h4>
+        <div id="div69" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Tender posting alerts for tenders to be quoted in next 48-hours.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div70)">2. Dispatch Unloding Alert Report</label></h4>
+        <div id="div70" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Alert on dispatches for which are unloading is not marked that they are reached on destination dispatched till last week.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div71)">3. MA/Correction Required Alert Report</label></h4>
+        <div id="div71" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Alert on correction/MA required purchase orders for followup.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div72)">4. Pending Paymemnt Alert Report</label></h4>
+        <div id="div72" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Alert onpending payment due from 60 days (by Invoice Date) with value above 10 Lacs.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div73)">5. Tender Status Alert Report</label></h4>
+        <div id="div73" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Alert list of tenders in next 2 days which are in status Quoted or To be Quoted.
+        </div>
+
+    </div>
+    
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv9)"><u>9. Master Reports</u></label>
+    </span>
+    <div id="MDiv9" style="display:none;margin-left:20px;">
+     
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div74)">1. Consignee Master Report</label></h4>
+        <div id="div74" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Consignee master report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div75)">2. Paying Authority Master Report</label></h4>
+        <div id="div75" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Paying authority master report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div76)">3. Railway/Party Master Report</label></h4>
+        <div id="div76" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Railway/Party Master Report
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div77)">4. Item Performance Report</label></h4>
+        <div id="div77" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Item performance repoprt for selected item within date range.
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideALL() {
+            var all = document.getElementsByClassName("lnk");
+            var mx = all.length;
+            if (document.getElementById('shDesc').innerText == 'Show') {
+                document.getElementById('shDesc').innerHTML = 'Hide';
+                var x;
+                for (x = 0; x < mx ; x++) {
+                    all[x].style.display = "block";
+                }
+            }
+            else if (document.getElementById('shDesc').innerText == 'Hide') {
+                document.getElementById('shDesc').innerText = 'Show';
+                var x;
+                for (x = 0; x < mx ; x++) {
+                    all[x].style.display = "none";
+                }
+            }
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+
+}
+

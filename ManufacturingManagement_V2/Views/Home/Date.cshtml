@@ -1,0 +1,17 @@
+﻿@model DateTime
+@*@Html.TextBox("dateChk", Model.ToString("dd/MM/yyyy"), 
+ new { @class = "date" })*@
+
+@Html.TextBox("dateChk", Model.ToString("dd/MM/yyyy"), 
+ new { @class = "date" })
+
+@section Scripts{
+@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+
+$(document).ready(function () {
+    $('.date').datepicker({dateFormat: "dd/mm/yy"});
+});
+
+}

@@ -1,0 +1,144 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "CalibrationAlert";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Calibration Alert Report</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr><td colspan="3"><h5><b>Report Options</b></h5></td></tr>
+                <tr>
+                    <td style="width:10%;"><b>Company</b></td>
+                    <td>
+                        @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList,
+                        new { @onclick = "fillImteTypeList()", @id = "ddlCompany" })
+                        @Html.ValidationMessageFor(model => model.CompCode)
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>IMTE Type</b>
+                    <td>
+                        @Html.DropDownListFor(model => model.GroupId, ViewBag.ImteTypeList as SelectList, "--Select--",
+                         new { @onclick = "fillImteList()", @id = "ddlImteType" })
+                        @Html.ValidationMessageFor(model => model.CompCode)
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>IMTE IdNo</b>
+                    <td>
+                        @Html.DropDownListFor(model => model.RmItemId, ViewBag.ImteList as SelectList, "--Select--", new { @id = "ddlImte" })
+                        @Html.ValidationMessageFor(model => model.CompCode)
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>As&nbsp;On&nbsp;Date</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.ReportDate)
+                        @Html.ValidationMessageFor(model => model.ReportDate)
+                    </td>
+                </tr>
+            </table>
+        </div>
+    <p>
+        <input type="submit" class="btn btn-default" value="Submit" onclick="target = '_blank';" style="width:150px;"
+               formaction="@Url.Action("DisplayCalibrationAlertReport")" />
+    </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //$("#GroupName").attr("placeholder", "start typing, then select");
+            //$("#RmItemCode").attr("placeholder", "start typing, then select");
+            //$("#Detailed").attr("style", "width:55px;height:25px;");
+        });
+    </script>
+
+    <script>
+        function fillImteTypeList() {
+            var liObj = document.getElementById("ddlCompany");
+            var sIndex = liObj.selectedIndex;
+            var ccode = liObj.options[sIndex].value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getImteTypeList", "HelpUtility"))",
+                data: { "ccode": ccode },
+                success: function (data) {
+                    //getting multiple records as (key,value) pair type list
+                    $("#ddlImteType").empty(); // clear before appending new list
+                    $("#ddlImteType").append($('<option />', {
+                        value: "0",
+                        text: "--Select--"
+                    }));
+                    $.each(data, function (i, item) {
+                        $("#ddlImteType").append($('<option />', {
+                            value: item.Key,
+                            text: item.Value
+                        }));
+                    });
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function fillImteList() {
+            var compLiObj = document.getElementById("ddlCompany");
+            var compIndex = compLiObj.selectedIndex;
+            var ccode = compLiObj.options[compIndex].value;
+            //
+            var liObj = document.getElementById("ddlImteType");
+            var sIndex = liObj.selectedIndex;
+            var itype = liObj.options[sIndex].value;
+            if (itype.length == 0) {
+                itype = 0;
+            }
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getImteList", "HelpUtility"))",
+                data: { "imtetypeid": itype, "ccode": ccode },
+                success: function (data) {
+                    //getting multiple records as (key,value) pair type list
+                    $("#ddlImte").empty(); // clear before appending new list
+                    $("#ddlImte").append($('<option />', {
+                        value: "0",
+                        text: "--Select--"
+                    }));
+                    $.each(data, function (i, item) {
+                        $("#ddlImte").append($('<option />', {
+                            value: item.Key,
+                            text: item.Value
+                        }));
+                    });
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+}

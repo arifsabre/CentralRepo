@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    //Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+@*<h2>Select Department</h2>*@
+@*<ol class="round">
+    <li class="one">
+        <h5>Point 1</h5>
+        Description 1
+    </li>
+</ol>*@
+
+<div style="font-size:14pt;text-align:center;" class="container">
+    <div class="sidebyside"><a href="/DocumentFile/IndexView"><br/>Company Documents</a></div> 
+    <div class="sidebyside"><a href="/CompanyPolicy/IndexView"><br/>Company Policies</a></div>
+    <div class="sidebyside"><a target="_new" href="/Notification/Index"><br/>Notification</a></div>
+    <div class="sidebyside"><a href="/Employee/EmployeeDirectory"><br/>Directory</a></div>
+    <div class="sidebyside"><a href="/Complaint/Index"><br/>Complaint</a></div>
+    <div class="sidebyside"><a href="/Feedback/FeedbackView"><br/>Feedback</a></div>
+    @if(ViewData["production"] == "1")
+    {
+        <div class="sidebyside"><a href="/Home/ProductionDashboard"><br/>Production Department</a></div>
+    }
+    @if(ViewData["store"] == "1")
+    {
+        <div class="sidebyside"><a href="/Home/StoreDashboard"><br/>Stores Department</a></div>
+    }
+    @if(ViewData["hr"] == "1")
+    {
+        <div class="sidebyside"><a href="/Home/HRDashboard"><br/>HR Department</a></div>
+    }
+    @if(ViewData["indent"] == "1")
+    {
+        <div class="sidebyside"><a href="/Home/IndentDashboard"><br/>Indent</a></div>
+    }
+    @if (ViewData["correspondence"] == "1")
+    {
+        <div class="sidebyside"><a href="/Correspondence/Index"><br/>Correspondence</a></div>
+    }
+    @if(ViewData["marketing"] == "1")
+    {
+        <div class="sidebyside"><a href="/Home/MktgDashboard"><br/>Marketing V2</a></div>
+    }
+    @if(ViewData["admin"] == "1")
+    {
+        <div class="sidebyside"><a href="/Home/AdminDashboard"><br/>Admin Panel</a></div>
+    }
+    @if(ViewData["adminutilities"] == "1")
+    {
+        <div class="sidebyside"><a href="/Admin/Index"><br/>Admin Utilities</a></div>
+    }
+    <div class="sidebyside" onclick="alert('To be displayed soon!')"><a href="#"><br/>My Health Portfolio</a></div>
+    <div class="sidebyside"><a target="_blank" href="/Home/HelpContent_General"><br/>User Manual</a></div>
+    @if(ViewData["set"].ToString() == "2")
+    {
+        <div class="sidebyside"><a href="/Home/Index"><br/>Home</a></div>
+    }
+    else if (ViewData["set"].ToString() == "1")
+    { 
+        <div class="sidebyside"><a href="/Home/Index"><br/>Home</a></div>
+        <div class="sidebyside"><a href="/Login/LoginUser"><br/>Logout</a></div>
+    }
+</div> 
+
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    @*<script type="text/javascript">
+        $(function () {
+            var a = confirm('@ViewBag.Msg');
+            if (a == false) {
+                location.reload();
+            }
+        });
+    </script>   style="transform: translateX(50%);"  *@
+
+    <script type="text/javascript">
+        $(function () {
+            var w = 800;
+            var h = 400;
+            var left = (screen.width/2)-(w/2);
+            var top = (screen.height/2)-(h/2)-70;
+            //window.open('http://localhost:59772/Home/getAlert', 'MyWindow', 'width=' + w + ',height=' + h + ',top=' + top + ',left=' + left + ',toolbar=0,titlebar=0,location=0,status=0,scrollbars=0,controlbox=0,addressbar=0,modal=yes');
+        });
+    </script>  
+
+}
+
+<style>
+    .container {
+        overflow:auto;
+        /* http://www.tipue.com/blog/center-a-div */
+        margin: 0 auto;
+        max-width: 800px;
+    }
+    .sidebyside {
+        float:left;
+        width:250px; 
+        height:80px; 
+        border-style:solid;
+        margin:5px;
+        vertical-align: middle;
+        border-color:blue;
+        border-radius:4px; 
+        border-width:1.5px; 
+        background-color:#0094ff;
+    }
+    .belowdiv {
+        width:300px; 
+        height:100px; 
+        border-style:solid; 
+        margin:5px;
+    }
+</style>
+

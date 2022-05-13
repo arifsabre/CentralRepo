@@ -1,0 +1,318 @@
+﻿@model ManufacturingManagement_V2.Models.SalaryMdl
+@using Newtonsoft.Json
+@{
+        ViewBag.Title = "GenerateSalary";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+ }
+ 
+    <h4><b>Salary Generation</b></h4>
+
+<div style="font-family:Verdana;font-size:9pt;">
+    @*<marquee><h3>NOTICE -> Salary Generation Checklist:</h3></marquee>*@
+    <h5><b>NOTICE -> Salary Generation Checklist:</b></h5>
+    <table class="table table-bordered">
+        <tr>
+            <td>
+                1. All payment variables with 'PF', 'ESI' and 'TDS Deduction' are updated.
+            </td>
+            <td>
+                2. For Bonus Calculation, 'Categories' field is completely updated.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3. Minimum wages are defined, for new Company, if any.
+            </td>
+            <td>
+                4. In-active marked entries are updated with 'Leaving Date', if any.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                5. 'Attendance' and 'Advance' entries are completely updated.
+            </td>
+            <td>
+                6. Check negative leaves occured in the month after Salary Generation.
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="color:black;font-weight:bold;">
+                <br />Follow these 3 steps to generate salary:
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h5><b>Step 1: Generate Salary, Step 2: View & Set Adv. Deduction Values, Step 3: Update Salary for Adv. Deduction</b></h5>
+            </td>
+        </tr>
+    </table>
+</div>
+    
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td colspan="2"><h5><b>Salary details (Select Year first, then month)</b></h5></td>
+                    <td colspan="2">
+                        <h5>
+                            <b>
+                                Minimum wages applied for bonus calculation (Logged in Company)
+                                <br />@Html.ActionLink("(click here to Set/View for other companies)", "../MinimumWage/Index")
+                            </b>
+                        </h5>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.AttYear)</td>
+                    <td>
+                        <input type="text" id="txtAttYear" />
+                        <span class="error">Invalid year!</span>
+                    </td>
+                    <td>Skilled</td>
+                    <td>
+                        <input type="text" id="txtSkilled" value='@ViewBag.Skilled' />
+                        <span class="error">Invalid option!</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.AttMonth)</td>
+                    <td>
+                        @Html.DropDownList("ddlMonth", ViewBag.MonthList as SelectList,
+                            new { @class = "form-control", @onchange = "getMinimumWage()" })
+                        <span class="error">Invalid month!</span>
+                    </td>
+                    <td>Semi&nbsp;Skilled</td>
+                    <td>
+                        <input type="text" id="txtSemiSkilled" value='@ViewBag.SemiSkilled' />
+                        <span class="error">Invalid option!</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.AttShift)</td>
+                    <td>
+                        @Html.DropDownList("ddlShift", ViewBag.ShiftList as SelectList)
+                        <span class="error">Invalid shift!</span>
+                    </td>
+                    <td>Un&nbsp;Skilled</td>
+                    <td>
+                        <input type="text" id="txtUnSkilled" value='@ViewBag.UnSkilled' />
+                        <span class="error">Invalid option!</span>
+                    </td>
+                </tr>
+                @*<tr>
+            <td>@Html.DisplayNameFor(model => model.AllowModify)</td>
+            <td><input type="text" id="txtAllowModify"/>
+            <span class="error">Invalid option!</span></td>
+        </tr>*@
+            </table>
+        </div>
+
+        <div style="padding:10px 0px; text-align:left;">
+            @Html.ActionLink("View & Set Advance Deduction Values", "setDeductionList", "Salary", null, 
+            new { id = "mylink", @target = "_new;", @class = "btn btn-default" })
+            @Html.ActionLink("Check Negative Leaves", "Index", "RemainingLeavesReport", null,
+            new { id = "myLinkRpt", @target = "_new;" , @class = "btn btn-default" })
+            <input id="submit" class="btn btn-default" type="button" value="Generate Salary" />
+            <input id="submitUpdate" class="btn btn-default" type="button" value="Update Salary for Advance Deduction" />
+            <input placeholder="Modify=1" style="width:60px;" type="text" id="txtAllowModify"/>
+        </div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("ddlMonth").value = '@ViewBag.attmonth';
+            document.getElementById("txtAttYear").value = '@ViewBag.attyear';
+            var attyear = $('#txtAttYear').val();
+            var attmonth = $('#ddlMonth').val();
+            $('#mylink').attr('href', '../Salary/setDeductionList' + '?smonth=' + attmonth + '&syear=' + attyear);
+            //var a = confirm(msg);
+            //if (a == false) {
+            //    location.reload();
+            //}
+        });
+    </script>
+
+    <script>
+        function getMinimumWage() {
+            var attyear = $('#txtAttYear').val();
+            var attmonth = $('#ddlMonth').val();
+            $('#mylink').attr('href', '../Salary/setDeductionList' + '?smonth=' + attmonth + '&syear=' + attyear);
+            $.ajax({
+                url: '/Salary/getMinimumWage',
+                type: "post",
+                dataType: "JSON",
+                data: { attyear: attyear, attmonth: attmonth },
+                success: function (data) {
+                    $('#txtSkilled').val(data.skilled);
+                    $('#lblSkilled').val(data.skilled);
+                    $('#txtSemiSkilled').val(data.semiskilled);
+                    $('#txtUnSkilled').val(data.unskilled);
+                }
+            });
+        }
+</script>
+
+    <script>
+        //Date Picker
+        $(function () {
+            $('#txtVDate').datepicker({
+                dateFormat: 'dd/mm/yy'
+            });
+        });
+
+
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+                if ($('#txtAttYear').val().trim() == '') {
+                    $('#txtAttYear').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#txtAttYear').siblings('span.error').css('visibility', 'hidden');
+                }
+                //Save if valid
+                if (isAllValid) {
+                    var liShift = document.getElementById("ddlShift");
+                    var shiftIndex = liShift.selectedIndex;
+                    var shiftId = liShift.options[shiftIndex].value;
+
+                    var liMonth = document.getElementById("ddlMonth");
+                    var monthIndex = liMonth.selectedIndex;
+                    var monthId = liMonth.options[monthIndex].value;
+
+                    var data = {
+                        AttShift: shiftId,
+                        AttMonth: monthId,
+                        AttYear: parseInt($('#txtAttYear').val().trim()),
+                        AllowModify: $('#txtAllowModify').val().trim()
+                    }
+                    $(this).val('Please wait...');
+                    $.ajax({
+                        url: '/Salary/GenerateSalary',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                //$('#txtAttDay').val('');
+                                //$('#txtAttYear').val('');
+                                $('#txtAllowModify').val('');
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submit').val('Generate Salary');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            $('#submit').val('Generate Salary');
+                        }
+                    });
+                }
+
+            });
+
+        //updateAdvDeduction
+            $('#submitUpdate').click(function () {
+                //validation of order
+                var isAllValid = true;
+                if ($('#txtAttYear').val().trim() == '') {
+                    $('#txtAttYear').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#txtAttYear').siblings('span.error').css('visibility', 'hidden');
+                }
+                //Save if valid
+                if (isAllValid) {
+                    var liShift = document.getElementById("ddlShift");
+                    var shiftIndex = liShift.selectedIndex;
+                    var shiftId = liShift.options[shiftIndex].value;
+
+                    var liMonth = document.getElementById("ddlMonth");
+                    var monthIndex = liMonth.selectedIndex;
+                    var monthId = liMonth.options[monthIndex].value;
+
+                    var data = {
+                        AttShift: shiftId,
+                        AttMonth: monthId,
+                        AttYear: parseInt($('#txtAttYear').val().trim()),
+                        AllowModify: $('#txtAllowModify').val().trim()
+                    }
+                    $(this).val('Please wait...');
+                    $.ajax({
+                        url: '/Salary/UpdateSalaryForAdvanceDeduction',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                //$('#txtAttDay').val('');
+                                //$('#txtAttYear').val('');
+                                $('#txtAllowModify').val('');
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submitUpdate').val('Update Salary for Advance Deduction');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            $('#submitUpdate').val('Update Salary for Advance Deduction');
+                        }
+                    });
+                }
+
+            });
+
+    </script>
+}
+ 
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display:block;
+        visibility:hidden;
+        color:red;
+        font-size:90%;
+    }
+ 
+ 
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+    .tablecontainer table {
+        width: 100%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+    }
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+    .ui-widget {
+        font-size:12px !important;
+    }
+</style>

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.PartyMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Party Master List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th style="width:50px;">Links</th>
+        <th style="width:100px;">
+            PartyName/<br />Cont.Person
+        </th>
+        <th style="width:auto;">
+            Address
+        </th>
+        <th style="width:100px;">
+            StateName/<br />StateCode
+        </th>
+        <th style="width:60px;">
+            @Html.DisplayNameFor(model => model.GSTinNo)
+        </th>
+        <th style="width:60px;">
+            @Html.DisplayNameFor(model => model.MobileNo)
+        </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+                <br />@Html.ActionLink("Details", "Details", new { id = item.RecId })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AcDesc)
+                <br />@Html.DisplayFor(modelItem => item.ContPer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address1)
+                <br />@Html.DisplayFor(modelItem => item.Address2)
+                <br />@Html.DisplayFor(modelItem => item.Address3)
+                <br />@Html.DisplayFor(modelItem => item.Address4)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StateName)
+                <br />@Html.DisplayFor(modelItem => item.StateCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GSTinNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MobileNo)
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+

@@ -1,0 +1,63 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+@{
+    ViewBag.Title = "AbsentList";
+}
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta name="viewport" content="width=device-width" />
+    <title>Absent List</title>
+    <link href="~/Contents/bootstrap.min.css" rel="stylesheet" />
+    <script>
+
+    </script>
+</head>
+<body>
+                      @using (Html.BeginForm())
+                        {
+                            <div class="modal-body">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <label>Select Company</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)
+                                    </div>
+                                </div>
+
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <label>From Date</label>
+                                        <br />
+                                        @Html.EditorFor(model => model.DateFrom)
+                                    </div>
+                                </div>
+
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <label>To Date</label>
+                                        <br />
+                                        @Html.EditorFor(model => model.DateTo)
+                                    </div>
+                                </div>
+
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <label>Export Format</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.ReportFormat, ViewBag.ReportFormatList as SelectList)
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-success" value="Submit" onclick="target = '_blank';"
+                                       formaction="@Url.Action("Get_AbsentListDate")" />
+                            </div>
+                        }
+               
+    
+</body>
+</html>
+

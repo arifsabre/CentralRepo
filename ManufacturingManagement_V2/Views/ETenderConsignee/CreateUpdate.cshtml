@@ -1,0 +1,332 @@
+﻿@model ManufacturingManagement_V2.Models.ETenderConsigneeMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<table style="width:100%;">
+    <tr>
+        <td><h4><b>E-Tender (Step-3)</b></h4></td>
+        <td>
+            @Html.ActionLink("Step-2 (E-Tender Item Entry)", "../ETenderItem/CreateUpdate",
+            new { tenderid = Model.TenderId }, new { style = "color:blue;text-decoration:underline;" })
+        </td>
+        <td>
+            @Html.ActionLink("Display E.T.Format", "../Tender/ETFormatReport", new { tenderid = Model.TenderId },
+            new { @target = "_blank", style = "color:blue;text-decoration:underline;" })
+        </td>
+    </tr>
+</table>
+
+<h5><b>@Model.TenderInfo</b></h5>
+
+<span>List of E-Tender Items:-</span>
+@Html.Raw(@Model.ETendetItemsHtml)
+<br />
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div class="form-group" style="border:1px solid;">
+
+        <table class="table table-bordered">
+            @Html.HiddenFor(model => model.TenderId)
+            @Html.HiddenFor(model => model.ItemRecId)
+            @Html.HiddenFor(model => model.RecId)
+            @Html.HiddenFor(model => model.ConsigneeId)
+            @Html.HiddenFor(model => model.RailwayId)
+
+            <tr>
+                <td style="color:blue;width:10%;"><b>Selected&nbsp;Item</b></td>
+                <td><b><label id="lblItemInfo" style="font-weight:normal;color:blue;"></label></b></td>
+                <td style="color:blue;width:10%;"><b>Selected Record</b></td>
+                <td><b><label id="lblSlNo" style="font-weight:bold;color:blue;"></label></b></td>
+            </tr>
+
+            <tr>
+                <td><b>Consignee</b></td>
+                <td>
+                    @Html.EditorFor(model => model.ConsigneeName)
+                    @Html.ValidationMessageFor(model => model.ConsigneeName)
+                </td>
+                <td><b>Qty&nbsp;as&nbsp;per&nbsp;Tender</b></td>
+                <td>
+                    @Html.EditorFor(model => model.TenderQty)
+                    @Html.ValidationMessageFor(model => model.TenderQty)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Qty&nbsp;Offered</b></td>
+                <td>
+                    @Html.EditorFor(model => model.OfferedQty)
+                    @Html.ValidationMessageFor(model => model.OfferedQty)
+                </td>
+                <td><b>Sales&nbsp;Tax&nbsp;Type</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.SaleTaxType, ViewBag.SaletaxTypeList as SelectList)
+                    @Html.ValidationMessageFor(model => model.SaleTaxType)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Sales&nbsp;Tax&nbsp;%</b></td>
+                <td>
+                    @Html.EditorFor(model => model.SaleTaxPer)
+                    @Html.ValidationMessageFor(model => model.SaleTaxPer)
+                </td>
+                <td><b>Freight/Unit</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Freight)
+                    @Html.ValidationMessageFor(model => model.Freight)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Basic&nbsp;Rate</b></td>
+                <td>
+                    @Html.EditorFor(model => model.BasicRate)
+                    @Html.ValidationMessageFor(model => model.BasicRate)
+                </td>
+                <td><b>Unit&nbsp;Rate</b></td>
+                <td>
+                    @Html.EditorFor(model => model.UnitRate)
+                    @Html.ValidationMessageFor(model => model.UnitRate)
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <b>ED&nbsp;Type</b>
+                    <input type="text" id="txtEDType" readonly="readonly"
+                           style="background-color:lightgray; border:1px solid;width:100px;" />
+                    <b>ED&nbsp;%</b>
+                    <input type="text" id="txtEDMaxPerApplicable" readonly="readonly"
+                           style="background-color:lightgray; border:1px solid;width:50px;" />
+                </td>
+                <td><b>Total&nbsp;Amount</b></td>
+                <td>
+                    @Html.EditorFor(model => model.TotalAmount)
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+    
+    <p>
+        <input id="submit" type="submit" class="btn btn-default" onclick="setCalculations()" value='@ViewBag.AddEdit' />
+        @Html.ActionLink("Close", null, null, new { @onclick = "window.close();", @class = "btn btn-default" })
+        <h5><b>@ViewBag.Message</b></h5>
+    </p>
+}
+
+<span>List of Consignee for selected E-Tender Item:-</span>
+<div id="etConsignee">@Html.Raw(@Model.ETenderConsigneeHtml)</div>
+<br />
+<br />
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("ConsigneeName").setAttribute("placeholder", "start typing, then select");
+            document.getElementById("ConsigneeName").setAttribute("style", "width:320px;");
+            document.getElementById("TotalAmount").setAttribute("readonly", "readonly");
+            document.getElementById("TotalAmount").setAttribute("style", "background-color:silver;border:1px solid;");
+            var i = document.getElementById("ItemRecId").value;
+            if (i != '0') {
+                setETenderItemDetail(i);
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        function setETenderItemDetail(itemrecid) {
+
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getETenderItemDesc", "ETenderConsignee"))",
+                data: { "itemrecid": itemrecid },
+                success: function (data) {
+                    if ('@ViewBag.AddEdit' != "Update") {
+                        document.getElementById("TenderQty").value = data.fulltdqty;
+                        document.getElementById("OfferedQty").value = data.fulltdqty;
+                    }
+                    $('#txtEDMaxPerApplicable').val(data.edper);
+                    $('#txtEDType').val(data.edtype);
+                    if (document.getElementById("RecId").value == 0) {
+                        $('#BasicRate').val(data.basicrate);
+                    }
+                    $('#lblItemInfo').text(data.itemcode + ' ' + data.shortname);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+
+        }
+    </script>
+
+    <script>
+        function round(value, decimals) {
+            //example: 
+            //round(1.005, 0); //returns 1
+            //round(1.005, 2); //returns 1.01
+            return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+        }
+    </script>
+
+    <script type="text/javascript">
+        function setCalculations() {
+            //refer to erp_v1/TenderStep-3 for validation
+
+            var edtype = document.getElementById("txtEDType").value.toLowerCase();
+            var saletaxtype = document.getElementById("SaleTaxType").value.toLowerCase();
+
+            var qty = parseFloat(document.getElementById("OfferedQty").value);
+            var saletaxper = parseFloat(document.getElementById("SaleTaxPer").value);
+            var freightpu = parseFloat(document.getElementById("Freight").value);
+
+            if (edtype == 'gst') {
+                if (saletaxtype == 'gst extra' || saletaxtype == 'gst nil')//extra gst
+                {
+                    var basicrate = parseFloat(document.getElementById("BasicRate").value);
+                    var unitrate = basicrate + basicrate * saletaxper / 100;
+                    $('#UnitRate').val(round(unitrate, 2));
+                    var amount = qty * unitrate;
+                    var tlamount = amount + freightpu * qty;
+                    $('#TotalAmount').val(round(tlamount, 2));
+                }
+                else if (saletaxtype == 'gst inclusive')//inclusive gst
+                {
+                    var unitrate = parseFloat(document.getElementById("UnitRate").value);
+                    var basicratepu = (unitrate * 100) / (100 + saletaxper);
+                    $('#BasicRate').val(round(basicratepu, 2));
+                    $('#TotalAmount').val(round(unitrate * qty + freightpu * qty, 2));
+                }
+            }
+            else if (edtype == 'maximum applicable')//exclusive
+            {
+                //case ed/st => exc/exc
+                if (saletaxtype == 'cst extra' || saletaxtype == 'nil' || saletaxtype == 'lst extra' || saletaxtype == 'vat extra') {
+                    var edper = parseFloat(document.getElementById("txtEDMaxPerApplicable").value);
+                    var basicrate = parseFloat(document.getElementById("BasicRate").value);
+                    var unitrate = basicrate + basicrate * edper / 100;//first apply ed
+                    unitrate = unitrate + unitrate * saletaxper / 100;//then apply st
+                    $('#UnitRate').val(round(unitrate, 2));
+                    var amount = qty * unitrate;
+                    $('#TotalAmount').val(round(amount + freightpu * qty, 2));
+                }
+            }
+            else if (edtype == 'ed inclusive' || edtype == 'not applicable' || edtype == 'nil')//inclusive
+            {
+                //case ed/st => inc/inc
+                if (saletaxtype == 'lst inclusive' || saletaxtype == 'vat inclusive' || saletaxtype == 'cst inclusive') {
+                    //* calculation to be checked
+                    var unitrate = parseFloat(document.getElementById("UnitRate").value);
+                    var edper = parseFloat(document.getElementById("txtEDMaxPerApplicable").value);
+                    var stamount = (unitrate * 100) / (100 + saletaxper);
+                    stamount = round(stamount, 2);
+                    var edamount = (stamount * 100) / (100 + edper);
+                    $('#BasicRate').val(round(edamount, 2));
+                    $('#TotalAmount').val(round(unitrate * qty + freightpu * qty, 2));
+                }
+                //case ed/st => inc/exc
+                else if (saletaxtype == 'cst extra' || saletaxtype == 'nil' || saletaxtype == 'lst extra' || saletaxtype == 'vat extra') {
+                    //* calculation to be checked
+                    var basicrate = parseFloat(document.getElementById("BasicRate").value);
+                    var edper = parseFloat(document.getElementById("txtEDMaxPerApplicable").value);
+                    var unitrate = basicrate + basicrate * saletaxper / 100;
+                    $('#UnitRate').val(round(unitrate, 2));
+                    $('#TotalAmount').val(round(unitrate * qty + freightpu * qty, 2));
+                }
+            }
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        function selectItem(indx, itemrecid) {
+            $('#lblSlNo').text(indx);
+            document.getElementById("ItemRecId").value = itemrecid;//to save
+            var tenderid = document.getElementById("TenderId").value;
+            document.getElementById("RecId").value = 0;//note
+            document.getElementById("submit").value = 'Save';//note
+            setETenderItemDetail(itemrecid);
+
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getETenderConsigneeTableHtml", "ETenderConsignee"))",
+                data: { "itemrecid": itemrecid },
+                success: function (data) {
+                    document.getElementById("etConsignee").innerHTML = data.result;
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+
+        }
+    </script>
+
+    <script>
+        function deleteETenderConsignee(recid) {
+            var a = confirm("Are you sure to delete this item?");
+            if (a == false) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteETenderConsignee", "ETenderConsignee")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    recid: recid
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        $("#ConsigneeName").autocomplete({
+            source: function (request, response) {
+                var railwayid = document.getElementById('RailwayId').value;
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteConsignee", "HelpUtility"))",
+                    data: { "term": request.term, "railwayid": railwayid},
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('ConsigneeId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

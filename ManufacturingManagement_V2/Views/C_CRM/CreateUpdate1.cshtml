@@ -1,0 +1,108 @@
+﻿@model ManufacturingManagement_V2.Models.C_ComplaintMDI
+@{
+    ViewBag.Title = "CreateUpdate1";
+    //Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Complaint List  </title>
+    <link href="~/Contents/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/Contents/AdminLTE/css/AdminLTE.css" rel="stylesheet" />*@
+    </head>
+    <body>
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <br />
+            <div>
+                <label>Complaint Id</label>
+                <br />
+                @Html.EditorFor(model => model.referenceno)
+            </div>
+            <label>Select Company</label>
+            <br />
+            @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)
+            @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "text-danger" })
+            <br />
+            <label>Prag Unit SRNO</label>
+            <br />
+            @Html.DropDownListFor(model => model.srno, ViewBag.PragSRNO as SelectList)
+            @Html.ValidationMessageFor(model => model.srno, "", new { @class = "text-danger" })
+            <br />
+            <label>Recieved Date</label>
+            <br />
+            @Html.EditorFor(model => model.dateofcomplaintrecieved)
+            @Html.ValidationMessageFor(model => model.dateofcomplaintrecieved, "", new { @class = "text-danger" })
+            <br />
+            <label>Item Name</label>
+            <br />
+            @Html.DropDownListFor(model => model.itemid, ViewBag.ItemList as SelectList)
+            @Html.ValidationMessageFor(model => model.itemid, "", new { @class = "text-danger" })
+            <label>Problem Description</label>
+            <br />
+            @Html.TextAreaFor(model => model.detail, 0, 0, new { @class = "Editor", @style = "width:450px;height:70px;" })
+            @Html.ValidationMessageFor(model => model.detail, "", new { @class = "text-danger" })
+            <br />
+            <label>Complainer ID Or Name</label>
+            <br />
+            @Html.EditorFor(model => model.customername)
+            @Html.ValidationMessageFor(model => model.customername, "", new { @class = "text-danger" })
+            <br />
+            @*<label>Complainer Mobile No</label>*@
+            @Html.LabelFor(model => model.mobile1)
+            <br />
+            @Html.TextBoxFor(model => model.mobile1)
+            @Html.ValidationMessageFor(model => model.mobile1, "", new { @class = "text-danger" })
+            <br />
+            <label style="color:green">Select Engineer Name To Assign The Compalint</label>
+            <br />
+            @Html.DropDownListFor(model => model.newempid, ViewBag.AssignTo as SelectList, "Select")
+            @Html.ValidationMessageFor(model => model.newempid, "", new { @class = "text-danger" })
+            <br />
+            @Html.LabelFor(model => model.mobile2)
+            @*<label>Engineer Mobile No</label>*@
+            <br />
+            @Html.TextBoxFor(model => model.mobile2)
+            @Html.ValidationMessageFor(model => model.mobile2, "", new { @class = "text-danger" })
+            <br /><br />
+            <div>
+                <label>Priority</label>
+                <select name="priority" id="priority">
+                    <option value="Normal">Normal</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+                @*<br />*@
+                <label>Status</label>
+                <select name="status" id="status">
+                    <option value="In Progress">In Progress</option>
+                    <option value="Pending">Pending</option>
+
+                    <option value="Completed">Completed</option>
+                    @* <option value="Closed">Closed</option>*@
+                </select>
+                <label>Source</label>
+                <select name="recievedby" id="recievedby">
+                    <option value="Phone">Phone</option>
+                    <option value="Email">Email</option>
+                    <option value="Oral">Oral</option>
+                    <option value="Onther">Onther</option>
+                </select>
+            </div>
+            @Html.HiddenFor(model => model.updatedby)
+            @Html.HiddenFor(model => model.userid1)
+
+        </div>
+        <div class="pull-right">
+            <input type="submit" class="btn btn-success" value='@ViewBag.AddEdit'/>
+        </div>
+        <h5>@ViewBag.Message</h5>
+    }
+    <script src="~/Script/Site4.js"></script>
+</body>
+</html>
+
+

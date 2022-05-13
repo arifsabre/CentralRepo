@@ -1,0 +1,53 @@
+﻿@model ManufacturingManagement_V2.Models.PromotionDetailMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Promotion Detail</b></h4>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id = Model.RecId }, new {@class="btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("View Log", "../EventLogReport/getLogDetail", 
+     new { tblid = 37, pkval = Model.RecId }, new {@target="_blank", @class = "btn btn-default" })
+</p>
+
+<fieldset>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EmpId)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmpId)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EmpName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmpName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PromotionDate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PromotionDate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.CategoryName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.CategoryName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Designation)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Designation)</td>
+                </tr>
+
+            </table>
+        </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        @ViewBag.Message
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

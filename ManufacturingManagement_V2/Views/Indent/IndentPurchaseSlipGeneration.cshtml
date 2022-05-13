@@ -1,0 +1,220 @@
+﻿@model ManufacturingManagement_V2.Models.IndentPurchaseSlipMdl
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Indent Purchase Slip Generation</h2>
+
+<p>
+    @*@Html.ActionLink("Create Attendance Detail", "../AttendanceDetail/CreateUpdate")*@
+</p>
+    
+<p>
+    <br/><b>Select Vendor&nbsp;&nbsp;</b>
+    <input type="text" id="txtVendorName" 
+    placeholder="start typing, then select" />
+    <input type="hidden" id="txtVendorId"/>
+</p>
+
+<table id="StepsTable" class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+           S.No.
+        </th>
+        <th style="display:none;">
+           RecId
+        </th>
+        <th style="width:50px;">
+           IndentId
+        </th>
+        <th style="width:100px;">
+           IndentNo
+        </th>
+        <th style="width:100px;">
+           IndentBy
+        </th>
+        <th style="width:auto;">
+           Item
+        </th>
+        <th style="width:auto;">
+           Item Description
+        </th>
+        <th style="width:100px;">
+           Qty
+        </th>
+        <th style="width:40px;">
+           Unit
+        </th>
+        <th style="width:30px;">
+           Select
+        </th>
+        <th style="width:100px;word-wrap:break-word;">
+           Admin Remarks
+        </th>
+    </tr>
+    @{int i = 1;}
+@foreach (var item in Model.Ledgers)
+{
+    <tr>
+        <td>
+            <b>@i</b>
+        </td>
+        <td class="indexColumn" style="display:none;">
+            @*@Html.HiddenFor(model => item.RecId)*@
+            @Html.Label("lblRecId"+i.ToString(),item.RecId.ToString(),new { @id = "RecId" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblIndentId"+i.ToString(),item.IndentId.ToString(),new { @id = "IndentId" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblStrIndentNo"+i.ToString(),item.StrIndentNo,new { @id = "StrIndentNo" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblIndentByName"+i.ToString(),item.IndentByName,new { @id = "IndentByName" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblItemCode"+i.ToString(),item.ItemCode,new { @id = "ItemCode" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblItemDesc"+i.ToString(),item.ItemDesc,new { @id = "ItemDesc" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblPurchaseBalance"+i.ToString(),item.PurchaseBalance.ToString(),new { @id = "PurchaseBalance" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblUnitName"+i.ToString(),item.UnitName,new { @id = "UnitName" + (i-1)})
+        </td>
+        <td>
+            @Html.CheckBox("chkItem"+i.ToString(),item.chkItem,new { @id = "chkItem" + (i-1),style = "width: 80px; height: 18px; padding: 0; text-align:center;" })
+        </td>
+        <td>
+            @Html.Label("lblAdminRemarks"+i.ToString(),item.AdminRemarks,new { @id = "AdminRemarks" + (i-1)})
+        </td>
+    </tr>
+    i++;
+}
+
+</table>
+
+<h5><b>@ViewBag.Message</b></h5>
+        <p>
+            @*<input type="submit" class="btn btn-default" value="Submit" />*@
+            <input id="submit" type="button" value="Generate Purchase Slip" style="padding:10px 20px;width:240px;" />
+            @Html.ActionLink("Print Purchase Slip", "IndentPurchaseSlip", "IndentPurchaseSlipReport", null, new { id = "mylinkPS", @target = "_new;", @onclick="location.reload();" })  |  
+            @Html.ActionLink("View Generated Purchase Slips", "IndentPurchaseSlipView")
+            @*<input type="hidden" id="txtStkRecId"/>*@
+            @*<label id="lblInfo"></label>*@
+        </p>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $("#txtVendorName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var opt = 'hod';
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteVendor", "HelpUtility"))",
+                    data: { "term": request.term, "opt": opt },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('txtVendorId').value = ui.item.Id;
+            }
+        });
+</script>
+
+    <script>
+        $(document).ready(function () {
+            //execute
+            $("#submit").click(function () {
+                var empatt = [];
+                //Collects the data from textboxes and adds it to the dictionary
+                $("#StepsTable tr").each(function (index, item) {
+                    if (index > 0)
+                    {
+                        var tds = $(this).find("td");
+                        var recid = $(tds).eq(1).text();
+                        var chkboxValue = $(tds).eq(9).find("input").is(':checked');//chkItem
+                        if (chkboxValue == true) {
+                            empatt.push({
+                                RecId: recid,
+                                chkItem: chkboxValue
+                            });
+                        }
+                    }
+                });
+                
+                if ($('#txtVendorId').val().trim() == '') {
+                    alert('Vendor not selected!');
+                    return;
+                }
+
+                if (empatt.length == 0) {
+                    alert('No item(s) selected to generate purchase slip!');
+                    return;
+                }
+                
+                $(this).val('Please wait...');
+
+                var data = {
+                    VendorId: parseInt($('#txtVendorId').val().trim()),
+                    Ledgers: empatt
+                }
+                //Makes ajax call to controller 
+                $.ajax({
+                    url: "/Indent/generateIndentPurchaseSlip",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database 
+                        if (d.status == true) {
+                            //will send status from server side
+                            alert(d.message);
+                            //clear form
+                            empatt = [];
+                            //$('#orderNo').val('');
+                            //$('#orderDate').val('');
+                            //$('#orderItems').empty();
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#submit').val('Generate Purchase Slip');
+                        //$('#txtStkRecId').val(d.stkrecid);
+                        //$('#lblInfo').text(d.stkrecid);
+                        var url = $('#mylinkPS').attr('href');//purchase slip
+                        $('#mylinkPS').attr('href', url + '?slipno=' + d.slipno);
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        //$('#submit').val(d.AddEdit);//not applicable here
+                    }
+                });
+            });
+            //end-execute
+        });
+    </script>
+
+}
+
+
+

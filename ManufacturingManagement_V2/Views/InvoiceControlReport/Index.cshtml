@@ -1,0 +1,139 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Invoice Control Report</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    <h5><b>Report Options</b></h5>
+    <table class="table table-bordered">
+        <tr>
+            @Html.HiddenFor(model => model.GroupId)
+            @Html.HiddenFor(model => model.RmItemId)
+            <td style="width:10%;"><b>Company</b></td>
+            <td>
+                @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList, "All")
+                @*@Html.ValidationMessageFor(model => model.CompCode)*@
+            </td>
+            <td><b>Report Name</b>
+            <td>
+                @Html.DropDownListFor(model => model.RptFor, ViewBag.RptList as SelectList)
+                @Html.ValidationMessageFor(model => model.RptFor)
+            </td>
+        </tr>
+        <tr>
+            <td><b>PO Type</b></td>
+            <td>
+                @Html.DropDownListFor(model => model.POType, ViewBag.POTypeList as SelectList)
+                @Html.ValidationMessageFor(model => model.POType)
+            </td>
+            <td><b>Status</b></td>
+            <td>
+                @Html.DropDownListFor(model => model.RptOpt, ViewBag.StatusList as SelectList)
+                @Html.ValidationMessageFor(model => model.RptOpt)
+            </td>
+        </tr>
+        <tr>
+            <td><b>Date From</b></td>
+            <td>
+                @Html.EditorFor(model => model.DateFrom)
+                @Html.ValidationMessageFor(model => model.DateFrom)
+            </td>
+            <td><b>Date To</b></td>
+            <td>
+                @Html.EditorFor(model => model.DateTo)
+                @Html.ValidationMessageFor(model => model.DateTo)
+            </td>
+        </tr>
+        @*<tr>
+                <td><b>Format</b></td>
+                <td>@Html.DropDownListFor(model => model.ReportFormat, ViewBag.ReportFormatList as SelectList)
+                </td>
+            </tr>*@
+    </table>
+</div>
+<p>
+    <input type="submit" class="btn btn-default" value="Submit" onclick="target = '_blank';" style="width:150px;"
+           formaction="@Url.Action("DisplayReport")" />
+    <input type="submit" class="btn btn-default" value="Submit 1" onclick="target = '_blank';" style="width:150px;"
+           formaction="@Url.Action("DisplayUnloadingReport")" />
+</p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#GroupName").attr("placeholder", "start typing, then select");
+            $("#RmItemCode").attr("placeholder", "start typing, then select");
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#GroupName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteItemGroup", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('GroupId').value = ui.item.Id;
+            }
+        });
+</script>
+
+    <script type="text/javascript">
+        $("#RmItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var groupId = '0';
+                if (document.getElementById('GroupId').value != "0") {
+                    groupId = document.getElementById('GroupId').value;
+                }
+                var ddlSIndex = document.getElementById("CompCode").selectedIndex;
+                var ccode = document.getElementsByTagName("option")[ddlSIndex].value;
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAllItemListGroup", "HelpUtility"))",
+                    data: { "term": request.term, "ccode": ccode, "groupid": groupId },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('RmItemId').value = ui.item.Id;
+            }
+        });
+</script>
+
+}

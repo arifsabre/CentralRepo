@@ -1,0 +1,101 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.IndentMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Pending Indent Issue</h2>
+
+@*<fieldset>
+        <legend>Indent</legend>
+            @using (Ajax.BeginForm("FilterIndex", "Indent", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                        <table>
+                            <tr>
+                                <td>From</td>
+                                <td>@Html.TextBox("txtDtFrom",null,new { @class = "datepicker" })</td>
+                                <td>To</td>
+                                <td>@Html.TextBox("txtDtTo",null,new { @class = "datepicker" })</td>
+                            </tr>
+                        </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>*@
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:30px;">
+            @Html.DisplayNameFor(model => model.ShortName)
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.FinYear)
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.VNo)
+        </th>
+        <th style="width:25px;">
+            @Html.DisplayNameFor(model => model.VDate)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.IndentByName)
+        </th>
+        <th style="width:25px;">Proceed</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShortName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IndentByName)
+            </td>
+            <td>
+                @Html.ActionLink("Proceed", "IssuePendingIndent", new { indentid = item.IndentId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+}

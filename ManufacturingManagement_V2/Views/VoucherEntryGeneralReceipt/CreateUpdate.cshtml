@@ -1,0 +1,364 @@
+﻿@model ManufacturingManagement_V2.Models.VoucherMdl
+@using Newtonsoft.Json
+
+@{
+        ViewBag.Title = "CreateUpdate";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+ 
+    <h4><b>Receipt Voucher Entry</b></h4>
+        <div class="form-group">
+            <table class="table table-bordered">
+                @Html.Hidden("hfVoucherId", null, new { @id = "hfVoucherId" })
+                <tr>
+                    <td colspan="2"><input type="hidden" id="hfVoucherId"/></td>
+                    <td colspan="2"><input type="hidden" id="hfAcCode"/></td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.VNo)</td>
+                    <td><input type="text" id="txtVNo" readonly="true" />
+                    <span class="error">Invalid VNo!</span></td>   
+                    <td>@Html.DisplayNameFor(model => model.VDate)</td>
+                    <td><input type="text" id="txtVDate" class="datepicker" />   @*input type="date"*@
+                    <span class="error">Invalid VDate!</span></td> 
+                </tr>
+                <tr>
+                    <td>Credit Account</td>
+                    <td><input type="text" id="txtAcDesc" placeholder="start typing, then select" />
+                        <span class="error">Account not selected!</span></td>
+                    <td>CrAmount</td>
+                    <td>
+                        <input type="text" id="txtCrAmount" onchange = "setFocus()" />
+                        <span class="error">Invalid CrAmount!</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Narration</td>
+                    <td colspan="2">
+                        <input type="text" id="txtNarration" />
+                        <span class="error">Invalid narration!</span>
+                    </td>
+                    <td>
+                        <input class="btn btn-default" type="button" id="add" value="Add" />
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+
+        <div id="orderItems">
+ 
+        </div>
+        <div id="sdrcr" style="font-weight:bold;color:black;">
+
+        </div>
+        
+        <br/>
+        <div style="padding:10px 0px; text-align:left;">
+            <input id="submit" class="btn btn-default" type="button" value='@ViewData["AddEdit"]' />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" }) 
+            @*@Html.ActionLink("Preview", "OrderReportDirect", "OrderReport",
+            null, new { id = "mylink", @target = "_new;", @class = "btn btn-default" })*@
+        </div>
+ 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("txtVDate").value = '@Model.VDate';
+            document.getElementById("txtVDate").focus();
+            $('#mylink').attr('href', '#');
+            document.getElementById("txtCrAmount").value = '0';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtAcDesc").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAccountWithGroup", "HelpUtility"))",
+                    data: { "term": request.term, "rectype": 'a' },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfAcCode').value = ui.item.Id;
+            }
+        });
+</script>
+
+    @*<script type="text/javascript">
+        $(document).ready(function () {
+            $('#txtOrderDate').datepicker({
+                dateFormat: "dd/mm/yy",
+                showStatus: true,
+                showWeeks: true,
+                currentText: 'Now',
+                autoSize: true,
+                gotoCurrent: true,
+                showAnim: 'blind',
+                highlightWeek: true
+            });
+        });
+</script>*@
+
+
+    <script>
+        //Date Picker
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+
+        function setAmount() {
+            var _CrAmt = 0;
+            $("#myTable tr").each(function (index, item) {
+                if (index > -1) {
+                    var tds = $(this).find("td");
+                    //var textboxValue = $(tds).eq(4).find("input").val();//setUser
+                    //_DrAmt = parseFloat(_DrAmt) + parseFloat($(tds).eq(2).find("input").val());
+                    _CrAmt = parseFloat(_CrAmt) + parseFloat($(this).closest('tr').find('td:eq(2)').text());
+                }
+            });
+            //$('#lblCrAmount').text(_CrAmt);
+            document.getElementById("sdrcr").innerHTML = "Total Cr Amount: " + _CrAmt;
+        }
+        //
+
+        $(document).ready(function () {
+            var orderItems = [];
+            //Add button click function
+            $('#add').click(function () {
+
+                //alert($('#txtItemDesc').val().trim());
+                
+                //Check validation of order item
+                var isValidItem = true;
+                //if ($('#itemName').val().trim() == '') {
+                //    isValidItem = false;
+                //    $('#itemName').siblings('span.error').css('visibility', 'visible');
+                //}
+                //else {
+                //    $('#itemName').siblings('span.error').css('visibility', 'hidden');
+                //}
+
+                if (!($('#hfAcCode').val().trim() != '' && !isNaN($('#hfAcCode').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtAcDesc').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtAcDesc').siblings('span.error').css('visibility', 'hidden');
+                }
+                
+                if (!($('#txtCrAmount').val().trim() != '' && !isNaN($('#txtCrAmount').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtCrAmount').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtCrAmount').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Add item to list if valid
+                if (isValidItem) {
+                    
+                    //if (unitId == 'd') {
+                    //    document.getElementById("txtCrAmount").value = '0';
+                    //}
+                    //else if (unitid == 'c') {
+                    //    document.getElementById("txtDrAmount").value = '0';
+                    //}
+
+                    if (parseFloat($('#txtCrAmount').val().trim()) == 0)
+                    {
+                        alert("Cr amount not entered!");
+                        return;
+                    }
+
+                    //note dspqty=0
+                    orderItems.push({
+                        AcCode: $('#hfAcCode').val().trim(),
+                        CrAmount: parseFloat($('#txtCrAmount').val().trim()),
+                        DrAmount: 0,
+                        Narration: $('#txtNarration').val().trim(),
+                        DrCr: 'c',
+                        DrCrName: 'Cr',
+                        AcDesc: $('#txtAcDesc').val().trim()
+                    });
+                    //Clear fields
+                    //$('#itemName').val('').focus();
+                    //$('#txtOrdQty,#txtRate').val('');
+                    $('#txtCrAmount').val('0');
+                    $('#hfAcCode').val('0');
+                    $('#txtAcDesc,#txtNarration').val('');
+                }
+                //populate order items
+                
+                GeneratedItemsTable();
+                setAmount();
+                //Clear fields
+                document.getElementById("txtAcDesc").focus();
+
+            });
+
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+                if (orderItems.length == 0) {
+                    $('#orderItems').html('<span style="color:red;">Please add voucher detail</span>');
+                    isAllValid = false;
+                }
+
+                if ($('#txtVNo').val().trim() == '') {
+                    $('#txtVNo').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#txtVNo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#txtVDate').val().trim() == '') {
+                    $('#txtVDate').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#txtVDate').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        VNo: $('#txtVNo').val().trim(),
+                        VDate: $('#txtVDate').val().trim(),
+                        Info: orderItems
+                    }
+
+                    $(this).val('Please wait...');
+
+                    $.ajax({
+                        url: '/VoucherEntryGeneralReceipt/CreateUpdate',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                orderItems = [];
+                                //$('#orderNo').val('');
+                                //$('#orderDate').val('');
+                                $('#orderItems').empty();
+                                $('#mylink').attr('href', '/OrderReport/OrderReportDirect' + '?vno=' + d.vno);
+                                window.location.href = "../../VoucherEntryGeneralReceipt/CreateUpdate";
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submit').val(d.AddEdit);
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            //$('#submit').val('Save');
+                            $('#submit').val(d.AddEdit);
+                        }
+                    });
+                }
+
+            });
+
+            //edit mode
+            $(function () {
+                var mainObject = @Html.Raw(Json.Encode(Model))
+                orderItems = @Html.Raw(Json.Encode(Model.Info))
+                //
+                txtVNo.value = mainObject.VNo;
+                txtVDate.value = mainObject.VDate.substring(0,10);
+                $('#mylink').attr('href', '/OrderReport/OrderReportDirect' + '?orderno=' + mainObject.OrderNo);
+                GeneratedItemsTable();
+                setAmount();
+            });
+
+            //function for show added items in table
+            function GeneratedItemsTable() {
+                if (orderItems.length > 0) {
+                        var $table = $('<table class="tablecontainer" id="myTable"/>');
+                        $table.append('<th>DrCr</th>');//0//note spaces for width
+                        $table.append('<th>Account&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');//1//note spaces for width
+                        $table.append('<th>CrAmount</th>');//2
+                        $table.append('<th>Narration&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');//3
+                        $table.append('<th>Remove</th>');//4
+                        $table.append('<th>Edit</th>');//5
+                        $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">AcCode</td>');//6
+                        $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">VoucherId</td>');//7
+                        $table.append('</tr></thead>');
+                        var $tbody = $('<tbody/>');
+                        $.each(orderItems, function (i, val) {
+                            var $row = $('<tr/>');
+                            //static for all rows---------------
+                            $row.append($('<td/>').html(val.DrCrName));//0
+                            $row.append($('<td/>').html(val.AcDesc));//1
+                            $row.append($('<td/>').html(val.CrAmount));//2
+                            $row.append($('<td/>').html(val.Narration));//3
+                            //--------------------------------------------
+                            var $remove = $('<a href="#">Remove</a>');
+                            $remove.click(function (e) {
+                                var opt = confirm("Are you sure to delete this entry?");
+                                if (opt == true) {
+                                    e.preventDefault();
+                                    orderItems.splice(i, 1);
+                                    GeneratedItemsTable();
+                                    setAmount();
+                                }
+                            });
+                            $row.append($('<td/>').html($remove));//4
+                            //--------------------------------------------
+                            var $edit = $('<a href="#">Edit</a>');
+                            $edit.click(function (e) {
+                                e.preventDefault();
+                                txtAcDesc.value = $(this).closest('tr').find('td:eq(1)').text();
+                                txtCrAmount.value = $(this).closest('tr').find('td:eq(2)').text();
+                                txtNarration.value = $(this).closest('tr').find('td:eq(3)').text();
+                                //remove=4
+                                //edit=5
+                                hfAcCode.value = $(this).closest('tr').find('td:eq(6)').text();//accode
+                                hfVoucherId.value = $(this).closest('tr').find('td:eq(7)').text();//voucherid
+                                //
+                                orderItems.splice(i, 1);
+                                GeneratedItemsTable();
+                                setAmount();
+                            });
+                            //--------------------------------------------
+                            $row.append($('<td/>').html($edit));//5
+                            $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.AcCode));//6
+                            $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.VoucherId));//7
+                            $tbody.append($row);
+                        });
+                        console.log("current", orderItems);
+                        $table.append($tbody);
+                        $('#orderItems').html($table);
+                    }
+                    else {
+                        $('#orderItems').html('');
+                    }
+            }
+        });
+
+    </script>
+}
+ 

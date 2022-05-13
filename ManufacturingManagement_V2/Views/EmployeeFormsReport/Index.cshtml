@@ -1,0 +1,83 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Employee Forms Report</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    <h5><b>Report Options</b></h5>
+    <table class="table table-bordered">
+        <tr>
+            @Html.HiddenFor(model => model.NewEmpId)
+            <td>
+                <b>Select Employee</b>
+                @Html.EditorFor(model => model.EmpId)
+                @Html.ValidationMessageFor(model => model.EmpId)
+            </td>
+        </tr>
+    </table>
+</div>
+    <h5><b>@ViewBag.Message</b></h5>
+    <p>
+        <input type="submit" class="btn btn-default" value="Employee Form" onclick="target = '_blank';" 
+               style="width:150px;" formaction="@Url.Action("DisplayEmployeeFormReport")" />
+        @*<input type="submit" class="btn btn-default" value="Form 11" onclick="target = '_blank';" style="width:150px;"
+               formaction="@Url.Action("Form11Report")" />
+        <br /><br /><input type="submit" class="btn btn-default" value="PF Nominee Form 1" onclick="target = '_blank';" style="width:230px;"
+                           formaction="@Url.Action("PFNomineeForm1")" />
+        <input type="submit" class="btn btn-default" value="PF Nominee Form 2" onclick="target = '_blank';" style="width:230px;"
+               formaction="@Url.Action("PFNomineeForm2")" />
+        <br /><br /><input type="submit" class="btn btn-default" value="Gratuity Nominee Form 1" onclick="target = '_blank';" style="width:230px;"
+                           formaction="@Url.Action("GratuityNomineeForm1")" />
+        <input type="submit" class="btn btn-default" value="Gratuity Nominee Form 2" onclick="target = '_blank';" style="width:230px;"
+               formaction="@Url.Action("GratuityNomineeForm2")" />*@
+    </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#EmpId").attr("style", "width:300px;");
+            $("#EmpId").attr("placeholder", "start typing, then select");
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#EmpId").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('NewEmpId').value = ui.item.Id;
+            }
+        });
+</script>
+
+}

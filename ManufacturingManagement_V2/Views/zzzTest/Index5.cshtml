@@ -1,0 +1,46 @@
+﻿@{
+    //Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index</title>
+    <script src="../Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="../Scripts/jquery-ui-1.8.20.min.js" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery-ui.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        $(function () {
+            $('#productName').autocomplete({
+                source: function (request, response) {
+                    $.getJSON("/zzzTest/getData?term=" + request.term, function (data) {
+                        response(data);
+                    });
+                },
+                minLength: 1,
+                delay: 100
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="page">
+        <div id="header" style="height: 80px;">
+            <div id="title">
+                <h1>
+                    Autocomplete Textbox
+                </h1>
+            </div>
+        </div>
+        <div id="main">
+            <div style="padding: 20px;">
+                Type any one of this: a,b,c,d,e
+            </div>
+            <div style="padding: 20px;">
+                Product: @Html.TextBox("productName")</div>
+        </div>
+        <div id="footer">
+        </div>
+    </div>
+</body>
+</html>

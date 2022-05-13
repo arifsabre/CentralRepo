@@ -1,0 +1,302 @@
+﻿@model ManufacturingManagement_V2.Models.AAA_MedicalTest
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Add New Medical Record</title>
+    <script>
+        $(function () {
+            $('#example1').DataTable();
+        })
+        function GetDetails(id) {
+            $.ajax({
+                url: "/B_MedicalTest/Edit_Medical_Record/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#MedicalId').val(response.MedicalId);
+                    $('#NewEmpId').val(response.NewEmpId);
+                    $('#EmpId').val(response.EmpId);
+                    $('#EmpName').val(response.EmpName);
+                    $('#Age').val(response.Age);
+                    $('#Weight').val(response.Weight);
+                    $('#Hemoglobin').val(response.Hemoglobin);
+                    $('#Pulse').val(response.Pulse);
+                    $('#Oxygen').val(response.Oxygen);
+                    $('#Sugar').val(response.Sugar);
+                    $('#Bp').val(response.Bp);
+                    $('#Bplow').val(response.Bplow);
+                    $('#BloodGroup').val(response.BloodGroup);
+                    $('#Height').val(response.Height);
+                    $('#EyeSight').val(response.EyeSight);
+                    //$('#Allergies').val(response.Allergies);
+                    //$('#HealthCondition').val(response.HealthCondition);
+                    //$('#Remark').val(response.Remark);
+                    // $('#UpdateStatus').val(response.UpdateStatus);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+
+    </script>
+</head>
+<body style="overflow:hidden">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    @*<div class="box-header">
+                    </div>*@
+                    <div class="box-body">
+
+                        <div>
+
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert">
+                                Add New
+                            </button>
+                            <div id="printbar" class="pull-right">
+                            </div>
+                        </div>
+
+                        @if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success alert-dismissable">
+                                @ViewBag.Message;
+                                <a href="#" class="close" data-dissmiss="alert">x</a>
+                            </div>
+                        }
+
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>EmpID</th>
+                                    <th>EmpName</th>
+                                    <th>Age</th>
+                                    <th>TestDate</th>
+                                    @*<th>Age</th>*@
+                                    <th>Weight</th>
+                                    <th>Hemoglobin</th>
+                                    <th>Pulse</th>
+                                    <th>Oxygen</th>
+                                    <th>Sugar/PP</th>
+                                    <th>BP</th>
+                                    <th>Bplow</th>
+                                    <th>BGroup</th>
+                                    <th>Height</th>
+                                    <th>EyeSight</th>
+                                    <th>TId</th>
+                                    <th>Id</th>
+                                    @*<th>Allergies</th>
+                     <th>HCondition</th>
+                    <th>Remark</th>*@
+                                    @*<th>Action</th>*@
+                                </tr>
+                            </thead>
+                            <tbody style="background-color:white">
+                                @foreach (var item in Model.List)
+                                {
+                                    <tr>
+
+                                        <td>@Html.DisplayFor(model => item.EmpId)</td>
+                                        <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                        <td>@Html.DisplayFor(model => item.Age)</td>
+                                        <td>@Html.DisplayFor(model => item.TestDate)</td>
+                                        @*<td>@Html.DisplayFor(model => item.Age)</td>*@
+                                        <td>@Html.DisplayFor(model => item.Weight)</td>
+                                        <td>@Html.DisplayFor(model => item.Hemoglobin)</td>
+                                        <td>@Html.DisplayFor(model => item.Pulse)</td>
+                                        <td>@Html.DisplayFor(model => item.Oxygen)</td>
+                                        <td>@Html.DisplayFor(model => item.Sugar)</td>
+                                        <td>@Html.DisplayFor(model => item.Bp)</td>
+                                        <td>@Html.DisplayFor(model => item.Bplow)</td>
+
+                                        <td>@Html.DisplayFor(model => item.BloodGroup)</td>
+                                        <td>@Html.DisplayFor(model => item.Height)</td>
+                                        <td>@Html.DisplayFor(model => item.EyeSight)</td>
+                                        <td>@Html.DisplayFor(model => item.MedicalId)</td>
+                                        <td>@Html.DisplayFor(model => item.NewEmpId)</td>
+                                        @*<td>@Html.DisplayFor(model => item.Allergies)</td>
+                        <td>@Html.DisplayFor(model => item.HealthCondition)</td>
+                        <td>@Html.DisplayFor(model => item.Remark)</td>*@
+                                        <td>
+                                            @*<a onclick="GetDetails(@item.MedicalId)">
+                                <i class="fa fa-edit">
+                                </i>
+                            </a>*@
+                                            <a>
+                                                @Html.ActionLink(" ", "DeleteMedicalTestRecord", "B_MedicalTest", new { id = item.MedicalId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Update Record</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Save_EmpMedicalTest", "B_MedicalTest", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:400px;width:400px;background-color:white">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <label>MId</label>
+                                        <input type="number" class="form-control" id="MedicalId" name="MedicalId" readonly="readonly">
+                                        <label>NewId</label>
+                                        <input type="number" class="form-control" id="NewEmpId" name="NewEmpId" readonly="readonly">
+                                        <label>EmpId</label>
+                                        <input type="text" class="form-control" id="EmpId" name="EmpId" readonly="readonly">
+                                        <label>EmpName</label>
+                                        <input type="text" class="form-control" id="EmpName" name="EmpName" readonly="readonly">
+
+                                        <label>Weight</label>
+                                        <input type="text" class="form-control" id="Weight" name="Weight">
+                                        <label>Hemoglobin</label>
+                                        <input type="text" class="form-control" id="Hemoglobin" name="Hemoglobin">
+                                        <label>Pulse</label>
+                                        <input type="text" class="form-control" id="Pulse" name="Pulse">
+
+                                        <label>Oxygen</label>
+                                        <input type="text" class="form-control" id="Oxygen" name="Oxygen">
+
+                                        <label>Sugar/PP</label>
+                                        <input type="text" class="form-control" id="Sugar" name="Sugar">
+
+                                        <label>BP</label>
+                                        <input type="text" class="form-control" id="Bp" name="Bp">
+                                        <label>Bplow</label>
+                                        <input type="text" class="form-control" id="Bplow" name="Bplow">
+                                 
+                                        <label>Blood Group</label>
+                                        <input type="text" class="form-control" id="BloodGroup" name="BloodGroup">
+                                        <label>Height</label>
+                                        <input type="text" class="form-control" id="Height" name="Height">
+
+                                        <label>Eye Sight</label>
+                                        <input type="text" class="form-control" id="EyeSight" name="EyeSight">
+                                        <label>Allergies</label>
+                                        <input type="text" class="form-control" id="Allergies" name="Allergies">
+
+                                        <label>Health Condition</label>
+                                        <input type="text" class="form-control" id="HealthCondition" name="HealthCondition">
+
+                                        <label>Remark</label>
+                                        <input type="text" class="form-control" id="Remark" name="Remark">
+
+                                        @Html.HiddenFor(model => model.UpdateStatus)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Add New</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Save_EmpMedicalTest_NewRecord", "B_MedicalTest", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:500px;width:400px;background-color:white">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+
+                                        <label>Select Employee</label> @Html.DropDownListFor(model => model.NewEmpId, ViewBag.EmpName as SelectList)
+                                        <label>Test Date</label>
+                                        <input type="date" class="form-control" id="TestDate" name="TestDate">
+                                        <label>Weight</label>
+                                        <input type="text" class="form-control" id="Weight" name="Weight" placeholder="Weight" value="0">
+
+                                        <label>Hemoglobin</label>
+                                        <input type="text" class="form-control" id="Hemoglobin" name="Hemoglobin" placeholder="Hemoglobin" value="0">
+
+                                        <label>Pulse</label>
+                                        <input type="text" class="form-control" id="Pulse" name="Pulse" placeholder="Pulse" value="0">
+
+                                        <label>Oxygen</label>
+                                        <input type="text" class="form-control" id="Oxygen" name="Oxygen" placeholder="Oxygen" value="0">
+
+                                        <label>Sugar/PP</label>
+                                        <input type="text" class="form-control" id="Sugar" name="Sugar" placeholder="Sugar" value="0">
+
+                                        <label>BP</label>
+                                        <input type="text" class="form-control" id="Bp" name="Bp" placeholder="Sugar" value="0">
+
+                                        <label>Bplow</label>
+                                        <input type="text" class="form-control" id="Bplow" name="Bplow" placeholder="Bplow" value="0">
+
+                                        <label>Blood Group</label>
+                                        <input type="text" class="form-control" id="BloodGroup" name="BloodGroup" placeholder="BloodGroup" value="A+">
+
+                                        <label>Height</label>
+                                        <input type="text" class="form-control" id="Height" name="Height" placeholder="Height" value="0">
+
+                                        <label>Eye Sight</label>
+                                        <input type="text" class="form-control" id="EyeSight" name="EyeSight" placeholder="EyeSight" value="0">
+
+                                        <label>Allergies</label>
+                                        <input type="text" class="form-control" id="Allergies" name="Allergies" placeholder="Allergies" value="No">
+                                        <label>Health Condition</label>
+                                        <input type="text" class="form-control" id="HealthCondition" name="HealthCondition" placeholder="HealthCondition" value="Ok">
+                                        <label>Remark</label>
+                                        <input type="text" class="form-control" id="Remark" name="Remark" placeholder="Remark" value="NA">
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Sumbit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Script/Site.js"></script> 
+
+</body>
+
+</html>

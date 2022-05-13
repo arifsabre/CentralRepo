@@ -1,0 +1,16 @@
+﻿@model ManufacturingManagement_V2.Models.AlertsMdl
+<h4><label onclick="ShowHideDiv(divComp)">Compliance Alert</label></h4>
+        <div id="divComp" style="display:block;">
+            List of pending task(s) to be completed within 30 days:-
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <span style="background-color:red;color:white;">&nbsp;Urgent (within 10 Days)&nbsp;</span>
+                        <span style="background-color:blue;color:white;">&nbsp;Moderate (between 11-20 Days)&nbsp;</span>
+                        <span style="background-color:black;color:white;">&nbsp;Next Coming (after 20 Days)&nbsp;</span>
+                    </td>
+                </tr>
+            </table>
+            <div>@Html.Raw(Model.AlertDetail)</div>
+        </div>
+<br/>

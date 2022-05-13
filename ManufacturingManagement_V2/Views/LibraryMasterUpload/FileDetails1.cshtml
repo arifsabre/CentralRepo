@@ -1,0 +1,98 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.LibFileUploadMDI>
+
+<table class="table table-bordered" style="text-align:Left">
+    <tr style="text-align:left">
+        <th class="col-md-2" style="text-align:left">
+            <label>Id</label>
+            @*@Html.DisplayNameFor(model => model.RecordId)*@
+        </th>
+        <th class="col-md-2" style="text-align:left">
+            <label>Company</label>
+            @* @Html.DisplayNameFor(model => model.LibCategory)*@
+        </th>
+        <th class="col-md-2" style="text-align:left">
+            <label>Department</label>
+            @* @Html.DisplayNameFor(model => model.LibCategory)*@
+        </th>
+
+        <th class="col-md-2" style="text-align:left">
+            <label>Category</label>
+            @* @Html.DisplayNameFor(model => model.LibCategory)*@
+        </th>
+        <th class="col-md-2" style="text-align:left">
+            <label>SubCategory</label>
+            @*@Html.DisplayNameFor(model => model.LibSubCategory)*@
+        </th>
+        <th class="col-md-2" style="text-align:left">
+            <label>Purpose</label>
+            @*   @Html.DisplayNameFor(model => model.Description)*@
+        </th>
+        <th class="col-md-2" style="text-align:left">
+            <label>DoccumentName</label>
+            @*   @Html.DisplayNameFor(model => model.Description)*@
+        </th>
+
+        @*<th class="col-md-2" style="text-align:left">
+            <label>Uploaded By</label>
+              @Html.DisplayNameFor(model => model.username)
+        </th>*@
+        <th class="col-md-2" style="text-align:left">
+            <label>Owner</label>
+            @*   @Html.DisplayNameFor(model => model.username)*@
+        </th>
+
+        <th class="col-md-2" style="text-align:left">
+            <label>FileName</label>
+            @* @Html.DisplayNameFor(model => model.FileName)*@
+        </th>
+        @*<th class="col-md-2" style="text-align:left">
+            @Html.DisplayNameFor(model => model.FileContent)
+        </th>*@
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr style="text-align:left">
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.RecordId)
+        </td>
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.cmpname)
+        </td>
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.DepCode)
+        </td>
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.LibCategory)
+        </td>
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.LibSubCategory)
+        </td>
+
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.Purpose)
+        </td>
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.DuccumentName)
+        </td>
+        @*<td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.username)
+        </td>*@
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.username)
+        </td>
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.FileName)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.FileContent)
+        </td>*@
+        @*<td style="text-align:left">
+            @Html.ActionLink("Downlaod", "DownLoadFile1", new { id = item.Id })
+        </td>*@
+
+    </tr>
+    }
+</table>
+
+

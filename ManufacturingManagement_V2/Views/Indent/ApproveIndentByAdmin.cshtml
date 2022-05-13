@@ -1,0 +1,301 @@
+﻿@model ManufacturingManagement_V2.Models.IndentLedgerMdl
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Approve Indent (Admin)</h2>
+
+@Html.HiddenFor(model => model.IndentId)
+<p style="font-size:16px;font-weight:bold;">
+    Indent No: @Html.DisplayFor(model => model.StrIndentNo), Prepared By: @Html.DisplayFor(model => model.IndentByName), Date: @Html.ValueFor(model => model.VDate, "{0:dd/MM/yyyy}")
+    <br/>HOD Approval By: @Html.DisplayFor(model => model.HODUserName), Date: @Html.DisplayFor(model => model.HODApprovalOnStr)
+    <br/>Item Value: @Html.ValueFor(model => model.ItemValue, "{0:##,##,##,##,##0.00}")
+</p>
+
+<div class="container" style="max-width:640px">
+        <div class="form-group">
+<table border="1">
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Item No</td>
+        <td>
+            @Html.Hidden("RecId", Model.RecId.ToString(), new { @id = "hfRecId" })
+            @Html.Label("lblItemSlNo",Model.ItemSlNo.ToString(),new { @id = "ItemSlNo"})
+        </td>
+        <td>@Html.ActionLink("Back To List", "IndentApprovalAdmin", "Indent", null, new { id = "mylink",@style="color:blue;" })</td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Item Code</td>
+        <td colspan="2">
+            @Html.Label("lblItemCode",Model.ItemCode.ToString(),new { @id = "ItemCode"})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Item Description</td>
+        <td colspan="2">
+            @Html.Label("lblItemDesc",Model.ItemDesc.ToString(),new { @id = "ItemDesc"})
+        </td>
+    </tr>
+    <tr style="vertical-align:top;font-weight:bold;">
+        <td>Reason</td>
+        <td colspan="2">
+            @Html.Label("lblRemarks",Model.Remarks.ToString(),new { @id = "Remarks"})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Unit</td>
+        <td>
+            @Html.Label("lblUnitName",Model.UnitName.ToString(),new { @id = "UnitName"})
+        </td>
+        <td>
+            <input id="submit" type="button" value="Approve" style="padding:10px 20px" />
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Approx Rate</td>
+        <td>
+            @Html.Label("lblApproxRate",Model.ApproxRate.ToString(),new { @id = "ApproxRate"})
+        </td>
+        <td>
+            <input id="cancel" type="button" value="Reject" style="padding:10px 20px" />
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Indent Qty</td>
+        <td>
+            @Html.Label("lblIndQty",Model.IndQty.ToString(),new { @id = "IndQty"})
+        </td>
+        <td>
+            <input id="query" type="button" value="Query" style="padding:10px 20px" />
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Approved Qty</td>
+        <td colspan="2">
+            @Html.TextBox("txtAppQty",Model.AppQty.ToString(),new { @id = "AppQty" })  @* style = "width: 100px; height: 25px; padding: 0; text-align:left;"*@
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bolder;">Expected Date</td>
+        <td colspan="2">
+            @Html.Label("ExpectedDT",Model.ExpectedDT.ToString(),new { @id = "ExpectedDT"})
+        </td>
+    </tr> 
+    <tr>@*@Html.Hidden("hfAdminUserId", null, new { @id = "hfAdminUserId" })*@
+        <td style="vertical-align:top;width:110px;font-weight:bold;">Query&nbsp;(To&nbsp;HOD):</td>
+        <td colspan="2"><input type="text" id="txtAdminQuery" maxlength="250" />
+        <span class="error">Query not entered!</span></td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Reply (By HOD):</td>
+        <td colspan="2"><label id="lblHODReply"></label ></td>
+    </tr>
+    <tr>
+        <td colspan="3">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Remarks&nbsp;(To&nbsp;Stores):</td>
+        <td colspan="2"><input type="text" id="txtAdminRemarks" maxlength="250" />
+        <span class="error">Remarks not entered!</span></td>
+    </tr>
+</table>
+</div>
+</div>
+
+<h5><b>@ViewBag.Message</b></h5>
+        <p>
+            @*<input type="submit" class="btn btn-default" value="Submit" />*@
+            @*<input id="submit" type="button" value="Approve" style="padding:10px 20px" />*@
+            @*<input id="cancel" type="button" value="Reject" style="padding:10px 20px" />*@
+            @*<input id="query" type="button" value="Query" style="padding:10px 20px" />*@
+            @*@Html.ActionLink("Back To List", "IndentApprovalAdmin", "Indent", null, new { id = "mylink" })*@
+        </p>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            //approval
+            $("#submit").click(function () {
+                var isAllValid = true;
+                //validation of order
+                if (!($('#AppQty').val().trim() != '' && !isNaN($('#AppQty').val().trim()))) {
+                    isValidItem = false;
+                    alert('Invalid Approved Qty!');
+                    $('#AppQty').focus();
+                    return;
+                }
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        //order fields
+                        RecId: '@Model.RecId',
+                        AppQty: parseFloat($('#AppQty').val().trim()),
+                        AdminRemarks: $('#txtAdminRemarks').val().trim()
+                    }
+                    $(this).val('Please wait...');
+                    $.ajax({
+                        url: '/Indent/ApproveIndentByAdmin',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                //$('#orderDate').val('');
+                                window.location.href = $('#mylink').attr('href');
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submit').val('Approve');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            $('#submit').val('Approve');
+                        }
+                    });
+                }
+            });
+            //end-approval
+
+            //cancel
+            $("#cancel").click(function () {
+                $(this).val('Please wait...');
+                var data = {
+                    RecId: '@Model.RecId',
+                    AdminRemarks: $('#txtAdminRemarks').val().trim()
+                }
+                //Makes ajax call to controller 
+                $.ajax({
+                    url: "/Indent/RejectIndent",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database 
+                        if (d.status == true) {
+                            //will send status from server side
+                            alert(d.message);
+                            //clear form
+                            empatt = [];
+                            window.location.href = $('#mylink').attr('href')
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#cancel').val('Reject');
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        //$('#submit').val(d.AddEdit);//not applicable here
+                    }
+                });
+            });
+            //end-cancel
+
+            //query
+            $("#query").click(function () {
+                
+                isValidItem = true;
+
+                if (!($('#txtAdminQuery').val().trim() != '')) {
+                    isValidItem = false;
+                    alert('Query not entered!');
+                    $('#txtAdminQuery').focus();
+                    return;
+                }
+
+                $(this).val('Please wait...');
+                if (isValidItem) {
+
+                    var data = {
+                        RecId: '@Model.RecId',
+                        AdminQuery: $('#txtAdminQuery').val().trim()
+                    }
+                    //Makes ajax call to controller 
+                    $.ajax({
+                        url: "/Indent/QueryIndent",
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                empatt = [];
+                                window.location.href = $('#mylink').attr('href')
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#query').val('Query');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            //$('#submit').val(d.AddEdit);//not applicable here
+                        }
+                    });
+                }
+                });
+                //end-query
+            });
+    </script>
+
+    <script>
+            //edit mode
+            $(function () {
+                var mainObject = @Html.Raw(Json.Encode(Model))
+                txtAdminQuery.value = mainObject.AdminQuery;
+                txtAdminRemarks.value = mainObject.AdminRemarks;
+                $('#lblHODReply').text(mainObject.HODReply);
+            });
+        </script>
+
+    @* start: #blocking ctrl+u block viewpage source with disabling right mouse click*@
+    <script>
+        document.onkeydown = function (e) {
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 117)) {
+                //alert('not allowed');  //Alt+c, Alt+v will also be disabled sadly.
+                return false;
+            }
+        };
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Disable full page
+            $("body").on("contextmenu", function (e) {
+                return false;
+            });
+            //Disable part of page
+            $("#id").on("contextmenu", function (e) {
+                return false;
+            });
+        });
+ </script>
+    @* end: #blocking *@
+
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display:block;
+        visibility:hidden;
+        color:red;
+        font-size:90%;
+    }
+</style>

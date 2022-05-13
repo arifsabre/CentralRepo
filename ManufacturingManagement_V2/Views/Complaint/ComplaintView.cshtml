@@ -1,0 +1,146 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ComplaintMdl>
+@{
+    ViewBag.Title = "ComplaintView";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>New Complaint</b></h4>
+@*<div style="font-size:14pt;color:black;background-color:yellow;text-align:center;">
+       <b>New Complaint</b>
+    </div>*@
+
+@Html.Partial("ComplaintLinks")
+
+<p>
+    <span style="font-weight:bold;">Complaint Type:</span>
+    @Html.DropDownList("ddlCompType", ViewBag.CompTypeList as SelectList, new { style = "width:165px;" })
+    <span style="font-weight:bold;">Complaint:</span>
+    <input type="text" style="width:350px;" placeholder="Max Length: 250 Chars" maxlength="250" id="txtCompMsg" />
+    <input id="submit" type="button" value='Submit' onclick="CreateComplaint();" style="height:35px;" />
+</p>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th style="width:160px;">
+            Complaint&nbsp;Date
+        </th>
+        <th style="width:50px;">
+            Complaint&nbsp;Type
+        </th>
+        <th style="width:25px;">
+            Complaint&nbsp;Id
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.CompMsg)
+        </th>
+        <th style="width:50px;">
+            Status
+        </th>
+        <th style="width:auto;">
+            Remarks
+        </th>
+        <th style="width:160px;">
+            Reply Date
+        </th>
+        <th style="width:160px;">
+            Reply From
+        </th>
+        @*<th style="width:45px;"> Update </th>*@
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.ValueFor(model => item.CompDT, "{0:dd/MM/yyyy hh:mm tt}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CompTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CompId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CompMsg)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CompStatusName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReplyDTStr)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReplyUserName)
+            </td>
+            @*<td>
+                    @Html.ActionLink("Update", null, new { recid = item.CompId },
+                    new { onclick = "UpdateComplaint('" + item.CompId + "')" })
+                </td>*@
+        </tr>
+        i++;
+    }
+
+</table>
+
+<script>
+    function CreateComplaint() {
+        var compmsg = $('#txtCompMsg').val();
+        if (compmsg.trim() == '') {
+            alert('No complaint entered!');
+            return;
+        }
+        var liCompType = document.getElementById("ddlCompType");
+        var compIndex = liCompType.selectedIndex;
+        var comptype = liCompType.options[compIndex].value;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("CreateComplaint", "Complaint")',
+            dataType: 'html',
+            data: ({
+                comptype: comptype,
+                compmsg: compmsg
+            }),
+            success: function () {
+                //alert("Successfully posted!");
+            }
+        });
+        location.reload();
+    }
+</script>
+
+<script>
+    function UpdateComplaint(compid) {
+        var compmsg = $('#txtCompMsg').val();
+        if (compmsg.trim() == '') {
+            alert('No complaint entered!');
+            return;
+        }
+        var liCompType = document.getElementById("ddlCompType");
+        var compIndex = liCompType.selectedIndex;
+        var comptype = liCompType.options[compIndex].value;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdateComplaint", "Complaint")',
+            dataType: 'html',
+            data: ({
+                compid: compid,
+                comptype: comptype,
+                compmsg: compmsg
+            }),
+            success: function () {
+                //alert("Successfully posted!");
+            }
+        });
+        location.reload();
+    }
+</script>
+

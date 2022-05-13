@@ -1,0 +1,198 @@
+﻿@model ManufacturingManagement_V2.Models.LibFileUploadMDI
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Sub Category</title>
+    <script>
+        //$(function () {
+        //    $('#jdtabledesktop').DataTable();
+        //})
+        function GetDetails(id) {
+            $.ajax({
+                url: "/LibSubCategory/Edit_LibSubCategoryRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#LibSubCategoryId').val(response.LibSubCategoryId);
+                    $('#LibSubCategory').val(response.LibSubCategory);
+                    //$('#LibCategoryId').val(response.LibCategoryId);
+                    //$('#CreatedOn').val(response.CreatedOn);
+                    //$('#UpdatedOn').val(response.UpdatedOn);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+
+    </script>
+</head>
+<body>
+    <div style="margin-top:3px">
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert">
+            Add Sub-Category
+        </button>
+        <div id="printbar" class="pull-right">
+        </div>
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <div id="printbar" class="pull-right">
+                        </div>
+                        Sub-Category List
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Category</th>
+                                    <th>SubCategory</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.LibSubCategoryId)</td>
+                                        <td>@Html.DisplayFor(model => item.LibCategory)</td>
+                                        <td>@Html.DisplayFor(model => item.LibSubCategory)</td>
+
+
+                                        <td>
+                                            <a onclick="GetDetails(@item.LibSubCategoryId)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "DeleteLibSubCategory", "libSubCategory", new { id = item.LibSubCategoryId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Update Category</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_LibSubCategory", "LibSubCategory", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <br />
+                                    <div class="form-group">
+                                        @*@Html.HiddenFor(model => model.LibCategoryId)*@
+                                        @Html.HiddenFor(model => model.userid)
+                                        @*   @Html.LabelFor(model => model.LibCategory1, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                        <div class="col-md-10">
+                                            <label>Category</label>
+                                            @Html.DropDownListFor(m => m.LibCategoryId, Model.LibraryCategory, "LibCategory")
+                                            <br />
+                                            <label>Sub Category</label>
+                                            @Html.EditorFor(model => model.LibSubCategory)
+                                            @*<label>Category</label>
+                                                @Html.EditorFor(model => model.LibCategoryId)*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Add SubCategory</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("InsertLibSubCatgory", "LibSubCategory", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <br />
+                                        <div class="form-group">
+                                            @Html.HiddenFor(model => model.userid)
+                                            <label>Category</label><br />
+                                            @Html.DropDownListFor(m => m.LibCategoryId, Model.LibraryCategory, "LibraryCategory")
+                                            @Html.ValidationMessageFor(model => model.LibCategoryId, "", new { @class = "text-danger" })
+                                            <br />
+                                            <label>Sub Category</label><br />
+                                            @Html.EditorFor(model => model.LibSubCategory)
+                                            @Html.ValidationMessageFor(model => model.LibSubCategory, "", new { @class = "text-danger" })
+                                            <br />
+                                            @*@Html.DropDownListFor(m => m.LibSubCategoryId, Model.LibSubCategoryList, "LibSubCategory")*@
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+
+
+
+
+

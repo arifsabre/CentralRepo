@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.FormValueMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Bonus Form Values</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+        @*<legend>Form Value</legend>*@
+            @using (Ajax.BeginForm("FilterIndex", "FormValue", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td style="width:10%;">Company</td>
+                            <td>@Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)</td>
+                        </tr>
+                    </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:25px;">
+            S.No.
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FinYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NetProfit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrvYrBonusAmt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DepreciationAmt)
+        </th>
+        <th>Edit</th>
+        <th>Details</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FinYear)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.NetProfit)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PrvYrBonusAmt)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DepreciationAmt)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.RecId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+

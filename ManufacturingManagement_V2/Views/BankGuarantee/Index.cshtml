@@ -1,0 +1,123 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.BankGuaranteeMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Bank Guarantee List</b></h4>
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+<fieldset>
+    @*<legend>Advance Detail</legend>*@
+    @using (Ajax.BeginForm("FilterIndex", "BankGuarantee", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <b>Status</b>
+        @Html.DropDownList("ddlBGStatus", ViewBag.BGStatusList as SelectList, "ALL")
+        <button class="btn btn-default">Submit</button>
+        @Html.ActionLink("Report", "../BankGuaranteeReport/Index", null, new { @class = "btn btn-default" })
+    }
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:60px;">
+            TenderNo<br />Opn.Date
+        </th>
+        <th style="width:100px;">
+            LOA Detail<br />PO Detail
+        </th>
+        <th style="width:60px;">
+            BGNumber<br />BGDate
+        </th>
+        <th style="width:60px;">
+            @Html.DisplayNameFor(model => model.SdBgAmount)
+        </th>
+        <th style="width:60px;">
+            @Html.DisplayNameFor(model => model.ExtValidity)
+        </th>
+        <th style="width:70px;">
+            @Html.DisplayNameFor(model => model.StatusName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.Remarks)
+        </th>
+        <th style="width:50px;">Action</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.TenderNo)
+                <br />@Html.ValueFor(model => item.OpeningDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.LoaDetail)
+                <br />@Html.DisplayFor(model => item.PODetail)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.BGNumber)
+                <br />@Html.ValueFor(model => item.BGDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.ValueFor(modelItem => item.SdBgAmount, "{0:##,##,##,##,##0.00}")
+            </td>
+            <td>
+                @Html.ValueFor(model => item.ExtValidity, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.StatusName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Remarks)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.TenderId })
+                <br />@Html.ActionLink("UpdateLOA", "../LOAUpdation/Index",
+          new { tenderid = item.TenderId, tenderno = item.TenderNo }, new { @target = "_new" })
+                <br />@Html.ActionLink("Details", "Details", new { id = item.TenderId })
+                @Html.ActionLink("UpdationLog", "../EventLogReport/getLogDetail",
+                new { tblid = 76, pkval = item.TenderId }, new { @target = "_blank" })
+                @if (item.HistoryAvailable == true)
+                {
+                    <br />@Html.ActionLink("History", "BGHistory", new { tenderid = item.TenderId },
+         new { @target = "_new", @style = "color:black;" })
+                }
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+}
+

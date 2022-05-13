@@ -1,0 +1,177 @@
+﻿@model ManufacturingManagement_V2.Models.IndentMdl
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Issue Pending Indent</h2>
+
+<p>
+    @*@Html.ActionLink("Create Attendance Detail", "../AttendanceDetail/CreateUpdate")*@
+</p>
+    @Html.HiddenFor(model => model.IndentId)
+<p style="font-size:16px;font-weight:bold;">
+    Indent No: @Html.DisplayFor(model => model.VNo) / @Html.DisplayFor(model => model.FinYear) / @Html.DisplayFor(model => model.ShortName), Prepared By: @Html.DisplayFor(model => model.IndentByName)
+</p>
+@Html.ActionLink("Back to List", "PendingIndentIssue")
+<table id="StepsTable" class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+           S.No.
+        </th>
+        <th style="display:none;">
+           RecId
+        </th>
+        <th style="display:none;">
+           ItemId
+        </th>
+        <th style="width:auto;">
+           Item Name
+        </th>
+        <th style="width:100px;">
+           App.Qty
+        </th>
+        <th style="width:100px;">
+           Balance
+        </th>
+        <th style="width:100px;">
+           Issue Qty
+        </th>
+        <th style="display:none;">
+           ItemDesc
+        </th>
+        <th style="display:none;">
+           Approx Rate
+        </th>
+        <th style="display:none;">
+           UnitId
+        </th>
+    </tr>
+    @{int i = 1;}
+@foreach (var item in Model.Ledgers)
+{
+    <tr>
+        <td>
+            <b>@i</b>
+        </td>
+        <td class="indexColumn" style="display:none;">
+            @Html.Label("lblRecId"+i.ToString(),item.RecId.ToString(),new { @id = "RecId" + (i-1)})
+        </td>
+        <td class="indexColumn" style="display:none;">
+            @Html.Label("lblItemId"+i.ToString(),item.ItemId.ToString(),new { @id = "ItemId" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblItemCode"+i.ToString(),item.ItemCode,new { @id = "ItemCode" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblAppQty"+i.ToString(),item.AppQty.ToString(),new { @id = "AppQty" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblIssueBalance"+i.ToString(),item.IssueBalance.ToString(),new { @id = "IssueBalance" + (i-1)})
+        </td>
+        <td>
+            @Html.TextBox("txtIssuedQty"+i.ToString(),item.IssuedQty.ToString(),new { @id = "IssuedQty" + (i-1),style = "width: 85px; height: 25px; padding: 0; text-align:center;" })
+        </td>
+        <td class="indexColumn" style="display:none;">
+            @Html.Label("lblItemDesc"+i.ToString(),item.ItemDesc,new { @id = "ItemDesc" + (i-1)})
+        </td>
+        <td class="indexColumn" style="display:none;">
+            @Html.Label("lblApproxRate"+i.ToString(),item.ApproxRate.ToString(),new { @id = "ApproxRate" + (i-1)})
+        </td>
+        <td class="indexColumn" style="display:none;">
+            @Html.Label("lblUnitId"+i.ToString(),item.UnitId.ToString(),new { @id = "UnitId" + (i-1)})
+        </td>
+    </tr>
+    i++;
+}
+
+</table>
+
+<h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input id="submit" type="button" value="Submit" style="padding:10px 20px" />
+            @Html.ActionLink("Back to List", "PendingIndentIssue")
+            @Html.ActionLink("Print Slip", "IndentIssueSlip", "IndentReport", null, new { id = "mylink", @target = "_new;" })
+            @*<input type="hidden" id="txtStkRecId"/>*@
+            @*<label id="lblInfo"></label>*@
+        </p>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#submit").click(function () {
+                var empatt = [];
+                //Collects the data from textboxes and adds it to the dictionary
+                $("#StepsTable tr").each(function (index, item) {
+                    if (index > 0)
+                    {
+                        var tds = $(this).find("td");
+                        var recid = $(tds).eq(1).text();
+                        var itemid = $(tds).eq(2).text();
+                        var itemcode = $(tds).eq(3).text();
+                        var appqty = $(tds).eq(4).text();
+                        var issuebalance = $(tds).eq(5).text();
+                        var issuedqty = $(tds).eq(6).find("input").val();
+                        var idesc = $(tds).eq(7).text();
+                        var approxrate = $(tds).eq(8).text();
+                        var unitid = $(tds).eq(9).text();
+                        empatt.push({
+                            RecId: recid,
+                            ItemId: itemid,
+                            ItemCode: itemcode,
+                            AppQty: appqty,
+                            IssueBalance: issuebalance,
+                            IssuedQty: issuedqty,
+                            ItemDesc: idesc,
+                            ApproxRate: approxrate,
+                            UnitId: unitid
+                        });
+                    }
+                });
+                $(this).val('Please wait...');
+                var data = {
+                    IndentId: '@Model.IndentId',
+                    Ledgers: empatt
+                }
+                //Makes ajax call to controller 
+                $.ajax({
+                    url: "/Indent/IssuePendingIndent",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database 
+                        if (d.status == true) {
+                            //will send status from server side
+                            alert(d.message);
+                            //clear form
+                            empatt = [];
+                            //$('#orderNo').val('');
+                            //$('#orderItems').empty();
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#submit').val('Submit');
+                        //$('#txtStkRecId').val(d.stkrecid);
+                        //$('#lblInfo').text(d.stkrecid);
+                        var url = $('#mylink').attr('href');
+                        $('#mylink').attr('href', url + '?stkrecid=' + d.stkrecid);
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        //$('#submit').val(d.AddEdit);//not applicable here
+                    }
+                });
+            });
+
+        });
+    </script>
+}
+
+
+

@@ -1,0 +1,39 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<h4><b>Machine Maintenance History</b></h4>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:10%;">Select Company</td>
+                <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)</td>
+            </tr>
+            <tr>
+                <td>Select Machine Name</td>
+                <td>@Html.DropDownListFor(model => model.machineid, ViewBag.MachineList as SelectList)</td>
+            </tr>
+            <tr>
+                <td>Select Schedule</td>
+                <td>@Html.DropDownListFor(model => model.scheduleid, ViewBag.ScheduleList as SelectList)</td>
+            </tr>
+           
+        </table>
+    </div>
+    <table>
+        <tr>
+            <td style="column-gap:normal">
+                <input type="submit" class="btn btn-default" value="Submit" onclick="target = '_blank';"
+                       formaction="@Url.Action("Machine_Maintenance_History")" />
+            </td>
+        </tr>
+    </table>
+}
+<h5><b>@ViewBag.Message</b></h5>
+
+

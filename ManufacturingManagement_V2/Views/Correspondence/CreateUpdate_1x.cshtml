@@ -1,0 +1,569 @@
+﻿@model ManufacturingManagement_V2.Models.CorrespondenceMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+@*<h4><b>Correspondence Detail</b></h4>*@
+<div style="font-size:14pt;color:black;background-color:yellow;text-align:center;">
+    <b>Correspondence Detail</b>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <h3><span style="font-size:14pt;color:white;">Letter No: @Html.DisplayFor(model => model.LetterNo)</span></h3>
+            <table class="table table-bordered">
+                <tr>
+                    @Html.HiddenFor(model => model.RecId)
+                    @Html.HiddenFor(model => model.POrderId)
+                    <td>@Html.LabelFor(model => model.CompCode)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)
+                        @Html.ValidationMessageFor(model => model.CompCode)
+                    </td>
+                    <td>@Html.LabelFor(model => model.FinYear)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.FinYear, ViewBag.FinYearList as SelectList)
+                        @Html.ValidationMessageFor(model => model.FinYear)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.DepCode)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.DepCode, ViewBag.DepartmentList as SelectList)
+                        @Html.ValidationMessageFor(model => model.CompCode)
+                    </td>
+                    <td>@Html.LabelFor(model => model.LetterDT)</td>
+                    <td>
+                        @Html.EditorFor(model => model.LetterDT)
+                        @Html.ValidationMessageFor(model => model.LetterDT)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.ReferenceFileNo) <span style="color:yellow;">[Other Depts]</span></td>
+                    <td>
+                        @Html.EditorFor(model => model.ReferenceFileNo)
+                        @Html.ValidationMessageFor(model => model.ReferenceFileNo)
+                    </td>
+                    <td>@Html.LabelFor(model => model.CaseFileNo) <span style="color:yellow;">[Mktg. Only]</span></td>
+                    <td>
+                        @Html.EditorFor(model => model.CaseFileNo)
+                        @Html.ValidationMessageFor(model => model.CaseFileNo)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PartyName)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PartyName)
+                        @Html.ValidationMessageFor(model => model.PartyName)
+                    </td>
+                    <td colspan="2">
+                        @Html.CheckBox("chkParty", false, new { style = "width:55px;height:25px;" })
+                        <span style="color:yellow;"> Apply Party Filetr</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">
+                        @Html.LabelFor(model => model.CorpAddress)
+                    </td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.CorpAddress, 0, 0, new { @style = "width:700px;height:60px;" })
+                        @Html.ValidationMessageFor(model => model.CorpAddress)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.ContactPerson)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ContactPerson)
+                        @Html.ValidationMessageFor(model => model.ContactPerson)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.CorpSubject)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.CorpSubject, 0, 0, new { @style = "width:700px;height:40px;" })
+                        @Html.ValidationMessageFor(model => model.CorpSubject)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.CorpReference)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.CorpReference, 0, 0, new { @style = "width:700px;height:40px;" })
+                        @Html.ValidationMessageFor(model => model.CorpReference)
+                    </td>
+                    @*<td colspan="2">@Html.EditorFor(model => model.IsRichText)
+                <span style="color:yellow;"> Apply Text Formatting</span>
+                @Html.ValidationMessageFor(model => model.IsRichText)
+            </td>*@
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.TextMatter)</td>
+                    <td colspan="3">
+                        <div id="divRichTxt">
+                            <span style="color:yellow;">[Please set Font-Name <b>'Arial'</b> & Font-Size <b>'12pt'</b>, if any content is to be copied from MS-Word]</span>
+                            @Html.TextAreaFor(model => model.TextMatterRich, 0, 0, new { @class = "Editor", @style = "width:700px;height:350px;" })
+                            @Html.ValidationMessageFor(model => model.TextMatter)
+                        </div>
+                        @* <div id="divPlainTxt">
+                    @Html.TextAreaFor(model => model.TextMatter, 0, 0, new { @class="Editor1x", @style = "width:700px;height:434px;" })
+                    @Html.ValidationMessageFor(model => model.TextMatter)
+                </div>*@
+                    </td>
+                </tr>
+                @*<tr>
+            <td style="vertical-align:top;"><b>Table&nbsp;Columns</b></td>
+            <td colspan="3">
+                @*<input type="text" id="txtCols" style="width:20px;"
+                    onchange="setCols();" /> ok working
+                <table style="width:20px;">
+                    <tr>
+                           <td>
+                            <div id="c1">Column 1 @Html.TextAreaFor(model => model.Col1, 0, 0,
+                            new { @style = "width:310px;height:30px;" })</div></td>
+                            <td>
+                            <div id="c2">Column 2 @Html.TextAreaFor(model => model.Col2, 0, 0,
+                            new { @style = "width:310px;height:30px;" })</div>
+                            </td>
+                    </tr>
+                    <tr>
+                            <td>
+                            <div id="c3">Column 3 @Html.TextAreaFor(model => model.Col3, 0, 0,
+                            new { @style = "width:310px;height:30px;" })</div></td>
+                            <td>
+                            <div id="c4">Column 4 @Html.TextAreaFor(model => model.Col4, 0, 0,
+                            new { @style = "width:310px;height:30px;" })</div>
+                            </td>
+                    </tr>
+                    <tr>
+                            <td>
+                            <div id="c5">Column 5 @Html.TextAreaFor(model => model.Col5, 0, 0,
+                            new { @style = "width:310px;height:30px;" })</div></td>
+                            <td>
+                            <div id="c6">Column 6 @Html.TextAreaFor(model => model.Col6, 0, 0,
+                            new { @style = "width:310px;height:30px;" })</div>
+                            </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>*@
+                @*<tr>
+            <td style="vertical-align:top;"><b>Text&nbsp;Matter&nbsp;2</b></td>
+            <td colspan="3">
+                @Html.TextAreaFor(model => model.TextMatter2, 0, 0, new { @style = "width:700px;height:40px;" })
+                @Html.ValidationMessageFor(model => model.TextMatter2)
+            </td>
+        </tr>*@
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.Remarks)</td>
+                    <td>
+                        @Html.TextAreaFor(model => model.Remarks, 0, 0, new { @style = "width:320px;height:120px;" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.Enclosures)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.Enclosures, 0, 0, new { @style = "width:700px;height:40px;" })
+                        @Html.ValidationMessageFor(model => model.Enclosures)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.CcTo)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.CcTo, 0, 0, new { @style = "width:700px;height:40px;" })
+                        @Html.ValidationMessageFor(model => model.CcTo)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="color:yellow;"> <b>Save As New Letter</b></span>
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.SaveAsNew)
+                        @Html.ValidationMessageFor(model => model.SaveAsNew)
+                    </td>
+                </tr>
+            </table>
+</div>
+<h5><b>@ViewBag.Message</b></h5>
+<p>
+    <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", new { id = 0 }) |
+    @*@Html.ActionLink("Add Tabular Data", "updateCorrespondenceDetail", new { recid= Model.RecId}, new { @target = "_new;" }) | *@
+    @Html.ActionLink("Preview", "../Correspondence/PreviewLetter", new { recid = Model.RecId }, new { @target = "_new;" }) |
+    @Html.ActionLink("Upload Attachment(s)", "../Correspondence/UploadFile", new { id = Model.RecId, letterno = Model.LetterNo }, new { @target = "_new;" }) |
+    @Html.ActionLink("View Attachment(s)", "../Correspondence/Downloads", new { recid = Model.RecId, letterno = Model.LetterNo }, new { target = "_blank" }) |
+    @Html.ActionLink("Dak Register", "../DakRegister/Index")
+</p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#SaveAsNew").attr("style", "width:55px;height:25px;");
+            //$("#IsRichText").attr("style", "width:55px;height:25px;");
+            //$("#IsRichText").attr("onclick", "setReset()"); //m1 (if m2 not used)
+            //setReset();
+            document.getElementById("FinYear").value = '@Model.FinYear';
+            $("#CompCode").attr("onchange", "setSignature()");
+            setSignature();//to execute on loading time
+        });
+    </script>
+
+    @*<script type="text/javascript"> ok working
+            function setCols() {
+                var x = parseInt(document.getElementById("txtCols").value);
+                if (x == 1) {
+
+                }
+                else if (x == 2) {
+
+                }
+            }
+        </script>*@
+
+    <script type="text/javascript">
+        function setSignature() {
+            if ('@ViewBag.AddEdit' == "Save") {
+                var ddlSIndex = document.getElementById("CompCode").selectedIndex;
+                var comp = document.getElementsByTagName("option")[ddlSIndex].innerHTML;
+                var sig = 'Thanking You.\r\nSincerely,\r\nFor ' + comp + '\r\n';
+                sig = sig + '\r\n\r\n' + '@ViewData["UserName"]' + '\r\n(Authorised Signatory)'
+                document.getElementById("Remarks").value = sig;
+                $("#CaseFileNo").attr("placeholder", "start typing, then select");
+                $("#ReferenceFileNo").attr("placeholder", "Type/Select as DEP/CMP/FinYr/SUB/VOLNo");
+            }
+        }
+    </script>
+
+    @*<script type="text/javascript"> //m2 (if m1 not used)
+            $('#IsRichText').click(function () {
+                setReset();
+            });
+        </script>
+
+        <script type="text/javascript">
+            function setReset() {
+                if (document.getElementById("IsRichText").checked == true) {
+                    document.getElementById("divRichTxt").style.display = 'block';
+                    document.getElementById("divPlainTxt").style.display = 'none';
+                    document.getElementById('TextMatterRich').select();
+                }
+                else {
+                    document.getElementById("divRichTxt").style.display = 'none';
+                    document.getElementById("divPlainTxt").style.display = 'block';
+                    document.getElementById('TextMatter').focus();
+                }
+            }
+        </script>*@
+
+    <script type="text/javascript">
+        $("#PartyName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceParty", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getCorrespondenceValuesForParty", "HelpUtility"))",
+                    data: { "partyname": ui.item.Id },
+                    success: function (data) {
+                        $('#CorpAddress').val(data.corpaddress);
+                        $('#ContactPerson').val(data.contactperson);
+                        $('#CorpSubject').val(data.corpsubject);
+                        $('#CorpReference').val(data.corpreference);
+                        $('#Enclosures').val(data.enclosures);
+                        $('#CcTo').val(data.ccto);
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#CorpAddress").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var pname = '';
+                if (document.getElementById("chkParty").checked == true)
+                {
+                    pname = $('#PartyName').val();
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceAddress", "HelpUtility"))",
+                    data: { "term": request.term,"partyname": pname },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#ContactPerson").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var pname = '';
+                if (document.getElementById("chkParty").checked == true) {
+                    pname = $('#PartyName').val();
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceContactPerson", "HelpUtility"))",
+                    data: { "term": request.term, "partyname": pname },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+            }
+        });
+    </script>
+
+    @*ac-casefileno*@
+    <script type="text/javascript">
+    $("#CaseFileNo").autocomplete({
+        source: function (request, response) {
+            var customer = new Array();
+            var liObj = document.getElementById("CompCode");
+            var objIndex = liObj.selectedIndex;
+            var objId = liObj.options[objIndex].value;
+            //var objName = liObj.options[objIndex].text;//OK
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("AutoCompleteCaseFileNos", "HelpUtility"))",
+                data: { "term": request.term, "compcode": objId },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                document.getElementById('POrderId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+    @*ac-referencefileno*@
+    <script type="text/javascript">
+    $("#ReferenceFileNo").autocomplete({
+        source: function (request, response) {
+            var customer = new Array();
+            var liObj = document.getElementById("CompCode");
+            var objIndex = liObj.selectedIndex;
+            var objId = liObj.options[objIndex].value;
+            //var objName = liObj.options[objIndex].text;//OK
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("AutoCompleteReferenceFileNos", "HelpUtility"))",
+                data: { "term": request.term, "compcode": objId },
+                success: function (data) {
+                    for (var i = 0; i < data.length ; i++) {
+                        customer[i] = { label: data[i].Value, Id: data[i].Key };
+                    }
+                }
+            });
+            response(customer);
+        }, minLength: 1,
+        select: function (event, ui) {
+            //document.getElementById('POrderId').value = ui.item.Id;//no need
+        }
+    });
+    </script>
+
+    <script type="text/javascript">
+        $("#CorpSubject").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var pname = '';
+                if (document.getElementById("chkParty").checked == true) {
+                    pname = $('#PartyName').val();
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceSubject", "HelpUtility"))",
+                    data: { "term": request.term, "partyname": pname },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#CorpReference").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var pname = '';
+                if (document.getElementById("chkParty").checked == true) {
+                    pname = $('#PartyName').val();
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceReference", "HelpUtility"))",
+                    data: { "term": request.term, "partyname": pname },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#CcTo").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var pname = '';
+                if (document.getElementById("chkParty").checked == true) {
+                    pname = $('#PartyName').val();
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceCCTo", "HelpUtility"))",
+                    data: { "term": request.term, "partyname": pname },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+            }
+        });
+    </script>
+
+    @*Rich text editor section*@
+    @*not working by off file reference*@
+    @*<script src="~/scripts/tinymce.min.js"></script>*@
+    @*<script type="text/javascript" src="../scripts/tinymce.min.js"></script>*@
+    @*working by online reference*@
+    @Scripts.Render("http://tinymce.cachefly.net/4.0/tinymce.min.js")
+    @*<script> old method
+            //tinymce.init({ selector: 'textarea', directionality: 'rtl' }); or
+            tinyMCE.init({
+                // General options
+                //mode: "textareas1",//chk [textareas for all text areas to editor]
+                selector: ".Editor",
+                content_style: ".mce-content-body {font-size:12pt;font-family:Arial,sans-serif;}",
+                theme: "modern",
+                // Theme options
+                theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+                theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+                theme_advanced_buttons3: "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+                theme_advanced_buttons4: "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
+                theme_advanced_toolbar_location: "top",
+                theme_advanced_toolbar_align: "left",
+                theme_advanced_statusbar_location: "bottom",
+                theme_advanced_resizing: true,
+                //encoding: "xml",//keep hidden
+                element_format : 'html',//ok
+                //Example content CSS (should be your site CSS)
+                content_css: "css/example.css",
+            });
+        </script>*@
+
+    @*new method*@
+    <script>
+        tinyMCE.init({
+            selector: ".Editor",
+            content_style: ".mce-content-body {font-size:12pt;font-family:Arial,sans-serif;}",
+            theme: "modern",
+            skin: "lightgray",
+            statusbar: true,
+            //toolbar: 'fontsizeselect fontselect forecolor backcolor newdocument,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull|cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist',
+            toolbar: 'forecolor backcolor newdocument,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull|cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,',
+            fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 22pt 24pt 26pt',
+            font_formats: 'Arial=arial,;Courier New=courier new,courier,monospace;AkrutiKndPadmini=Akpdmi',
+            plugins: [
+                //"advlist print preview hr pagebreak textcolor spellchecker",
+                "advlist print preview hr pagebreak textcolor",
+                "searchreplace wordcount fullscreen insertdatetime",
+                "table contextmenu directionality paste textcolor"],
+        });
+    </script>
+
+    @*end-- Rich text editor section*@
+
+}
+
+

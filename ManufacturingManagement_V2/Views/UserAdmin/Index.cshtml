@@ -1,0 +1,151 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.UserMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Users List</b></h4>
+
+@{var lstSortOn = new List<System.Web.UI.WebControls.ListItem>
+    {
+          new System.Web.UI.WebControls.ListItem { Text = "User Name", Value="un" },
+          new System.Web.UI.WebControls.ListItem { Text = "Login Type", Value="lt" },
+          new System.Web.UI.WebControls.ListItem { Text = "Department", Value="dp" }
+    };
+ }
+
+<fieldset>
+    @using (Ajax.BeginForm("FilterIndex", "UserAdmin", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        @Html.Hidden("hfEmpId", null, new { @id = "hfEmpId" })
+    <div class="form-group">
+        <b>Login Type</b>
+        @Html.DropDownList("ddlLoginType", ViewBag.LoginTypeListIndex as SelectList)
+
+        &nbsp; &nbsp;
+        <b>Department</b>
+        @Html.DropDownList("ddlDepartment", ViewBag.DepartmentList as SelectList, "ALL")
+
+        &nbsp; &nbsp;
+        <b>Sort On</b>
+        @Html.DropDownList("ddlSortOn", new SelectList(lstSortOn, "Value", "Text"))
+
+        &nbsp; &nbsp;
+        <b>IsActive</b>
+        <input type="checkbox" name="chkIsActive" @if (ViewBag.IsActive) { <text> checked</text>}
+               style="width: 30px; height: 20px; padding: 0; text-align:center;">
+
+        &nbsp; &nbsp;
+        <button class="btn btn-default">Submit</button>
+
+        &nbsp; &nbsp;
+        @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+    </div>
+    }
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th>
+            S.No.
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoginName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Department)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th>Links</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @i
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.UserName)
+        <div style="color:black;font-weight:bold;">[@Html.DisplayFor(model => item.UserId)]</div>
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.FullName)
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.EmpName)
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.LoginName)
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.Department)
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.IsActive)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "CreateUpdate", new { id = item.UserId })
+        <br />@Html.ActionLink("Details", "Details", new { id = item.UserId })
+    </td>
+</tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            //document.getElementById("hfEmpId").value = '@ViewBag.empid';
+            document.getElementById("ddlSortOn").value = '@ViewBag.sorton';
+            document.getElementById("ddlLoginType").value = '@ViewBag.lgt';
+            document.getElementById("ddlDepartment").value = '@ViewBag.dep';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtEmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployee", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+

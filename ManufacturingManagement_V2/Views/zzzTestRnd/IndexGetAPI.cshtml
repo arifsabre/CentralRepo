@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.EmployeeMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+    }
+
+    <h4><b>Employee List from API Call [Get]</b></h4>
+
+    <table class="tablecontainer" style="width:100%;">
+        <tr>
+            <th>
+                S.No.
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.NewEmpId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmpName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneExtNo)
+            </th>
+            @*<th>Edit</th>*@
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.NewEmpId)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.EmpName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ContactNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.PhoneExtNo)
+                </td>
+            </tr>
+            i++;
+        }
+
+    </table>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+        });
+        </script>
+    }

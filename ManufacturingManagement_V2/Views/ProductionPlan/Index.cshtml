@@ -1,0 +1,96 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ProductionPlanMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4>Production Plan List</h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("View Plan Status", "IndexStatus", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+    @using (Ajax.BeginForm("FilterIndex", "ProductionPlan", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <b>Month</b>
+        @Html.TextBox("txtMonth", null, new { @style = "width:50px;" })
+        <b>Year</b>
+        @Html.TextBox("txtYear", null, new { @style = "width:70px;" })
+        <button class="btn btn-default">Submit</button>
+    }
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:50px;">Links</th>
+        <th style="width:80px;">
+            Month<br />-Year
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.ItemCode)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.ShortName)
+        </th>
+        <th style="width:100px;">
+            Qty&nbsp;M1/<br />M2/M3
+        </th>
+        <th style="width:120px;">
+            Total Qty
+        </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.PlanRecId })
+                <br />@Html.ActionLink("Details", "Details", new { id = item.PlanRecId })
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PPMonth)-@Html.DisplayFor(model => item.PPYear)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ItemCode)
+                <div>[@Html.DisplayFor(model => item.ItemId)]</div>
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ShortName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PrdQty)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.InspQty)
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+@section Scripts{
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")*@
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtMonth").value = '@ViewBag.ppmonth';
+            document.getElementById("txtYear").value = '@ViewBag.ppyear';
+            //document.getElementById("hfItemId").value = '@ViewBag.itemid';
+            //document.getElementById("txtItemCode").value = '@ViewBag.itemcode';
+        });
+    </script>
+}
+

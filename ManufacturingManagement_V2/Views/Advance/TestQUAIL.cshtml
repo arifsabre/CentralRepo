@@ -1,0 +1,172 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.AdvanceMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>QUAIL</h2>
+<div id="dialog" style="display: none">
+</div>
+<fieldset>
+        <legend>Advance Detail</legend>
+            @using (Ajax.BeginForm("FilterIndexQUAIL", "Advance", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                        <table>
+                            <tr>@Html.Hidden("hfEmpId", null, new { @id = "hfEmpId" })
+                                <td>From</td>
+                                <td>@Html.TextBox("txtDtFrom",null,new { @class = "datepicker" })</td>
+                                <td>To</td>
+                                <td>@Html.TextBox("txtDtTo",null,new { @class = "datepicker" })</td>
+                            </tr>
+                            <tr>
+                                <td>Employee</td>
+                                <td>@Html.TextBox("txtEmpName", null, new { @placeholder = "start typing, then select"})</td>
+                            </tr>
+                        </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+<label id="lblAdminQuery"></label >
+<table class="tablecontainer" style="width:100%;" id="CustomerGrid">
+    <tr>
+        <th style="width:25px;">
+           S.No.
+        </th>
+        <th>
+           @Html.DisplayNameFor(model => model.Remarks)
+        </th>
+        <th>
+           @Html.DisplayNameFor(model => model.AdvAmount)
+        </th>
+        <th>Details</th>
+    </tr>
+    @{int i = 1;}
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @i
+        </td>
+        <td>
+           @Html.TextBox("txtRemarks"+i.ToString(), item.Remarks ,new { @id = "Remarks"+(i-1),
+            style = "width: 250px; height: 25px; padding: 0; text-align:left;"})
+        </td>
+        <td>
+           @Html.TextBox("txtAmount"+i.ToString(), item.AdvAmount ,new { @id = "Amount"+(i-1),
+            style = "width: 120px; height: 25px; padding: 0; text-align:left;"})
+        </td>
+        <td>
+            <a class="details" href="javascript:;">AddItem</a>
+        </td>
+    </tr>
+    i++;
+}
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+<link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css" rel="stylesheet" type="text/css"/>
+
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("hfEmpId").value = '@ViewBag.empid';
+            document.getElementById("txtEmpName").value = '@ViewBag.empname';
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+
+    @*popup*@
+    <script type="text/javascript">
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                title: "View Details",
+                beforeClose: function (event, ui) {
+                    if (!$("#terms").prop("checked")) {
+                        event.preventDefault();
+                        //$("[for = terms]").addClass("invalid");
+                        $('#lblAdminQuery').text('Not OK');
+                        $('#lblAdminQuery').text('Not OK');
+                    }
+                    else {
+                        $('#lblAdminQuery').text('OK');
+                    }
+                }
+            });
+            $("#CustomerGrid .details").click(function () {
+            //$("#forward").click(function () {
+                //var customerId = '0';//$(this).closest("tr").find("td").eq(0).html();
+                var rno = $(this).closest("tr").find("td").eq(0).html();
+                $.ajax({
+                    type: "POST",
+                    url: "/Advance/QuailDialogPartial",
+                    data: '{rno: "' + rno + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#dialog').html(response);
+                        $('#dialog').dialog('open');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+
+            });
+        });
+    </script>
+    @*cl-popup*@
+
+
+    <script type="text/javascript">
+        $("#txtEmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployee", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+

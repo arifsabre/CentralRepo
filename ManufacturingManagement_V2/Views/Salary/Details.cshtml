@@ -1,0 +1,301 @@
+﻿@model ManufacturingManagement_V2.Models.SalaryMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Salary Detail</h2>
+
+<p>
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Generate Salary", "GenerateSalary")
+</p>
+
+<fieldset>
+    <legend>SalaryMdl</legend>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.LabelFor(model => model.MonthName)</td>
+                    <td style="vertical-align:top;font-weight:bold;">: @Html.DisplayFor(model => model.MonthName), @Html.DisplayFor(model => model.AttYear) /@Html.DisplayFor(model => model.ShiftName) Shift</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">Employee</td>
+                    <td style="vertical-align:top;font-weight:bold;">: @Html.DisplayFor(model => model.EmpId), @Html.DisplayFor(model => model.EmpName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DaysWorked)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DaysWorked)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DaysPaid)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DaysPaid)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.BasicRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.BasicRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.BasicEarn)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.BasicEarn)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DARate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DARate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DAEarn)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DAEarn)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ConvRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ConvRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ConvEarn)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ConvEarn)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.HraRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.HraRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.HraEarn)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.HraEarn)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.MedAllowRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.MedAllowRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.MedAllowEarn)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.MedAllowEarn)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.CompAllowRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.CompAllowRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.CompAllowEarn)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.CompAllowEarn)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DressWashRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DressWashRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DressWashEarn)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DressWashEarn)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.SpecialPayRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SpecialPayRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.SpecialPayEarn)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SpecialPayEarn)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.OthersRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.OthersRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.OthersPayEarn)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.OthersPayEarn)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.GrossSalary)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.GrossSalary)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.IncHours)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.IncHours)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.IncEarn)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.IncEarn)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.TotalEarned)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.TotalEarned)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PFRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PFRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PFDeduction)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PFDeduction)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.FpfAmount)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.FpfAmount)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EpfAmount)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EpfAmount)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ESIRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ESIRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ESIDeduction)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ESIDeduction)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.AdvDeduction)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.AdvDeduction)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.FineDeduction)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.FineDeduction)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ShortLeaveRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ShortLeaveRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ShortLeaveDed)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ShortLeaveDed)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.LateAttRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.LateAttRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.LateAttDed)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.LateAttDed)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.TotalDeduction)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.TotalDeduction)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Present)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Present)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.TAbsent)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.TAbsent)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.HalfDay)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.HalfDay)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.CasualLeave)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.CasualLeave)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PrivilegedLeave)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PrivilegedLeave)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.LeaveWithoutPay)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.LeaveWithoutPay)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.WeekoffDay)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.WeekoffDay)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Holiday)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Holiday)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DeductableWd)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DeductableWd)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DeductableHld)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DeductableHld)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DedWoffPL)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DedWoffPL)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DedHldPL)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DedHldPL)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ShortLeave)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ShortLeave)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.LateAttendance)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.LateAttendance)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.IsPaymentAck)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.IsPaymentAck)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Remarks)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Remarks)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.IsProcessed)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.IsProcessed)</td>
+                </tr>
+
+            </table>
+     </div>
+</fieldset>

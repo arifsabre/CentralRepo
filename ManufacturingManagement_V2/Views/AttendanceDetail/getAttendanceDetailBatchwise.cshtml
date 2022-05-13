@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.AttendanceDetailMdl>
+
+@{
+    ViewBag.Title = "getAttendanceDetailBatchwise";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Attendance Detail List</h2>
+
+<p>
+    @Html.ActionLink("Attendance Detail", "../AttendanceDetail/Index", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+        <legend>AttendanceDetail</legend>
+            @using (Ajax.BeginForm("GetAttendanceDetailBatchwise", "AttendanceDetail", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.AttYear)</td>
+                            <td>@Html.TextBox("txtAttYear")</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.AttMonth)</td>
+                            <td>@Html.DropDownList("ddlMonth", ViewBag.MonthList as SelectList)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.AttShift)</td>
+                            <td>@Html.DropDownList("ddlShift", ViewBag.ShiftList as SelectList)</td>
+                        </tr>
+                        <tr>
+                            <td>Grade</td>
+                            <td>@Html.DropDownList("ddlGrade", ViewBag.GradeList as SelectList)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.AttDay)</td>
+                            <td>@Html.TextBox("txtAttDay")</td>
+                        </tr>
+                    </table>
+                      </div>
+                @*<button class="btn btn-default">Submit</button>*@
+                <input type="submit" value="Submit" onclick="target = '_blank';" formaction="@Url.Action("GetAttendanceDetailBatchwise")" />
+            }   
+</fieldset>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById("txtAttDay").focus();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+            $('#txtAttYear').val(y);
+            $('#ddlMonth').val(m + 1);
+            $('#txtAttDay').val(d);
+        });
+    </script>
+}

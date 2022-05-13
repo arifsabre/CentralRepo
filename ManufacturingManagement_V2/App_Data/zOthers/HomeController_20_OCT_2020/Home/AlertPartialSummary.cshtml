@@ -1,0 +1,31 @@
+﻿@model ManufacturingManagement_V2.Models.AlertsMdl
+
+<div id="lastUpdated" style="color:blue;font-weight:bold;">
+<table class="table table-bordered" style="border:solid;border-width:1px;border-color:black;width:75%">
+    @if (@Model.isBirthdayAlert == true)
+    { 
+    <tr>
+        <td colspan="3">
+           <div><marquee>@Model.BirthdayAnnivMsg</marquee></div>
+        </td>
+    </tr>
+    }
+@{int i = 0;}
+@foreach (var item in Model.AlertList)
+{
+    <tr>
+        <td style="width:35%;color:blue;vertical-align:top;">
+           &nbsp;@Html.DisplayFor(model => item.alertfor)
+        </td>
+        <td style="width:auto;vertical-align:top;">
+           :&nbsp;@Html.DisplayFor(model => item.result)
+        </td>
+        <td style="width:20%;text-align:right;color:blue;vertical-align:top;">
+            @Html.Raw(Model.AlertList[i].srcurl)
+        </td>
+    </tr>
+    i++;
+}
+
+</table>
+</div>

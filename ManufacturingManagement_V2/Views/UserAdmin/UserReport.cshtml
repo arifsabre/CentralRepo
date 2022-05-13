@@ -1,0 +1,81 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+@{
+    ViewBag.Title = "UserReport";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>User-Profile: @ViewBag.UserName</b></h4>
+<table style="font-size:11pt;">
+    <tr>
+        <td>
+            @Html.ActionLink("Login Detail", "UpdateProfile", null,
+            new { @style = "color:blue;text-decoration:underline;" })
+        </td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>
+            @Html.ActionLink("User Detail", "UserDetail", null,
+            new { @style = "color:blue;text-decoration:underline;" })
+        </td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>
+            @Html.ActionLink("Reports", "UserReport", null,
+            new { @style = "color:blue;text-decoration:underline;" })
+        </td>
+    </tr>
+</table>
+
+<h5><b>Reports</b></h5>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <table class="table table-bordered">
+            @Html.HiddenFor(model => model.NewEmpId)
+            <tr>
+                <td style="width:10%;"><b>Date From</b></td>
+                <td>@Html.EditorFor(model => model.DateFrom)</td>
+            </tr>
+            <tr>
+                <td><b>Date To</b></td>
+                <td>@Html.EditorFor(model => model.DateTo)</td>
+            </tr>
+        </table>
+    </div>
+    <table class="table table-bordered">
+        <tr>
+            <td>
+                <b>Remaining&nbsp;CL:</b>&nbsp;@ViewBag.remCL
+                &nbsp;&nbsp;&nbsp;
+                <b>Remaining&nbsp;PL:</b>&nbsp;@ViewBag.remPL
+            </td>
+        </tr>
+    </table>
+    <p>
+        <input type="submit" class="btn btn-default" style="width:150px;"
+               value="Leave Statement" onclick="target = '_blank';"
+               formaction="@Url.Action("../Form1415Report/LeaveStatementReportByUser")" />
+        <input type="submit" class="btn btn-default" style="width:150px;"
+               value="Advance Ledger" onclick="target = '_blank';"
+               formaction="@Url.Action("../AdvanceReport/AdvanceDeductionLedgerByUser")" />
+        @*<input type="submit" class="btn btn-default" style="width:150px;"
+            value="Asset Register" onclick="target = '_blank';"
+               formaction="@Url.Action("#")" />*@
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+@section Scripts{
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("DateFrom").focus();
+        });
+    </script>
+
+}
+
+

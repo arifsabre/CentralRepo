@@ -1,0 +1,131 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.OrderMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Order List</b></h4>
+
+<fieldset>
+    @using (Ajax.BeginForm("FilterIndex", "Order", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            @Html.Hidden("hfVendorId", null, new { @id = "hfVendorId" })
+            @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+        
+            &nbsp;&nbsp;&nbsp;
+            <b>Vendor&nbsp;&nbsp;&nbsp;</b>@Html.TextBox("txtVendorName",
+            null, new { @placeholder = "start typing, then select" })
+                    
+            &nbsp;&nbsp;
+            <button class="btn btn-default">Submit</button>
+        </div>
+    }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th style="width:70px;" >
+            Order&nbsp;No
+        </th>
+        <th style="width:80px;">
+            Order&nbsp;Date
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.VendorName)
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.NetAmount)
+        </th>
+        <th style="width:70px;" >
+            @Html.DisplayNameFor(model => model.OrderId)
+        </th>
+        <th style="width:35px;" >Action</th>
+    </tr>
+    @{int i = 1;}
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @i
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VendorName)
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.NetAmount, "{0:##,##,##,##,##0.00}")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderId)
+            @if (item.IsCancelled == true)
+            { 
+                <div style="color:fuchsia;font-size:9pt;">Cancelled</div>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "CreateUpdate", new { id=item.OrderId })
+            <br/>@Html.ActionLink("Preview", "../OrderReport/OrderReportDirect", 
+                 new { orderno= item.OrderNo },new { @target = "_new;" })
+            <br/>@Html.ActionLink("Cancel", "OrderCancellation", new { orderid = item.OrderId})
+            <br/>@Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail", 
+                 new { tblid = 24, pkval = item.OrderId }, new {@target="_blank" })
+        </td>
+    </tr>
+    i++;
+}
+<br/>
+@{i = i-1;}
+@i.ToString()&nbsp;&nbsp;&nbsp;Orders found.
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("hfVendorId").value = '@ViewBag.vendorid';
+            document.getElementById("txtVendorName").value = '@ViewBag.vendorname';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtVendorName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteVendor", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfVendorId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+

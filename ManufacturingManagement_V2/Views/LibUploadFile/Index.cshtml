@@ -1,0 +1,187 @@
+﻿@model ManufacturingManagement_V2.Models.LibFileUploadMDI
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script>
+        //$(function () {
+        //   $('#example1').DataTable();
+        //})
+
+        function GetDetails(id) {
+            $.ajax({
+                url: "/LibUploadFile/LibEdit_FileRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#UploadId').val(response.UploadId);
+                    $('#FileName').val(response.FileName);
+                    $('#UploadPath').val(response.UploadPath);
+
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <div>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-Insert">
+                                Upload New File
+                            </button>
+                        </div>
+                        @if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success alert-dismissable">
+                                @ViewBag.Message;
+                                <a href="#" class="close" data-dissmiss="alert">x</a>
+                            </div>
+                        }
+
+                        <table id="example1" class="table table-bordered table-hover " style="background-color:whitesmoke; width:1100px;font-size:small">
+                            <thead>
+                                <tr>
+                                    <th>Upload Id</th>
+                                    <th>FileName</th>
+                                    <th>UploadPath</th>
+
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.UploadId)</td>
+                                        <td>@Html.DisplayFor(model => item.FileName)</td>
+                                        <td>@Html.DisplayFor(model => item.UploadPath)</td>
+                                        @*<td>@Html.DisplayFor(model => item.EmpName)</td>
+                                            <td>@Html.DisplayFor(model => item.FileName)</td>
+                                            <td>@Html.DisplayFor(model => item.UploadPath)</td>
+                                            <td>@Html.DisplayFor(model => item.UploadPath)</td>*@
+
+                                        <td>
+                                            <a onclick="GetDetails(@item.UploadId)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+
+
+                                            @*<a>
+                                                    @Html.ActionLink(" ", "Delete_IssueItem", "B_Issue_Item_ITCELLList", new { id = item.Tran_Id }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                                </a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @*//UpdateView*@
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Update Item Name</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("LibEdit_File", "LibUploadFile", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:200px;width:200px;background-color:white">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Tran Id</label>
+                                        <input type="number" class="form-control" id="Tran_Id" name="Tran_Id" readonly="readonly">
+                                        <label>Serial No</label>
+                                        <input type="text" class="form-control" id="Serial_No" name="Serial_No" readonly="readonly">
+                                        <label>Issue Qty</label>
+                                        <input type="number" class="form-control" id="Issue_Qty" name="Issue_Qty">
+                                        <label>Comment</label>
+                                        <input type="text" class="form-control" id="Comment" name="Comment">
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Add SubCategory</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("LibNewFileUpload", "LibUploadFile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <br />
+                                        <div class="form-group">
+                                            @Html.HiddenFor(model => model.userid)
+                                            <label>Category</label>
+                                            @Html.DropDownListFor(m => m.LibCategoryId, Model.LibraryCategory, "LibraryCategory")
+                                            <br />
+                                            <label>Sub Category</label>
+                                            @*   @Html.EditorFor(model => model.LibSubCategory1)*@
+                                            @*@Html.DropDownListFor(m => m.LibSubCategoryId, Model.LibSubCategoryList, "LibSubCategory")*@
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>    

@@ -1,0 +1,318 @@
+﻿@model ManufacturingManagement_V2.Models.Emp_Shift
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script>
+        function updateshift(id) {
+            $.ajax({
+                url: "/Shift/IndexRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ShiftId1').val(response.ShiftId);
+                    $('#ShiftName1').val(response.ShiftName);
+                    $('#NewEmpId1').val(response.NewEmpId);
+                    $('#EmpName1').val(response.EmpName);
+                    $('#StartTime1').val(response.StartTime);
+                    $('#EndTime1').val(response.EndTime);
+                    $('#modal-UpdateShift').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#" style="margin-top:3px;margin-bottom:3px">
+        Employee Shift List By Company
+    </button>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ShiftDetail" style="margin-top:3px;margin-bottom:3px">
+        All Shift
+    </button>
+    <div class="pull-right">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#InsertShiftModal" style="margin-top:3px;margin-bottom:3px">
+            Add Shift
+        </button>
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover table-responsive table-condensed " style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>EmpId</th>
+                                    <th>Employee</th>
+                                    <th>Shift Name</th>
+                                    <th>Start time</th>
+                                    <th>End Time</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(model => item.NewEmpId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.EmpName)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(model => item.ShiftName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.StartTime)
+                                        </td>
+                                        <td>@Html.DisplayFor(model => item.EndTime)</td>
+                                        <td>
+                                            <a onclick="updateshift(@item.NewEmpId)">
+                                                <i class="fa fa-pencil-square"></i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <div class="modal fade" id="ShiftDetail">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">Shift List</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <section class="content">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="box box-success">
+                                    <div class="box-header">
+                                    </div>
+                                    <div class="box-body">
+                                        <table id="jdtabledesktop" class="table table-bordered table-hover table-responsive table-condensed " style="width:100%;">
+                                            <thead>
+                                                <tr>
+
+                                                    <th>ShiftName</th>
+                                                    <th>Shift Start</th>
+                                                    <th>Shift End </th>
+                                                    <th>Late Start</th>
+                                                    <th>Late End</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.Item_List1)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(model => item.ShiftName)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(model => item.StartTime)
+                                                        </td>
+                                                        <td>@Html.DisplayFor(model => item.EndTime)</td>
+
+                                                        <td>@Html.DisplayFor(model => item.LateStart)</td>
+                                                        <td>@Html.DisplayFor(model => item.LateEnd)</td>
+
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="modal-UpdateShift">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("Index", "Shift", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            @*@Html.EditorFor(model => model.UserId, new { @id = "UserId1" })
+                                @Html.EditorFor(model => model.NewEmpId, new { @id = "NewEmpId1" })
+                                @Html.EditorFor(model => model.ShiftId, new { @id = "ShiftId1" })*@
+                            <input type="hidden" class="form-control" id="NewEmpId1" name="NewEmpId" readonly="readonly" />
+
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Employee</label>
+                                    <br />
+                                    <input type="text" class="form-control" id="EmpName1" name="EmpName" readonly="readonly" />
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Select Shift</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.ShiftId, ViewBag.ShiftList as SelectList)
+                                    <br />
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Start Time</label>
+                                    <br />
+                                    <input type="text" class="form-control" id="StartTime1" name="Starttime" readonly="readonly" />
+                                    <br />
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>End Time</label>
+                                    <br />
+                                    <input type="text" class="form-control" id="EndTime1" name="EndTime" readonly="readonly" />
+                                    <br />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="modal-updateshift" class="btn btn-success">Submit</button>
+                            <button type="button" id="modal-updateshift" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="InsertShiftModal">
+        @*data-keyboard="false" data-backdrop="static">*@
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">Create Shift</h4>
+                </div>
+
+                <div class="modal-body">
+                    @*<form>*@
+                    @*<div class="box box-primary">*@
+                    @using (Html.BeginForm("AddShift", "Shift", FormMethod.Post))
+                    {
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label for="inputShiftName">Shif Name</label>
+                                @Html.TextBoxFor(model => model.ShiftName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ShiftName, "", new { @class = "text-danger" })
+                                @*<input class="form-control" placeholder="Enter Shift Name"
+                                    type="text" id="inputShiftName" />*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label for="inputStartdate">Shift Start date</label>
+                                @Html.EditorFor(model => model.ShiftStartDate, new { htmlAttributes = new { @class = "form-control", Type = "date" } })
+                                @Html.ValidationMessageFor(model => model.ShiftStartDate, "", new { @class = "text-danger" })
+                                @*<input class="form-control"
+                                    type="date" id="inputStartdate" />*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label for="inputStarttime">Shift Start Time</label>
+                                @Html.TextBoxFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", } })
+                                @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                                @*<input class="form-control" placeholder="00:00"
+                                    type="text" id="inputStarttime" />*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label for="inputEndTime">Shift End Time</label>
+                                @Html.TextBoxFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                                @*<input class="form-control" placeholder="00:00"
+                                    type="text" id="inputEndTime" />*@
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label for="inputLateStart">Late From</label>
+                                @Html.TextBoxFor(model => model.LateStart)
+                                @Html.ValidationMessageFor(model => model.LateStart, "", new { @class = "text-danger" })
+                                @*<input class="form-control" placeholder="00:00"
+                                    type="text" id="inputLateStart" />*@
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label for="inputLateEnd">Late Up To</label>
+                                @Html.TextBoxFor(model => model.LateEnd)
+                                @Html.ValidationMessageFor(model => model.LateEnd, "", new { @class = "text-danger" })
+                                @*<input class="form-control" placeholder="00:00"
+                                    type="text" id="inputLateEnd" />*@
+                                @Html.HiddenFor(model => model.CreatedBy)
+                                @*<input type="hidden" id="CreatedBy1" name="CreatedBy" />*@
+                            </div>
+                        </div>
+                        <br /><br /> <br /><br />
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+
+                    }
+                    @*</form>*@
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @*</div>*@
+
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>

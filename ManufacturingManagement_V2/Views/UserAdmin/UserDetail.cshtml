@@ -1,0 +1,192 @@
+﻿@model ManufacturingManagement_V2.Models.EmployeeMdl
+@{
+    ViewBag.Title = "UserDetail";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>User-Profile: @ViewBag.UserName</b></h4>
+<table style="font-size:11pt;">
+    <tr>
+        <td>
+            @Html.ActionLink("Login Detail", "UpdateProfile", null,
+            new { @style = "color:blue;text-decoration:underline;" })
+        </td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>
+            @Html.ActionLink("User Detail", "UserDetail", null,
+            new { @style = "color:blue;text-decoration:underline;" })
+        </td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>
+            @Html.ActionLink("Reports", "UserReport", null,
+            new { @style = "color:blue;text-decoration:underline;" })
+        </td>
+    </tr>
+</table>
+
+<h5><b>User Detail</b></h5>
+
+<div id="EmpView" class="form-group">
+    <table class="table table-bordered">
+        <tr>
+            <td style="width:10%;"><b>Employee&nbsp;Name</b></td>
+            <td>@Html.DisplayFor(model => model.EmpName)</td>
+            <td style="width:10%;"><b>Father's&nbsp;Name</b></td>
+            <td>@Html.DisplayFor(model => model.FatherName)</td>
+        </tr>
+        <tr>
+            <td><b>Corresp.&nbsp;Address</b></td>
+            <td colspan="3">@Html.DisplayFor(model => model.CAddress)</td>
+        </tr>
+        <tr>
+            <td><b>PF&nbsp;Number</b></td>
+            <td>@Html.DisplayFor(model => model.PFNumber)</td>
+            <td><b>ESI&nbsp;Number</b></td>
+            <td>@Html.DisplayFor(model => model.ESINumber)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.UAN)</td>
+            <td>@Html.DisplayFor(model => model.UAN)</td>
+            <td><b>Job&nbsp;Description</b></td>
+            <td>@Html.DisplayFor(model => model.JobDesc)</td>
+        </tr>
+    </table>
+</div>
+
+<div>
+@{int i = 0;}
+@if (Model.PFNomineeDetail.Any())
+{
+    <table class="tablecontainer" style="width:100%;">
+        <tr>
+            <th style="width:35px;">
+                S.No.
+            </th>
+            <th>
+                Member Name
+            </th>
+            <th>
+                Birth Date
+            </th>
+            <th>
+                Age
+            </th>
+            <th>
+                Relation
+            </th>
+            <th>
+                Share%
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                Guardian
+            </th>
+            <th>
+                Nominee For
+            </th>
+        </tr>
+        @{i = 1;}
+        @foreach (var item in Model.PFNomineeDetail)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.MemberName)
+                </td>
+                <td>
+                    @Html.ValueFor(model => item.BirthDate, "{0:dd/MM/yyyy}")
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Age)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Relation)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.SharePercent)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.MAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.GuardianDetail)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.NomineeForName)
+                </td>
+            </tr>
+            i++;
+        }
+    </table>
+}
+</div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+@section Scripts {
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#PFApplicable").attr("style", "width:55px;height:25px;");
+            $("#ESIApplicable").attr("style", "width:55px;height:25px;");
+            $("#IsActive").attr("style", "width:55px;height:25px;");
+        });
+    </script>
+
+    <script type="text/javascript">
+        function displayAll() {
+            var lbltext = document.getElementById('dh').innerHTML;
+            if (lbltext == 'Display All') {
+                $('#dh').text('Hide All');
+                divJoiningDet.style.display = "block";
+                divPaymentDet.style.display = "block";
+                divPersonalDet.style.display = "block";
+                divContactDet.style.display = "block";
+                divEmergencyDet.style.display = "block";
+                divReferenceDet.style.display = "block";
+                divBankDet.style.display = "block";
+                divPfEsiDet.style.display = "block";
+                divLeavingDet.style.display = "block";
+                divQualDetail.style.display = "block";
+                divExpDetail.style.display = "block";
+                divFamilyDetail.style.display = "block";
+                divNomineeDetail.style.display = "block";
+            }
+            else if (lbltext == 'Hide All') {
+                $('#dh').text('Display All');
+                divJoiningDet.style.display = "none";
+                divPaymentDet.style.display = "none";
+                divPersonalDet.style.display = "none";
+                divContactDet.style.display = "none";
+                divEmergencyDet.style.display = "none";
+                divReferenceDet.style.display = "none";
+                divBankDet.style.display = "none";
+                divPfEsiDet.style.display = "none";
+                divLeavingDet.style.display = "none";
+                divQualDetail.style.display = "none";
+                divExpDetail.style.display = "none";
+                divFamilyDetail.style.display = "none";
+                divNomineeDetail.style.display = "none";
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+
+}
+

@@ -1,0 +1,185 @@
+﻿@model ManufacturingManagement_V2.Models.LoginMdl
+
+@{
+    // Layout = "~/Views/Shared/LoginLayoutN.cshtml";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-responsive.min.css" rel="stylesheet" />
+    <title>Login</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style type="text/css">
+        #img1 {
+            height: 40px;
+            width: 120px;
+        }
+
+        #img2 {
+            width: 50px;
+            height: 50px;
+        }
+
+        #img3 {
+            width: 60px;
+            height: 60px;
+        }
+
+        #img4 {
+            height: 40px;
+            width: 120px;
+        }
+
+        #img5 {
+            height: 70px;
+            width: 70px;
+        }
+
+        #img6 {
+            height: 350px;
+            width: 350px;
+        }
+    </style>
+</head>
+
+<body>
+    @*<div>
+            <header style="background-color:whitesmoke;width:100%">
+
+                <div>
+                    <table style="background-color:whitesmoke">
+                        <tr>
+
+                            <td style="color:black; font-weight:bold;border-radius:20px">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              &nbsp;&nbsp;&nbsp;&nbsp; <a href="" style="width:100px;background-color:lightgray;border-radius:20px; color:black;font-weight:bold;">Company </a>&nbsp;&nbsp; @ViewBag.FinYear&nbsp;&nbsp;&nbsp;&nbsp; <a href="" style="width: 100px; color:black;font-weight:bold;border-radius:20px;background-color:lightgray">Fin Year</a>
+
+                            </td>
+
+                            <td>
+                                <img id="img2" alt="" src="http://192.168.0.20:80/Images/LoginProfile.png" />
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+
+                            <td style="color:black;font-weight:bold;text-align:center;background-color:whitesmoke;border-radius:20px">
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </header>
+
+        </div>*@
+    @*<div >
+            @ViewBag.Result
+        </div>*@
+
+    @using (Ajax.BeginForm("LoginUser", "Login",
+                new AjaxOptions { UpdateTargetId = "divLoginUser" }))
+    {
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <table style=" text-align: left;width:40%;margin-left:400px;margin-top:75px;border-radius:25px;background-color:whitesmoke;border:none" )>
+
+                <tr>
+
+                    <td style="color:red;text-align:center;font-size:medium"> @ViewBag.Result</td>
+                    <td>
+                        <img id="img2" alt="" src="http://192.168.0.20:80/Images/LoginProfile.png" />
+                    </td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="width:70px;">
+                        <input type="submit" value='User Id' style="background-color:whitesmoke;width:200px;height:40px;border-radius:15px;color:black" />
+                    </td>
+                    <td>
+                        @Html.TextBox("txtUserId", null, null, new { style = "width:200px;height:20px;background-color:#F0F0F0;border-radius:15px;color:black" })
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="submit" value='Password' style="background-color:whitesmoke;width:200px;height:40px;border-radius:15px;color:black" />
+                    </td>
+                    <td>
+                        @Html.Password("txtPassword", null, new { style = "width:200px;height:20px;background-color:#F0F0F0;border-radius:15px;color:black" })
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value=' Login' style="background-color:whitesmoke;width:120px;height:40px;border-radius:15px;color:black" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color:black;text-align:center">
+                        <img id="img5" alt="" src="http://192.168.0.20:80/Images/Forgotpassword.jpg" /><a style="color: black;text-align:left" href="/Login/ForgetPassword">Forgot Password?</a>
+                    </td>
+
+                </tr>
+                <tr></tr>
+                <tr></tr>
+
+            </table>
+        </div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+
+
+        <footer style="height:40px">
+            @*@Html.action("../Home/pageFooter")*@
+            @Html.Partial("../Home/pageFooter")
+            @*<table style="width:1200px">
+                    <tr>
+                        <td style="font-weight: bold; font-size:medium;color:black;">
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Developed By - </span> <a href="http://www.praggroup.com" style="font-size: x-small;color:blue">PRAG MIS DEPTT</a>&nbsp;<span>Contact No : Extn.332/0522-2652033/(+91)8922008825</span>
+                        </td>
+
+                    </tr>
+
+                </table>*@
+        </footer>
+
+    }
+    @section Scripts{
+        <script type="text/javascript">
+            $(function () {
+                $("input[type=text]").first().focus();
+            });
+        </script>
+    }
+</body>
+</html>

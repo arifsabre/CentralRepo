@@ -1,0 +1,50 @@
+﻿@model ManufacturingManagement_V2.Models.AAA_MedicalTest
+@{
+    ViewBag.Title = "Index";
+   
+    Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Certificate</title>
+    <script>
+    </script>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <div>
+         
+            <table m class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>File_No</th>
+                        <th>File_Name</th>
+                        <th>View</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Item_List)
+                    {
+                        <tr>
+
+                            <td>@Html.DisplayFor(model => item.Id)</td>
+                            <td>@Html.DisplayFor(model => item.FileName)</td>
+                            <td> @Html.ActionLink("View", "GetQutation", new { id = item.Id }, new { target = "_blank" })</td>
+                           
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                </tfoot>
+            </table>
+
+
+        </div>
+    }
+</body>
+</html>

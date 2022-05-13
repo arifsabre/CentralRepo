@@ -1,0 +1,111 @@
+﻿@model ManufacturingManagement_V2.Models.BankGuaranteeMdl
+
+@{
+    ViewBag.Title = "EditBGHistory";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Bank Guarantee History Detail</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr><td colspan="3"><h5><b>Details</b></h5></td></tr>
+                <tr>
+                    @Html.HiddenFor(model => model.TenderId)
+                @Html.HiddenFor(model => model.BGNumber)
+                <td>@Html.LabelFor(model => model.TenderNo)</td>
+                <td>
+                    @Html.DisplayFor(model => model.TenderNo)
+                @Html.ValidationMessageFor(model => model.TenderNo)
+            </td>
+            <td>@Html.LabelFor(model => model.BGNumber)</td>
+            <td>
+                @Html.DisplayFor(model => model.BGNumber)
+            @Html.ValidationMessageFor(model => model.BGNumber)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.BGDate)</td>
+                <td>
+                    @Html.EditorFor(model => model.BGDate)
+                @Html.ValidationMessageFor(model => model.BGDate)
+            </td>
+            <td>@Html.LabelFor(model => model.SdBgAmount)</td>
+            <td>
+                @Html.EditorFor(model => model.SdBgAmount)
+            @Html.ValidationMessageFor(model => model.SdBgAmount)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Validity)</td>
+                <td>
+                    @Html.EditorFor(model => model.Validity)
+                @Html.ValidationMessageFor(model => model.Validity)
+            </td>
+            <td>@Html.LabelFor(model => model.ExtValidity)</td>
+            <td>
+                @Html.EditorFor(model => model.ExtValidity)
+            @Html.ValidationMessageFor(model => model.ExtValidity)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.StatusId)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.StatusId, ViewBag.BGStatusList as SelectList)
+                @Html.ValidationMessageFor(model => model.StatusId)
+            </td>
+            <td>@Html.LabelFor(model => model.Remarks)</td>
+            <td>
+                @Html.EditorFor(model => model.Remarks)
+            @Html.ValidationMessageFor(model => model.Remarks)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.BGType)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.BGType, ViewBag.BGTypeList as SelectList)
+                @Html.ValidationMessageFor(model => model.BGType)
+            </td>
+            </tr>
+            </table>
+    </div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" value='Submit' />
+            @Html.ActionLink("Back to List", "BGHistory", new { tenderid=Model.TenderId}) 
+        </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //$("#EmpId").attr("placeholder", "start typing, then select");
+            document.getElementById('StatusId').value = '@Model.StatusId';
+            $("#sendToHistory").attr("style", "width:55px;height:25px;");
+        });
+
+        //Date Picker 
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+    </script>
+
+}
+

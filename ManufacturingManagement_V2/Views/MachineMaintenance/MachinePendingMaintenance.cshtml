@@ -1,0 +1,76 @@
+﻿@*@model ManufacturingManagement_V2.Models.EmployeeMdl*@
+@{
+    ViewBag.Title = "EmpList";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Pending Maintenance</title>
+</head>
+<body>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-SendSMS" style="margin-top:3px;margin-bottom:3px">
+        Sms Pending Machine For All Company
+    </button>
+
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-SendSMSCompany" style="margin-top:3px;margin-bottom:3px">
+        Sms Pending Machine Companywise
+    </button>
+
+
+    <div class="modal fade" id="modal-SendSMS">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("MachinePendingMaintenancePost", "MachineMaintenance", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+
+
+                            @*<div class="col-md-8">
+                                <div class="form-group">*@
+                            <br />
+
+                            &nbsp; &nbsp; &nbsp; Are You want To confirm ?
+                            @*</div>
+                                </div>*@
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Yes</button>
+                            <button type="button" id="modal-SendSMS" class="btn btn-success" data-dismiss="modal">No</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-SendSMSCompany">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("MachinePendingMaintenanceCompanywise", "MachineMaintenance", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            @*<div class="col-md-8">
+                                <div class="form-group">*@
+                            <br />
+                            &nbsp; &nbsp; &nbsp; Are You want To confirm ?
+                            @*</div>
+                                </div>*@
+                       </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Yes</button>
+                            <button type="button" id="modal-SendSMSCompany" class="btn btn-success" data-dismiss="modal">No</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

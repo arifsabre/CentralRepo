@@ -1,0 +1,27 @@
+﻿@model ManufacturingManagement_V2.Models.AlertsMdl
+@{
+    ViewBag.Title = "MarketingDepartment";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Marketing Department</h2>
+<div style="width:100%;border:solid;border-width:1px;border-color:blue;border-radius:4px;padding-left:2px;">
+@Html.Partial("AlertPartialSummary",Model)
+<p>
+    <br/>
+    @Html.ActionLink("Update LOA", "../LOAUpdation/Index")
+    <br/><br/>
+    @Html.ActionLink("Bank Guarantee", "../BankGuarantee/Index") 
+    <br/><br/>
+    @Html.ActionLink("Tender Dispatch", "../TenderDispatch/Index")
+    <br/><br/>
+    @Html.ActionLink("Payment Receipt", "../VoucherEntryBillReceipt/Index")
+    <br/><br/>
+    @Html.ActionLink("Tender Report", "../TenderReportV2/Index")
+    <br/><br/>
+    @Html.ActionLink("Bank Guarantee Report", "../BankGuaranteeReport/Index")
+    <br/><br/>
+    @Html.ActionLink("Bank Guarantee Ledger", "../BankGuaranteeReport/LedgerIndex")
+</p>
+<br/>
+</div>

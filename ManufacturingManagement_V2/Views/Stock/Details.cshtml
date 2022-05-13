@@ -1,0 +1,50 @@
+﻿@model ManufacturingManagement_V2.Models.StockMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Stock Detail</h2>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id = Model.RecId }, new {@class="btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+
+<fieldset>
+    <legend>StockMdl</legend>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.VTypeName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.VTypeName)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.VNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.VNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.VDate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.VDate)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.RecDesc)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RecDesc)</td>
+                </tr>
+
+            </table>
+
+            @*place item detail here*@
+
+        </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

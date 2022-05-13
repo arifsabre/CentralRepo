@@ -1,0 +1,156 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.LibFileUploadMDI>
+
+@{
+    ViewBag.Title = "GetFile";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AllLibraryFile</title>
+    <script>
+            //jQuery(document).bind("keyup keydown", function (e) {
+            //    if (e.ctrlKey && e.keyCode == 80) {
+            //        //alert('Sorry ! Print command is disabled');
+            //        return false;
+            //    }
+            //});
+
+            //jQuery(document).bind("keyup keydown", function (e) {
+            //    if (e.ctrlKey && e.keyCode == 83) {
+            //        //alert('Sorry ! Save command is disabled');
+            //        return false;
+            //    }
+            //});
+
+            //jQuery(document).bind("keyup keydown", function (e) {
+            //    if (e.keyCode == 0 || e.keyCode == 36 || e.keyCode == 44) {
+            //        //  alert('Sorry ! PrintScreen is blocked');
+            //        //remove clipboard contents
+            //        var tempInput = document.createElement("input");
+            //        tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+            //        tempInput.value = 'Sorry It is not copied';
+            //        document.body.appendChild(tempInput);
+            //        tempInput.select();
+            //        document.execCommand("copy");
+            //        document.body.removeChild(tempInput);
+            //        return false;
+            //    }
+            //});
+
+            //jQuery(document).bind("keyup keydown", function (e) {
+            //    if (e.keyCode == 27) {
+            //        //escape key utility-- return url
+            //        //var rurl = document.getElementById("hfReturnURL").value;
+            //        //window.open(rurl, 'target=self');
+            //        //window.close();
+            //        //if (rurl != '') {
+            //        //    window.location = rurl;
+            //        //}
+            //        //else {
+            //        //    window.close();
+            //        //}
+            //        window.close();
+            //    }
+            //});
+
+            //jQuery(document).bind("keyup keydown", function (e) {
+            //    if (e.keyCode == 65) {
+            //        //alert('Sorry ! Select All Not Allowed');
+            //        return false;
+            //    }
+            //});
+
+            //jQuery(document).bind("keyup keydown", function (e) {
+            //    if (e.keyCode == 8) {
+            //        //backspace key utility-- option url
+            //        var rurl = document.getElementById("hfOptionURL").value;
+            //        window.open(rurl);
+            //        window.close();
+            //    }
+            //});
+
+            //jQuery(document).bind("keyup keydown", function (e) {
+            //    if (e.keyCode == 27) {
+            //        //escape key utility-- return url
+            //        var rurl = document.getElementById("hfReturnURL").value;
+            //        window.open(rurl);
+            //        window.close();
+            //    }
+            //});
+
+            //jQuery(document).bind("keyup keydown", function (e) {
+            //    if (e.keyCode == 67) {
+            //        //alert('Sorry ! Copy Not Allowed');
+            //        return false;
+            //    }
+            //});
+            //jQuery(document).bind("keyup keydown", function (e) {
+            //    if (e.keyCode == 86) {
+            //        //alert('Sorry ! Paste Not Allowed');
+            //        return false;
+            //    }
+            //});
+            //jQuery(document).bind("keyup keydown", function (e) {
+            //    if (e.keyCode == 112) {
+            //        //alert('Sorry ! Can not take help');
+            //        return false;
+            //    }
+            //});
+
+            //jQuery(document).bind("keyup keydown", function (e) {
+            //    if (e.keyCode == 13) {
+            //        //alert('Sorry ! Can not take help');
+            //        return false;
+            //    }
+            //});
+
+            //jQuery(document).bind("mousedown", function (e) {
+            //    if (e.button == 2) {
+            //        alert('fine right clicked!');
+            //        return false;
+            //    }
+            //});
+
+            //function disableContextMenu() {
+            //    window.frames["frmRpt"].document.oncontextmenu = function () { alert("OOPS!"); return false; };
+            //    document.getElementById("hh1").oncontextmenu = function () { alert("OOPS!"); return false; };
+            //}
+
+        </script>
+
+</head>
+<body >
+    <div >
+        <table class="table">
+            <tr>
+
+                <th>
+                 @*   @Html.DisplayNameFor(model => model.FileName)*@
+                </th>
+
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align:left">
+                       @* @Html.ActionLink("View", "GetFile", new { id = item.Id })*@
+                        @Html.Action("GetFile", "Library", new { id = item.Id })
+                    </td>
+
+
+                    @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>*@
+                </tr>
+            }
+
+        </table>
+    </div>
+</body>
+
+</html>

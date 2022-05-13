@@ -1,0 +1,107 @@
+﻿@model ManufacturingManagement_V2.Models.JobworkReceiptMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Jobwork Receipt Detail</b></h4>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id = Model.RecId }, new {@class="btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+
+<fieldset>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ChallanNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ChallanNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ChallanDate)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.ChallanDate, "{0:dd/MM/yyyy}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.VendorName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.VendorName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.RMItemCode)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RMItemCode)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.IssuedQty)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.IssuedQty, "{0:##,##,##,##,##0.00}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.RMUnitName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RMUnitName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.RecDateStr)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RecDateStr)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.InvNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.InvNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.InvDateStr)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.InvDateStr)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.FGItemCode)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.FGItemCode)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.FgItemQty)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.FgItemQty)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.FGUnitName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.FGUnitName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ReceivedQty)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ReceivedQty)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.RemainingQty)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RemainingQty)</td>
+                </tr>
+
+                @*<tr> note: not in use
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.WasteQty)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.WasteQty)</td>
+                </tr>*@
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Remarks)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Remarks)</td>
+                </tr>
+
+            </table>
+        </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        @ViewBag.Message
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

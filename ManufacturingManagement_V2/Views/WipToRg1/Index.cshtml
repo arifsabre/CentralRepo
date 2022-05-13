@@ -1,0 +1,145 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.StockLedgerMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <h4><b>WIP to RG1 List</b></h4>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndex", "WipToRg1", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+            <div class="form-group">
+                @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+
+                &nbsp;&nbsp;&nbsp;From
+                &nbsp;@Html.TextBox("txtDtFrom", null, new { @class = "datepicker", style = "width:90px;" })
+
+                &nbsp;To
+                &nbsp;@Html.TextBox("txtDtTo", null, new { @class = "datepicker", style = "width:90px;" })
+
+                &nbsp;<button class="btn btn-default">Submit</button>
+            </div>
+
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th style="width:50px;">
+                @Html.DisplayNameFor(model => model.VNo)
+            </th>
+            <th style="width:25px;">
+                @Html.DisplayNameFor(model => model.VDate)
+            </th>
+            <th style="width:auto;">
+                @Html.DisplayNameFor(model => model.ItemCode)
+            </th>
+            <th style="width:100px;">
+                Qty/Unit
+            </th>
+            <th style="width:auto;">
+                @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th style="width:120px;">Links</th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VNo)
+                </td>
+                <td>
+                    @Html.ValueFor(model => item.VDate, "{0:dd/MM/yyyy}")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemCode)
+                </td>
+                <td>
+                    @Html.ValueFor(modelItem => item.Qty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.DisplayFor(modelItem => item.UnitName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remarks)
+                </td>
+                <td>
+                    <table style="border:none;">
+                        <tr>
+                            <td style="border:none;padding:0px;">
+                                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+                            </td>
+                            <td style="border:none;padding:0px;">
+                                @Html.ActionLink("Preview", "../StockRegister/StockSlipReport",
+                                new { stkrecid = item.RecId }, new { @target = "_new;" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border:none;padding:0px;">
+                                @Html.ActionLink("Delete", null, null, new { onclick = "deleteRecord('" + item.RecId + "')" })
+                            </td>
+                            <td style="border:none;padding:0px;">
+                                @Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+                                new { tblid = 34, pkval = item.RecId }, new { @target = "_blank" })
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            i++;
+        }
+
+    </table>
+
+    @section Scripts{
+
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+        });
+        </script>
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script>
+            function deleteRecord(recid) {
+                var a = confirm("Are you sure to delete this voucher?");
+                if (a == false) {
+                    return;
+                }
+                var data = {
+                    recid: recid
+                }
+                $.ajax({
+                    url: '/WipToRg1/Delete',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+    }

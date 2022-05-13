@@ -1,0 +1,21 @@
+﻿@model ManufacturingManagement_V2.Models.AlertsMdl
+<h4><label onclick="ShowHideDiv(divComp)">Calibration Alert</label></h4>
+<div id="divComp" style="display:block;">
+    <b>Next calibration due within 30 days:-</b>
+    <table class="table table-bordered">
+        <tr>
+            <td>
+                <span style="background-color:gray;color:white;">
+                    &nbsp;&nbsp;
+                    <b>Lapsed Calibrations</b>&nbsp;&nbsp;
+                </span>
+                <span style="background-color:yellow;color:black;">
+                    &nbsp;&nbsp;&nbsp;
+                    <b>Coming Next</b>&nbsp;&nbsp;&nbsp;
+                </span>
+            </td>
+        </tr>
+    </table>
+    <div>@Html.Raw(Model.AlertDetail)</div>
+</div>
+<br />

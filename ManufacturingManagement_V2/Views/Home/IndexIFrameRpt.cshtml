@@ -1,0 +1,157 @@
+﻿@{
+    ViewBag.Title = "IndexIFrameRpt";
+    Layout = null;
+}
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width"/>
+        <title>Read Only</title>
+          <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+         
+       <script type="text/javascript">
+           $(function () {
+               $("input[type=text]").first().focus();
+           });
+
+           setInterval(
+               function () {
+                   document.getElementById("b1").style.display = "block";
+               }, 2)
+
+           //function setSize(elem) {
+           //    var the_height;
+           //    the_height = elem.contentWindow.document.body.scrollHeight;
+           //    elem.height = the_height; // Its works fine in IE, Chrome, Safari but not work in FF and opera
+           //}
+
+           jQuery(document).bind("keyup keydown", function (e) {
+               if (e.ctrlKey && e.keyCode == 80) {
+                   //alert('Sorry ! Print command is disabled');
+                   return false;
+               }
+           });
+
+           jQuery(document).bind("keyup keydown", function (e) {
+               if (e.ctrlKey && e.keyCode == 83) {
+                   //alert('Sorry ! Save command is disabled');
+                   return false;
+               }
+           });
+
+           jQuery(document).bind("keyup keydown", function (e) {
+               if (e.keyCode == 0 || e.keyCode == 36 || e.keyCode == 44) {
+                   //  alert('Sorry ! PrintScreen is blocked');
+                   //remove clipboard contents
+                   var tempInput = document.createElement("input");
+                   tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+                   tempInput.value = 'Sorry It is not copied';
+                   document.body.appendChild(tempInput);
+                   tempInput.select();
+                   document.execCommand("copy");
+                   document.body.removeChild(tempInput);
+                   return false;
+               }
+           });
+
+           jQuery(document).bind("keyup keydown", function (e) {
+               if (e.keyCode == 27) {
+                   //escape key utility-- return url
+                   //var rurl = document.getElementById("hfReturnURL").value;
+                   //window.open(rurl, 'target=self');
+                   //window.close();
+                   //if (rurl != '') {
+                   //    window.location = rurl;
+                   //}
+                   //else {
+                   //    window.close();
+                   //}
+                   window.close();
+               }
+           });
+
+           jQuery(document).bind("keyup keydown", function (e) {
+               if (e.keyCode == 65) {
+                   //alert('Sorry ! Select All Not Allowed');
+                   return false;
+               }
+           });
+
+           jQuery(document).bind("keyup keydown", function (e) {
+               if (e.keyCode == 8) {
+                   //backspace key utility-- option url
+                   var rurl = document.getElementById("hfOptionURL").value;
+                   window.open(rurl);
+                   window.close();
+               }
+           });
+
+           jQuery(document).bind("keyup keydown", function (e) {
+               if (e.keyCode == 27) {
+                   //escape key utility-- return url
+                   var rurl = document.getElementById("hfReturnURL").value;
+                   window.open(rurl);
+                   window.close();
+               }
+           });
+
+           jQuery(document).bind("keyup keydown", function (e) {
+               if (e.keyCode == 67) {
+                   //alert('Sorry ! Copy Not Allowed');
+                   return false;
+               }
+           });
+           jQuery(document).bind("keyup keydown", function (e) {
+               if (e.keyCode == 86) {
+                   //alert('Sorry ! Paste Not Allowed');
+                   return false;
+               }
+           });
+           jQuery(document).bind("keyup keydown", function (e) {
+               if (e.keyCode == 112) {
+                   //alert('Sorry ! Can not take help');
+                   return false;
+               }
+           });
+
+           jQuery(document).bind("keyup keydown", function (e) {
+               if (e.keyCode == 13) {
+                   //alert('Sorry ! Can not take help');
+                   return false;
+               }
+           });
+
+           jQuery(document).bind("mousedown", function (e) {
+               if (e.button == 2) {
+                   alert('fine right clicked!');
+                   return false;
+               }
+           });
+
+           function disableContextMenu() {
+               window.frames["frmRpt"].document.oncontextmenu = function () { alert("OOPS!"); return false; };
+               document.getElementById("hh1").oncontextmenu = function () { alert("OOPS!"); return false; };
+           }
+
+        </script>
+
+        </head>
+    <Body id="b1" onload="disableContextMenu();" oncontextmenu="return false" style="display:none;" >
+        @*<h4>Controlled Report</h4>*@
+        <h3><span style="color:red;font-size:9pt;font-family:verdana;">
+            Controlled Report</span>
+            <span style="color:blue;font-size:8pt;font-family:verdana;">
+            [Press Escape(Esc) Key to Close]</span>
+        </h3>
+
+         <div style="border:none;border-width:2px;width:98%; position:absolute;">
+                <iframe id="frmRpt" runat="server" src='@ViewBag.Src'
+                    style='@ViewBag.Style' aria-readonly="false" >
+                </iframe>
+         </div>
+
+         <div style="height:100%;width:98%;background-color:white;
+              position:absolute; left:2px; top:2px;opacity:0.02;" >
+         </div>
+
+     </Body>
+</html>

@@ -1,0 +1,80 @@
+﻿@model ManufacturingManagement_V2.Models.ObjectInfoMdl
+
+@*@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}*@
+
+<h4><b>Object Detail</b></h4>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id = Model.ObjectId }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+    <div class="form-group">
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.ObjectId)</td>
+                <td style="vertical-align:top;font-weight:bold;">: @Html.DisplayFor(model => model.ObjectId)</td>
+            </tr>
+
+            <tr>
+                <td style="font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.EntryId)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EntryId)</td>
+            </tr>
+
+            <tr>
+                <td style="font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.EntryName)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EntryName)</td>
+            </tr>
+
+            <tr>
+                <td style="font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.SlNo)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SlNo)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.RptName)</td>
+                <td style="vertical-align:top;font-weight:bold;">: @Html.DisplayFor(model => model.RptName)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.SPName)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SPName)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.Location)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Location)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.RptLink)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RptLink)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.RouteMap)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RouteMap)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.Remarks)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Remarks)</td>
+            </tr>
+
+        </table>
+    </div>
+</fieldset>
+
+@*@if(ViewBag.IsAdmin == "1") {
+        using (Html.BeginForm()) {
+        <p>
+            <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+        </p>
+        }
+    }*@
+

@@ -1,0 +1,29 @@
+﻿@model ManufacturingManagement_V2.Models.LibFileUploadMDI
+@{
+    // ViewBag.Title = "";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div>
+        Record Save Successfully and File Details Given Below.
+    </div>
+    <br />
+
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10 text-success">
+            @ViewBag.FileStatus
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-8">
+            @Html.Action("FileDetails1", "Library")
+
+        </div>
+    </div>
+
+}
+    <script src="~/Script/Site.js"></script>

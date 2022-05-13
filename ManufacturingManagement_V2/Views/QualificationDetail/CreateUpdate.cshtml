@@ -1,0 +1,107 @@
+﻿@model ManufacturingManagement_V2.Models.QualDetailMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Qualification Detail</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    @Html.HiddenFor(model => model.RecId)
+                    @Html.HiddenFor(model => model.NewEmpId)
+                    <td style="width:10%;">@Html.LabelFor(model => model.EmpId)</td>
+                    <td>
+                        @Html.EditorFor(model => model.EmpId)
+                        @Html.ValidationMessageFor(model => model.EmpId)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.QualId)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.QualId, ViewBag.QualificationList as SelectList)
+                    @Html.ValidationMessageFor(model => model.QualId)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.PassingYear)</td>
+                <td>
+                    @Html.EditorFor(model => model.PassingYear)
+                @Html.ValidationMessageFor(model => model.PassingYear)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Institute)</td>
+                <td>
+                    @Html.EditorFor(model => model.Institute)
+                @Html.ValidationMessageFor(model => model.Institute)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.UnivBoard)</td>
+                <td>
+                    @Html.EditorFor(model => model.UnivBoard)
+                @Html.ValidationMessageFor(model => model.UnivBoard)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Division)</td>
+                <td>
+                    @Html.EditorFor(model => model.Division)
+                @Html.ValidationMessageFor(model => model.Division)
+            </td>
+            </tr>
+            </table>
+        </div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class = "btn btn-default" value=@ViewBag.AddEdit />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </p>
+}
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#EmpId").attr("placeholder", "start typing, then select");
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#EmpId").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('NewEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

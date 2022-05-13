@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "AdminTaskInfo";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Creating Single File Content from Directory (Admin Access)</b></h4>
+
+<fieldset>
+    @using (Ajax.BeginForm("SearchSingleDirectory", "Admin", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <b>Directory Name</b>
+                        @Html.TextBox("txtDirName", null, new { placeholder = "Directory Name" })
+                        <button class="btn btn-default">Search</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        @Html.ActionLink("Back", "../Admin/Index", null, new { @class = "btn btn-default" })
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</fieldset>
+<div style='font-family:verdana; font-size:11pt;'>
+    @Html.Raw(ViewBag.Result)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById('txtDirName').focus();
+            document.getElementById('txtDirName').value = '@ViewBag.dirname';
+        });
+    </script>
+}

@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "UploadFile";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4>Upload Excel -BOM Creation (* Under Trial)</h4>
+@Html.ActionLink("Download", "DownloadsBOM", null, new { @class = "btn btn-default" })
+<fieldset>
+    <br />
+    @using (Html.BeginForm("UploadFileBOM", "TallyData", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <label for="file"><i>Select file to upload:</i></label>
+        <input style="color:green;font-weight:bold;" type="file" name="file" id="file" />
+        <br><br>
+        <input type="submit" value="Upload File" />
+        @ViewBag.Message
+    }
+</fieldset>

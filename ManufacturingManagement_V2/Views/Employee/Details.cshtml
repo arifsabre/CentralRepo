@@ -1,0 +1,777 @@
+﻿@model ManufacturingManagement_V2.Models.EmployeeMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Employee Detail</b></h4>
+@if (ViewBag.ToEdit == "1")
+{
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", 
+     new { id = Model.NewEmpId }, new { @class = "btn btn-default" })
+    
+    @Html.ActionLink("Back to List", "Index", null, 
+     new { @class = "btn btn-default" })
+
+    @Html.ActionLink("Create New", "CreateUpdate", null, 
+     new { @class = "btn btn-default" })
+
+    @Html.ActionLink("Family Detail", "../FamilyDetail/Index",
+     new { newempid = Model.NewEmpId, empname = Model.EmpName },
+     new { @target = "_blank", @class = "btn btn-default" })
+
+    @Html.ActionLink("Nominee Detail", "../PFNominee/Index",
+     new { newempid = Model.NewEmpId, empname = Model.EmpName },
+     new { @target = "_blank", @class = "btn btn-default" })
+
+    @Html.ActionLink("Qualification Detail", "../QualificationDetail/Index",
+     new { newempid = Model.NewEmpId, empname = Model.EmpName },
+     new { @target = "_blank", @class = "btn btn-default" })
+
+    @Html.ActionLink("Experience Detail", "../ExperienceDetail/Index",
+     new { newempid = Model.NewEmpId, empname = Model.EmpName },
+     new { @target = "_blank", @class = "btn btn-default" })
+
+    @Html.ActionLink("Salary Updation", "../SalaryDetail/Index",
+     new { newempid = Model.NewEmpId, empname = Model.EmpName },
+     new { @target = "_blank", @class = "btn btn-default" })
+
+    @Html.ActionLink("Promotion Entry", "../PromotionDetail/Index",
+     new { newempid = Model.NewEmpId, empname = Model.EmpName },
+     new { @target = "_blank", @class = "btn btn-default" })
+
+    @Html.ActionLink("Opening Entry", "../EmployeeOpening/Index",
+     new { newempid = Model.NewEmpId, empname = Model.EmpName },
+     new { @target = "_blank", @class = "btn btn-default" })
+
+    @Html.ActionLink("Attendance", "../Form1415Report/Index",
+     new { newempid = Model.NewEmpId, empname = Model.EmpName },
+     new { @target = "_blank", @class = "btn btn-default" })
+
+    @Html.ActionLink("View File(s)", "Downloads",
+     new { newempid = Model.NewEmpId, empname = Model.EmpName },
+     new { @target = "_blank", @class = "btn btn-default" })
+
+    @Html.ActionLink("Updation Log", "../EventLogReport/getLogDetail",
+     new { tblid = 25, pkval = Model.NewEmpId }, new { @target = "_blank", @class = "btn btn-default" })
+</p>
+}
+<fieldset>
+    @*<legend>Employee</legend>*@
+    @using (Ajax.BeginForm("SearchEmployee", "Employee", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    @Html.Hidden("hfNewEmpId", null, new { @id = "hfNewEmpId" })
+                    <td>
+                        <b>Select Employee</b>
+                        &nbsp;&nbsp;@Html.TextBox("txtEmpCode", null,
+                        new { placeholder = "Start typing, then select", style = "width:320px;"})
+                        
+                        <button class="btn btn-default">Search</button>
+
+                        <label id="dh" class="btn btn-default" onclick="displayAll()">Display All</label>
+                        
+                        @Html.ActionLink("Preview", "", "", null,
+                            new { id = "mylink", @target = "_new;", @class = "btn btn-default" })
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</fieldset>
+
+<fieldset>
+    @*<legend>EmployeeMdl</legend>*@
+        <div id="EmpView" class="form-group">
+            <img id="img1" alt="" src="" width="150px" height="150px" />
+            <br />
+            <h5><b><label onclick="ShowHideDiv(divJoiningDet)">Joining Details</label></b></h5>
+            <div id="divJoiningDet" style="display:none;">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EmpName)</td>
+                        <td>@Html.DisplayFor(model => model.EmpName)</td>
+                        <td>@Html.LabelFor(model => model.EmpId)</td>
+                        <td><b>@Html.DisplayFor(model => model.EmpId)</b></td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.JoiningUnit)</td>
+                        <td>@Html.DisplayFor(model => model.JoiningUnitName)</td>
+                        <td>@Html.LabelFor(model => model.Grade)</td>
+                        <td>@Html.DisplayFor(model => model.GradeName)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.CategoryId)</td>
+                        <td>@Html.DisplayFor(model => model.CategoryName)</td>
+                        <td>@Html.LabelFor(model => model.DepCode)</td>
+                        <td>@Html.DisplayFor(model => model.DepName)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.DesigId)</td>
+                        <td>@Html.DisplayFor(model => model.Designation)</td>
+                        <td>@Html.LabelFor(model => model.JobDesc)</td>
+                        <td>@Html.DisplayFor(model => model.JobDesc)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.Qualification)</td>
+                        <td>@Html.DisplayFor(model => model.Qualification)</td>
+                        <td>@Html.LabelFor(model => model.JoiningDate)</td>
+                        <td>@Html.ValueFor(model => model.JoiningDate, "{0:dd/MM/yyyy}")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.AppDate)</td>
+                        <td>@Html.ValueFor(model => model.AppDate, "{0:dd/MM/yyyy}")</td>
+                        <td>@Html.LabelFor(model => model.IsActive)</td>
+                        <td>@Html.DisplayFor(model => model.IsActive)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.TransferDate)</td>
+                        <td>@Html.ValueFor(model => model.TransferDate, "{0:dd/MM/yyyy}")</td>
+                        <td>@Html.LabelFor(model => model.GroupJoiningDate)</td>
+                        <td>@Html.ValueFor(model => model.GroupJoiningDate, "{0:dd/MM/yyyy}")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.ReferredBy)</td>
+                        <td>@Html.DisplayFor(model => model.ReferredBy)</td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <h5><b><label onclick="ShowHideDiv(divPaymentDet)">Payment Details</label></b></h5>
+            <div id="divPaymentDet" style="display:none;">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>@Html.LabelFor(model => model.BasicRate)</td>
+                        <td>@Html.ValueFor(model => model.BasicRate, "{0:##,##,##,##,##0.00}")</td>
+                        <td>@Html.LabelFor(model => model.DA)</td>
+                        <td>@Html.ValueFor(model => model.DA, "{0:##,##,##,##,##0.00}")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.ConvAllowance)</td>
+                        <td>@Html.ValueFor(model => model.ConvAllowance, "{0:##,##,##,##,##0.00}")</td>
+                        <td>@Html.LabelFor(model => model.HRA)</td>
+                        <td>@Html.ValueFor(model => model.HRA, "{0:##,##,##,##,##0.00}")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.MedicalAllowance)</td>
+                        <td>@Html.ValueFor(model => model.MedicalAllowance, "{0:##,##,##,##,##0.00}")</td>
+                        <td>@Html.LabelFor(model => model.CompAllowance)</td>
+                        <td>@Html.ValueFor(model => model.CompAllowance, "{0:##,##,##,##,##0.00}")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.DWAllowance)</td>
+                        <td>@Html.ValueFor(model => model.DWAllowance, "{0:##,##,##,##,##0.00}")</td>
+                        <td>@Html.LabelFor(model => model.SpecialPay)</td>
+                        <td>@Html.ValueFor(model => model.SpecialPay, "{0:##,##,##,##,##0.00}")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.IncAmount)</td>
+                        <td>@Html.ValueFor(model => model.IncAmount, "{0:##,##,##,##,##0.00}")</td>
+                        <td><b>TDS&nbsp;Deduction</b></td>
+                        <td>@Html.ValueFor(model => model.TDSDeduction, "{0:##,##,##,##,##0.00}")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.Others)</td>
+                        <td>@Html.ValueFor(model => model.Others, "{0:##,##,##,##,##0.00}")</td>
+                        <td>@Html.LabelFor(model => model.GrossSalary)</td>
+                        <td>@Html.ValueFor(model => model.GrossSalary, "{0:##,##,##,##,##0.00}")</td>
+                    </tr>
+                    <tr>
+                        <td><b>PF Allow.</b></td>
+                        <td>@Html.DisplayFor(model => model.PFApplicable)</td>
+                        <td><b>ESI Allow.</b></td>
+                        <td> @Html.DisplayFor(model => model.ESIApplicable)</td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <h5><b><label onclick="ShowHideDiv(divPersonalDet)">Personal Details</label></b></h5>
+            <div id="divPersonalDet" style="display:none;">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>@Html.LabelFor(model => model.PrevExp)</td>
+                        <td>@Html.DisplayFor(model => model.PrevExp)</td>
+                        <td>@Html.LabelFor(model => model.BirthDate)</td>
+                        <td>@Html.ValueFor(model => model.BirthDate, "{0:dd/MM/yyyy}")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.Gender)</td>
+                        <td>@Html.DisplayFor(model => model.GenderName)</td>
+                        <td>@Html.LabelFor(model => model.MaritalStatus)</td>
+                        <td>@Html.DisplayFor(model => model.MaritalStatusName)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.FatherName)</td>
+                        <td>@Html.DisplayFor(model => model.FatherName)</td>
+                        <td>@Html.LabelFor(model => model.FatherOccupation)</td>
+                        <td>@Html.DisplayFor(model => model.FatherOccupation)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.MotherName)</td>
+                        <td>@Html.DisplayFor(model => model.MotherName)</td>
+                        <td>@Html.LabelFor(model => model.MotherOccupation)</td>
+                        <td>@Html.DisplayFor(model => model.MotherOccupation)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.SpouseName)</td>
+                        <td>@Html.DisplayFor(model => model.SpouseName)</td>
+                        <td>@Html.LabelFor(model => model.SpouseAge)</td>
+                        <td>@Html.DisplayFor(model => model.SpouseAge)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.AnnivDate)</td>
+                        <td>@Html.ValueFor(model => model.AnnivDate, "{0:dd/MM/yyyy}")</td>
+                        <td>@Html.LabelFor(model => model.SpouseOccupation)</td>
+                        <td>@Html.DisplayFor(model => model.SpouseOccupation)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.SpouseQual)</td>
+                        <td>@Html.DisplayFor(model => model.SpouseQual)</td>
+                        <td>@Html.LabelFor(model => model.Religion)</td>
+                        <td>@Html.DisplayFor(model => model.Religion)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.IdentMark)</td>
+                        <td>@Html.DisplayFor(model => model.IdentMark)</td>
+                        <td>@Html.LabelFor(model => model.BGroup)</td>
+                        <td>@Html.DisplayFor(model => model.BGroup)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.PanNo)</td>
+                        <td>@Html.DisplayFor(model => model.PanNo)</td>
+                        <td>@Html.LabelFor(model => model.AadharNo)</td>
+                        <td>@Html.DisplayFor(model => model.AadharNo)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.VoterIdNo)</td>
+                        <td>@Html.DisplayFor(model => model.VoterIdNo)</td>
+                        <td>@Html.LabelFor(model => model.DrvLicNo)</td>
+                        <td>@Html.DisplayFor(model => model.DrvLicNo)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.PassportNo)</td>
+                        <td>@Html.DisplayFor(model => model.PassportNo)</td>
+                        <td>@Html.LabelFor(model => model.CasteName)</td>
+                        <td>@Html.DisplayFor(model => model.CasteName)</td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <h5><b><label onclick="ShowHideDiv(divContactDet)">Contact Details</label></b></h5>
+            <div id="divContactDet" style="display:none;">
+                <table class="table table-bordered">
+                    <tr>
+                        <td style="vertical-align:top;">@Html.LabelFor(model => model.CAddress)</td>
+                        <td colspan="3">@Html.DisplayFor(model => model.CAddress)</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align:top;">@Html.LabelFor(model => model.PAddress)</td>
+                        <td colspan="3">@Html.DisplayFor(model => model.PAddress)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.CCity)</td>
+                        <td>@Html.DisplayFor(model => model.CCity)</td>
+                        <td>@Html.LabelFor(model => model.PCity)</td>
+                        <td>@Html.DisplayFor(model => model.PCity)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.VillageName)</td>
+                        <td>@Html.DisplayFor(model => model.VillageName)</td>
+                        <td>@Html.LabelFor(model => model.PoliceStation)</td>
+                        <td>@Html.DisplayFor(model => model.PoliceStation)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.SubDivision)</td>
+                        <td>@Html.DisplayFor(model => model.SubDivision)</td>
+                        <td>@Html.LabelFor(model => model.PostOffice)</td>
+                        <td>@Html.DisplayFor(model => model.PostOffice)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.ContactNo)</td>
+                        <td>@Html.DisplayFor(model => model.ContactNo)</td>
+                        <td>@Html.LabelFor(model => model.Email)</td>
+                        <td>@Html.DisplayFor(model => model.Email)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.PhoneNo)</td>
+                        <td>@Html.DisplayFor(model => model.PhoneNo)</td>
+                        <td>@Html.LabelFor(model => model.PhoneExtNo)</td>
+                        <td>@Html.DisplayFor(model => model.PhoneExtNo)</td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <h5><b><label onclick="ShowHideDiv(divEmergencyDet)">Emergency Details</label></b></h5>
+            <div id="divEmergencyDet" style="display:none;">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EmgContactPer)</td>
+                        <td>@Html.DisplayFor(model => model.EmgContactPer)</td>
+                        <td>@Html.LabelFor(model => model.EmgContactNo)</td>
+                        <td>@Html.DisplayFor(model => model.EmgContactNo)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EmgContactPer2)</td>
+                        <td>@Html.DisplayFor(model => model.EmgContactPer2)</td>
+                        <td>@Html.LabelFor(model => model.EmgContactNo2)</td>
+                        <td>@Html.DisplayFor(model => model.EmgContactNo2)</td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <h5><b><label onclick="ShowHideDiv(divReferenceDet)">Reference Details</label></b></h5>
+            <div id="divReferenceDet" style="display:none;">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>@Html.LabelFor(model => model.RefName1)</td>
+                        <td>@Html.DisplayFor(model => model.RefName1)</td>
+                        <td>@Html.LabelFor(model => model.RefName2)</td>
+                        <td>@Html.DisplayFor(model => model.RefName2)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.RefAddress1)</td>
+                        <td>@Html.DisplayFor(model => model.RefAddress1)</td>
+                        <td>@Html.LabelFor(model => model.RefAddress2)</td>
+                        <td>@Html.DisplayFor(model => model.RefAddress2)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.RefContactNo1)</td>
+                        <td>@Html.DisplayFor(model => model.RefContactNo1)</td>
+                        <td>@Html.LabelFor(model => model.RefContactNo2)</td>
+                        <td>@Html.DisplayFor(model => model.RefContactNo2)</td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <h5><b><label onclick="ShowHideDiv(divBankDet)">Bank Details</label></b></h5>
+            <div id="divBankDet" style="display:none;">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>@Html.LabelFor(model => model.BankName)</td>
+                        <td>@Html.DisplayFor(model => model.BankName)</td>
+                        <td>@Html.LabelFor(model => model.BranchAddress)</td>
+                        <td>@Html.DisplayFor(model => model.BranchAddress)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.NameOnPassbook)</td>
+                        <td>@Html.DisplayFor(model => model.NameOnPassbook)</td>
+                        <td>@Html.LabelFor(model => model.AccountNo)</td>
+                        <td>@Html.DisplayFor(model => model.AccountNo)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.IfscCode)</td>
+                        <td>@Html.DisplayFor(model => model.IfscCode)</td>
+                        <td>@Html.LabelFor(model => model.MicrCode)</td>
+                        <td>@Html.DisplayFor(model => model.MicrCode)</td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <h5><b><label onclick="ShowHideDiv(divPfEsiDet)">PF/ESI Details</label></b></h5>
+            <div id="divPfEsiDet" style="display:none;">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>@Html.LabelFor(model => model.PFNumber)</td>
+                        <td>@Html.DisplayFor(model => model.PFNumber)</td>
+                        <td>@Html.LabelFor(model => model.ESINumber)</td>
+                        <td>@Html.DisplayFor(model => model.ESINumber)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.PFNominee)</td>
+                        <td>@Html.DisplayFor(model => model.PFNominee)</td>
+                        <td>@Html.LabelFor(model => model.ESINominee)</td>
+                        <td>@Html.DisplayFor(model => model.ESINominee)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.PFNomineeAge)</td>
+                        <td>@Html.DisplayFor(model => model.PFNomineeAge)</td>
+                        <td>@Html.LabelFor(model => model.ESINomineeAge)</td>
+                        <td>@Html.DisplayFor(model => model.ESINomineeAge)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.PFNomineeRelation)</td>
+                        <td>@Html.DisplayFor(model => model.PFNomineeRelation)</td>
+                        <td>@Html.LabelFor(model => model.ESINomineeRelation)</td>
+                        <td>@Html.DisplayFor(model => model.ESINomineeRelation)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.UAN)</td>
+                        <td>@Html.DisplayFor(model => model.UAN)</td>
+                        <td>@Html.LabelFor(model => model.LICId)</td>
+                        <td>@Html.DisplayFor(model => model.LICId)</td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <h5><b><label onclick="ShowHideDiv(divLeavingDet)">Leaving/Updation Detail</label></b></h5>
+            <div id="divLeavingDet" style="display:none;">
+                <table class="table table-bordered">
+                    <tr>
+                        <td style="width:15%;">@Html.LabelFor(model => model.LeavingDate)</td>
+                        <td>@Html.ValueFor(model => model.LeavingDate, "{0:dd/MM/yyyy}")</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align:top;">@Html.LabelFor(model => model.Reason)</td>
+                        <td colspan="3">@Html.DisplayFor(model => model.Reason)</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align:top;">@Html.LabelFor(model => model.Remarks)</td>
+                        <td colspan="3">@Html.DisplayFor(model => model.Remarks)</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align:top;">@Html.LabelFor(model => model.UpdationLog)</td>
+                        <td colspan="3">@Html.DisplayFor(model => model.UpdationLog)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <br />
+            @{int i = 0;}
+            <h5><b><label onclick="ShowHideDiv(divQualDetail)">Qualification Detail:</label></b></h5>
+            <div id="divQualDetail" style="display:none;">
+                @if (Model.QualDetail.Any())
+                {
+                <table class="tablecontainer" style="width:100%;">
+                    <tr>
+                        <th style="width:35px;">
+                            S.No.
+                        </th>
+                        <th>
+                            Qualification
+                        </th>
+                        <th>
+                            Passing Year
+                        </th>
+                        <th>
+                            Institute
+                        </th>
+                        <th>
+                            Univ./Board
+                        </th>
+                        <th>
+                            Division %
+                        </th>
+                    </tr>
+                    @{i = 1;}
+                    @foreach (var item in Model.QualDetail)
+                    {
+                        <tr>
+                            <td>
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Qualification)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.PassingYear)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Institute)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.UnivBoard)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Division)
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </table>
+                }
+            </div>
+
+            <br />
+            @{i = 0;}
+            <h5><b><label onclick="ShowHideDiv(divExpDetail)">Experience Detail:</label></b></h5>
+            <div id="divExpDetail" style="display:none;">
+                @if (Model.ExpDetail.Any())
+                {
+                <table class="tablecontainer" style="width:100%;">
+                    <tr>
+                        <th style="width:35px;">
+                            S.No.
+                        </th>
+                        <th>
+                            Company
+                        </th>
+                        <th>
+                            Date From
+                        </th>
+                        <th>
+                            Date To
+                        </th>
+                        <th>
+                            Designation
+                        </th>
+                        <th>
+                            Profile
+                        </th>
+                    </tr>
+                    @{i = 1;}
+                    @foreach (var item in Model.ExpDetail)
+                    {
+                        <tr>
+                            <td>
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.FirmName)
+                            </td>
+                            <td>
+                                @Html.ValueFor(model => item.DateFrom, "{0:dd/MM/yyyy}")
+                            </td>
+                            <td>
+                                @Html.ValueFor(model => item.DateTo, "{0:dd/MM/yyyy}")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Designation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.JobDesc)
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </table>
+                }
+            </div>
+
+            <br />
+            @{i = 0;}
+            <h5><b><label onclick="ShowHideDiv(divFamilyDetail)">Family Detail:</label></b></h5>
+            <div id="divFamilyDetail" style="display:none;">
+                @if (Model.FamilyDetail.Any())
+                {
+                <table class="tablecontainer" style="width:100%;">
+                    <tr>
+                        <th style="width:35px;">
+                            S.No.
+                        </th>
+                        <th>
+                            Member Name
+                        </th>
+                        <th>
+                            Birth Date
+                        </th>
+                        <th>
+                            Age
+                        </th>
+                        <th>
+                            Relation
+                        </th>
+                    </tr>
+                    @{i = 1;}
+                    @foreach (var item in Model.FamilyDetail)
+                    {
+                        <tr>
+                            <td>
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.MemberName)
+                            </td>
+                            <td>
+                                @Html.ValueFor(model => item.BirthDate, "{0:dd/MM/yyyy}")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Age)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Relation)
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </table>
+                }
+            </div>
+
+            <br />
+            @{i = 0;}
+            <h5><b><label onclick="ShowHideDiv(divNomineeDetail)">Nominee Detail:</label></b></h5>
+            <div id="divNomineeDetail" style="display:none;">
+                @if (Model.PFNomineeDetail.Any())
+                {
+                <table class="tablecontainer" style="width:100%;">
+                    <tr>
+                        <th style="width:35px;">
+                            S.No.
+                        </th>
+                        <th>
+                            Member Name
+                        </th>
+                        <th>
+                            Birth Date
+                        </th>
+                        <th>
+                            Age
+                        </th>
+                        <th>
+                            Relation
+                        </th>
+                        <th>
+                            Share%
+                        </th>
+                        <th>
+                            Address
+                        </th>
+                        <th>
+                            Guardian
+                        </th>
+                        <th>
+                            Nominee For
+                        </th>
+                    </tr>
+                    @{i = 1;}
+                    @foreach (var item in Model.PFNomineeDetail)
+                    {
+                        <tr>
+                            <td>
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.MemberName)
+                            </td>
+                            <td>
+                                @Html.ValueFor(model => item.BirthDate, "{0:dd/MM/yyyy}")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Age)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Relation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.SharePercent)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.MAddress)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.GuardianDetail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.NomineeForName)
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </table>
+                }
+            </div>
+
+            @*<div id="pw" style="display:none;"><label id="printWin" onclick="window.print()" style="font-size:10pt;"><u>Print</u></label></div>*@
+        </div>
+</fieldset>
+
+
+
+@*@using (Html.BeginForm())
+    {
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+        </p>
+    }*@
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+@section Scripts {
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#PFApplicable").attr("style", "width:55px;height:25px;");
+            $("#ESIApplicable").attr("style", "width:55px;height:25px;");
+            $("#IsActive").attr("style", "width:55px;height:25px;");
+            //document.getElementById("IsActive").attr("style", "width:55px;height:25px;");
+            $("#EmpId").attr("placeholder", "start typing, then select");
+            $('#img1').attr('src', '/Employee/ShowEmpImage' + '?newempid='+@Model.NewEmpId);
+            document.getElementById("hfNewEmpId").value='@Model.NewEmpId';
+            document.getElementById("txtEmpCode").value = '@Model.EmpName';
+            $('#mylink').attr('href', '/EmployeeFormsReport/EmployeeFormReportLink?newempid=' + @Model.NewEmpId);
+        });
+    </script>
+
+    <script type="text/javascript">
+        function displayAll() {
+            var lbltext = document.getElementById('dh').innerHTML;
+            if (lbltext == 'Display All') {
+                $('#dh').text('Hide All');
+                divJoiningDet.style.display = "block";
+                divPaymentDet.style.display = "block";
+                divPersonalDet.style.display = "block";
+                divContactDet.style.display = "block";
+                divEmergencyDet.style.display = "block";
+                divReferenceDet.style.display = "block";
+                divBankDet.style.display = "block";
+                divPfEsiDet.style.display = "block";
+                divLeavingDet.style.display = "block";
+                divQualDetail.style.display = "block";
+                divExpDetail.style.display = "block";
+                divFamilyDetail.style.display = "block";
+                divNomineeDetail.style.display = "block";
+            }
+            else if (lbltext == 'Hide All') {
+                $('#dh').text('Display All');
+                divJoiningDet.style.display = "none";
+                divPaymentDet.style.display = "none";
+                divPersonalDet.style.display = "none";
+                divContactDet.style.display = "none";
+                divEmergencyDet.style.display = "none";
+                divReferenceDet.style.display = "none";
+                divBankDet.style.display = "none";
+                divPfEsiDet.style.display = "none";
+                divLeavingDet.style.display = "none";
+                divQualDetail.style.display = "none";
+                divExpDetail.style.display = "none";
+                divFamilyDetail.style.display = "none";
+                divNomineeDetail.style.display = "none";
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        $("#txtEmpCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfNewEmpId').value = ui.item.Id;
+                $('#mylink').attr('href', '/EmployeeFormsReport/EmployeeFormReportLink?newempid=' + ui.item.Id);
+            }
+        });
+    </script>
+
+}
+

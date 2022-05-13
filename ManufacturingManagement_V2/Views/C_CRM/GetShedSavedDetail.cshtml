@@ -1,0 +1,31 @@
+﻿@model ManufacturingManagement_V2.Models.C_ComplaintMDI
+@{
+    ViewBag.Title = "GetShedSavedDetail";
+    //Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+
+<br /><br /><br /><br /><br /><br /><br />
+<div>
+    <table id="jdtabledesktop4" class="display nowrap" style="width:100%">
+        <thead>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Item_List)
+            {
+                <tr>
+                 
+                    <td style="color:green;font-size:medium">
+                        Data Save Successfully
+                        @*Shed Name - @Html.DisplayFor(model => item.ShedName)<br />
+        Trainer-  @Html.DisplayFor(model => item.Tranner)<br />
+        Start From - @Html.DisplayFor(model => item.StartDate)<br />
+        End To-  @Html.DisplayFor(model => item.EndDate)*@
+                    </td>
+               </tr>
+            }
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>
+

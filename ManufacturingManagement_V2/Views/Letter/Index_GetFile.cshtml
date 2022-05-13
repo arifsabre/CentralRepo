@@ -1,0 +1,22 @@
+﻿@model ManufacturingManagement_V2.Models.LetterMDI
+@{
+    ViewBag.Title = "Index_GetFile";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<h4>Download File</h4>
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <div>
+            <br />
+            @Html.Action("FileDetails", "Letter")
+
+        </div>
+    </div>
+
+}
+
+<script src="~/Script/Site1.js"></script>
+

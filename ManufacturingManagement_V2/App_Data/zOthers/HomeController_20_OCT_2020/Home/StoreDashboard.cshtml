@@ -1,0 +1,30 @@
+﻿@model ManufacturingManagement_V2.Models.AlertsMdl
+@{
+    ViewBag.Title = "StoreDepartment";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Store Department</h2>
+<div style="width:100%;border:solid;border-width:1px;border-color:blue;border-radius:4px;padding-left:2px;">
+@Html.Partial("AlertPartialSummary",Model)
+<p>
+    <h3>Entries</h3>
+    <br>
+    @Html.ActionLink("Vendor Address", "../VendorAddress/Index") 
+    <br><br/>
+    @Html.ActionLink("Item Master", "../Item/Index")
+    <br><br/>
+    @Html.ActionLink("Order Entry", "../Order/Index")
+    <br><br/>
+    @Html.ActionLink("Purchase Entry", "../Purchase/Index")
+    <br><br/>
+    @Html.ActionLink("Production Entry", "../Production/Index")
+    <br><br/>
+    @Html.ActionLink("Unit Conversion", "../UnitConversion/Index")
+    <br><br/>
+    <h3>Reports</h3>
+    <br/>
+    @Html.ActionLink("Order Report", "../OrderReport/Index")
+</p>
+<br/>
+</div>

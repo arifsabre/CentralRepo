@@ -1,0 +1,220 @@
+﻿@model ManufacturingManagement_V2.Models.BomMdl
+@{
+    ViewBag.Title = "BOMList";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>BOM List</title>
+
+    <script>
+        function deleteBomRecord(recid) {
+            var a = confirm("Are you sure to delete this BOM record?");
+            if (a == false) {
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "Bom")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    recid: recid
+                }),
+                success: function () {
+                    alert("BOM Record Deleted Successfully");
+                    location.reload();
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function callUpdate(recid) {
+            $('#modal-Update').modal('show');
+            var ifrm = document.getElementById("frmUpdate");
+            ifrm.setAttribute('src', '@ViewBag.baseurl' + "//Bom/CreateUpdate?id=" + recid);
+        }
+    </script>
+
+    <script>
+        function callInsert() {
+            $('#modal-Insert').modal('show');
+            var ifrm = document.getElementById("frmInsert");
+            ifrm.setAttribute('src', '@ViewBag.baseurl'+"//Bom/CreateUpdate");
+        }
+    </script>
+
+    <script>
+        function displayReport(fgitemid) {
+            window.open('@ViewBag.baseurl' + "//MaterialRequirementReport/DisplayBomReport?fgitemid=" + fgitemid,target='_new');
+        }
+    </script>
+
+</head>
+<body>
+    <div>
+        <h4><b>BOM List</b></h4>
+        <button type="button" class="btn btn-default"
+                data-toggle="modal" onclick="callInsert()">
+            Create New
+        </button>
+        <div id="printbar" class="pull-right">
+        </div>
+    </div>
+    <section class="content" style="width:96%;">
+        @*note*@
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="display overlay-wrapper" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15px; vertical-align: top;">S.No.</th>
+                                    <th style="width: auto; vertical-align: top;">RevNo<br />RevDate</th>
+                                    <th style="width: auto; vertical-align: top;">Item Type</th>
+                                    <th style="width: auto; vertical-align: top;">FG/SA Item</th>
+                                    <th style="width: 50px; vertical-align: top;">FG/SA<br />Unit</th>
+                                    <th style="width: auto; vertical-align: top;">SA/RM Item</th>
+                                    <th style="width: 50px; vertical-align: top;">B.Qty<br />W.Qty</th>
+                                    <th style="width: 30px; vertical-align: top;">SA/RM<br />Unit</th>
+                                    <th style="width: auto; vertical-align: top;">Remarks</th>
+                                    <th style="width: 30px; text-align: center; vertical-align: top;">View</th>
+                                    <th style="width: 50px; text-align: left; vertical-align: top;">Action</th>
+                                </tr>
+                            </thead>
+                            @{int i = 1; string x = "";}
+                            <tbody>
+                                @foreach (var item in Model.BomList)
+                                {
+                                <tr>
+                                    <td style="vertical-align:top;">@i</td>
+                                    @if (x != item.FgItemCode.ToString()+item.RevDate.ToString())
+                                    {
+                                        x = item.FgItemCode.ToString()+item.RevDate.ToString();
+                                        <td style="vertical-align:top;">
+                                            RevNo-@Html.DisplayFor(model => item.RevNo),
+                                            <br />Dt.@Html.ValueFor(model => item.RevDate, "{0:dd/MM/yyyy}")
+                                        </td>
+                                        <td style="vertical-align:top;">
+                                            @Html.DisplayFor(model => item.ItemTypeDesc)
+                                        </td>
+                                        <td style="vertical-align:top;">
+                                            @Html.DisplayFor(model => item.FgItemCode)
+                                            <br />@Html.DisplayFor(model => item.FgItemName)
+                                        </td>
+                                        <td style="vertical-align:top;">
+                                            @Html.DisplayFor(model => item.FgUnitName)
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="vertical-align:top;color:white;">
+                                            RevNo-@Html.DisplayFor(model => item.RevNo),
+                                            <br />Dt.@Html.ValueFor(model => item.RevDate, "{0:dd/MM/yyyy}")
+                                        </td>
+                                        <td style="vertical-align:top;color:white;">
+                                            @Html.DisplayFor(model => item.ItemTypeDesc)
+                                        </td>
+                                        <td style="vertical-align:top;color:white;">
+                                            @Html.DisplayFor(model => item.FgItemCode)
+                                            <br />@Html.DisplayFor(model => item.FgItemName)
+                                        </td>
+                                        <td style="vertical-align:top;color:white;">
+                                            @Html.DisplayFor(model => item.FgUnitName)
+                                        </td>
+                                    }
+                                    <td style="vertical-align:top;">
+                                        @Html.DisplayFor(model => item.RmItemCode)
+                                        <br />@Html.DisplayFor(model => item.RmItemName)
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        @Html.DisplayFor(model => item.RmQty)
+                                        <br />@Html.DisplayFor(model => item.WasteQty)
+                                    </td>
+                                    <td style="vertical-align:top;">@Html.DisplayFor(model => item.RmUnitName)</td>
+                                    <td style="vertical-align:top;">@Html.DisplayFor(model => item.Remarks)</td>
+                                    <td style="vertical-align:top;text-align:center;">
+                                        <a onclick="displayReport(@item.FgItemId)">
+                                            <i class="fa fa-address-book" style="font-size:15pt;"></i>
+                                        </a>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        @*Edit*@
+                                        <a onclick="callUpdate(@item.RecId)">
+                                            <i class="fa fa-pencil-square" style="font-size:15pt;"></i>
+                                        </a>
+                                        &nbsp;&nbsp;&nbsp;
+                                        @*Delete*@
+                                        @Html.ActionLink(" ", null, new { recid = item.RecId },
+                                           new
+                                                {
+                                                    onclick = "deleteBomRecord('" + item.RecId + "')",
+                                               @class = "fa fa-trash-o",
+                                                    @style = "font-size:15pt;"
+                                                })
+                                    </td>
+                                </tr>
+                                    i++;
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Update BOM</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmUpdate" runat="server" scrolling="no" frameborder="0"
+                                style="width:550px;height:440px;opacity:100;">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Create BOM</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmInsert" runat="server" scrolling="no" frameborder="0"
+                                style="width:550px;height:440px;opacity:100;">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+
+

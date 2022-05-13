@@ -1,0 +1,72 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.DocumentFileMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>View Company Policy</b></h4>
+
+@*<div style="font-size:14pt;color:black;background-color:yellow;text-align:center;">
+   <b>View Company Policy</b>
+</div>*@
+
+<fieldset>
+    @using (Ajax.BeginForm("FilterIndexView", "CompanyPolicy", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+    <div class="form-group">
+        @Html.DisplayNameFor(model => model.CategoryId)
+        @Html.DropDownList("ddlCategory", ViewBag.CatgeoryList as SelectList)
+        <b>Sub Category</b>
+        @Html.DropDownList("ddlSubCategory", ViewBag.SubCatgeoryList as SelectList, "All")
+        <button class="btn btn-default">Submit</button>
+    </div>
+    }
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        @*<th style="width:auto;">
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>*@
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.SubCategoryName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.DocFileName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.FileDesc)
+        </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.SubCategoryName)
+            </td>
+            <td>
+                @Html.ActionLink(item.DocFileName, "../CompanyPolicy/ShowDocument",
+                new { fileName = item.DocFileName, categoryid = item.CategoryId, subcategoryid = item.SubCategoryId },
+                new { target = "_blank", style = "font-weight:normal;" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileDesc)
+            </td>
+        </tr>
+        i++;
+    }
+    @{i = i - 1;}
+    @i.ToString()&nbsp;&nbsp;&nbsp;Document(s) found.
+</table><br/>
+

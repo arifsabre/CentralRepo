@@ -1,0 +1,64 @@
+﻿@{
+    Layout = null;
+    //Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Prag Group of Industries Organization Chart</title>
+   @* @Html.ActionLink("Back To Home", "../Home/Index")*@
+</head>
+<body style="background-color:white">
+    <p style="font-size:x-small;text-align:center">Prag Group of Industries Organization Chart</p>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load("visualization", "1", { packages: ["orgchart"] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            $.ajax({
+                type: "POST",
+                url: "/B_OrganisationChart/AjaxMethod",
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (r) {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Entity');
+                    data.addColumn('string', 'ParentEntity');
+                    data.addColumn('string', 'ToolTip');
+                    for (var i = 0; i < r.length; i++) {
+                        var employeeId = r[i][0].toString();
+                        var employeeName = r[i][1];
+                        var designation = r[i][2];
+                        var reportingManager = r[i][3] != null ? r[i][3].toString() : '';
+                        data.addRows([[{
+                            v: employeeId,
+                           //  f: employeeName + '<div>(<span>' + designation + '</span>)</div>'
+                            //f: name + '<div>(<span>' + designation + '</span>)</div><img src = "/Pictures/' + employeeId + '.jpg" />'
+                            f: name + '<div style="width:115px;height:7px;margin-top:0px;font-size:x-small">(<span>' + employeeName + '</span>)</div><img width=115px hieght=7px src = "/Pictures/' + employeeId + '.jpg" />'
+                            // f: name + '<div">(<span>' + employeeName + '</span>)</div><img src = "/Pictures/' + employeeId + '.jpg" />' 
+                              //f: name + '<div>(<span>' + name + '</span>)</div><img  src = "/Pictures/' + employeeId + '.jpg" />' 
+                        }, reportingManager, designation]]);
+                        
+                        //< a href="/Employee/Index" class="btn btn-default btn-flat" >Emp</a>
+                    }
+                    var chart = new google.visualization.OrgChart($("#chart")[0]);
+                    chart.draw(data, { allowHtml: true });
+                },
+                failure: function (r) {
+                    alert(r);
+                },
+                error: function (r) {
+                    alert(r);
+                }
+            });
+        }
+    </script>
+    <div id="chart">
+    </div>
+</body>
+</html>

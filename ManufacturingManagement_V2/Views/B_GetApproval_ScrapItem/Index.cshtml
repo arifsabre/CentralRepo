@@ -1,0 +1,177 @@
+﻿@model ManufacturingManagement_V2.Models.AAA_ITAssestCell_MDI
+@{
+    ViewBag.Title = "Index";
+    // Layout = "~/views/shared/_DarkLayout.cshtml";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+
+ }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Scrap</title>
+    
+    <script>
+        //$(function () {
+        //    $('#example1').DataTable();
+        //})
+        function GetDetails(id) {
+            $.ajax({
+                url: "/B_GetApproval_ScrapItem/Edit_ScrapItemApproval_Record/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#Tran_Id').val(response.Tran_Id);
+                    $('#Item_Name').val(response.Item_Name);
+                    $('#Serial_No').val(response.Serial_No);
+                    $('#Issue_Qty').val(response.Issue_Qty);
+                    $('#Scrap_Qty').val(response.Scrap_Qty);
+                   // $('#Location').val(response.Location);
+                    $('#Scrap_Item').val(response.Scrap_Item);
+                    $('#Scrap_Comment').val(response.Scrap_Comment);
+                    $('#Scrap_Date').val(response.Scrap_Date);
+                    $('#Approval_Comment').val(response.Approval_Comment);
+                    $('#Approoved').val(response.Approoved); 
+                   // $('#Scrap3').val(response.Scrap3);
+                   $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert1" style="margin-top:5px;margin-bottom:5px">
+       Scrap Approval List
+    </button>
+    <div id="printbar" class="pull-right" style="margin-top:5px;margin-bottom:5px">
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div class="box box-primary">
+                    @*<div class="box-header">
+                        </div>*@
+
+                    @*<br />*@
+                    <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Tran Id</th>
+                                <th>Item Name</th>
+                                <th>Serial No</th>
+                                <th>Issue Qty</th>
+                                <th>Scrap Qty</th>
+                                <th>Employee Approval</th>
+                                <th>Employee Comment</th>
+                                <th>Manager Approval</th>
+                                <th>Manager Comment</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Item_List)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(model => item.Tran_Id)</td>
+                                    <td>@Html.DisplayFor(model => item.Item_Name)</td>
+                                    <td>@Html.DisplayFor(model => item.Serial_No)</td>
+                                    <td>@Html.DisplayFor(model => item.Issue_Qty)</td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.Scrap_Qty)
+                                        @*<td>@Html.DisplayFor(model => item.Location)*@
+                                    <td>@Html.DisplayFor(model => item.Scrap_Item)</td>
+                                    <td>@Html.DisplayFor(model => item.Scrap_Comment)</td>
+                                    <td>@Html.DisplayFor(model => item.Approoved)</td>
+                                    <td>@Html.DisplayFor(model => item.Approval_Comment)</td>
+                                    <td>
+                                        <a onclick="GetDetails(@item.Tran_Id)">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        @* <a>
+                                                 @Html.ActionLink(" ", "Delete_OR_SEcurity_EMP", "B_OR_EMP_SECURITY", new { id = item.ECode }, new { onclick = "return confirm('Are  sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        @*</div>*@
+    </section>
+
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Approve Item</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_ScrapItem_Approval", "B_GetApproval_ScrapItem", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:400px;width:400px;background-color:white">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Tran Id</label>
+                                        <input type="number" class="form-control" id="Tran_Id" name="Tran_Id" readonly="readonly">
+                                        <label>Item Name</label>
+                                        <input type="text" class="form-control" id="Item_Name" name="Item_Name" readonly="readonly">
+                                        <label>Serial No</label>
+                                        <input type="text" class="form-control" id="Serial_No" name="Serial_No" readonly="readonly">
+                                        <label>Issue Qty</label>
+                                        <input type="number" class="form-control" id="Issue_Qty" name="Issue_Qty" readonly="readonly">
+                                        <label>Scrap Qty</label>
+                                        <input type="number" class="form-control" id="Scrap_Qty" name="Scrap_Qty" readonly="readonly">
+                                        @*<label>Location Installed</label>
+                                            <input type="text" class="form-control" id="Location" name="Location" readonly="True" >*@
+
+                                        <label>Scrap Date</label>
+                                        <input type="Date" class="form-control" id="Scrap_Date" name="Scrap_Date">
+
+                                        <label>Employee Approved</label>
+                                        <input type="text" class="form-control" id="Scrap_Item" name="Scrap_Item" readonly="readonly" hidden="hidden">
+
+                                        <label>Employee Comment</label>
+                                        <input type="Text" class="form-control" id="Scrap_Comment" name="Scrap_Comment" readonly="readonly">
+
+                                        <label>Manger Approval </label>
+                                        <select class="form-control" id="Approoved" name="Approoved">
+                                            <option>NO</option>
+                                            <option>YES</option>
+                                        </select>
+
+                                        <label>Manager Comment</label>
+                                        <input type="text" class="form-control" id="Approval_Comment" name="Approval_Comment">
+
+                                        @Html.HiddenFor(model => model.Scrap2)
+                                        @*<input type="text" class="form-control" id="ScrapFinal" name="ScrapFinal" >*@
+                                        @Html.HiddenFor(model => model.Scrap3)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Approved</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+    </html>

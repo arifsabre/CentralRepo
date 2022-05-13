@@ -1,0 +1,41 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Employee Directory</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+
+    <table style="width: 300px; background-color: white">
+        <tr>
+            <td style="column-gap:normal">
+                <input type="submit" class="btn btn-success" value="Staff" onclick="target = '_blank';"
+                       formaction="@Url.Action("Get_EmpDirectory")" />
+            </td>
+            <td style="column-gap:normal">
+                <input type="submit" class="btn btn-success" value="OtherthanWorker" onclick="target = '_blank';"
+                       formaction="@Url.Action("Get_EmpDirectoryW")" />
+            </td>
+        </tr>
+    </table>
+    <div class="form-group">
+        <table class="table" style="width:300px;background-color:white">
+            @*<tr>
+                    <td>Select Staff Type</td>
+                    <td>@Html.DropDownListFor(model => model.Grade, ViewBag.GradeList as SelectList)</td>
+                </tr>*@
+            <tr>
+                <td>Report Format</td>
+                <td>@Html.DropDownListFor(model => model.ReportFormat, ViewBag.ReportFormatList as SelectList)</td>
+            </tr>
+        </table>
+    </div>
+
+}
+<h5><b>@ViewBag.Message</b></h5>

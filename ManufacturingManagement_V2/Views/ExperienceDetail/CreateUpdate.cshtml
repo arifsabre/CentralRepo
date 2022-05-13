@@ -1,0 +1,106 @@
+﻿@model ManufacturingManagement_V2.Models.ExperienceDetailMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Experience Detail</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    @Html.HiddenFor(model => model.RecId)
+                    @Html.HiddenFor(model => model.NewEmpId)
+                    <td style="width:10%;">@Html.LabelFor(model => model.EmpId)</td>
+                    <td>
+                        @Html.EditorFor(model => model.EmpId)
+                        @Html.ValidationMessageFor(model => model.EmpId)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.FirmName)</td>
+                    <td>
+                        @Html.EditorFor(model => model.FirmName)
+                    @Html.ValidationMessageFor(model => model.FirmName)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.DateFrom)</td>
+                <td>
+                    @Html.EditorFor(model => model.DateFrom)
+                @Html.ValidationMessageFor(model => model.DateFrom)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.DateTo)</td>
+                <td>
+                    @Html.EditorFor(model => model.DateTo)
+                @Html.ValidationMessageFor(model => model.DateTo)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Designation)</td>
+                <td>
+                    @Html.EditorFor(model => model.Designation)
+                @Html.ValidationMessageFor(model => model.Designation)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.JobDesc)</td>
+                <td>
+                    @Html.EditorFor(model => model.JobDesc)
+                @Html.ValidationMessageFor(model => model.JobDesc)
+            </td>
+            </tr>
+            </table>
+        </div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class="btn btn-default" value=@ViewBag.AddEdit />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#EmpId").attr("placeholder", "start typing, then select");
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#EmpId").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('NewEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

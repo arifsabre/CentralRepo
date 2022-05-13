@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.EmployeeMdl>
+
+@{
+    ViewBag.Title = "Employee Directory";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<h4><b>Directory</b></h4>
+
+@{var lstGrade = new List<System.Web.UI.WebControls.ListItem>
+    {
+          new System.Web.UI.WebControls.ListItem { Text = "Staff", Value="s" },
+          new System.Web.UI.WebControls.ListItem { Text = "Worker", Value="w" },
+    };
+ }
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndexDirectory", "Employee", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td style="width:10%;"><b>Staff / Worker</b></td>
+                            <td>@Html.DropDownList("ddlGrade", new SelectList(lstGrade, "Value", "Text", @ViewBag.grade))</td>
+                            <td><b>Name</b></td>
+                            <td>@Html.TextBox("txtEmpName")
+                                <button class="btn btn-default">Submit</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            }   
+</fieldset>
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.EmpName)
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.PhoneExtNo)
+        </th>
+        <th style="width:150px;">
+            @Html.DisplayNameFor(model => model.ContactNo)
+        </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmpName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneExtNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactNo)
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+@*@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtEmpName").value = '@ViewBag.empname';
+        });
+    </script>
+}*@

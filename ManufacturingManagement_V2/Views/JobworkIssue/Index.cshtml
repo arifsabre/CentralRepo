@@ -1,0 +1,118 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.JobworkIssueMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Jobwork Issue</b></h4>
+
+<fieldset>
+        @using (Ajax.BeginForm("FilterIndex", "JobworkIssue", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+            <div class="form-group">
+                @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+        
+                &nbsp;&nbsp;From
+                @Html.TextBox("txtDtFrom", null, new { @class = "datepicker", @style = "width:90px;" })
+
+                &nbsp;To
+                @Html.TextBox("txtDtTo", null, new { @class = "datepicker", @style = "width:90px;" })
+
+                &nbsp;&nbsp;<button class="btn btn-default">Submit</button>
+
+            </div>
+        }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th style="width:90px;">
+            @Html.DisplayNameFor(model => model.ChallanNo)
+        </th>
+        <th style="width:120px;">
+            @Html.DisplayNameFor(model => model.ChallanDate)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.VendorName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.ProcessDesc)
+        </th>
+        <th style="width:auto;">
+            Item&nbsp;Code<br/>Short&nbsp;Name
+        </th>
+        <th style="width:60px;">
+            Qty<br/>Unit
+        </th>
+        <th style="width:80px;">Links</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @i
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.ChallanNo)
+        @if (item.IsCancelled == true)
+        {
+            <div style="color:fuchsia;font-size:9pt;">Cancelled</div>
+        }
+    </td>
+    <td>
+        @Html.ValueFor(model => item.ChallanDate, "{0:dd/MM/yyyy}")
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.VendorName)
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.ProcessDesc)
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.RMItemCode)
+        <br />@Html.DisplayFor(model => item.RMShortName)
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.IssuedQty)
+        <br />@Html.DisplayFor(model => item.RMUnitName)
+    </td>
+    <td>
+        @Html.ActionLink("View", "CreateUpdate", new { id = 0, challanno=item.ChallanNo })
+        <br />@Html.ActionLink("Report", "../JobworkIssueRecReport/JobworkChallanReport",
+    new { dispid = item.DispId }, new { @target = "_blank" })
+        <br />@Html.ActionLink("Cancel", "CancelJobwork", new { dispid = item.DispId })
+        <br />@Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+    new { tblid = 56, pkval = item.DispId }, new { @target = "_blank" })
+    </td>
+</tr>
+        i++;
+    }
+
+</table>
+
+@section Scripts{
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")*@
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+}
+

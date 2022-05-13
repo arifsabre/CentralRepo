@@ -1,0 +1,771 @@
+﻿@model ManufacturingManagement_V2.Models.AmcWorkMdl
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+@{var lstTrpMode = new List<System.Web.UI.WebControls.ListItem>
+{
+          new System.Web.UI.WebControls.ListItem { Text = "N/A", Value="N/A" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Road", Value="By Road" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Rail", Value="By Rail" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Post", Value="By Post" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Hand", Value="By Hand" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Courier", Value="By Courier" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Speed Post", Value="By Speed Post" },
+          new System.Web.UI.WebControls.ListItem { Text = " ", Value=" " }
+    };
+}
+
+@{var lstItemFor = new List<System.Web.UI.WebControls.ListItem>
+{
+          new System.Web.UI.WebControls.ListItem { Text = "Replacement", Value="r" },
+          new System.Web.UI.WebControls.ListItem { Text = "Bill", Value="b" }
+    };
+}
+
+<h4><b>AMC Entry</b></h4>
+<div class="form-group">
+    <b><u>AMC Details</u></b>
+    <table class="table table-bordered">
+        @Html.Hidden("hfAmcId", null, new { @id = "hfAmcId" })
+        @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+        @Html.Hidden("hfPOrderId", null, new { @id = "hfPOrderId" })
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.ChallanNo)</td>
+            <td>
+                <input type="text" id="txtChallanNoStr" readonly="readonly" placeholder="New ChallanNo" />
+            </td>
+            <td>@Html.DisplayNameFor(model => model.VDate)</td>
+            <td>
+                <input type="text" id="txtVDate" class="datepicker" />
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.PONumber)</td>
+            <td>
+                <input type="text" id="txtPONumber" placeholder="start typing, then select" />
+            </td>
+            <td>@Html.DisplayNameFor(model => model.ConsigneeName)</td>
+            <td>
+                @Html.DropDownList("ddlConsignee", ViewBag.ConsigneeList as SelectList)
+            </td>
+        </tr>
+        <tr>
+            <td>Transport Mode</td>
+            <td>
+                @Html.DropDownList("ddlTrpMode", new SelectList(lstTrpMode, "Value", "Text"))
+            </td>
+            <td>Transport Detail</td>
+            <td>
+                <textarea id="txtTrpDetail" name="txtTrpDetail" rows="2" cols="45" maxlength="500"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>Through</td>
+            <td>
+                <input type="text" id="txtThrough" />
+            </td>
+        </tr>
+        <tr><td colspan="4"><b><u>Items Detail</u></b></td></tr>
+        <tr>
+            <td>Item</td>
+            <td>
+                <input type="text" id="txtItemCode" placeholder="start typing, then select" />
+            </td>
+            <td>HSN/SAC</td>
+            <td>
+                <input type="text" id="txtHsnCode" />
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;">Item Description</td>
+            <td colspan="3">
+                <textarea id="txtItemName" name="txtItemName" rows="4" cols="80"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>Quantity</td>
+            <td>
+                <input type="text" id="txtQty" class="numericfld" />
+            </td>
+            <td>Unit</td>
+            <td>
+                @Html.DropDownList("ddlUnit", ViewBag.UnitList as SelectList, new { disabled = "true" })
+                <input type="text" id="txtUnitName" />
+            </td>
+        </tr>
+        <tr>
+            <td>Rate</td>
+            <td>
+                <input type="text" id="txtRate" class="numericfld" />
+            </td>
+            <td>Amount</td>
+            <td>
+                <label id="lblAmountLgr" class="numericfld"></label>
+                <label id="lblNetAmountLgr" class="numericfld"></label>
+            </td>
+        </tr>
+        <tr>
+            <td>SGST %</td>
+            <td>
+                <input type="text" id="txtVatPer" class="numericfld" />
+                <label id="lblVatAmountLgr" class="numericfld"></label>
+            </td>
+            <td>IGST %</td>
+            <td>
+                <input type="text" id="txtCstPer" class="numericfld" />
+                <label id="lblCstAmountLgr" class="numericfld"></label>
+            </td>
+        </tr>
+        <tr>
+            <td>CGST %</td>
+            <td>
+                <input type="text" id="txtSatPer" class="numericfld" />
+                <label id="lblSatAmountLgr" class="numericfld"></label>
+            </td>
+            <td>Item For</td>
+            <td>
+                @Html.DropDownList("ddlItemFor", new SelectList(lstItemFor, "Value", "Text"))
+            </td>
+        </tr>
+        <tr>
+            <td>Remarks</td>
+            <td colspan="3">
+                <textarea id="txtRemarks" name="txtRemarks" rows="2" cols="80" maxlength="200"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <input type="button" class="btn btn-default" id="add" value="Add" />
+            </td>
+        </tr>
+    </table>
+
+    <span>List of Items:-</span>
+    <div id="orderItems" style="width:98%;overflow-x:scroll;">
+    </div>
+    <br />
+    <table class="table table-bordered" style="width:50%;" align="right">
+        <tr>
+            <td>SubTotal</td>
+            <td>
+                <label id="lblSubTotal" class="numericfld"></label>
+            </td>
+        </tr>
+        <tr>
+            <td>SGST</td>
+            <td>
+                <label id="lblVatAmount" class="numericfld"></label>
+            </td>
+        </tr>
+        <tr>
+            <td>CGST</td>
+            <td>
+                <label id="lblSatAmount" class="numericfld"></label>
+            </td>
+        </tr>
+        <tr>
+            <td>IGST</td>
+            <td>
+                <label id="lblCstAmount" class="numericfld"></label>
+            </td>
+        </tr>
+        <tr>
+            <td>Net Amount</td>
+            <td>
+                <label id="lblNetAmount" class="numericfld"></label>
+            </td>
+        </tr>
+        <tr>
+            <td>Amount of Tax subject to Reverse Charges</td>
+            <td>
+                <input type="text" id="txtRevChgTaxAmount" class="numericfld" />
+            </td>
+        </tr>
+    </table>
+    <table class="table table-bordered">
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.NoOfPckg)</td>
+            <td>
+                <textarea id="txtNoOfPckg" name="txtNoOfPckg" rows="2" cols="40" maxlength="500"></textarea>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.InvNote)</td>
+            <td>
+                <textarea id="txtInvNote" name="txtInvNote" rows="2" cols="40" maxlength="500"></textarea>
+            </td>
+        </tr>
+    </table>
+
+    <div>
+        <input id="submit" class="btn btn-default" type="button" value='@ViewData["AddEdit"]' />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        @Html.ActionLink("Create New", "CreateUpdate", new { id = 0 },
+       new { @style = "display:none;", @class = "btn btn-default", @id = "myLink" })
+    </div>
+</div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById("txtVDate").value = '@ViewBag.VDate';
+            document.getElementById("txtPONumber").focus();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePOSaleItemList", "Item"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfItemId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                data: { "itemid": ui.item.Id },
+                success: function (data) {
+                    $('#txtRate').val(data.purchaserate);
+                    $('#ddlUnit').val(data.unit);
+                    $('#txtItemName').val(data.itemname);
+                    $('#txtUnitName').val(data.unitname);
+                    $('#txtHsnCode').val(data.hsncode);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+                });
+                //detail-2
+                //fillUnitList(ui.item.Id);
+                //
+        }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtPONumber").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePurchaseNumbers", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfPOrderId').value = ui.item.Id;
+                fillConsigneeList(ui.item.Id);
+            }
+        });
+    </script>
+
+    <script>
+        function fillConsigneeList(porderid) {
+            $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("GetConsigneeListForPO", "AmcWork"))",
+                    data: { "porderid": porderid },
+                    success: function (data) {
+                        $("#ddlConsignee").empty();
+                        $.each(data, function (i, item) {
+                            $("#ddlConsignee").append($('<option />', {
+                                value: item.Key,
+                                text: item.Value
+                            }));
+                        });
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });//
+        }
+    </script>
+
+    <script>
+        function round(value, decimals) {
+            //example: round(1.005, 2); //returns 1.01
+            return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+        }
+
+        function setDefaultNumericValuesForLedger() {
+            if ($('#txtRate').val().trim() == '' || isNaN($('#txtRate').val().trim())) {
+                $('#txtRate').val('0');
+            }
+            if ($('#txtQty').val().trim() == '' || isNaN($('#txtQty').val().trim())) {
+                $('#txtQty').val('0');
+            }
+            if ($('#txtVatPer').val().trim() == '' || isNaN($('#txtVatPer').val().trim())) {
+                $('#txtVatPer').val('0');
+            }
+            if ($('#txtSatPer').val().trim() == '' || isNaN($('#txtSatPer').val().trim())) {
+                $('#txtSatPer').val('0');
+            }
+            if ($('#txtCstPer').val().trim() == '' || isNaN($('#txtCstPer').val().trim())) {
+                $('#txtCstPer').val('0');
+            }
+        }
+
+        function isValidLedgerEntry() {
+            //qty
+            if (parseFloat($('#txtQty').val().trim()) <= 0) {
+                alert('Invalid quantity entered!');
+                document.getElementById("txtQty").focus();
+                document.getElementById("txtQty").select();
+                return false;
+            }
+            //rate
+            if (parseFloat($('#txtRate').val().trim()) <= 0) {
+                alert('Invalid rate entered!');
+                document.getElementById("txtRate").focus();
+                document.getElementById("txtRate").select();
+                return false;
+            }
+            //hsn
+            if ($('#txtHsnCode').val().trim() == '') {
+                alert('HSN not entered!');
+                document.getElementById("txtHsnCode").focus();
+                return false;
+            }
+            //
+            var sgstper = parseFloat($('#txtVatPer').val());
+            var cgstper = parseFloat($('#txtSatPer').val());
+            var igstper = parseFloat($('#txtCstPer').val());
+            if (sgstper + cgstper > 0 && igstper > 0) {
+                alert('Only one of SGST + CGST or IGST is applicable!');
+                document.getElementById("txtVatPer").focus();
+                document.getElementById("txtVatPer").select();
+                return false;
+            }
+            //
+            return true;
+        }
+
+        function processCalculation() {
+            //
+            setDefaultNumericValuesForLedger();
+            //
+            var qty = parseFloat($('#txtQty').val());
+            var rate = parseFloat($('#txtRate').val());
+            var amount = qty * rate;
+            var sgstper = parseFloat($('#txtVatPer').val());
+            var cgstper = parseFloat($('#txtSatPer').val());
+            var igstper = parseFloat($('#txtCstPer').val());
+            var sgstamt = 0;
+            var cgstamt = 0;
+            var igstamt = 0;
+            //
+            sgstamt = amount * sgstper / 100;
+            cgstamt = amount * cgstper / 100;
+            igstamt = amount * igstper / 100;
+            $('#lblAmountLgr').text(round(amount, 2));
+            $('#lblVatAmountLgr').text(round(sgstamt, 2));
+            $('#lblSatAmountLgr').text(round(cgstamt, 2));
+            $('#lblCstAmountLgr').text(round(igstamt, 2));
+            var k = parseFloat(amount + sgstamt + cgstamt + igstamt);
+            $('#lblNetAmountLgr').text(round(k, 2));
+            //
+            CalculateSaleAmount();
+            //
+        }
+
+        function CalculateSaleAmount() {
+            //
+            var st = 0;
+            var vatamt = 0;
+            var satamt = 0;
+            var cstamt = 0;
+            //
+            $("#myTable tr").each(function (index, item) {
+                if (index > -1) {
+                    var tds = $(this).find("td");
+                    st = parseFloat(st) + parseFloat($(this).closest('tr').find('td:eq(15)').text());
+                    vatamt = parseFloat(vatamt) + parseFloat($(this).closest('tr').find('td:eq(16)').text());
+                    satamt = parseFloat(satamt) + parseFloat($(this).closest('tr').find('td:eq(17)').text());
+                    cstamt = parseFloat(cstamt) + parseFloat($(this).closest('tr').find('td:eq(18)').text());
+                }
+            });
+            //
+            if ($('#txtRevChgTaxAmount').val().trim() == '' || isNaN($('#txtRevChgTaxAmount').val().trim())) {
+                $('#txtRevChgTaxAmount').val('0');
+            }
+            //
+            $('#lblSubTotal').text(round(st, 2));
+            $('#lblVatAmount').text(round(vatamt, 0));
+            $('#lblSatAmount').text(round(satamt, 0));
+            $('#lblCstAmount').text(round(cstamt, 0));
+            //
+            var k = parseFloat(st + round(vatamt, 0) + round(satamt, 0) + round(cstamt, 0));
+            var netamt = parseFloat(st + round(vatamt, 0) + round(satamt, 0) + round(cstamt, 0));
+            //
+            var kx = netamt;
+            $('#lblNetAmount').text(round(kx, 2));
+        }
+
+    </script>
+
+    <script>
+        //Date Picker
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+
+        $(document).ready(function () {
+            var orderItems = [];
+
+            //Add button click function
+            $('#add').click(function () {
+
+                var isValidItem = true;
+                if ($('#txtItemName').val().trim() == '' || $('#hfItemId').val().trim() == 0) {
+                    isValidItem = false;
+                    $('#txtItemName').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtItemName').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                setDefaultNumericValuesForLedger();
+
+                if (isValidLedgerEntry() == false) { return; };
+                processCalculation();
+
+                isValidItem = true;
+
+                //Add item to list if valid
+                if (isValidItem) {
+                    var liUnit = document.getElementById("ddlUnit");
+                    var unitIndex = liUnit.selectedIndex;
+                    var unitId = liUnit.options[unitIndex].value;
+                    var unitName = liUnit.options[unitIndex].text;
+
+                    var liIFor = document.getElementById("ddlItemFor");
+                    var iforIndex = liIFor.selectedIndex;
+                    var ifor = liIFor.options[iforIndex].value;
+                    var iforName = liIFor.options[iforIndex].text;
+
+                    //unit name validation
+                    var uname = unitName;
+                    if (unitName.includes('/') == true) {
+                        uname = $('#txtUnitName').val();
+                        var arr = unitName.split('/');
+                        if (arr.includes($('#txtUnitName').val()) == false) {
+                            alert('Invalid unit name entered!');
+                            document.getElementById("txtUnitName").focus();
+                            return;
+                        }
+                    }
+                    $('#txtUnitName').val(uname);//d
+                    //
+                    orderItems.push({
+                        ItemId: parseInt($('#hfItemId').val().trim()),
+                        ItemDesc: $('#txtItemName').val(),
+                        ItemCode: $('#txtItemCode').val(),
+                        Qty: parseFloat($('#txtQty').val().trim()),
+                        Unit: parseInt(unitId),
+                        UnitName: uname,
+                        Rate: parseFloat($('#txtRate').val().trim()),
+                        Amount: parseFloat(document.getElementById('lblAmountLgr').innerText),
+                        VatPer: parseFloat($('#txtVatPer').val().trim()),
+                        VatAmount: parseFloat(document.getElementById('lblVatAmountLgr').innerText),
+                        SatPer: parseFloat($('#txtSatPer').val().trim()),
+                        SatAmount: parseFloat(document.getElementById('lblSatAmountLgr').innerText),
+                        CstPer: parseFloat($('#txtCstPer').val().trim()),
+                        CstAmount: parseFloat(document.getElementById('lblCstAmountLgr').innerText),
+                        NetAmount: parseFloat(document.getElementById('lblNetAmountLgr').innerText),
+                        Remarks: $('#txtRemarks').val(),
+                        HsnCode: $('#txtHsnCode').val(),
+                        ItemFor: ifor,
+                        ItemForName: iforName
+                    })
+                    //Clear fields
+                    $('#txtQty,#txtRate').val('');
+                    $('#txtItemName,#txtItemCode').val('');
+                }
+                //populate order items
+                GeneratedItemsTable();
+
+            });
+
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                //if ($('#txtChallanNo').val().trim() == '') {
+                //    isAllValid = false;
+                //    alert('Challan No not entered!');
+                //    document.getElementById("txtChallanNo").focus();
+                //    return;
+                //}
+
+                if ($('#txtPONumber').val().trim() == '' || ($('#hfPOrderId').val().trim() == 0)) {
+                    isValidItem = false;
+                    alert('PO number not selected!');
+                    document.getElementById("txtPONumber").focus();
+                    return;
+                }
+
+                var liConsg = document.getElementById("ddlConsignee");
+                var consgIndex = liConsg.selectedIndex;
+                if (consgIndex == -1) {
+                    isValidItem = false;
+                    alert('Consignee not selected!');
+                    document.getElementById("txtPONumber").focus();
+                    return;
+                }
+                var consgId = liConsg.options[consgIndex].value;//or text
+
+                if (orderItems.length == 0) {
+                    isAllValid = false;
+                    alert("Item list is empty!");
+                    return;
+                }
+
+                var liTrpMode = document.getElementById("ddlTrpMode");
+                var tpmIndex = liTrpMode.selectedIndex;
+                var trpmode = liTrpMode.options[tpmIndex].value;
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        //order fields
+                        AmcId: parseInt($('#hfAmcId').val().trim()),
+                        ChallanNo: 0,
+                        //ChallanNoStr: $('#txtChallanNo').val(),
+                        POrderId: parseInt($('#hfPOrderId').val().trim()),
+                        ConsigneeId: consgId,
+                        VDate: $('#txtVDate').val().trim(),
+                        TrpMode: trpmode,
+                        TrpDetail: $('#txtTrpDetail').val().trim(),
+                        Through: $('#txtThrough').val().trim(),
+                        NoOfPckg: $('#txtNoOfPckg').val(),
+                        InvNote: $('#txtInvNote').val(),
+                        SubTotal: parseFloat(document.getElementById('lblSubTotal').innerText),
+                        VatAmount: parseFloat(document.getElementById('lblVatAmount').innerText),
+                        SatAmount: parseFloat(document.getElementById('lblSatAmount').innerText),
+                        CstAmount: parseFloat(document.getElementById('lblCstAmount').innerText),
+                        NetAmount: parseFloat(document.getElementById('lblNetAmount').innerText),
+                        RevChgTaxAmount: parseFloat($('#txtRevChgTaxAmount').val().trim()),
+                        //ledger fields
+                        Ledgers: orderItems
+                    }
+
+                    $(this).val('Please wait...');
+
+                    $.ajax({
+                        url: '/AmcWork/CreateUpdate',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                orderItems = [];
+                                //$('#orderNo').val('');
+                                //$('#orderDate').val('');
+                                $('#orderItems').empty();
+                                //reload/refresh
+                                window.location.href = document.getElementById('myLink').href;
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submit').val(d.AddEdit);
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            //$('#submit').val('Save');
+                            $('#submit').val(d.AddEdit);
+                        }
+                    });
+                }
+
+            });
+
+            //edit mode
+            $(function () {
+                var mainObject = @Html.Raw(Json.Encode(Model))
+                orderItems = @Html.Raw(Json.Encode(Model.Ledgers))
+                //
+                hfAmcId.value = mainObject.AmcId;
+                txtChallanNoStr.value = mainObject.ChallanNoStr;
+                txtVDate.value = mainObject.VDate.substring(0,10);
+
+                hfPOrderId.value = mainObject.POrderId;
+                txtPONumber.value = mainObject.PONumber;
+                fillConsigneeList(mainObject.POrderId);
+                ddlConsignee.value = mainObject.ConsigneeId;
+
+                ddlTrpMode.value = mainObject.TrpMode;
+                txtTrpDetail.value = mainObject.TrpDetail;
+                txtThrough.value = mainObject.Through;
+                txtNoOfPckg.value = mainObject.NoOfPckg;
+                txtInvNote.value = mainObject.InvNote;
+                document.getElementById('lblSubTotal').innerHTML = mainObject.SubTotal;
+                document.getElementById('lblVatAmount').innerHTML = mainObject.VatAmount;
+                document.getElementById('lblSatAmount').innerHTML = mainObject.SatAmount;
+                document.getElementById('lblCstAmount').innerHTML = mainObject.CstAmount;
+                document.getElementById('lblNetAmount').innerHTML = mainObject.NetAmount;
+                txtRevChgTaxAmount.value = mainObject.RevChgTaxAmount;
+                GeneratedItemsTable();
+            });
+
+            //function for show added items in table
+            function GeneratedItemsTable() {
+                if (orderItems.length > 0) {
+                    var $table = $('<table class="tablecontainer" id="myTable"/>');
+                    //
+                    $table.append('<th>S.No.</th>');//0
+                    $table.append('<th colspan=2>Action</th>');//1=Remove
+                    //$table.append('<th>&nbsp;</th>');//2=Edit
+                    $table.append('<th>Item&nbsp;Code</th>');//3
+                    $table.append('<th>Item&nbsp;Description</th>');//4
+                    $table.append('<th>Quantity</th>');//5
+                    $table.append('<th>Unit</th>');//6
+                    $table.append('<th>Rate</th>');//7
+                    $table.append('<th>SGST%</th>');//8
+                    $table.append('<th>CGST%</th>');//9
+                    $table.append('<th>IGST%</th>');//10
+                    $table.append('<th>NetAmount</th>');//11
+                    $table.append('<th>HSN/SAC</th>');//12
+                    $table.append('<th>Remarks</th>');//13
+                    $table.append('<th>For</th>');//14
+                    //
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">Amount</td>');//15
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">SGST</td>');//16
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">CGST</td>');//17
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">IGST</td>');//18
+                    //
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">ItemId</td>');//19
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">Unit</td>');//20
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">ItemFor</td>');//21
+                    //
+                    $table.append('</tr></thead>');
+                    var $tbody = $('<tbody/>');
+                    $.each(orderItems, function (i, val) {
+                        var $row = $('<tr/>');
+                        //static for all rows---------------
+                        $row.append($('<td/>').html(i + 1));//0
+                        //
+                        var $remove = $('<a href="#"><i class="fa fa-trash-o" style="font-size:15pt;"></a>');
+                        $remove.click(function (e) {
+                            var opt = confirm("Are you sure to delete this entry?");
+                            if (opt == true) {
+                                e.preventDefault();
+                                orderItems.splice(i, 1);
+                                GeneratedItemsTable();
+                            }
+                        });
+                        $row.append($('<td/>').html($remove));//1
+                        //--------------------------------------------
+                        var $edit = $('<a href="#"><i class="fa fa-pencil-square" style="font-size:25pt;"></a>');
+                        $edit.click(function (e) {
+                            e.preventDefault();
+                            //
+                            txtItemCode.value = $(this).closest('tr').find('td:eq(3)').text();
+                            txtItemName.value = $(this).closest('tr').find('td:eq(4)').text();
+                            txtQty.value = $(this).closest('tr').find('td:eq(5)').text();
+                            txtUnitName.value = $(this).closest('tr').find('td:eq(6)').text();
+                            txtRate.value = $(this).closest('tr').find('td:eq(7)').text();
+                            //
+                            txtVatPer.value = $(this).closest('tr').find('td:eq(8)').text();
+                            txtSatPer.value = $(this).closest('tr').find('td:eq(9)').text();
+                            txtCstPer.value = $(this).closest('tr').find('td:eq(10)').text();
+                            lblNetAmountLgr.value = $(this).closest('tr').find('td:eq(11)').text();
+                            txtHsnCode.value = $(this).closest('tr').find('td:eq(12)').text();
+                            txtRemarks.value = $(this).closest('tr').find('td:eq(13)').text();
+                            //ddlItemFor.value = $(this).closest('tr').find('td:eq(14)').text();
+                            //
+                            lblAmountLgr.value = $(this).closest('tr').find('td:eq(15)').text();
+                            lblVatAmountLgr.value = $(this).closest('tr').find('td:eq(16)').text();
+                            lblSatAmountLgr.value = $(this).closest('tr').find('td:eq(17)').text();
+                            lblCstAmountLgr.value = $(this).closest('tr').find('td:eq(18)').text();
+                            //
+                            hfItemId.value = $(this).closest('tr').find('td:eq(19)').text();//ItemId
+                            ddlUnit.value = $(this).closest('tr').find('td:eq(20)').text();//UnitId
+                            ddlItemFor.value = $(this).closest('tr').find('td:eq(21)').text();//ItemFor
+                            //
+                            orderItems.splice(i, 1);
+                            GeneratedItemsTable();
+                        });
+                        //--------------------------------------------
+                        $row.append($('<td/>').html($edit));//2
+                        $row.append($('<td/>').html(val.ItemCode));//3
+                        $row.append($('<td/>').html(val.ItemDesc));//4
+                        $row.append($('<td/>').html(val.Qty));//5
+                        $row.append($('<td/>').html(val.UnitName));//6
+                        $row.append($('<td/>').html(val.Rate));//7
+                        $row.append($('<td/>').html(val.VatPer));//8
+                        $row.append($('<td/>').html(val.SatPer));//9
+                        $row.append($('<td/>').html(val.CstPer));//10
+                        $row.append($('<td/>').html(val.NetAmount));//11
+                        $row.append($('<td/>').html(val.HsnCode));//12
+                        $row.append($('<td/>').html(val.Remarks));//13
+                        $row.append($('<td/>').html(val.ItemForName));//14
+                        //--------------------------------------------
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;" />').html(val.Amount));//15
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;" />').html(val.VatAmount));//16
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;" />').html(val.SatAmount));//17
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;" />').html(val.CstAmount));//18
+                        //
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.ItemId));//19
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.Unit));//20
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.ItemFor));//21
+                        //
+                        $tbody.append($row);
+                    });
+                    console.log("current", orderItems);
+                    $table.append($tbody);
+                    $('#orderItems').html($table);
+                }
+                else {
+                    $('#orderItems').html('');
+                }
+                processCalculation();
+            }//
+        });
+
+    </script>
+
+
+}
+

@@ -1,0 +1,621 @@
+﻿@model ManufacturingManagement_V2.Models.VoucherMdl
+@using Newtonsoft.Json
+
+@{
+        ViewBag.Title = "BillPayment";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+ 
+    <h4><b>Voucher Entry -Bill Payment</b></h4>
+        <div class="form-group">
+            @Html.Hidden("hfVendorId", null, new { @id = "hfVendorId" })
+            @Html.Hidden("hfChkAdjAmt", null, new { @id = "hfChkAdjAmt" })
+            @Html.Hidden("hfFlg", null, new { @id = "hfFlg" })
+            @Html.Hidden("hfBillAcCode", null, new { @id = "hfBillAcCode" })
+            @Html.Hidden("hfBillNo", null, new { @id = "hfBillNo" })
+            @Html.Hidden("hfSumDrAmt", null, new { @id = "hfSumDrAmt" })
+            @Html.Hidden("hfSumCrAmt", null, new { @id = "hfSumCrAmt" })
+            @Html.Hidden("hfAcCode", null, new { @id = "hfAcCode" })
+            <table class="table table-bordered">
+
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.VNo)</td>
+                    <td>
+                        <input type="text" id="txtVNo" readonly="true" />
+                        <span class="error">Invalid VNo!</span>
+                    </td>
+                    <td>@Html.DisplayNameFor(model => model.VDate)</td>
+                    <td>
+                        <input type="text" id="txtVDate" class="datepicker" />   @*input type="date"*@
+                        <span class="error">Invalid VDate!</span>
+                    </td>
+                </tr>
+                <tr><td colspan="4"><h5><b>Bill Detail</b></h5></td></tr>
+                <tr>
+                    <td>Vendor</td>
+                    <td>
+                        <input type="text" id="txtVendorName"
+                               placeholder="start typing, then select" />
+                        <span class="error">Invalid Vendor!</span>
+                    </td>
+                    <td>Bill No</td>
+                    <td>
+                        <input type="text" id="txtBillNo"
+                               placeholder="type 'bill-', then select" />
+                        <span class="error">Invalid Bill No!</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Adjustment Amount</td>
+                    <td colspan="2">
+                        <input type="text" id="txtAdjAmount" />
+                        <span class="error">Invalid Adjustment Amount!</span>
+                    </td>
+                    <td>
+                        <input class="btn btn-default" type="button" id="addBill" value="Add Bill" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4"><h5><b>Bill List</b></h5>
+                        <div id="billItems"></div>
+                        <div id="adjAmt" style="font-weight:bold;color:black;"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4"><h5><b>Payment Entry</b></h5></td>
+                </tr>
+                <tr>
+                    <td>Payment Head</td>
+                    <td>
+                        <input type="text" id="txtAcDesc" placeholder="start typing, then select" />
+                        <span class="error">Account not selected!</span>
+                    </td>
+                    <td>Payment Amount</td>
+                    <td>
+                        <input type="text" id="txtCrAmount" />
+                        <span class="error">Invalid Payment Amount!</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Remarks</td>
+                    <td colspan="2">
+                        <input type="text" id="txtNarration" />
+                        <span class="error">Invalid narration!</span>
+                    </td>
+                    <td>
+                        <input class="btn btn-default" type="button" id="add" value="Add Payment" />
+                    </td>
+                </tr>
+            </table>
+
+            <table>
+                <tr><td><h5><b>Payment Detail</b></h5></td></tr>
+                <tr><td><div id="orderItems"></div></td></tr>
+                <tr><td><div id="sdrcr" style="font-weight:bold;color:black;"></div></td></tr>
+            </table>
+
+        </div>
+
+        <br/>
+        <div style="padding:10px 0px; text-align:left;">
+            <input id="submit" class="btn btn-default" type="button" value='@ViewData["AddEdit"]'/>
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" }) 
+            @*@Html.ActionLink("Preview", "OrderReportDirect", "OrderReport",
+            null, new { id = "mylink", @target = "_new;"})*@
+        </div>
+ 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById("txtVDate").value = '@Model.VDate';
+            $('#mylink').attr('href', '#');
+            document.getElementById("txtCrAmount").value = '0';
+            document.getElementById("txtVendorName").focus();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtAcDesc").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAccountWithGroup", "HelpUtility"))",
+                    data: { "term": request.term, "rectype": 'a' },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfAcCode').value = ui.item.Id;
+                document.getElementById("txtCrAmount").focus();
+                document.getElementById("txtCrAmount").select(0);
+            }
+        });
+</script>
+
+    <script type="text/javascript">
+        $("#txtVendorName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteVendor", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfVendorId').value = ui.item.Id;
+                $('#billItems').empty();
+                document.getElementById('hfFlg').value = 0;
+                document.getElementById('hfBillNo').value = '';
+                document.getElementById('txtBillNo').value = '';
+                document.getElementById('txtBillNo').focus();
+            }
+        });
+</script>
+
+    <script type="text/javascript">
+        $("#txtBillNo").autocomplete({
+            source: function (request, response) {
+                var vendorid = document.getElementById('hfVendorId').value;
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePurchaseBillNumbers", "HelpUtility"))",
+                    data: { "term": request.term, "vendorid": vendorid },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                var arr = ui.item.Id.split('#');
+                //alert(arr[0]);//billno
+                //alert(arr[1]);//accode
+                //alert(arr[2]);//balance
+                document.getElementById('hfBillNo').value = arr[0];
+                document.getElementById('hfBillAcCode').value = arr[1];
+                document.getElementById('txtAdjAmount').value = arr[2];
+                document.getElementById('hfChkAdjAmt').value = arr[2];
+                document.getElementById('txtAdjAmount').focus();
+                document.getElementById('txtAdjAmount').select();
+            }
+        });
+</script>
+
+    <script>
+        //Date Picker
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+
+        function setAmount() {
+            var _CrAmt = 0;
+            $("#myTable tr").each(function (index, item) {
+                if (index > -1) {
+                    var tds = $(this).find("td");
+                    //var textboxValue = $(tds).eq(4).find("input").val();//setUser
+                    //Amt = parseFloat(_DrAmt) + parseFloat($(tds).eq(2).find("input").val());
+                    _CrAmt = parseFloat(_CrAmt) + parseFloat($(this).closest('tr').find('td:eq(1)').text());
+                }
+            });
+            //$('#lblCrAmount').text(_CrAmt);
+            document.getElementById('hfSumCrAmt').value = _CrAmt;
+            document.getElementById("sdrcr").innerHTML = "Total Payment Amount: " + $('#hfSumCrAmt').val().trim();
+        }
+        //
+
+        function sumAdjAmount() {
+            var _Amt = 0;
+            $("#myTableBill tr").each(function (index, item) {
+                if (index > -1) {
+                    var tds = $(this).find("td");
+                    //var textboxValue = $(tds).eq(4).find("input").val();//setUser
+                    //_DrAmt = parseFloat(_DrAmt) + parseFloat($(tds).eq(2).find("input").val());
+                    _Amt = parseFloat(_Amt) + parseFloat($(this).closest('tr').find('td:eq(1)').text());
+                }
+            });
+            //$('#lblCrAmount').text(_CrAmt);
+            document.getElementById('hfSumDrAmt').value = _Amt;
+            document.getElementById("adjAmt").innerHTML = "Total Adjustment Amount: " + $('#hfSumDrAmt').val().trim();
+        }
+        //
+
+        $(document).ready(function () {
+            var orderItems = [];
+            var billItems = [];
+
+            //st-bill section
+            //Add button click function
+            $('#addBill').click(function () {
+                
+                if ($('#hfFlg').val() == 0)
+                {
+                    document.getElementById('hfFlg').value = 1;
+                    billItems = [];
+                }
+                
+                if ($('#hfVendorId').val().trim() == '') {
+                    alert('Vendor not selected!');
+                    $('#txtVendorName').focus();
+                    return;
+                }
+                if ($('#hfBillNo').val().trim() == '') {
+                    alert('Bill not selected!');
+                    $('#txtBillNo').focus();
+                    return;
+                }
+                if (!($('#txtAdjAmount').val().trim() != '' && !isNaN($('#txtAdjAmount').val().trim()))) {
+                    alert('Invalid adjustment amount!');
+                    $('#txtAdjAmount').focus();
+                    return;
+                }
+                if ($('#txtAdjAmount').val().trim() == '0') {
+                    alert('Adjustment amount must not be 0!');
+                    $('#txtAdjAmount').focus();
+                    return;
+                }
+                
+                if (parseFloat($('#txtAdjAmount').val().trim()) > parseFloat($('#hfChkAdjAmt').val().trim())) {
+                    alert('Adjustment amount must not be greater than Bill Amount!');
+                    $('#txtAdjAmount').focus();
+                    return;
+                }
+
+                //chkDuplicateBill
+                var chkBill = true;
+                $("#myTableBill tr").each(function (index, item) {
+                    if (index > -1) {
+                        var tds = $(this).find("td");
+                        if ($(this).closest('tr').find('td:eq(0)').text().trim().toLowerCase() == $('#hfBillNo').val().trim().toLowerCase())
+                        {
+                            chkBill = false;
+                        }
+                    }
+                });
+                if (chkBill == false)
+                {
+                    alert('Duplicate bill entry not allowed!');
+                    $('#txtBillNo').focus();
+                    return;
+                }
+                //
+
+                billItems.push({
+                    AcCode: $('#hfBillAcCode').val().trim(),
+                    BillNo: $('#hfBillNo').val().trim(),
+                    DrAmount: parseFloat($('#txtAdjAmount').val().trim())
+                });
+
+                //Clear fields
+                $('#txtAdjAmount').val('0');
+                $('#hfBillNo').val('').focus();
+                $('#txtBillNo').val('').focus();
+                //populate order items
+                GeneratedBillsTable();
+                sumAdjAmount();
+            });
+            //cl-bill section
+
+            //st-voucher section
+            //Add button click function
+            $('#add').click(function () {
+
+                if (!($('#hfAcCode').val().trim() != '' && !isNaN($('#hfAcCode').val().trim()))) {
+                    alert("Payment head not selected!");
+                    document.getElementById("hfAcDesc").focus();
+                    return;
+                }
+
+                if (!($('#txtCrAmount').val().trim() != '' && !isNaN($('#txtCrAmount').val().trim()))) {
+                    alert('Invalid payment amount!');
+                    document.getElementById("hfAcDesc").focus();
+                    return;
+                }
+
+                if (parseFloat($('#txtCrAmount').val().trim()) == 0) {
+                    alert("Payment amount must not be 0!");
+                    document.getElementById("txtCrAmount").focus();
+                    return;
+                }
+
+                if ($('#txtNarration').val().trim() == '') {
+                    document.getElementById("txtNarration").value = 'Bill Paid';
+                }
+
+                //chkDuplicateAccount
+                var chkAcct = true;
+                $("#myTable tr").each(function (index, item) {
+                    if (index > -1) {
+                        var tds = $(this).find("td");
+                        if ($(this).closest('tr').find('td:eq(5)').text() == $('#hfAcCode').val()) {
+                            chkAcct = false;
+                        }
+                    }
+                });
+                if (chkAcct == false) {
+                    alert('Duplicate account entry not allowed!');
+                    $('#txtAcDesc').focus();
+                    return;
+                }
+                //
+
+                orderItems.push({
+                    AcCode: $('#hfAcCode').val().trim(),
+                    DrAmount: 0,
+                    CrAmount: parseFloat($('#txtCrAmount').val().trim()),
+                    Narration: $('#txtNarration').val().trim(),
+                    DrCr: 'c',
+                    DrCrName: 'Cr',
+                    AcDesc: $('#txtAcDesc').val().trim()
+                });
+                //Clear fields
+                //$('#itemName').val('').focus();
+                //$('#txtOrdQty,#txtRate').val('');
+                $('#txtCrAmount').val('0');
+                $('#hfAcCode').val('0');
+                $('#txtAcDesc,#txtNarration').val('');
+
+                //populate order items
+                GeneratedItemsTable();
+                setAmount();
+                document.getElementById("txtAcDesc").focus();
+
+            });
+            //cl-voucher section
+
+            //Save button click function
+            $('#submit').click(function () {
+
+                if ($('#txtVNo').val().trim() == '') {
+                    alert('No voucher number found!');
+                    return;
+                }
+
+                if ($('#txtVDate').val().trim() == '') {
+                    alert('Voucher date not entered!');
+                    document.getElementById("txtVDate").focus();
+                    return;
+                }
+
+                if (parseFloat($('#hfSumDrAmt').val()) != parseFloat($('#hfSumCrAmt').val())) {
+                    alert('Total payment amount must be equal to adjustment amount!');
+                    return;
+                }
+
+                if (!($('#hfVendorId').val().trim() != '' && !isNaN($('#hfVendorId').val().trim()))) {
+                    alert('Vendor not selected!');
+                    document.getElementById("txtVendorName").focus();
+                    return;
+                }
+                if (parseFloat($('#hfSumCrAmt').val()) == 0) {
+                    alert('No bill added to save/update!');
+                    document.getElementById("txtBillNo").focus();
+                    return;
+                }
+
+                //dr-entry for vendor
+                orderItems.push({
+                    AcCode: $('#hfBillAcCode').val().trim(),
+                    DrAmount: $('#hfSumDrAmt').val().trim(),
+                    CrAmount: 0,
+                    Narration: 'Bill Paid To Vendor',
+                    DrCr: 'd',
+                    DrCrName: 'Dr',
+                    AcDesc: $('#txtVendorName').val().trim()
+                });
+                //
+
+                //Save if valid
+                var data = {
+                    VNo: $('#txtVNo').val().trim(),
+                    VDate: $('#txtVDate').val().trim(),
+                    VendorId: $('#hfVendorId').val().trim(),
+                    BillAcCode: $('#hfBillAcCode').val().trim(),
+                    Info: orderItems,
+                    BillOsInfo: billItems
+                }
+
+                $(this).val('Please wait...');
+
+                $.ajax({
+                    url: '/VoucherEntryBillPayment/CreateUpdate',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database 
+                        if (d.status == true) {
+                            //will send status from server side
+                            alert(d.message);
+                            //clear form
+                            orderItems = [];
+                            billItems = [];
+                            //$('#orderNo').val('');
+                            //$('#orderDate').val('');
+                            $('#orderItems').empty();
+                            $('#billItems').empty();
+                            //$('#mylink').attr('href', '/OrderReport/OrderReportDirect' + '?vno=' + d.vno);
+                            window.location.href = "../../VoucherEntryBillPayment/CreateUpdate";
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#submit').val(d.AddEdit);
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        //$('#submit').val('Save');
+                        $('#submit').val(d.AddEdit);
+                    }
+                });
+
+            });
+
+            //edit mode
+            $(function () {
+                var mainObject = @Html.Raw(Json.Encode(Model))
+                orderItems = @Html.Raw(Json.Encode(Model.Info.FindAll(m => m.DrCr.Equals("c"))))
+                billItems = @Html.Raw(Json.Encode(Model.BillOsInfo))
+                //
+                txtVNo.value = mainObject.VNo;
+                txtVDate.value = mainObject.VDate.substring(0, 10);
+                hfBillAcCode.value = mainObject.BillAcCode;
+                hfVendorId.value = mainObject.VendorId;
+                txtVendorName.value = mainObject.BillAcDesc;
+                //
+                if (mainObject.editMode == true) {
+                    document.getElementById('hfFlg').value = 1;
+                }
+                //
+                GeneratedBillsTable();
+                sumAdjAmount();
+                GeneratedItemsTable();
+                setAmount();
+            });
+
+            //list of bills
+            //function for show added items in table
+            function GeneratedBillsTable() {
+                if (billItems.length > 0) {
+                    var $table = $('<table class="tablecontainer" id="myTableBill"/>');
+                    $table.append('<th>BillNo</th>');//0
+                    $table.append('<th>Adjustment Amount</th>');//1
+                    $table.append('<th style="width:35px;">Remove</th>');//2
+                    $table.append('<th style="width:35px;">Edit</th>');//3
+                    $table.append('</tr></thead>');
+                    var $tbody = $('<tbody/>');
+                    $.each(billItems, function (i, val) {
+                        var $row = $('<tr/>');
+                        //static for all rows---------------
+                        $row.append($('<td/>').html(val.BillNo));//0
+                        $row.append($('<td/>').html(val.DrAmount));//1
+                        //--------------------------------------------
+                        var $remove = $('<a href="#">Remove</a>');
+                        $remove.click(function (e) {
+                            var opt = confirm("Are you sure to delete this entry?");
+                            if (opt == true) {
+                                e.preventDefault();
+                                billItems.splice(i, 1);
+                                GeneratedBillsTable();
+                                sumAdjAmount();
+                            }
+                        });
+                        $row.append($('<td/>').html($remove));//2
+                        //--------------------------------------------
+                        var $edit = $('<a href="#">Edit</a>');
+                        $edit.click(function (e) {
+                            e.preventDefault();
+                            txtBillNo.value = $(this).closest('tr').find('td:eq(0)').text();
+                            hfBillNo.value = $(this).closest('tr').find('td:eq(0)').text();
+                            txtAdjAmount.value = $(this).closest('tr').find('td:eq(1)').text();
+                            //remove=2
+                            //edit=3
+                            billItems.splice(i, 1);
+                            GeneratedBillsTable();
+                            sumAdjAmount();
+                        });
+                        //--------------------------------------------
+                        $row.append($('<td/>').html($edit));//3
+                        $tbody.append($row);
+                    });
+                    console.log("current", billItems);
+                    $table.append($tbody);
+                    $('#billItems').html($table);
+                }
+                else {
+                    $('#billItems').html('');
+                }
+            }
+            //cl-list of bills
+
+            //function for show added items in table
+            function GeneratedItemsTable() {
+                if (orderItems.length > 0) {
+                    var $table = $('<table class="tablecontainer" id="myTable"/>');
+                    $table.append('<th>Payment&nbsp;Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');//0//note spaces for width
+                    $table.append('<th>Paid&nbsp;Amount</th>');//1
+                    $table.append('<th>Remarks&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');//2
+                    $table.append('<th>Remove</th>');//3
+                    $table.append('<th>Edit</th>');//4
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">AcCode</td>');//5
+                    $table.append('</tr></thead>');
+                    var $tbody = $('<tbody/>');
+                    $.each(orderItems, function (i, val) {
+                        var $row = $('<tr/>');
+                        //static for all rows---------------
+                        $row.append($('<td/>').html(val.AcDesc));//0
+                        $row.append($('<td/>').html(val.CrAmount));//1
+                        $row.append($('<td/>').html(val.Narration));//2
+                        //--------------------------------------------
+                        var $remove = $('<a href="#">Remove</a>');
+                        $remove.click(function (e) {
+                            var opt = confirm("Are you sure to delete this entry?");
+                            if (opt == true) {
+                                e.preventDefault();
+                                orderItems.splice(i, 1);
+                                GeneratedItemsTable();
+                                setAmount();
+                            }
+                        });
+                        $row.append($('<td/>').html($remove));//3
+                        //--------------------------------------------
+                        var $edit = $('<a href="#">Edit</a>');
+                        $edit.click(function (e) {
+                            e.preventDefault();
+                            txtAcDesc.value = $(this).closest('tr').find('td:eq(0)').text();
+                            txtCrAmount.value = $(this).closest('tr').find('td:eq(1)').text();
+                            txtNarration.value = $(this).closest('tr').find('td:eq(2)').text();
+                            //remove=3
+                            //edit=4
+                            hfAcCode.value = $(this).closest('tr').find('td:eq(5)').text();//accode
+                            orderItems.splice(i, 1);
+                            GeneratedItemsTable();
+                            setAmount();
+                        });
+                        //--------------------------------------------
+                        $row.append($('<td/>').html($edit));//4
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.AcCode));//5
+                        $tbody.append($row);
+                    });
+                    console.log("current", orderItems);
+                    $table.append($tbody);
+                    $('#orderItems').html($table);
+                }
+                else {
+                    $('#orderItems').html('');
+                }
+            }
+            //cl-list of vouchers
+        });
+
+    </script>
+}
+ 

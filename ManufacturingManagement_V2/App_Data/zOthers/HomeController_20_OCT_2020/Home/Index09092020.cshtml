@@ -1,0 +1,146 @@
+﻿@model ManufacturingManagement_V2.Models.AlertsMdl
+@{
+    ViewBag.Title = "Home Page";
+    //Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+@*<h2>Select Department</h2>*@
+@*<ol class="round">
+    <li class="one">
+        <h5>Point 1</h5>
+        Description 1
+    </li>
+</ol>*@
+<div style="width:100%;border:solid;border-width:1px;border-color:blue;border-radius:4px;">
+    @Html.Partial("AlertPartialSummary",Model)
+<br/>
+<div style="font-size:14pt;text-align:center;" class="container">
+    <a href="/DocumentFile/IndexView"><div class="sidebyside"><br/>Company Documents</div></a>
+    <a href="/CompanyPolicy/IndexView"><div class="sidebyside"><br/>Company Policies</div></a>
+    <a target="_new" href="/Notification/Index"><div class="sidebyside"><br/>Notification</div></a>
+    <a href="/Employee/EmployeeDirectory"><div class="sidebyside"><br/>Directory</div></a>
+    <a href="/Complaint/ComplaintView"><div class="sidebyside"><br/>Complaint</div></a>
+    <a href="/Feedback/FeedbackView"><div class="sidebyside"><br/>Feedback</div></a>
+    @*<a target="_new" href="/UserPermissionReport/MyPermissionView"><div class="sidebyside"><br/>My Permissions</div></a>*@
+    <a target="_new" href="/UserAdmin/UpdateProfile"><div class="sidebyside"><br/>My User-Profile</div></a>
+    @if (ViewData["compliance"] == "1")
+    {
+        <a href="/Home/ComplianceDashboard"><div class="sidebyside"><br/>Compliance</div></a>
+    }
+    @if (ViewData["correspondence"] == "1")
+    {
+        <a href="/Correspondence/Index"><div class="sidebyside"><br/>Correspondence</div></a>
+    }
+    @if (ViewData["bgreport"] == "1")
+    {
+        <a href="/BankGuaranteeReport/LedgerIndex"><div class="sidebyside"><br/>BG Ledger</div></a>
+    }
+    @if (ViewData["accounts"] == "1")
+    {
+        <a href="/Home/AccountDashboard"><div class="sidebyside"><br/>Accounts</div></a>
+    }
+    @if (ViewData["statisticalrpt"] == "1")
+    {
+        <a href="/StatisticalSummaryReport/IndexView"><div class="sidebyside"><br/>Statistical Summary</div></a>
+    }
+    @if (ViewData["quailbook"] == "1")
+    {
+        <a href="/Home/QuailDashboard"><div class="sidebyside"><br/>QUAIL</div></a>
+    }
+    @if(ViewData["production"] == "1")
+    {
+        <a href="/Home/ProductionDashboard"><div class="sidebyside"><br/>Production Department</div></a>
+    }
+    @if(ViewData["quality"] == "1")
+    {
+        <a href="/Home/QualityDashboard"><div class="sidebyside"><br/>Quality Control</div></a>
+    }
+    @if(ViewData["store"] == "1")
+    {
+        <a href="/Home/StoreDashboard"><div class="sidebyside"><br/>Stores Department</div></a>
+    }
+    @if(ViewData["hr"] == "1")
+    {
+        <a href="/Home/HRDashboard"><div class="sidebyside"><br/>HR Department</div></a>
+    }
+    @if(ViewData["indent"] == "1")
+    {
+        <a href="/Home/IndentDashboard"><div class="sidebyside"><br/>Indent</div></a>
+    }
+    @if(ViewData["marketing"] == "1")
+    {
+        <a href="/Home/MktgDashboard"><div class="sidebyside"><br/>Marketing V2</div></a>
+    }
+    @if(ViewData["admin"] == "1")
+    {
+        <a href="/Home/AdminDashboard"><div class="sidebyside"><br/>Admin Panel</div></a>
+    }
+    @if(ViewData["adminutilities"] == "1")
+    {
+        <a href="/Admin/Index"><div class="sidebyside"><br/>Admin Utilities</div></a>
+    }
+    @*<a href="#"><div class="sidebyside" onclick="alert('To be displayed soon!')"><br/>My Health Portfolio</div></a>*@
+    @*<a target="_blank" href="/Home/HelpContent_General"><div class="sidebyside"><br/>User Manual</div></a>*@
+    <a href="/ObjectInfo/IndexList"><div class="sidebyside"><br/>Report List</div></a>
+    @if(ViewData["set"].ToString() == "2")
+    {
+        <a href="/Home/Index"><div class="sidebyside"><br/>Home</div></a>
+    }
+    else if (ViewData["set"].ToString() == "1")
+    { 
+        <a href="/Home/Index"><div class="sidebyside"><br/>Home</div></a>
+        <a href="/Login/LoginUser"><div class="sidebyside"><br/>Logout</div></a>
+    }
+    
+</div>
+    <br/> 
+</div>
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    @*<script type="text/javascript">
+        $(function () {
+            var a = confirm('@ViewBag.Msg');
+            if (a == false) {
+                location.reload();
+            }
+        });
+    </script>   style="transform: translateX(50%);"  *@
+
+    <script type="text/javascript">
+        $(function () {
+            var w = 800;
+            var h = 400;
+            var left = (screen.width/2)-(w/2);
+            var top = (screen.height/2)-(h/2)-70;
+            //window.open('http://localhost:58521/Home/HelpContent_General', 'MyWindow', 'width=' + w + ',height=' + h + ',top=' + top + ',left=' + left + ',toolbar=0,titlebar=0,location=0,status=0,scrollbars=0,controlbox=0,addressbar=0,modal=yes');
+        });
+    </script>  
+
+}
+
+<style>
+    .container {
+        overflow:auto;
+        /* http://www.tipue.com/blog/center-a-div */
+        margin: 0 auto;
+        max-width: 800px;
+    }
+    .sidebyside {
+        float:left;
+        width:240px; 
+        height:80px; 
+        border-style:solid;
+        margin:5px;
+        vertical-align: middle;
+        border-color:blue;
+        border-radius:4px; 
+        border-width:1.5px; 
+        background-color:#0094ff;
+    }
+    .belowdiv {
+        width:300px; 
+        height:100px; 
+        border-style:solid; 
+        margin:5px;
+    }
+</style>
+

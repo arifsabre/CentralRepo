@@ -1,0 +1,67 @@
+﻿<header>
+            <div class="content-wrapper">
+                <div class="float-left">@*<div class="float-left" style="height:45px;">*@
+                    <p class="site-title"><img src="~/Images/prag-logo.png">
+                </div>
+                <div class="float-left" style="margin-left:10px;">
+                    <div class="usr" style="font-size:x-large;"> Prag Group of Industries ERP System V.2</div><br/>
+                    <span style="font-size:14px;color:darkviolet;font-weight:bold;">@ViewBag.CompName</span>
+                    <span style="font-size:12px;color:darkviolet;font-weight:bold;">&nbsp;(Financial Year : @ViewBag.FinYear)</span>
+                    <br/><span style="width: 57px; color:darkgreen;font-weight:bold;">[@ViewBag.UserName]</span>
+                    <div class="float-right">
+
+                        @*st-deciding dsb to return*@
+
+                        @if(@ViewBag.Dept == "Admin")
+                        {
+                            <a href="/Home/AdminDashboard" style="width: 57px; color:black;font-weight:bold;">[Admin]</a>
+                        }
+                        else if(@ViewBag.Dept == "HR")
+                        {
+                            <a href="/Home/HRDashboard" style="width: 57px; color:black;font-weight:bold;">[HR]</a>
+                        }
+                        else if (@ViewBag.Dept == "Stores")
+                        { 
+                           <a href="/Home/StoreDashboard" style="width: 57px; color:black;font-weight:bold;">[Stores]</a> 
+                        }
+                        else if (@ViewBag.Dept == "Production")
+                        { 
+                           <a href="/Home/ProductionDashboard" style="width: 57px; color:black;font-weight:bold;">[Production]</a> 
+                        }
+                        else if (@ViewBag.Dept == "Compliance")
+                        { 
+                           <a href="/Home/ComplianceDashboard" style="width: 57px; color:black;font-weight:bold;">[Compliance]</a> 
+                        }
+                        else if (@ViewBag.Dept == "Indent")
+                        { 
+                           <a href="/Home/IndentDashboard" style="width: 57px; color:black;font-weight:bold;">[Indent]</a> 
+                        }
+                        else if (@ViewBag.Dept == "Marketing")
+                        { 
+                           <a href="/Home/MktgDashboard" style="width: 57px; color:black;font-weight:bold;">[Marketing V2]</a> 
+                        }
+                        else if (@ViewBag.Dept == "QuailBook")
+                        { 
+                           <a href="/Home/QuailDashBoard" style="width: 57px; color:black;font-weight:bold;">[QUAIL]</a> 
+                        }
+                        else if (@ViewBag.Dept == "Accounts")
+                        { 
+                           <a href="/Home/AccountDashBoard" style="width: 57px; color:black;font-weight:bold;">[Accounts]</a> 
+                        }
+                        else if (@ViewBag.Dept == "Quality")
+                        { 
+                           <a href="/Home/QualityDashBoard" style="width: 57px; color:black;font-weight:bold;">[Quality]</a> 
+                        }
+                        
+                        @*cl-deciding dsb to return*@
+
+                        &nbsp;&nbsp;
+                        <a href="/Home/Index" style="width: 57px; color:blue;font-weight:bold;">Home</a>
+                        &nbsp;&nbsp;
+                        <a target="_blank" href="/Notification/Index" style="width: 57px; color:blue;font-weight:bold;">Notification</a>
+                        &nbsp;&nbsp;
+                        <a href="/Login/LoginUser" style="width: 57px; color:blue;font-weight:bold;">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>

@@ -1,0 +1,58 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<h4><b>Employee list Who are Using Biometric, Card, Without Card</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+        </div>
+   <table class="table table-bordered">
+     <tr> 
+         <td style="column-gap:normal;">
+    <input type="submit" class="btn btn-default" style="width:250px;" value="All Active Emp " onclick="target = '_blank';"
+    formaction="@Url.Action("Get_B_AllActiveEMPList")" />
+     </td>
+    </tr>
+    <tr>
+         <td style="column-gap:normal">
+    <input type="submit" class="btn btn-default" style="width:250px;" value="Emp List Using Biometric" onclick="target = '_blank';"
+    formaction="@Url.Action("Get_B_AllActiveEMPListBIO")" />
+     </td>
+        </tr>
+    <tr>
+               <td style="column-gap:normal">
+    <input type="submit" class="btn btn-default" style="width:250px;" value="Default Biometric Attendance" onclick="target = '_blank';"
+    formaction="@Url.Action("Get_B_AllActiveEMPListNoCard")" />  
+         </td>
+        </tr>
+    <tr>
+         <td style="column-gap:normal">
+    <input type="submit" class="btn btn-default" style="width:250px;" value="Emp List Using Card" onclick="target = '_blank';"
+    formaction="@Url.Action("Get_B_AllActiveEMPListCard")" />  
+         </td>
+        </tr>
+    <tr>
+         <td style="column-gap:normal">
+    <input type="submit" class="btn btn-default" style="width:250px;" value="Emp List Age>=60" onclick="target = '_blank';"
+    formaction="@Url.Action("Get_B_EMPListAbove60")" />  
+         </td>
+        
+       </tr>
+       <tr>
+           <td style="column-gap:normal">
+    <input type="submit" class="btn btn-default" style="width:250px;" value="Emp List Using Pin" onclick="target = '_blank';"
+    formaction="@Url.Action("Get_B_AllEmpListWithPin")" />  
+         </td>
+           </tr>
+        </table>
+}
+<h5><b>@ViewBag.Message</b></h5>
+
+
+    
+

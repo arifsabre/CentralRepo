@@ -1,0 +1,173 @@
+﻿@model ManufacturingManagement_V2.Models.C_Fitting_ItemMDI
+@{
+    ViewBag.Title = "CreateUpdate";
+    // Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Fitting Item List  </title>
+    <link href="~/Contents/bootstrap.min.css" rel="stylesheet" />
+    @* <script src="~/Script/Site.js"></script>*@
+    <script>
+
+
+        function showhide() {
+
+            var x = document.getElementById("newpost");
+
+            if (x.style.display == "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+
+    <script>
+
+
+        function showhide1() {
+
+            var x = document.getElementById("newpost");
+
+            if (x.style.display == "none") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+
+    <script>
+
+
+        function shed1() {
+
+            var x = document.getElementById("training");
+
+            if (x.style.display == "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+    <script>
+        function shed2() {
+
+            var x = document.getElementById("training");
+
+            if (x.style.display == "none") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body onload="JavaScript: showhide1();">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.HiddenFor(model => model.srno)
+            @Html.HiddenFor(model => model.userid)
+            @Html.HiddenFor(model => model.createdby)
+            <table class="table table-bordered" style="width:1000px">
+                <tr>
+                    <td>@Html.LabelFor(model => model.cmpname)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)
+                        @Html.ValidationMessageFor(model => model.compcode)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.pragno)</td>
+                    <td>
+                        @Html.EditorFor(model => model.pragno)
+                        @Html.ValidationMessageFor(model => model.pragno)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.itemname)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.itemid, ViewBag.ItemList as SelectList)
+                        @Html.ValidationMessageFor(model => model.itemid)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.invoiceno)</td>
+                    <td>
+                        @Html.EditorFor(model => model.invoiceno)
+                        @Html.ValidationMessageFor(model => model.invoiceno)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.invoicedate)</td>
+                    <td>
+                        @Html.EditorFor(model => model.invoicedate)
+                        @Html.ValidationMessageFor(model => model.invoicedate)
+                    </td>
+                </tr>
+               
+                <tr>
+                    <td>@Html.LabelFor(model => model.consigneename)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.consigneeId, ViewBag.Consigneelist as SelectList)
+                        @Html.ValidationMessageFor(model => model.consigneeId)
+                    </td>
+                </tr>
+            </table>
+            <div id="newpost">
+                @Html.LabelFor(model => model.rakenoorderagency)
+                <br />
+                @Html.EditorFor(model => model.rakenoorderagency)
+                @Html.ValidationMessageFor(model => model.rakenoorderagency)
+                <br />
+                @Html.LabelFor(model => model.coachno)
+                <br />
+                @Html.EditorFor(model => model.coachno)
+                @Html.ValidationMessageFor(model => model.coachno)
+                <br />
+                @Html.LabelFor(model => model.rakenorailway)
+                <br />
+                @Html.EditorFor(model => model.rakenorailway)
+                @Html.ValidationMessageFor(model => model.rakenorailway)
+                <br />
+                @Html.LabelFor(model => model.rakenouserrailway)
+                <br />
+                @Html.EditorFor(model => model.rakenouserrailway)
+                @Html.ValidationMessageFor(model => model.rakenouserrailway)
+                <br />
+                @Html.LabelFor(model => model.shedname)
+                <br />
+                @Html.EditorFor(model => model.shedname)
+                @Html.ValidationMessageFor(model => model.shedname)
+                <br />
+                @Html.HiddenFor(model => model.solddate)
+                @Html.HiddenFor(model => model.solddate)
+            </div>    
+            @*<div class="pull-right" id="training">
+                <br />
+                @Html.LabelFor(model => model.shedname)
+                <br />
+                @Html.EditorFor(model => model.shedname)
+                @Html.ValidationMessageFor(model => model.shedname)
+            </div>*@
+        </div>
+       <br />
+       <div style="margin-left:300px">
+           <button type="button" id="button1" class="btn btn-info" onclick="showhide()">Add Shed Details</button>
+           @*<button type="button" id="button2" class="btn btn-info" onclick="shed1()">Add Training Details</button>*@
+           <input type="submit" class="btn btn-success" value='@ViewBag.AddEdit' />
+           <h5>@ViewBag.Message</h5>
+       </div>
+         
+    }
+</body>
+</html>
+   
+
+

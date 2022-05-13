@@ -1,0 +1,147 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta name="viewport" content="width=device-width" />
+    <title>Absent</title>
+   <script>
+        function GetAbsent() {
+            $('#modal-Absent').modal('show');
+            var ifrm = document.getElementById("frmabsent");
+            ifrm.setAttribute('src', "http://localhost:58521/B_Daily_Attendance_Status/AbsentList")
+            //ifrm.setAttribute('src', "https://pragerp.com/B_Daily_Attendance_Status/AbsentList")
+        }
+
+        function GetAllCompany() {
+            $('#modal-AbsentAll').modal('show');
+            var ifrm = document.getElementById("frmabsentAll");
+            ifrm.setAttribute('src', "http://localhost:58521/B_Daily_Attendance_Status/AbsentAllCompany")
+            //ifrm.setAttribute('src', "https://pragerp.com/B_Daily_Attendance_Status/AbsentAllCompany")
+        }
+
+        function Getone() {
+            $('#modal-Absentone').modal('show');
+            var ifrm = document.getElementById("frmabsentone");
+            ifrm.setAttribute('src', "http://localhost:58521/B_Daily_Attendance_Status/AbsentOneday")
+            //ifrm.setAttribute('src', "https://pragerp.com/B_Daily_Attendance_Status/AbsentOneday")
+        }
+    </script>
+</head>
+
+<body>
+    @using (Html.BeginForm())
+    {
+        <br />
+        <div style="color:blue">
+            Absent Report- Daily/Weekly/Monthly/Yearly
+        </div>
+        <br />
+        <hr />
+        <table style="width:50%">
+            <tr>
+                <td style="column-gap:normal">
+                    <button type="button" class="btn btn-success"
+                            data-toggle="modal" onclick="Getone()">
+                        OneDay Absent Status
+                    </button>
+
+                </td>
+
+
+
+                <td style="column-gap:normal">
+                    <button type="button" class="btn btn-success"
+                            data-toggle="modal" onclick=" GetAllCompany()">
+                        One Day All Company
+                    </button>
+
+                </td>
+                <td>
+
+                    <button type="button" class="btn btn-success"
+                            data-toggle="modal" onclick="GetAbsent()">
+                        Monthly/Yearly Absent
+                    </button>
+
+                </td>
+            </tr>
+        </table>
+   
+        <div class="modal fade" id="modal-Absent">
+            <div class="modal-dialog">
+                <div class="modal-content modal-lg" style="width:600px;height:500px">
+                    <div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                onclick="reloadThis()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="box-title">Absent</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box box-primary">
+                            <iframe id="frmabsent" runat="server" scrolling="yes" frameborder="0"
+                                    style="width:550px;height:400px;opacity:100">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+   
+        <div class="modal fade" id="modal-AbsentAll">
+            <div class="modal-dialog">
+                <div class="modal-content modal-lg" style="width:600px;height:500px">
+                    <div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                onclick="reloadThis()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="box-title">Absent</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box box-primary">
+                            <iframe id="frmabsentAll" runat="server" scrolling="yes" frameborder="0"
+                                    style="width:550px;height:400px;opacity:100">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal-Absentone">
+            <div class="modal-dialog">
+                <div class="modal-content modal-lg" style="width:600px;height:500px">
+                    <div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                onclick="reloadThis()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="box-title">Absent</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box box-primary">
+                            <iframe id="frmabsentone" runat="server" scrolling="yes" frameborder="0"
+                                    style="width:550px;height:400px;opacity:100">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }
+</body>
+</html>
+
+
+
+

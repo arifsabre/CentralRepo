@@ -1,0 +1,152 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.AttendanceMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Attendance List</b></h4>
+<p>
+    @Html.ActionLink("Generate Attendance", "GenerateAttendance", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Leaves Entry", "getAttendanceBatchwise", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Attendance Log", "../EventLogReport/getLogDetail", 
+    new { tblid = 26, pkval = @ViewBag.MonthYear }, new {@target="_blank", @class = "btn btn-default" }) 
+    @Html.ActionLink("Salary Log", "../EventLogReport/getLogDetail", 
+    new { tblid = 29, pkval = @ViewBag.MonthYear }, new {@target="_blank", @class = "btn btn-default" }) for @ViewBag.MonthYear
+</p>
+
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "Attendance", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            @Html.Hidden("hfEmpId", null, new { @id = "hfEmpId" })
+                        <td>@Html.DisplayNameFor(model => model.AttYear)</td>
+                        <td>@Html.TextBox("txtAttYear")</td>
+
+                        <td>@Html.DisplayNameFor(model => model.AttMonth)</td>
+                        <td>@Html.DropDownList("ddlMonth", ViewBag.MonthList as SelectList)</td>
+                    </tr>
+                    <tr>
+                        <td>Company</td>
+                        <td>@Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList, "--Select--")</td>
+                        <td>@Html.DisplayNameFor(model => model.Grade)</td>
+                        <td>@Html.DropDownList("ddlGrade", ViewBag.GradeList as SelectList, "ALL")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.AttShift)</td>
+                        <td>@Html.DropDownList("ddlShift", ViewBag.ShiftList as SelectList)</td>
+                        <td>Employee</td>
+                        <td>@Html.TextBox("txtEmpName", null, new { @placeholder = "start typing, then select" })</td>
+                    </tr>
+                    </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+                @Html.ActionLink("Add Record for Backdate Joined Employees", "GenerateAttendanceForBackdateJoinedEmployees", "Attendance", null, 
+                new { id = "mylink", @target = "_new;", @class="btn btn-default" })
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AttMonth)
+        </th>
+        <th style="width:80px;">
+            EmpId
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.EmpId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpName)
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.AttendanceId)
+        </th>
+        <th>Action</th>
+        <th>LogDesc</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.MonthName), @Html.DisplayFor(model => item.AttYear) /@Html.DisplayFor(model => item.ShiftName) Shift
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.NewEmpId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EmpId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EmpName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AttendanceId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditAttendance", new { id = item.AttendanceId }, new { @target = "_new;" })
+                <br />@Html.ActionLink("Details", "Details", new { id = item.AttendanceId })
+            </td>
+            <td>
+                @Html.ActionLink("Att_Log", "../EventLogReport/getLogDetail",
+                new { tblid = 26, pkval = item.AttendanceId }, new { @target = "_blank" })
+                <br />@Html.ActionLink("Att_History", "../AttendanceReport/getAttendanceHistoryHTML",
+           new { attendanceid = item.AttendanceId }, new { @target = "_blank" })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("txtAttYear").value = '@ViewBag.AttYear';
+            document.getElementById("hfEmpId").value = '@ViewBag.EmpId';
+            document.getElementById("txtEmpName").value = '@ViewBag.EmpName';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtEmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+

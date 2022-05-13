@@ -1,0 +1,65 @@
+﻿<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    <li>
+        <a href="/DocumentFile/IndexView">
+            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
+            <span>Company Documents</span>
+        </a>
+    </li>
+
+    <li>
+        <a href="/CompanyPolicy/IndexView">
+            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
+            <span>Company Policy</span>
+        </a>
+    </li>
+
+    @*Category*@
+    <li class="treeview" id="mnuCategoryLibrary">
+        @*<li>*@
+        <a href="/Home/Index?deptt=ELibrary">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuCategoryLibrary');">&nbsp;&nbsp;Category</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/LibCategory/Index"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Category</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Sub Category*@
+    <li class="treeview" id="mnuSubCategoryLibrary">
+        @*<li>*@
+        <a href="/Home/Index?deptt=ELibrary">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuSubCategoryLibrary');">&nbsp;&nbsp;Sub-Category</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href='@Url.Action("Index","LibSubCategory")'><i class="fa fa-list fa-lg" aria-hidden="true"></i>SubCategory List</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Documents*@
+    <li class="treeview" id="mnuDocumentsLibrary">
+        @*<li>*@
+        <a href="/Home/Index?deptt=ELibrary">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuDocumentsLibrary');">&nbsp;&nbsp;DOCUMENTS</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href='@Url.Action("Indexcategory","Library")'><i class="fa fa-list fa-lg" aria-hidden="true"></i>UploadFile</a></li>
+            <li><a href='@Url.Action("Index_GetAllFile","Library")'><i class="fa fa-list fa-lg" aria-hidden="true"></i>DownloadFile</a></li>
+        </ul>
+        @*</li>*@
+
+</ul>
+@*ul-end*@

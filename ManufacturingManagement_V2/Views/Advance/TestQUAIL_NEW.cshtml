@@ -1,0 +1,184 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.AdvanceMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>QUAIL</h2>
+
+<fieldset>
+        <legend>Advance Detail</legend>
+            @using (Ajax.BeginForm("FilterIndexQUAIL", "Advance", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            @Html.Hidden("hfEmpId", null, new { @id = "hfEmpId" })
+                        <td>From</td>
+                        <td>@Html.TextBox("txtDtFrom", null, new { @class = "datepicker" })</td>
+                        <td>To</td>
+                        <td>@Html.TextBox("txtDtTo", null, new { @class = "datepicker" })</td>
+                    </tr>
+                    <tr>
+                        <td>Employee</td>
+                        <td>@Html.TextBox("txtEmpName", null, new { @placeholder = "start typing, then select" })</td>
+                    </tr>
+                    </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;" id="tblCustomers">  @*table*@
+        <thead>
+            <tr>
+                @*<th style="width:25px;">S.No.</th>*@
+                <th style="width:250px">Remarks</th>
+                <th style="width:120px">Amount</th>
+                <th style="width:120px">Action</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int i = 1;}
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    @*<td>@i</td>*@
+                    <td>@customer.Remarks</td>
+                    <td>@customer.AdvAmount</td>
+                    <td><input type="button" value="Remove" onclick="Remove(this)"/></td>
+                </tr>
+                i++;
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><input type="text" id="txtRemarks"/></td>
+                <td><input type="text" id="txtAdvAmount"/></td>
+                <td><input type="button" id="btnAdd" value="Add"/></td>
+            </tr>
+        </tfoot>
+    </table>
+    <br/>
+<input type="button" id="btnSave" value="Save All"/>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("hfEmpId").value = '@ViewBag.empid';
+            document.getElementById("txtEmpName").value = '@ViewBag.empname';
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+        });
+    </script>
+    <script type="text/javascript">
+        $("body").on("click", "#btnAdd", function () {
+            //Reference the Name and Country TextBoxes.
+            var txtRemarks = $("#txtRemarks");
+            var txtAdvAmount = $("#txtAdvAmount");
+
+            //Get the reference of the Table's TBODY element.
+            var tBody = $("#tblCustomers > TBODY")[0];
+
+            //Add Row.
+            var row = tBody.insertRow(-1);
+
+            //Add Name cell.
+            var cell = $(row.insertCell(-1));
+            cell.html(txtRemarks.val());
+
+            //Add Country cell.
+            cell = $(row.insertCell(-1));
+            cell.html(txtAdvAmount.val());
+
+            //Add Button cell.
+            cell = $(row.insertCell(-1));
+            var btnRemove = $("<input />");
+            btnRemove.attr("type", "button");
+            btnRemove.attr("onclick", "Remove(this);");
+            btnRemove.val("Remove");
+            cell.append(btnRemove);
+
+            //Clear the TextBoxes.
+            txtRemarks.val("");
+            txtAdvAmount.val("");
+        });
+
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            var name = $("TD", row).eq(0).html();
+
+            var table = $("#tblCustomers")[0]
+            table.deleteRow(row[0].rowIndex);
+
+            //if (confirm("Do you want to delete: " + name)) {
+            //    //Get the reference of the Table.
+            //    var table = $("#tblCustomers")[0];
+
+            //    //Delete the Table row using it's Index.
+            //    table.deleteRow(row[0].rowIndex);
+            //}
+        };
+
+        $("body").on("click", "#btnSave", function () {
+            //Loop through the Table rows and build a JSON array.
+            var customers = new Array();
+            $("#tblCustomers TBODY TR").each(function () {
+                var row = $(this);
+                var customer = {};
+                customer.Remarks = row.find("TD").eq(0).html();
+                customer.AdvAmount = row.find("TD").eq(1).html();
+                customers.push(customer);
+            });
+
+            //Send the JSON array to Controller using AJAX.
+            alert('Record Saved');
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/Home/InsertCustomers",
+            //    data: JSON.stringify(customers),
+            //    contentType: "application/json; charset=utf-8",
+            //    dataType: "json",
+            //    success: function (r) {
+            //        alert(r + " record(s) inserted.");
+            //    }
+            //});
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtEmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployee", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+

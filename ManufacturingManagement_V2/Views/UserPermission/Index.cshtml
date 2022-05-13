@@ -1,0 +1,286 @@
+﻿@model ManufacturingManagement_V2.Models.UserPermissionMdl
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>View/Set User Permission</b></h4>
+
+<fieldset>
+    @using (Ajax.BeginForm("FilterIndex", "UserPermission", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        @Html.Hidden("hfUserId", null, new { @id = "hfUserId" })
+        <div class="form-group">
+            <b>User</b>
+            @Html.TextBox("txtUserName", null, 
+            new { @placeholder = "start typing, then select", @style="width:250px;" })
+
+            &nbsp;&nbsp;
+            <b>Company</b>
+            @Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)
+
+            &nbsp;&nbsp;
+            <b>Menu</b>
+            @Html.DropDownList("ddlMenu", ViewBag.MenuList as SelectList)
+
+            &nbsp;&nbsp;
+            <button class="btn btn-default">Submit</button>
+        </div>
+    }
+</fieldset>
+
+<table style="width:50%;">
+     <tr>
+        <td style="color:orange;"><label>Check</label></td>
+        <td><label onclick="selectAll('addper')">Add</label></td>
+        <td><label onclick="selectAll('editper')">Edit</label></td>
+        <td><label onclick="selectAll('deleteper')">Delete</label></td>
+        <td style="color:orange;"><label>Uncheck</label></td>
+        <td><label onclick="UnSelectAll('addper')">Add</label></td>
+        <td><label onclick="UnSelectAll('editper')">Edit</label></td>
+        <td><label onclick="UnSelectAll('deleteper')">Delete</label></td>
+     </tr>
+</table>
+<table id="StepsTable" class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:25px;">
+           S.No.
+        </th>
+        <th style="width:30px;">
+          EntryId
+        </th>
+        <th style="width:auto;">
+          Entry Name
+        </th>
+        <th style="width:60px;">
+           Add/Allowed
+        </th>
+        <th style="width:50px;">
+           Edit
+        </th>
+        <th style="width:50px;">
+           Delete
+        </th>
+    </tr>
+    @{int i = 1;}
+@foreach (var item in Model.Entries)
+{
+    <tr>
+        <td>
+            @i
+        </td>
+        <td>
+            @Html.Label("lblEntryId"+i.ToString(),item.EntryId.ToString(),new { @id = "EntryId" + (i-1)})
+        </td>
+        <td>
+           @Html.Label("lblEntryName"+i.ToString(),item.EntryName,new { @id = "EntryName" + (i-1)})
+        </td>
+        <td>
+           @Html.CheckBox("chkAddPer"+i.ToString(),item.AddPer, new { @id = "AddPer" + (i-1),style = "width: 80px; height: 18px; padding: 0; text-align:center;",@class="addper" })
+        </td>
+        <td>
+           @Html.CheckBox("chkEditPer"+i.ToString(),item.EditPer, new { @id = "EditPer" + (i-1),style = "width: 80px; height: 18px; padding: 0; text-align:center;",@class="editper" })
+        </td>
+        <td>
+           @Html.CheckBox("chkDeletePer"+i.ToString(),item.DeletePer, new { @id = "DeletePer" + (i-1),style = "width: 80px; height: 18px; padding: 0; text-align:center;",@class="deleteper" })
+        </td>
+    </tr>
+    i++;
+}
+</table>
+<h5>@ViewBag.Message</h5>
+<p>
+    <input id="update" class="btn btn-default" type="button" value="Update Permission" />
+    <input id="updateDefault" class="btn btn-default" type="button" value="Set As Default Permission"/>
+</p>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("hfUserId").value = '@ViewBag.uid';
+            document.getElementById("txtUserName").value = '@ViewBag.uname';
+            document.getElementById("ddlCompany").value = '@ViewBag.ccode';
+            document.getElementById("ddlMenu").value = '@ViewBag.hmenu';
+            //$("#AddPer").attr("style", "width:55px;height:25px;");
+        });
+    </script>
+
+    <script type="text/javascript">
+        function selectAll(opt) {
+            var items = document.getElementsByClassName(opt);
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type == 'checkbox')
+                    items[i].checked = true;
+            }
+        }
+
+        function UnSelectAll(opt) {
+            var items = document.getElementsByClassName(opt);
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type == 'checkbox')
+                    items[i].checked = false;
+            }
+        }
+		</script>
+
+    <script type="text/javascript">
+        $("#txtUserName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteUsersList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfUserId').value = ui.item.Id,
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getCompaniesByUser", "HelpUtility"))",
+                    data: { "userid": ui.item.Id },
+                    success: function (data) {
+                        //ok for model based single record values
+                        //$('#txtRate').val(data.purchaserate);
+                        //$('#ddlUnit').val(data.unit);
+                        //alert(data.caddress);
+                        //getting multiple records as (key,value) pair type list
+                        $("#ddlCompany").empty(); // clear before appending new list 
+                        $.each(data, function (i, item) {
+                            $("#ddlCompany").append($('<option />', {
+                                value: item.Key,
+                                text: item.Value
+                            }));
+                        });
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            //s-update
+            $("#update").click(function () {
+                var empatt = [];
+                //Collects the data from textboxes and adds it to the dictionary
+                $("#StepsTable tr").each(function (index, item) {
+                    if (index > 0) {
+                        var tds = $(this).find("td");
+                        var entryid = $(tds).eq(1).text();
+                        //var textboxValue = $(tds).eq(4).find("input").val();//setUser
+                        //var x = document.getElementById("AddPer"+(index-1).ToString()).value;
+                        var addper = $(tds).eq(3).find("input").is(':checked');
+                        var editper = $(tds).eq(4).find("input").is(':checked');
+                        var deleteper = $(tds).eq(5).find("input").is(':checked');
+                        empatt.push({
+                            EntryId: entryid,
+                            AddPer: addper,
+                            EditPer: editper,
+                            DeletePer: deleteper
+                        });
+                    }
+                });
+                $(this).val('Please wait...');
+                var data = {
+                    UserId: '@Model.UserId',
+                    CompCode: '@Model.CompCode',
+                    Entries: empatt
+                }
+                //Makes ajax call to controller 
+                $.ajax({
+                    url: "/UserPermission/updateUserPermission",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database 
+                        if (d.status == true) {
+                            //will send status from server side
+                            alert(d.message);
+                            //clear form
+                            empatt = [];
+                            //$('#orderNo').val('');
+                            //$('#orderDate').val('');
+                            //$('#orderItems').empty();
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#update').val('Update Permission');
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                    }
+                });
+
+            });
+            //e-update
+
+            //s-updateDefault
+            $("#updateDefault").click(function () {
+                $(this).val('Please wait...');
+                var data = {
+                    UserId: '@Model.UserId',
+                    CompCode: '@Model.CompCode'
+                }
+                //Makes ajax call to controller 
+                $.ajax({
+                    url: "/UserPermission/updateDefaultPermission",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database 
+                        if (d.status == true) {
+                            //will send status from server side
+                            alert(d.message);
+                            //clear form
+                            empatt = [];
+                            //$('#orderNo').val('');
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#updateDefault').val('Set As Default Permission');
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                    }
+                });
+
+            });
+            //e-updateDefault
+
+        });
+        
+    </script>
+
+}
+

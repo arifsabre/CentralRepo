@@ -1,0 +1,189 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.FeedbackMdl>
+@{
+    ViewBag.Title = "ReplyView";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Feedback Reply</b></h4>
+@*<div style="font-size:14pt;color:black;background-color:yellow;text-align:center;">
+        <b>Feedback Reply</b>
+    </div>*@
+@Html.ActionLink("New Feedback", "FeedbackView", null, new { @class = "btn btn-default" })
+@Html.ActionLink("Close", null, null, new { @onclick = "window.close();", @class = "btn btn-default" })
+<fieldset>
+    @*<legend>Feedback Detail</legend>*@
+    @using (Ajax.BeginForm("FilterReplyView", "Feedback", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:10%;"><b>Status</b><td>
+                    <td style="width:90%;">
+                        @Html.DropDownList("ddlFBStatus", ViewBag.FBStatusList as SelectList)
+                    <button class="btn btn-default">Display</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Reply Message</b><td>
+                    <td>
+                        <textarea id="txtReplyMsg" rows="2" cols="80" maxlength="250" 
+                                    placeholder="Max :Length: 250 Chars"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.EntryDTStr)
+        </th>
+        <th style="width:120px;">
+            @Html.DisplayNameFor(model => model.SendingUserName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.Suggestion)
+        </th>
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.FBStatusName)
+        </th>
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.ReplyUserName)
+        </th>
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.ReplyMsg)
+        </th>
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.ReplyDTStr)
+        </th>
+        <th style="width:45px;"> Action </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EntryDTStr)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.SendingUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Suggestion)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FBStatusName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReplyUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReplyMsg)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReplyDTStr)
+            </td>
+            <td>
+                @Html.ActionLink("Reply", null, new { recid = item.RecId },
+                new { onclick = "UpdateFeedbackStatus('" + item.RecId + "')" })
+                <br />@Html.ActionLink("Reset", null, new { recid = item.RecId },
+new { onclick = "ResetFeedbackStatus('" + item.RecId + "')" })
+                @if (ViewBag.DeletePer == "1")
+                {
+                    <br />@Html.ActionLink("Delete", null, new { recid = item.RecId },
+new { @style = "color:black;", onclick = "DeleteFeedback('" + item.RecId + "')" })
+                }
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+
+@section Scripts{
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")*@
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById("ddlFBStatus").value = '@ViewBag.Status';
+        });
+    </script>
+
+    <script>
+    function UpdateFeedbackStatus(recid) {
+        var replymsg = $('#txtReplyMsg').val();
+        if (replymsg.trim() == '') {
+            alert('No reply entered!');
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdateFeedbackStatus", "Feedback")',
+            dataType: 'html',
+            data: ({
+                recid: recid,
+                replymsg: replymsg
+            }),
+            success: function () {
+                //alert("Successfully posted!");
+            }
+        });
+        //location.reload();//not required here
+    }
+    </script>
+
+    <script>
+    function ResetFeedbackStatus(recid) {
+        var a = confirm("Are you sure to reset review of this feedback?");
+        if (a == false) {
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ResetFeedbackStatus", "Feedback")',
+            dataType: 'html',
+            data: ({
+                recid: recid
+            }),
+            success: function () {
+                //alert("Successfully posted!");
+            }
+        });
+        //location.reload();//not required here
+    }
+    </script>
+
+    <script>
+    function DeleteFeedback(recid) {
+        var a = confirm("Are you sure to delete this feedback?");
+        if (a == false) {
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Delete", "Feedback")',
+                dataType: 'html',
+                data: ({
+                    recid: recid,
+                }),
+                success: function () {
+                    //alert("Successfully posted!");
+                }
+            });
+            //location.reload();//not required here
+        }
+    </script>
+
+}

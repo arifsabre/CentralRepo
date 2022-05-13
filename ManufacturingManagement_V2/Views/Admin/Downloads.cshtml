@@ -1,0 +1,49 @@
+﻿@model List<string>
+@{
+    ViewBag.Title = "DownloadFile";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Downloads / (Admin Access)</b></h4>
+
+<br />
+@Html.ActionLink("Back", "../Admin/Index", null, new { @class = "btn btn-default" })
+@Html.ActionLink("Upload File(s)", "UploadFile", null, new { @class = "btn btn-default" })
+<br />
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="text-align:left;width:50px;">S.No.</th>
+        <th style="text-align:left;width:auto;">File Name</th>
+        <th style="text-align:left; width:70px;">Link</th>
+        <th style="text-align:left; width:60px;">Delete</th>
+    </tr>
+    @{int x = 1;}
+    @for (var i = 0; i <= Model.Count - 1; i++)
+    {
+        <tr>
+            <td>
+                @x
+            </td>
+            <td>
+                @Model[i].ToString()
+            </td>
+            <td>
+                @Html.ActionLink("Download", "../Admin/Download", new { fileName = @Model[i].ToString() }, new { target = "_blank" })
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "../Admin/Delete", new { fileName = @Model[i].ToString() }, new { OnClick = "return confirm('Are you sure to delete this file?');" })
+            </td>
+        </tr>
+        x++;
+    }
+</table>
+
+@section Scripts{
+    @Styles.Render("~/Content/themes/base/css")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //document.getElementById("txtEmpCode").value = '@ViewBag.EmpCode';
+        });
+    </script>
+}

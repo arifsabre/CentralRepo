@@ -1,0 +1,269 @@
+﻿@model ManufacturingManagement_V2.Models.CorrespondenceMdl
+@{
+    ViewBag.Title = "PRAG ERP";
+    Layout = "~/Views/Shared/CorrespondenceLetter.cshtml";
+    <link href="~/Content/Letter.CSS" rel="stylesheet" />
+}
+<br />
+<input type="button" id="btnPrint" value="Print" onclick="printpage()" style="color:black;background-color:darkgray;width:100px;" />
+<input type="button" id="cmdCtoMain" value="Convert to Main" style="color:black;background-color:darkgray;width:155px;" />
+<input type="button" id="cmdDelete" value="Delete" style="color:black;background-color:darkgray;width:100px;" />
+&nbsp;&nbsp;&nbsp;@Html.ActionLink("Close", null, null, new { id="closelink", style="color:green;", @onclick="window.close()"})
+<div id="ltrInfo" style="width:1000px;">
+    <table>
+    <tr>
+        <td style="text-align:left;font-weight: bold;">Created By: @Html.DisplayFor(model => model.UserName)</td>
+        <td style="text-align:right;font-weight: bold;">
+           @if (Model.Series.ToLower() == "m"){
+               <div>Signed By: @Html.DisplayFor(model => model.SignedByName)</div>
+           }
+        </td>
+    </tr>
+    </table>
+</div>
+<style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0px;
+        background-color: #000;
+        color: white;
+        text-align: left;
+        width: 1100px;color:white;
+    }
+</style>
+<fieldset>
+    <legend aria-sort="other"></legend>
+    <div class="container" style="max-width: 100%;">
+        <table class="report-container" style="color:black;">
+            <thead class="report-header">
+                <tr>
+                    <th class="report-header-cell">
+                        <div class="header-info">
+                            @*This Is the Header Info*@
+                        </div>
+                    </th>
+                </tr>
+                <tr style="padding-top:100px;">
+                    <td>
+                        @*<div style="width: 500px; font-weight: bold;">@Html.DisplayNameFor(model => model.LetterNo):&nbsp;&nbsp;&nbsp; @Html.DisplayFor(model => model.LetterNo)</div>*@
+                    </td>
+                </tr>
+            </thead>
+            <tbody class="report-content" style="padding-top:-50px;">
+                <tr>
+                    <td class="report-content-cell">
+                        <div class="main">
+                            <div class="form-group">
+                                @*<h2>Correspondence Detail</h2>*@
+                                <div style="color:black">
+                                    <div style="width:1000px;font-size:12pt;font-family:Arial,sans-serif;">
+                                        <table>
+                                            <tr>
+                                                <td style="vertical-align:top;width:70%;text-align:left;font-weight: bold;">@Html.DisplayFor(model => model.LetterNo) </td>
+                                                <td style="width:30%;text-align:right;font-weight: bold;">Date: @Html.DisplayFor(model => model.LetterDTStr)</td>
+                                            </tr>
+                                        </table>
+                                        <pre></pre>
+                                        <div style="width: 1000px; font-weight: bold;">To,</div>
+                                        <div style="width: 1000px; font-weight: bold;">@Html.DisplayFor(model => model.PartyName)</div>
+                                        <div style="width: 1000px; font-weight: bold;">@Html.Raw(Model.CorpAddress)</div>
+                                        <pre></pre>
+                                        @if (@Model.ContactPerson.Length > 0)
+                                        { 
+                                            <table>
+                                            <tr>
+                                                <td style="vertical-align:top;width:12%;font-weight: bold;">Kind&nbsp;Attn:</td>
+                                                <td style="width:88%;">@Html.Raw(Model.ContactPerson)</td>
+                                            </tr>
+                                            </table>
+                                            <pre></pre>
+                                        }
+                                        <table>
+                                            <tr>
+                                                <td style="vertical-align:top;width:12%;font-weight: bold;">Subject:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                <td style="width:88%;">@Html.Raw(Model.CorpSubject)</td>
+                                            </tr>
+                                        </table>
+                                        <pre></pre>
+                                        @if (@Model.CorpReference.Length > 0)
+                                        { 
+                                            <table>
+                                            <tr>
+                                                <td style="vertical-align:top;width:12%;font-weight: bold;">Reference: </td>
+                                                <td style="width:88%;">@Html.Raw(Model.CorpReference)</td>
+                                            </tr>
+                                            </table>
+                                            <pre></pre>
+                                        }
+                                        <div class="testcc" style="vertical-align: top;"> @Html.Raw(Model.TextMatter)</div>
+                                        <pre></pre>
+                                        <div style="width: 1000px;">@Html.Raw(Model.Remarks)</div>
+                                        @if (@Model.Enclosures.Length > 0)
+                                        {
+                                        <pre></pre>
+                                        <table>
+                                            <tr>
+                                                <td style="vertical-align:top;width:5%;font-weight: bold;">Enclosures: </td>
+                                                <td style="width:95%;">@Html.Raw(Model.Enclosures)</td>
+                                            </tr>
+                                        </table>
+                                        }
+                                        @if (@Model.CcTo.Length > 0)
+                                        {
+                                        <pre></pre>
+                                        <table>
+                                            <tr>
+                                                <td style="vertical-align:top;width:5%;font-weight: bold;">CC&nbsp;To: </td>
+                                                <td style="width:95%;">@Html.Raw(Model.CcTo)</td>
+                                            </tr>
+                                        </table>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </td>
+                </tr>
+            </tbody>
+            <tfoot class="report-footer" id="tfoothideid" style="color:darkgray;padding-bottom:200px;">
+                <tr>
+                    <td class="report-footer-cell">
+                        <div class="footer-info;">
+                            <div style="width: 1100px;color: white;padding-top:150px;">
+                                <p style="text-align:left;font-weight:normal;font-size:14px;vertical-align:bottom;" />
+                                @*<img src="~/Images/CmpLogo/Test3.png" id="image12" style="display:none;width:90%;">*@
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+            
+        </table>
+        <div class="footer">
+            @*<img src='@ViewBag.ImgSrc' id="image1" style="display: none;max-width:100%;
+                max-height:100px; height:43mm; width:290mm;">*@
+        </div>
+    </div>
+</fieldset>
+@section scripts
+{
+    <script>
+        $(function () {
+            $("#btnPrint").click(function () {
+                document.getElementById("cmdCtoMain").style.display = 'none';
+                document.getElementById("cmdDelete").style.display = 'none';
+                document.getElementById("closelink").style.display = 'none';
+                document.getElementById("ltrInfo").style.display = 'none';
+                window.print();
+            });
+        });
+
+        function printpage() {
+            //Get the print button and put it into a variable
+            var printButton = document.getElementById("btnPrint");
+            //var tophide = document.getElementById("pageheadertop");
+
+            var bottomhide = document.getElementById("pagefooterbottom");
+            var imagefooter1 = document.getElementById("image1");
+
+            //Set the print button visibility to 'hidden'
+            printButton.style.display = 'none';
+            // tophide.style.display = 'none';
+            // bottomhide.style.display = 'none';
+            imagefooter1.style.display = 'block';
+
+            //Print the page content
+            window.print()
+            //Set the print button to 'visible' again
+            //[Delete this line if you want it to stay hidden after printing]
+            printButton.style.display = 'block';
+            tophide.style.display = 'block';
+            bottomhide.style.display = 'block';
+        }
+
+    </script>
+
+    <script>
+        //Save button click function
+        $('#cmdCtoMain').click(function () {
+            //validation of order
+            var isAllValid = true;
+            if (isAllValid) {
+                var data = {
+                    //order fields
+                    RecId: parseInt('@Model.RecId')
+                }
+
+                $(this).val('Please wait...');
+
+                $.ajax({
+                    url: '/Correspondence/convertDraftCorrespondenceToMain',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database 
+                        if (d.status == true) {
+                            alert(d.message);
+                            location.reload();
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#cmdCtoMain').val('Convert');
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        $('#cmdCtoMain').val('Convert');
+                    }
+                });
+            }
+        });
+</script>
+
+    <script>
+        //Save button click function
+        $('#cmdDelete').click(function () {
+            var a = confirm('Are you sure to delete this letter?');
+            if (a == false) {
+                return;
+            }
+            var isAllValid = true;
+            if (isAllValid) {
+                var data = {
+                    //order fields
+                    RecId: parseInt('@Model.RecId')
+                }
+
+                $(this).val('Please wait...');
+
+                $.ajax({
+                    url: '/Correspondence/deleteCorrespondence',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database 
+                        if (d.status == true) {
+                            alert(d.message);
+                            window.close();
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#cmdDelete').val('Delete');
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        $('#cmdDelete').val('Delete');
+                    }
+                });
+            }
+        });
+</script>
+
+}
+

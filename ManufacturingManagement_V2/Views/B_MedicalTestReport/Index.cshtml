@@ -1,0 +1,86 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+@{
+    ViewBag.Title = "Index";
+
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<h4>Employee Medical Test Report</h4>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div>
+        <p>
+        Enter Parameter
+        </p>
+        @Html.EditorFor(model => model.fromSugar)
+        @Html.EditorFor(model => model.DateFrom)
+        @Html.EditorFor(model => model.DateTo)
+        @Html.DropDownListFor(model => model.ReportFormat, ViewBag.ReportFormatList as SelectList)
+    </div>
+    <br />
+    <table>
+        <tr>
+            <td style="column-gap:normal">
+                <input type="submit" style="width:150px;" value="Pulse>" onclick="target = '_blank';"
+                       formaction="@Url.Action("MedicalPulseGreater")" />
+            </td>
+            <td style="column-gap:normal">
+                <input type="submit" style="width:150px;" value="Pulse<" onclick="target = '_blank';"
+                       formaction="@Url.Action("MedicalPulseless")" />
+            </td>
+
+
+
+            <td>
+                <input type="submit" style="width:150px;" value="Oxygen>" onclick="target = '_blank';"
+                       formaction="@Url.Action("MedicalOxygenGreater")" />
+            </td>
+
+            <td>
+                <input type="submit" style="width:150px;" value="Oxygen<" onclick="target = '_blank';"
+                       formaction="@Url.Action("MedicalOxygenLess")" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" style="width:150px;" value="Sugar>" onclick="target = '_blank';"
+                       formaction="@Url.Action("MedicalSugarGreater")" />
+            </td>
+
+            <td>
+                <input type="submit" style="width:150px;" value="Sugar<" onclick="target = '_blank';"
+                       formaction="@Url.Action("MedicalSugarLess")" />
+            </td>
+
+            <td>
+                <input type="submit" style="width:150px;" value="Hemoglobin>" onclick="target = '_blank';"
+                       formaction="@Url.Action("MedicalHemoglobinGreater")" />
+            </td>
+
+            <td>
+                <input type="submit" style="width:150px;" value="Hemoglobin<" onclick="target = '_blank';"
+                       formaction="@Url.Action("MedicalHemoglobinLess")" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" style="width:150px;" value="BP>" onclick="target = '_blank';"
+                       formaction="@Url.Action("MedicalBPGreater")" />
+            </td>
+            <td>
+                <input type="submit" style="width:150px;" value="BP<" onclick="target = '_blank';"
+                       formaction="@Url.Action("MedicalBPLess")" />
+            </td>
+            <td>
+                <input type="submit" style="width:150px;" value="CompiledBPSystolic" onclick="target = '_blank';"
+                       formaction="@Url.Action("MedicalCommonPB")" />
+            </td>
+        </tr>
+    </table>
+    <br />
+    @*@Html.ActionLink("Back to Home", "../HR/Index")*@
+    @Html.ActionLink("Back to Home", "Index", "Home", new {deptt = "HR" }, new { @class = "btn btn-default" })
+}
+<h2>@ViewBag.Message<br /></h2>
+
+

@@ -1,0 +1,149 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ItemMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Item List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "Item", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                        @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+                        <td>@Html.DisplayNameFor(model => model.ItemType)</td>
+                        <td>@Html.DropDownList("ddlItemType", ViewBag.ItemTypeList as SelectList)</td>
+                        <td>@Html.DisplayNameFor(model => model.GroupId)</td>
+                        <td>@Html.DropDownList("ddlGroup", ViewBag.ItemGroupList as SelectList, "ALL")</td>
+                        <td>
+                            <button class="btn btn-default">Submit</button>
+                        </td>
+                    </tr>
+                    </table>
+                      </div>
+            }   
+</fieldset>
+
+<table id="jdtabledesktop" class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th>Links</th>
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.ItemId)
+        </th>
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.ItemCode)
+        </th>
+        <th style="width:auto;">
+            Short&nbsp;Name
+        </th>
+        <th style="width:auto;">
+            Item&nbsp;Name
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.GroupName)
+        </th>
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.Unit)
+        </th>
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.HSNCode)
+        </th>
+    </tr>
+    @{int i = 1;}
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @i
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "CreateUpdate", new { id = item.ItemId })
+        <br />@Html.ActionLink("Details", "Details", new { id = item.ItemId })
+        <br />@Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+      new { tblid = 32, pkval = item.ItemId }, new { @target = "_blank" })
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ItemId)
+    </td>
+    <td>
+        @if (item.IsActive == false)
+        {
+            <div style="background-color:red;">@Html.DisplayFor(model => item.ItemCode)</div>
+        }
+        else
+        {
+            <div>@Html.DisplayFor(model => item.ItemCode)</div>
+        }
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.ShortName)
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.ItemName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.GroupName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.UnitName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.HSNCode)
+    </td>
+</tr>
+    i++;
+}
+<br/>
+@{i = i-1;}
+@i.ToString()&nbsp;&nbsp;&nbsp;Items found.
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#txtItemCode").attr("placeholder", "start typing, then select");
+        });
+
+    </script>
+
+    @*<script type="text/javascript">
+        $("#GroupName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteItemGroup", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('GroupId').value = ui.item.Id;
+            }
+        });
+</script>*@
+
+}

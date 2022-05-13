@@ -1,0 +1,108 @@
+﻿@model ManufacturingManagement_V2.Models.MachineMaintenanceMDI
+
+<table id="jdtabledesktop" class="display nowrap" style="width:100%">
+
+    <thead style="background-color:lightgray">
+        <tr>
+            @*<th>
+             Id
+            </th>*@
+            @*<th>
+                Company
+            </th>*@
+            @*<th>
+                Machine
+            </th>*@
+
+            <th>
+                Schedule
+            </th>
+            <th>
+                Assignee
+            </th>
+            @*<th>
+                Responsibility
+            </th>*@
+            @*<th>
+                Checking_By
+            </th>
+            <th>
+                Check_Point
+            </th>*@
+            <th>
+                Detail_of_Work_Done
+            </th>
+            <th>
+                Machine_Condition
+            </th>
+            <th>
+                Next_Due_Date
+            </th>
+
+            @*<th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Item_List)
+        {
+            <tr>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.id)
+                </td>*@
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.ShortName)
+                </td>*@
+
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.machinename)
+                </td>*@
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.schedulename)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.assignee)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.EmpName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.checkdetail)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.detailofworkdone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.condition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NextDueDate)
+                </td>
+
+                @*<td>
+                        <a onclick="GetDetailss(@item.id)">
+                            <i class="fa fa-edit">
+                            </i>
+                        </a>
+                        <a>
+                                @Html.ActionLink(" ", "LibraryDeleteRecord", "MachineMaintenance", new { id = item.id }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                            </a>
+                    </td>*@
+            </tr>
+        }
+    <tfoot style="background-color:lightgray">
+        <tr>
+            <td></td>
+            <td>
+            </td>
+            <td></td>
+            <td></td>
+            <td> End of the List</td>
+           
+        </tr>
+       
+    </tfoot>
+</table>

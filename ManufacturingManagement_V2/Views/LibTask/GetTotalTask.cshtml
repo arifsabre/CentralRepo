@@ -1,0 +1,63 @@
+﻿@model List<ManufacturingManagement_V2.Models.LibTask>
+@{
+    ViewBag.Title = "InsertNewTask";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Task List</title>
+   
+</head>
+<body>
+    <div>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert1">
+            All Task List
+        </button>
+        <div id="printbar" class="pull-right">
+        </div>
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    @*<div class="box-header">
+                        </div>*@
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+
+                                    <th>TotalTask</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+
+                                        <td>@Html.DisplayFor(model => item.TotalTask)</td>
+                                        <td>
+
+                                            @Html.Action("GetTotalTask", "Home")
+
+
+
+
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>

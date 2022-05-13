@@ -1,0 +1,72 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Compliance Report</b></h4>
+
+@{var lstStatus = new List<System.Web.UI.WebControls.ListItem>
+    {
+          new System.Web.UI.WebControls.ListItem { Text = "Pending", Value="p" },
+          new System.Web.UI.WebControls.ListItem { Text = "Completed", Value="c" }
+    };
+ }
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr><td colspan="4"><h5><b>Report Options</b></h5></td></tr>
+                <tr>
+                   <td style="width:10%;">Company</td>
+                   <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList, "ALL")</td>   
+                </tr>
+                <tr>
+                   <td>Department</td>
+                   <td>@Html.DropDownListFor(model => model.ItemId, ViewBag.TaskOptList as SelectList)</td>   
+                </tr>
+                <tr>
+                   <td>Compliance Of</td>
+                   <td>@Html.DropDownListFor(model => model.RailwayId, ViewBag.DepartmentList as SelectList, "ALL")</td>   
+                </tr>
+                <tr>
+                   <td>Date From</td>
+                   <td>  
+                    @Html.EditorFor(model => model.DateFrom)
+                   </td> 
+                </tr>
+                <tr>
+                   <td>Date To</td>
+                   <td>@Html.EditorFor(model => model.DateTo)</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>@Html.DropDownListFor(model => model.AttShift, new SelectList(lstStatus,"Value","Text"))</td>
+                </tr>
+            </table>
+        </div>
+    <p>
+       <input type="submit" class="btn btn-default" value="Submit" onclick="target='_blank';" 
+           formaction="@Url.Action("ComplianceReport")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+    </script>
+
+}
+

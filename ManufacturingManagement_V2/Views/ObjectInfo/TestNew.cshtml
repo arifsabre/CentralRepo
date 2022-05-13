@@ -1,0 +1,113 @@
+﻿@model ManufacturingManagement_V2.Models.ObjectInfoMdl
+
+@*@{
+        ViewBag.Title = "CreateUpdate";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }*@
+
+<h4><b>Object Information</b></h4>
+<br />
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group" style="width:450px;">
+        @Html.HiddenFor(model => model.ObjectId)
+        <table class="table table-bordered">
+            <tr>
+                <td>@Html.LabelFor(model => model.EntryName)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.EntryId, ViewBag.ObjGroupList as SelectList)
+                    @Html.ValidationMessageFor(model => model.EntryName)
+                </td>
+                <td>@Html.LabelFor(model => model.SlNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.SlNo)
+                    @Html.ValidationMessageFor(model => model.SlNo)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.RptName)</td>
+                <td>
+                    @Html.EditorFor(model => model.RptName)
+                    @Html.ValidationMessageFor(model => model.RptName)
+                </td>
+                <td>@Html.LabelFor(model => model.SPName)</td>
+                <td>
+                    @Html.EditorFor(model => model.SPName)
+                    @Html.ValidationMessageFor(model => model.SPName)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Remarks)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Remarks, 0, 0,
+                    new { @style = "width:268px;height:40px;" })
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </td>
+                <td>@Html.LabelFor(model => model.Location)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Location, 0, 0,
+                    new { @style = "width:268px;height:40px;" })
+                    @Html.ValidationMessageFor(model => model.Location)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.RouteMap)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.RouteMap, 0, 0,
+                    new { @style = "width:268px;height:40px;" })
+                    @Html.ValidationMessageFor(model => model.RouteMap)
+                </td>
+                <td>@Html.LabelFor(model => model.RptLink)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.RptLink, 0, 0,
+                    new { @style = "width:268px;height:40px;" })
+                    @Html.ValidationMessageFor(model => model.RptLink)
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+
+}
+
+@*@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+    </p>
+    }*@
+
+@*just to implement forced close*@
+<label for="terms">I accept the terms</label>
+<input type="checkbox" id="terms" checked="checked">  @*checked="checked"*@
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //$("#GroupName").attr("placeholder", "start typing, then select");
+            r();
+        });
+
+        //in reference with popup model applied in index view
+        var jq2 = jQuery.noConflict(true);
+        (function r($) {
+            $(document).ready(function () {
+                // your logic
+            });
+        }(jq2));
+
+    </script>
+
+}

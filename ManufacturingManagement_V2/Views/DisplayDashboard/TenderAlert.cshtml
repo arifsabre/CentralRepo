@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/views/shared/_LayoutCommon.cshtml";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Tender Alert</b></h4>
+
+<fieldset>
+    <div class="form-group">
+        <table>
+            <tr>
+                <td>
+                    <b>Company</b>&nbsp;&nbsp;
+                    @Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList,
+                    new { @onclick = "fillTenderList()" })
+                </td>
+            </tr>
+        </table>
+    </div>
+</fieldset>
+<div id="alertList" style="width:100%;"></div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+    $(function () {
+        //$("input[type=text]").first().focus();
+        //document.getElementById("txtAttDay").focus();
+        fillTenderList();
+    });
+    </script>
+
+    <script type="text/javascript">
+        function fillTenderList() {
+            var liObj = document.getElementById("ddlCompany");
+            var sIndex = liObj.selectedIndex;
+            var ccode = liObj.options[sIndex].value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getTenderAlertList", "DisplayDashboard"))",
+                data: { "ccode": ccode },
+                success: function (data) {
+                    document.getElementById("alertList").innerHTML = data.alertlist;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+}

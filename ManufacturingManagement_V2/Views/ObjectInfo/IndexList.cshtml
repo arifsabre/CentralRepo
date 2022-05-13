@@ -1,0 +1,107 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ObjectInfoMdl>
+
+@{
+    ViewBag.Title = "IndexList";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Report List</b></h4>
+
+@{var lstSortOn = new List<System.Web.UI.WebControls.ListItem>
+    {
+          new System.Web.UI.WebControls.ListItem { Text = "Report Id", Value = "obj" },
+          new System.Web.UI.WebControls.ListItem { Text = "Group + Report Id", Value = "grpobj" },
+          new System.Web.UI.WebControls.ListItem { Text = "Group + Report SlNo", Value = "grpslno" },
+          new System.Web.UI.WebControls.ListItem { Text = "Group + Report Name", Value = "grprpt" }
+    };
+ }
+
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndexList", "ObjectInfo", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td><b>Group</b></td>
+                            <td>
+                                @Html.DropDownList("ddlGroup", ViewBag.ObjGroupList as SelectList, "---Select---")
+                            </td>
+                            <td><b>Sort On</b></td>
+                            <td>
+                                @Html.DropDownList("ddlSortOn", new SelectList(lstSortOn, "Value", "Text"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Report</b></td>
+                            <td>
+                                @Html.TextBox("txtRptName")
+                            </td>
+                            <td colspan="2">
+                                <button class="btn btn-default">Submit</button>
+                            </td>
+                        </tr>
+                    </table>
+                      </div>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th style="width:auto;">
+            Report ID
+        </th>
+        <th style="width:auto;">
+            Group Name
+        </th>
+        <th style="width:auto;">
+            Report Name
+        </th>
+        <th style="width:auto;">
+            Location Menu
+        </th>
+        <th style="width:50px;">Links</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ObjectId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RptName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LocationMenu)
+            </td>
+            <td>
+                @Html.Raw(item.RptLink)
+            </td>
+        </tr>
+        i++;
+    }
+    @{i = i - 1;}
+    <b>@i.ToString()</b>&nbsp;&nbsp;&nbsp;Report(s) found.
+</table>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txt").focus();
+            document.getElementById("txtRptName").value = '@ViewBag.RptName';
+            document.getElementById("ddlSortOn").value = '@ViewBag.SortOn';
+        });
+    </script>
+
+}
+

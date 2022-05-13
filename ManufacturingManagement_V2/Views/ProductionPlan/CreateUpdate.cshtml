@@ -1,0 +1,108 @@
+﻿@model ManufacturingManagement_V2.Models.ProductionPlanMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Production Plan Entry</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <h5><b>Production Detail</b></h5>
+            <table class="table table-bordered">
+                @Html.HiddenFor(model => model.PlanRecId)
+                @Html.HiddenFor(model => model.ItemId)
+                <tr>
+                    <td style="width:10%;">@Html.LabelFor(model => model.PPMonth)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PPMonth)
+                        @Html.ValidationMessageFor(model => model.PPMonth)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PPYear)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PPYear)
+                        @Html.ValidationMessageFor(model => model.PPYear)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.ItemCode)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ItemCode)
+                        @Html.ValidationMessageFor(model => model.ItemCode)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PrdQty)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PrdQty)
+                        @Html.ValidationMessageFor(model => model.PrdQty)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.InspQty)</td>
+                    <td>
+                        @Html.EditorFor(model => model.InspQty)
+                        @Html.ValidationMessageFor(model => model.InspQty)
+                    </td>
+                </tr>
+            </table>
+        </div>
+    <h5><b>@ViewBag.Message</b></h5>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+        @Html.ActionLink("Back to List", "IndexStatus", null, new { @class = "btn btn-default" })
+        @*@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })*@
+        @*@Html.ActionLink("Item Info", "Details", "Item", null,
+        new { id = "mylink", @target = "_new;", @class = "btn btn-default" })*@
+    </p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")*@
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#ItemCode").attr("placeholder", "start typing, then select");
+            $('#mylink').attr('href', '/Item/Details' + '?id=' + @ViewBag.ItemId);
+        });
+
+    </script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+    $("#ItemCode").autocomplete({
+        source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteFinishedAndAssembledItems", "Item"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+        }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('ItemId').value = ui.item.Id;
+                $('#mylink').attr('href', '/Item/Details' + '?id=' + ui.item.Id);
+            }
+    });
+    </script>
+
+}

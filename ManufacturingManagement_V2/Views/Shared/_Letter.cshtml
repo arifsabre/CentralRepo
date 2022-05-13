@@ -1,0 +1,58 @@
+﻿@model ManufacturingManagement_V2.Models.LetterMDI
+
+
+<table id="jdtabledesktop" class="table " style="width:100%;">
+    <thead>
+        <tr>
+            <th>RecordId</th>
+            <th>Company</th>
+            <th>Letter_No</th>
+            <th>Subject</th>
+            <th>Send_To</th>
+            <th>Send_On</th>
+            <th>Keyword</th>
+            <th>Created_By</th>
+            <th>Files</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Item_List2)
+        {
+            <tr>
+                <td>
+
+                    @Html.DisplayFor(model => item.RecordId)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ShortName)
+
+                </td>
+                <td>@Html.DisplayFor(model => item.LetterNo)</td>
+                <td>@Html.DisplayFor(model => item.Subject)</td>
+                <td>@Html.DisplayFor(model => item.SendTo)</td>
+                <td>@Html.DisplayFor(model => item.SendDate)</td>
+
+                <td>@Html.DisplayFor(model => item.Keywords)</td>
+                <td>@Html.DisplayFor(model => item.CreatedBy)</td>
+                <td>
+                    <a>
+                        @Html.ActionLink("Files ", "Details", new { id = item.RecordId })
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+
+        <tr></tr>
+    </tfoot>
+</table>
+@*<div class="pull-right" style="margin-bottom:3px">
+        <input type="button" value="Refresh"
+               onClick="window.location.href=window.location.href">
+    </div>*@
+<script src="~/Script/Site.js"></script>

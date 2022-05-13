@@ -1,0 +1,410 @@
+﻿@model ManufacturingManagement_V2.Models.ContractorIndentMDI
+@{
+    ViewBag.Title = "Indexcategory";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Task</title>
+    <script>
+        
+        function GetDetails(id) {
+            $.ajax({
+                url:"/ContractorIndent/Edit_IndentHODRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                   $('#RecordId').val(response.RecordId);
+                    $('#cmpname').val(response.cmpname);
+                    $('#Location').val(response.Location);
+                    $('#hodname').val(response.hodname);
+                    $('#Category').val(response.Category);
+                    $('#WorkDetail').val(response.WorkDetail);
+                    $('#Status').val(response.Status);
+                    $('#Priority').val(response.Priority);
+                    $('#EstimateAmount').val(response.EstimateAmount);
+                    $('#CompletionDate').val(response.CompletionDate);
+                    $('#Contractor').val(response.Contractor);
+                    $('#Remark').val(response.Remark);
+                    $('#CreatedBy').val(response.CreatedBy);
+                    $('#CreatedOn').val(response.CreatedOn);
+                    $('#UpdatedBy').val(response.UpdatedBy);
+                    $('#UpdatedOn').val(response.UpdatedOn);
+
+                    $('#WorkStartDate').val(response.WorkStartDate);
+                    $('#WorkComplatedDate').val(response.WorkComplatedDate);
+                    $('#HODApproval').val(response.HODApproval);
+                    $('#HODApprovalBy').val(response.HODApprovalBy);
+                    $('#HODApprovalDate').val(response.HODApprovalDate);
+                   // $('#HODRemark').val(response.HODRemark);
+
+
+                    //$('#FinalApproval').val(response. );
+                    //$('#FinalApprovalBy').val(response.FinalApprovalBy);
+                    //$('#FinalApprovalDate').val(response.FinalApprovalDate);
+                    //$('#FinalRemark').val(response.FinalRemark);
+             
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <br />
+    @Html.ActionLink("HOD Approval List", null, null, null, new { @class = "btn btn-default" })
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-Insert">
+        Add New Task
+    </button>
+    <br />
+    <br />
+    <div id="printbar" class="pull-right">
+    </div>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>TaskNo</th>
+                                    <th>Company</th>
+                                    <th>HOD Name</th>
+                                    <th>Location</th>
+                                    <th>Category</th>
+                                    <th>Work Detail</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Estimated Amount</th>
+                                    <th>Expected Completion Date</th>
+                                    <th>Contractor</th>
+                                    <th>View Quotation</th>
+                                    <th>Task Creater Remark</th>
+                                    <th>Task Created By</th>
+                                    <th>Created On</th>
+                                    <th>UpdatedBy</th>
+                                    <th>UpdatedOn</th>
+                                    <th>Remark</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td style="font-size:xx-large">
+                                            <a onclick="GetDetails(@item.RecordId)">
+                                                <i class="fa fa-pencil-square">
+                                                </i>
+                                            </a>
+                                        </td>
+                                        <td>@Html.DisplayFor(model => item.RecordId)</td>
+                                        <td>@Html.DisplayFor(model => item.cmpname)</td>
+                                        <td>@Html.DisplayFor(model => item.hodname)</td>
+                                        <td>@Html.DisplayFor(model => item.Location)</td>
+                                        <td>@Html.DisplayFor(model => item.Category)</td>
+                                        <td>@Html.DisplayFor(model => item.WorkDetail)</td>
+                                        <td>@Html.DisplayFor(model => item.Status)</td>
+                                        <td>@Html.DisplayFor(model => item.Priority)</td>
+                                        <td>@Html.DisplayFor(model => item.EstimateAmount)</td>
+                                        <td>@Html.DisplayFor(model => item.CompletionDate)</td>
+                                        <td>@Html.DisplayFor(model => item.Contractor)</td>
+                                        <td>
+                                            @Html.ActionLink("View", "GetQutation", new { id = item.RecordId })
+                                        </td>
+
+                                        <td>@Html.DisplayFor(model => item.Remark)</td>
+                                        @* <td>@Html.DisplayFor(model => item.HODRemark)</td>*@
+                                        <td>@Html.DisplayFor(model => item.CreatedBy)</td>
+                                        <td>@Html.DisplayFor(model => item.CreatedOn)</td>
+                                        <td>@Html.DisplayFor(model => item.UpdatedBy)</td>
+                                        <td>@Html.DisplayFor(model => item.UpdatedOn)</td>
+                                        <td>@Html.DisplayFor(model => item.Remark)</td>
+
+
+
+                                        <td>
+                                            <a>
+                                                @Html.ActionLink(" ", "IndentDeleteRecord", "ContractorIndent", new { id = item.RecordId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">HOD Approval Task</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_IndentHOD", "ContractorIndent", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        @Html.HiddenFor(model => model.RecordId)
+                                        @Html.HiddenFor(model => model.HODApprovalBy)
+                                        <div class="col-md-10">
+                                            <label>Company</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.cmpname, 0, 0, new { @class = "Editor", @style = "width:500px;height:25px;" })
+                                            <br />
+                                            <label>Location</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.Location, 0, 0, new { @class = "Editor", @style = "width:500px;height:25px;" })
+                                            <br />
+                                            <label>Category</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.Category, 0, 0, new { @class = "Editor", @style = "width:500px;height:25px;" })
+                                            <br />
+                                            <label>Work Detail</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.WorkDetail, 0, 0, new { @class = "Editor", @style = "width:500px;height:50px;" })
+                                            <br />
+                                            <label>Work Status</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.Status, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                                            <br />
+                                            <label>Work Priority</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.Priority, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                                            <br />
+                                            <label>Estimate Amount</label>
+                                            <br />
+                                            @Html.EditorFor(model => model.EstimateAmount)
+                                            <br />
+                                            <label>Expected Completion Date</label>
+                                            <br />
+                                            @Html.TextBoxFor(model => model.CompletionDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "text" })
+                                            <br />
+                                            <label>Contractor</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.Contractor, 0, 0, new { @class = "Editor", @style = "width:500px;height:25px;" })
+                                            <br />
+                                            <label>Task Created By</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.CreatedBy, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                                            <br />
+                                            <label>Task Created On</label>
+                                            <br />
+                                            @Html.TextBoxFor(model => model.CreatedOn, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "text" })
+                                            <br />
+
+                                            <label>Task Updated By</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.UpdatedBy, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                                            <br />
+                                            <label>Task Updated On</label>
+                                            <br />
+                                            @Html.TextBoxFor(model => model.UpdatedOn, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "text" })
+                                            <br />
+
+                                            @*<label>Work Start Date</label>
+                                                <br />
+                                                @Html.EditorFor(model => model.WorkStartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                                <br />
+                                                <label>Work Completed Date</label>
+                                                <br />
+                                                @Html.EditorFor(model => model.WorkComplatedDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                                <br />*@
+                                            <label>Hod Name</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.hodname, 0, 0, new { @class = "Editor", @style = "width:500px;height:25px;" })
+                                            <br />
+                                            @*<label>HOD Approval</label>
+                                                <br />
+                                                @Html.TextAreaFor(model => model.HODApproval, 0, 0, new { @class = "Editor", @style = "width:500px;height:30px;" })
+                                                <br />
+                                                <label>HOD Approved By</label>
+                                                <br />
+                                                @Html.TextAreaFor(model => model.HODApprovalBy, 0, 0, new { @class = "Editor", @style = "width:500px;height:30px;" })
+                                                <br />
+                                                <label>HOD Approval Date</label>
+                                                <br />
+                                                @Html.TextBoxFor(model => model.HODApprovalDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "text" })
+                                                <br />*@
+                                            @*<label>HOD Remark</label>
+                                                <br />
+                                                @Html.TextBoxFor(model => model.HODRemark, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "text" })
+                                                <br />
+                                                <label>Final Approval Status</label>
+                                                <br />
+                                                @Html.TextAreaFor(model => model.FinalApproval, 0, 0, new { @class = "Editor", @style = "width:500px;height:25px;" })
+                                                <br />
+                                                <label>Final Approval By</label>
+                                                <br />
+                                                @Html.TextAreaFor(model => model.FinalApprovalBY, 0, 0, new { @class = "Editor", @style = "width:500px;height:30px;" })
+                                                <br />
+
+                                                <label>Final Approval Date</label>
+                                                <br />
+                                                @Html.TextBoxFor(model => model.FinalApprovalDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "text" })
+                                                <br />
+                                                <label>Final Remark</label>
+                                                <br />
+                                                @Html.TextAreaFor(model => model.FinalRemark, 0, 0, new { @class = "Editor", @style = "width:500px;height:25px;" })*@
+
+                                            <label style="color:red">Select Approve or Reject</label>
+                                            <br />
+                                            @Html.DropDownList("HODApproval", new List<SelectListItem>
+                                             {
+                                             new SelectListItem { Text = "Approve"},
+                                             //new SelectListItem { Text = "Pending"},
+                                             new SelectListItem { Text = "Reject"}
+                                             })
+                                            @Html.ValidationMessageFor(model => model.HODApproval, "", new { @class = "error" })
+                                            <br />
+                                            <label>Remark</label>
+                                            @Html.TextAreaFor(model => model.HODRemark, 0, 0, new { @class = "Editor", @style = "width:500px;height:25px;" })
+                                            <br />
+
+                                            @*<label>HOD Remark</label>
+                                                @Html.TextAreaFor(model => model.HODRemark, 0, 0, new { @class = "Editor", @style = "width:500px;height:25px;" })*@
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*insert*@
+
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Create New Task</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Index", "ContractorIndent", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <label>Enter Location</label>
+                            <br />
+                            @Html.TextAreaFor(model => model.Location, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                            <br />
+                            <label>Select  HOD Name</label>
+                            <br />
+                            @Html.DropDownListFor(model => model.hodid, ViewBag.HodList as SelectList)
+                            @Html.ValidationMessageFor(model => model.hodid)
+                            <br />
+                            <label>Select  Work Category</label>
+                            <br />
+                            <select name="Category" id="Category">
+                                <option value="Civil">Civil</option>
+                                <option value="Repair & Renovation">Repair & Renovation</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="Plumbing">Plumbing"</option>
+                                <option value="Any Other">Any Other"</option>
+                            </select>
+                            <br />
+                            <label>Enter  Work Detail</label>
+                            <br />
+                            @Html.TextAreaFor(model => model.WorkDetail, 0, 0, new { @class = "Editor", @style = "width:450px;height:50px;" })
+                            @Html.ValidationMessageFor(model => model.WorkDetail)
+                            <br />
+                            <label>Select Status</label>
+                            <br />
+                            <select name="Status" id="Status">
+                                <option value="NotStarted">NotStarted</option>
+                                <option value="Inprogrerss">Inprogrerss</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Closed">Closed"</option>
+                                <option value="HoldOn">HoldOn"</option>
+                                <option value="Closed">Cancel"</option>
+                            </select>
+                            <br />
+                            <label>Select Priority</label>
+                            <br />
+                            <select name="Priority" id="Priority">
+                                <option value="Normal">Normal</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                            <br />
+                            <label>Enter Estimated Amount</label>
+                            <br />
+                            @Html.TextBoxFor(model => model.EstimateAmount)
+                            @Html.ValidationMessageFor(model => model.EstimateAmount, "", new { @class = "error" })
+                            <br />
+                            <label>Enter Contractor</label>
+                            <br />
+                            @Html.TextAreaFor(model => model.Contractor, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                            <br />
+                            <label>Select Completion Date</label>
+                            <br />
+                            @Html.EditorFor(model => model.CompletionDate)
+                            @Html.ValidationMessageFor(model => model.CompletionDate, "", new { @class = "error" })
+                            <br />
+                            <label>Attached Quotation</label>
+                            <br />
+                            @Html.TextBoxFor(model => model.files, "", new { @type = "file", @multiple = "multiple" })
+                            @Html.ValidationMessageFor(model => model.files, "", new { @class = "error" })
+                            <br />
+                            <label>Enter Remark</label>
+                            <br />
+                            @Html.TextAreaFor(model => model.Remark, 0, 0, new { @class = "Editor", @style = "width:350px;height:30px;" })
+                            @Html.HiddenFor(model => model.CreatedBy)
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+
+
+

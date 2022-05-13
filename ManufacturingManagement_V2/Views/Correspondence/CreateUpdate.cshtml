@@ -1,0 +1,386 @@
+﻿@model ManufacturingManagement_V2.Models.CorrespondenceMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Correspondence Detail  - * Under Testing</b></h4>
+@*<div style="font-size:14pt;color:black;background-color:yellow;text-align:center;">
+    <b>Correspondence Detail  - * Under Testing</b>
+</div>*@
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <h5><b>Letter No: @Html.DisplayFor(model => model.LetterNo)</b></h5>
+            <table class="table table-bordered">
+                <tr>
+                    @Html.HiddenFor(model => model.RecId)
+                    @Html.HiddenFor(model => model.Series)
+                    <td>@Html.LabelFor(model => model.CompCode)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList,
+                        new { @onclick = "fillMDocList()", @id = "ddlCompany" })
+                        @Html.ValidationMessageFor(model => model.CompCode)
+                    </td>
+                    <td>@Html.LabelFor(model => model.FinYear)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.FinYear, ViewBag.FinYearList as SelectList)
+                        @Html.ValidationMessageFor(model => model.FinYear)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.DepCode)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.DepCode, ViewBag.DepartmentList as SelectList)
+                        @Html.ValidationMessageFor(model => model.CompCode)
+                    </td>
+                    <td>@Html.LabelFor(model => model.LetterDT)</td>
+                    <td>
+                        @Html.EditorFor(model => model.LetterDT)
+                        @Html.ValidationMessageFor(model => model.LetterDT)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.DocumentName)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.DocumentId, ViewBag.MDocList as SelectList,
+                        new { @id = "ddlMDocList" })
+                        @Html.ValidationMessageFor(model => model.DocumentId)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PartyName)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PartyName)
+                        @Html.ValidationMessageFor(model => model.PartyName)
+                    </td>
+                    <td colspan="2">
+                        @Html.CheckBox("chkParty", false, new { style = "width:55px;height:25px;" })
+                        <span style="color:black;"> Apply Party Filetr</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">
+                        @Html.LabelFor(model => model.CorpAddress)
+                    </td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.CorpAddress, 0, 0, new { @style = "width:700px;height:30px;" })
+                        @Html.ValidationMessageFor(model => model.CorpAddress)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.ContactPerson)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ContactPerson)
+                        @Html.ValidationMessageFor(model => model.ContactPerson)
+                    </td>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.DocumentLink)</td>
+                    <td>
+                        @Html.EditorFor(model => model.DocumentLink)
+                        @Html.ValidationMessageFor(model => model.DocumentLink)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.CorpSubject)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.CorpSubject, 0, 0, new { @style = "width:700px;height:30px;" })
+                        @Html.ValidationMessageFor(model => model.CorpSubject)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.CorpReference)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.CorpReference, 0, 0, new { @style = "width:700px;height:30px;" })
+                        @Html.ValidationMessageFor(model => model.CorpReference)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.Keywords)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.Keywords, 0, 0, new { @style = "width:700px;height:30px;" })
+                        @Html.ValidationMessageFor(model => model.Keywords)
+                    </td>
+                </tr>
+            </table>
+</div>
+<h5><b>@ViewBag.Message</b></h5>
+<p>
+    <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+    @Html.ActionLink("Create New", "CreateUpdate", new { id = 0 }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    <a class="btn btn-default" target="_new" href='@Model.DocumentLink'>Go To Link</a>
+    @if (@ViewBag.AddEdit == "Update")
+    {
+        @Html.ActionLink("View_Attachments", "../Correspondence/Downloads",
+        new { recid = Model.RecId, letterno = Model.LetterNo },
+        new { target = "_blank", @class = "btn btn-default" })
+        @Html.ActionLink("Upload_Attachments", "../Correspondence/UploadFile",
+        new { id = Model.RecId, letterno = Model.LetterNo },
+        new { @target = "_new;", @class = "btn btn-default" })
+    }
+    @if (@Model.Series.ToString().ToLower() == "d")
+    {
+        @Html.ActionLink("Convert_To_Main", null, new { recid = Model.RecId },
+         new { onclick = "convertToMain('" + Model.RecId + "')", @class = "btn btn-default" })
+    }
+</p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("FinYear").value = '@Model.FinYear';
+        });
+    </script>
+
+    <script>
+        function fillMDocList() {
+            var liObj = document.getElementById("ddlCompany");
+            var sIndex = liObj.selectedIndex;
+            var ccode = liObj.options[sIndex].value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getMasterDocumentNameList", "HelpUtility"))",
+                data: { "ccode": ccode },
+                success: function (data) {
+                    //getting multiple records as (key,value) pair type list
+                    $("#ddlMDocList").empty(); // clear before appending new list
+                    $.each(data, function (i, item) {
+                        $("#ddlMDocList").append($('<option />', {
+                            value: item.Key,
+                            text: item.Value
+                        }));
+                    });
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function convertToMain(recid) {
+            var a = confirm("Are you sure to convert to main?");
+            if (a == false) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("convertDraftCorrespondenceToMain", "Correspondence")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    recid: recid
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        $("#PartyName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceParty", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+                if('@ViewBag.AddEdit' == "Save"){
+                    $.ajax({
+                        cache: false,
+                        async: false,
+                        type: "POST",
+                        url: "@(Url.Action("getCorrespondenceValuesForParty", "HelpUtility"))",
+                        data: { "partyname": ui.item.Id },
+                        success: function (data) {
+                            $('#CorpAddress').val(data.corpaddress);
+                            $('#ContactPerson').val(data.contactperson);
+                            $('#CorpSubject').val(data.corpsubject);
+                            $('#CorpReference').val(data.corpreference);
+                            $('#Keywords').val(data.keywords);
+                            action = data.Action;
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to retrieve data.');
+                        }
+                    });
+                    }
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#CorpAddress").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var pname = '';
+                if (document.getElementById("chkParty").checked == true)
+                {
+                    pname = $('#PartyName').val();
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceAddress", "HelpUtility"))",
+                    data: { "term": request.term,"partyname": pname },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#ContactPerson").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var pname = '';
+                if (document.getElementById("chkParty").checked == true) {
+                    pname = $('#PartyName').val();
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceContactPerson", "HelpUtility"))",
+                    data: { "term": request.term, "partyname": pname },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#CorpSubject").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var pname = '';
+                if (document.getElementById("chkParty").checked == true) {
+                    pname = $('#PartyName').val();
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceSubject", "HelpUtility"))",
+                    data: { "term": request.term, "partyname": pname },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#CorpReference").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var pname = '';
+                if (document.getElementById("chkParty").checked == true) {
+                    pname = $('#PartyName').val();
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceReference", "HelpUtility"))",
+                    data: { "term": request.term, "partyname": pname },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#Keywords").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var pname = '';
+                if (document.getElementById("chkParty").checked == true) {
+                    pname = $('#PartyName').val();
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCorrespondenceKeywords", "HelpUtility"))",
+                    data: { "term": request.term, "partyname": pname },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 1,
+            select: function (event, ui) {
+                //document.getElementById('hfItemId').value = ui.item.Id;//no need
+            }
+        });
+    </script>
+
+}
+
+

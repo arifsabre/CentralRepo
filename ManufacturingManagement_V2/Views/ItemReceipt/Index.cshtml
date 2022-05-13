@@ -1,0 +1,128 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ItemReceiptMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Item Receipt -Indent</h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>*@
+
+<fieldset>
+        <legend>Item Receipt -Indent</legend>
+            @using (Ajax.BeginForm("FilterIndex", "ItemReceipt", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                        <table>
+                            <tr>
+                                <td>From</td>
+                                <td>@Html.TextBox("txtDtFrom",null,new { @class = "datepicker" })</td>
+                                <td>To</td>
+                                <td>@Html.TextBox("txtDtTo",null,new { @class = "datepicker" })</td>
+                            </tr>
+                        </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th>
+            Indent&nbsp;No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <br />[IndentId]
+        </th>
+        <th>Action Link</th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemCode)
+        </th>
+        <th>
+            Balance&nbsp;Qty<br />Unit
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VDateStr)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchaseDateStr)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchaseNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Qty)
+        </th>
+
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.StrIndentNo)
+                <br />[@Html.DisplayFor(model => item.IndentId)]
+            </td>
+            <td>
+                @Html.ActionLink("New_Receipt", "CreateUpdate", new { id = 0, indentlgrid = item.IndentLgrId })
+                <br />@Html.ActionLink("Edit_Receipt", "CreateUpdate", new { id = item.RecId, indentlgrid = item.IndentLgrId })
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ItemCode)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PurchaseBalance)
+                <br />@Html.DisplayFor(model => item.UnitName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.VDateStr)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.VNo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PurchaseDateStr)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PurchaseNo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Qty)
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+}
+

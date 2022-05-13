@@ -1,0 +1,215 @@
+﻿@model ManufacturingManagement_V2.Models.ItemReceiptMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Item Receipt -Indent</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                @Html.HiddenFor(model => model.StkLgr.RecId)
+                @Html.HiddenFor(model => model.StkLgr.IndentLgrId)
+                @Html.HiddenFor(model => model.StkLgr.ItemId)
+                @Html.HiddenFor(model => model.StkLgr.ItemCode)
+                @Html.HiddenFor(model => model.StkLgr.ItemDesc)
+                <tr><td colspan="3"><h5><b>Indent Details</b></h5></td></tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.IndentId)</td>
+                    <td>
+                        <b>:@Html.DisplayFor(model => model.IndentId)</b>
+                        @Html.ValidationMessageFor(model => model.IndentId)
+                    </td>
+                    <td>@Html.LabelFor(model => model.StrIndentNo)</td>
+                    <td>
+                        <b>:@Html.DisplayFor(model => model.StrIndentNo)</b>
+                        @Html.ValidationMessageFor(model => model.StrIndentNo)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.IndentDate)</td>
+                    <td>
+                        <b>:@Html.DisplayFor(model => model.IndentDate)</b>
+                        @Html.ValidationMessageFor(model => model.IndentDate)
+                    </td>
+                    <td>@Html.LabelFor(model => model.ItemCode)</td>
+                    <td>
+                        <b>:@Html.DisplayFor(model => model.ItemCode)</b>
+                        @Html.ValidationMessageFor(model => model.ItemCode)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.ItemDesc)</td>
+                    <td colspan="3">
+                        <b>:@Html.DisplayFor(model => model.ItemDesc)</b>
+                        @Html.ValidationMessageFor(model => model.ItemDesc)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PurchaseBalance)</td>
+                    <td>
+                        <b>:@Html.DisplayFor(model => model.PurchaseBalance)</b>
+                        @Html.ValidationMessageFor(model => model.PurchaseBalance)
+                    </td>
+                    <td>@Html.LabelFor(model => model.UnitName)</td>
+                    <td>
+                        <b>:@Html.DisplayFor(model => model.UnitName)</b>
+                        @Html.ValidationMessageFor(model => model.UnitName)
+                    </td>
+                </tr>
+                <tr><td colspan="3"><h5><b>Indent Receipt Details</b></h5></td></tr>
+                <tr>
+                    <td><b>Receipt Date</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.StkLgr.VDate)
+                    @Html.ValidationMessageFor(model => model.StkLgr.VDate)
+                </td>
+                <td><b>Receipt No</b></td>
+                <td>
+                    @Html.DisplayFor(model => model.StkLgr.VNo)
+                @Html.ValidationMessageFor(model => model.StkLgr.VNo)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.StkLgr.PurchaseNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.StkLgr.PurchaseNo)
+                @Html.ValidationMessageFor(model => model.StkLgr.PurchaseNo)
+            </td>
+            <td>@Html.LabelFor(model => model.StkLgr.PurchaseDate)</td>
+            <td>
+                @Html.EditorFor(model => model.StkLgr.PurchaseDate)
+            @Html.ValidationMessageFor(model => model.StkLgr.PurchaseDate)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.StkLgr.Qty)</td>
+                <td>
+                    @Html.EditorFor(model => model.StkLgr.Qty)
+                @Html.ValidationMessageFor(model => model.StkLgr.Qty)
+            </td>
+            <td>@Html.LabelFor(model => model.StkLgr.Rate)</td>
+            <td>
+                @Html.EditorFor(model => model.StkLgr.Rate)
+            @Html.ValidationMessageFor(model => model.StkLgr.Rate)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.StkLgr.Discount)</td>
+                <td>
+                    @Html.EditorFor(model => model.StkLgr.Discount)
+                @Html.ValidationMessageFor(model => model.StkLgr.Discount)
+            </td>
+            <td>@Html.LabelFor(model => model.StkLgr.SgstPer)</td>
+            <td>
+                @Html.EditorFor(model => model.StkLgr.SgstPer)
+            @Html.ValidationMessageFor(model => model.StkLgr.SgstPer)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.StkLgr.CgstPer)</td>
+                <td>
+                    @Html.EditorFor(model => model.StkLgr.CgstPer)
+                @Html.ValidationMessageFor(model => model.StkLgr.CgstPer)
+            </td>
+            <td>@Html.LabelFor(model => model.StkLgr.IgstPer)</td>
+            <td>
+                @Html.EditorFor(model => model.StkLgr.IgstPer)
+            @Html.ValidationMessageFor(model => model.StkLgr.IgstPer)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.StkLgr.FreightRate)</td>
+                <td>
+                    @Html.EditorFor(model => model.StkLgr.FreightRate)
+                @Html.ValidationMessageFor(model => model.StkLgr.FreightRate)
+            </td>
+            <td>@Html.LabelFor(model => model.StkLgr.Remarks)</td>
+            <td>
+                @Html.EditorFor(model => model.StkLgr.Remarks)
+            @Html.ValidationMessageFor(model => model.StkLgr.Remarks)
+            </td>
+            </tr>
+            </table>
+        </div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")*@
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#FGItemCode").attr("placeholder", "start typing, then select");
+        });
+
+        //Date Picker 
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#FGItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteFinishedItemList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('FGItemId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                    data: { "itemid": ui.item.Id },
+                    success: function (data) {
+                        //$('#txtRate').val(data.purchaserate);
+                        $('#UnitId').val(data.unit);
+                        //$('#txtItemDesc').val(data.itemname);
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                    }
+                });
+            }
+        });
+</script>
+
+}

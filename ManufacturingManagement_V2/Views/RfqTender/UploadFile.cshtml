@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "UploadFile";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Upload RFQ Tender File</b></h4>
+
+@*note: apply viewpage pattern of DocumentFileCntrl/UploadFile for complete reference *@
+
+<fieldset>
+    <br />
+    @using (Html.BeginForm("UploadFile", "RfqTender", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="hidden" name="rfqid" id="rfqid" value='@ViewBag.rfqid'>
+        <input type="hidden" name="referenceno" id="referenceno" value='@ViewBag.refno'>
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:12%;"><label for="file"><i>Reference No</i></label></td>
+                <td>@ViewBag.refno</td>
+            </tr>
+            <tr>
+                <td><label for="file"><i>Select a pdf file to upload:</i></label></td>
+                <td>
+                    <input style="color:green;font-weight:bold;" type="file" name="docfile" id="docfile" />
+                </td>
+            </tr>
+        </table>
+        <p>
+            <input type="submit" class="btn btn-default" value="Upload File" />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            <h5><b>@ViewBag.Message</b></h5>
+        </p>
+    }
+</fieldset>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+
+    </script>
+
+}
+
+

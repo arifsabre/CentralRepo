@@ -1,0 +1,242 @@
+﻿@model ManufacturingManagement_V2.Models.AttendanceMdl
+
+@{
+    ViewBag.Title = "EditAttendance";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Edit Attendance</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+<div class="form-group">
+    <h5><b>Attendance Details</b></h5>
+    <table class="table table-bordered">
+        <tr>
+        @Html.HiddenFor(model => model.AttendanceId)
+        @Html.HiddenFor(model => model.AttYear)
+        @Html.HiddenFor(model => model.AttMonth)
+        @Html.HiddenFor(model => model.MonthName)
+        @Html.HiddenFor(model => model.AttShift)
+        @Html.HiddenFor(model => model.ShiftName)
+        @Html.HiddenFor(model => model.EmpId)
+        @Html.HiddenFor(model => model.NewEmpId)
+        @Html.HiddenFor(model => model.EmpName)
+        <td style="font-weight:bold;">@Html.LabelFor(model => model.MonthName)</td>
+        <td style="font-weight:bold;">@Html.DisplayFor(model => model.MonthName), @Html.DisplayFor(model => model.AttYear) /@Html.DisplayFor(model => model.ShiftName) Shift</td>
+        <td style="font-weight:bold;">Employee</td>
+        <td style="font-weight:bold;">@Html.DisplayFor(model => model.EmpId), @Html.DisplayFor(model => model.EmpName)</td>
+    </tr>
+    <tr>
+        <td><b>RemainingCL</b></td>
+        <td>@Html.DisplayFor(model => model.RemainingCL)
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.D01)</td>
+        <td>
+            @Html.DropDownListFor(model => model.D01, ViewBag.AttValueList as SelectList)
+        @Html.ValidationMessageFor(model => model.D01)
+    </td>
+    <td>@Html.LabelFor(model => model.D16)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D16, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D16)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D02)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D02, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D02)
+</td>
+<td>@Html.LabelFor(model => model.D17)</td>
+<td>
+    @Html.DropDownListFor(model => model.D17, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D17)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D03)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D03, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D03)
+</td>
+<td>@Html.LabelFor(model => model.D18)</td>
+<td>
+    @Html.DropDownListFor(model => model.D18, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D18)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D04)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D04, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D04)
+</td>
+<td>@Html.LabelFor(model => model.D19)</td>
+<td>
+    @Html.DropDownListFor(model => model.D19, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D19)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D05)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D05, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D05)
+</td>
+<td>@Html.LabelFor(model => model.D20)</td>
+<td>
+    @Html.DropDownListFor(model => model.D20, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D20)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D06)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D06, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D06)
+</td>
+<td>@Html.LabelFor(model => model.D21)</td>
+<td>
+    @Html.DropDownListFor(model => model.D21, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D21)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D07)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D07, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D07)
+</td>
+<td>@Html.LabelFor(model => model.D22)</td>
+<td>
+    @Html.DropDownListFor(model => model.D22, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D22)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D08)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D08, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D08)
+</td>
+<td>@Html.LabelFor(model => model.D23)</td>
+<td>
+    @Html.DropDownListFor(model => model.D23, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D23)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D09)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D09, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D09)
+</td>
+<td>@Html.LabelFor(model => model.D24)</td>
+<td>
+    @Html.DropDownListFor(model => model.D24, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D24)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D10)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D10, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D10)
+</td>
+<td>@Html.LabelFor(model => model.D25)</td>
+<td>
+    @Html.DropDownListFor(model => model.D25, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D25)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D11)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D11, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D11)
+</td>
+<td>@Html.LabelFor(model => model.D26)</td>
+<td>
+    @Html.DropDownListFor(model => model.D26, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D26)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D12)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D12, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D12)
+</td>
+<td>@Html.LabelFor(model => model.D27)</td>
+<td>
+    @Html.DropDownListFor(model => model.D27, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D27)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D13)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D13, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D13)
+</td>
+<td>@Html.LabelFor(model => model.D28)</td>
+<td>
+    @Html.DropDownListFor(model => model.D28, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D28)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D14)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D14, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D14)
+</td>
+<td>@Html.LabelFor(model => model.D29)</td>
+<td>
+    @Html.DropDownListFor(model => model.D29, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D29)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D15)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D15, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D15)
+</td>
+<td>@Html.LabelFor(model => model.D30)</td>
+<td>
+    @Html.DropDownListFor(model => model.D30, ViewBag.AttValueList as SelectList)
+@Html.ValidationMessageFor(model => model.D30)
+</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(model => model.D31)</td>
+    <td>
+        @Html.DropDownListFor(model => model.D31, ViewBag.AttValueList as SelectList)
+    @Html.ValidationMessageFor(model => model.D31)
+</td>
+</tr>
+</table>
+</div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class="btn btn-default" value="Submit" />
+            @Html.ActionLink("Back", null,null,
+                new{@onclick="window.close()", @class="btn btn-default"})
+        </p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            if ('@ViewBag.Result' == "1") {
+                alert('Record Updated Successfully');
+                window.close();
+            }
+        });
+    </script>
+}

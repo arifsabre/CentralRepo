@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "EmpLatesms";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<html>
+<head>
+    <title>
+
+    </title>
+    <meta http-equiv="refresh" content="10" />
+</head>
+<body onload="JavaScript:timedRefresh(10000);">
+    <div style="color:red">
+        SMS Has been Sent
+    </div>
+</body>
+</html>
+<script type="text/JavaScript">
+    function timedRefresh(timeoutPeriod) {
+        setTimeout("location.reload(true);", timeoutPeriod);
+    }
+</script>
+
+
+

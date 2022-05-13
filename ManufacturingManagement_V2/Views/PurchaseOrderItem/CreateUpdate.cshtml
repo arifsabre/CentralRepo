@@ -1,0 +1,611 @@
+﻿@model ManufacturingManagement_V2.Models.POrderDetailMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Purchase Order -Item Detail</b></h4>
+@if (@Model.POrderId != 0)
+{
+<p>
+    @Html.ActionLink("PO Detail", "../PurchaseOrder/GeneratePO",
+    new { porderid = Model.POrderId }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("Item Detail", "../PurchaseOrderItem/CreateUpdate",
+    new { porderid = Model.POrderId, itemrecid = 0 }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("MA Detail", "../ModifyAdvice/CreateUpdate",
+    new { porderid = Model.POrderId, recslno = 0 }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("PO Checksheet", "../PurchaseOrder/POChecksheet",
+    new { porderid = Model.POrderId }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("BG Detail", "../BankGuarantee/CreateUpdate",
+    new { id = Model.TenderId }, new { target="_blank", style = "color:blue;text-decoration:underline;font-weight:bold;" })
+</p>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+
+    @Html.HiddenFor(model => model.RailwayId)
+    @Html.HiddenFor(model => model.POrderId)
+    @Html.HiddenFor(model => model.ConsigneeId)
+    @Html.HiddenFor(model => model.ItemId)
+    @Html.HiddenFor(model => model.UnitName)
+    @Html.HiddenFor(model => model.ItemRecId)
+    @Html.HiddenFor(model => model.DlvStatus)
+    @Html.HiddenFor(model => model.FreightAmount)
+    @Html.HiddenFor(model => model.Amount)
+    @Html.HiddenFor(model => model.ExciseDutyAmount)
+    @Html.HiddenFor(model => model.VATAmount)
+    @Html.HiddenFor(model => model.SATAmount)
+    @Html.HiddenFor(model => model.CSTAmount)
+    @Html.HiddenFor(model => model.EntryTaxAmount)
+    @Html.HiddenFor(model => model.NetAmount)
+
+    <table class="table table-bordered">
+
+        <tr>
+            <td colspan="4">
+                <b>@Html.DisplayFor(model => model.POInfo)</b>
+            </td>
+        </tr>
+
+        <tr>
+
+            <td>@Html.LabelFor(model => model.BillPO)</td>
+            <td>
+                @Html.EditorFor(model => model.BillPO)
+                @Html.ValidationMessageFor(model => model.BillPO)
+            </td>
+            <td>@Html.LabelFor(model => model.IsNonGst)</td>
+            <td>
+                @Html.EditorFor(model => model.IsNonGst)
+                @Html.ValidationMessageFor(model => model.IsNonGst)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.InspClause)</td>
+            <td>
+                @Html.EditorFor(model => model.InspClause)
+                @Html.ValidationMessageFor(model => model.InspClause)
+            </td>
+            <td>@Html.LabelFor(model => model.ModeOfDisp)</td>
+            <td>
+                @Html.EditorFor(model => model.ModeOfDisp)
+                @Html.ValidationMessageFor(model => model.ModeOfDisp)
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <a target="_blank" style="color:black;text-decoration:underline;font-weight:bold;"
+                   href="/Home/DisplayErpV1?url=../Entry/ConsigneeMaster.aspx">Consignee</a>
+            </td>
+            <td>
+                @Html.EditorFor(model => model.ConsigneeName)
+                @Html.ValidationMessageFor(model => model.ConsigneeName)
+                <table>
+                    <tr>
+                        <td style="vertical-align:top;">Address</td>
+                        <td style="vertical-align:top;">&nbsp;:</td>
+                        <td style="text-align:left;">
+                            <div id="ConsgAdrDiv"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblConsgState" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>StateCode</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblConsgStateCode" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>GSTIN</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblConsgGSTIN" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.ItemCode)</td>
+            <td colspan="3">
+                @Html.EditorFor(model => model.ItemCode)
+                @Html.DisplayFor(model => model.ShortName)
+                @Html.ValidationMessageFor(model => model.ItemCode)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.ItemName)</td>
+            <td colspan="3">
+                @Html.TextAreaFor(model => model.ItemName, 0, 0,
+                 new { @style = "width:580px;height:50px;" })
+                <label onclick="SetItemInfo()" id="lblGetItemInfo"><u>Get Item Info</u></label>
+                @Html.ValidationMessageFor(model => model.ItemName)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.OrdQty)</td>
+            <td>
+                @Html.EditorFor(model => model.OrdQty)
+                @Html.ValidationMessageFor(model => model.OrdQty)
+            </td>
+            <td>@Html.LabelFor(model => model.ItemSlNo)</td>
+            <td>
+                @Html.EditorFor(model => model.ItemSlNo)
+                @Html.ValidationMessageFor(model => model.ItemSlNo)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.Rate)</td>
+            <td>
+                @Html.EditorFor(model => model.Rate)
+                @Html.ValidationMessageFor(model => model.Rate)
+            </td>
+            <td>@Html.LabelFor(model => model.Amount)</td>
+            <td>
+                <label id="lblAmount"></label>
+                @Html.ValidationMessageFor(model => model.Amount)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.Discount)</td>
+            <td>
+                @Html.EditorFor(model => model.Discount)
+                @Html.ValidationMessageFor(model => model.Discount)
+            </td>
+            <td>@Html.LabelFor(model => model.UnitRate)</td>
+            <td>
+                @Html.EditorFor(model => model.UnitRate)
+                @Html.ValidationMessageFor(model => model.UnitRate)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.BillingUnit)</td>
+            <td>
+                @Html.EditorFor(model => model.BillingUnit)
+                @Html.DisplayFor(model => model.UnitName)
+                <label id="lblUnitName"></label>
+                @Html.ValidationMessageFor(model => model.BillingUnit)
+            </td>
+            <td>@Html.LabelFor(model => model.IsInclGst)</td>
+            <td>
+                @Html.EditorFor(model => model.IsInclGst)
+                @Html.ValidationMessageFor(model => model.IsInclGst)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.CommDate)</td>
+            <td>
+                @Html.EditorFor(model => model.CommDate)
+                @Html.ValidationMessageFor(model => model.CommDate)
+            </td>
+            <td>@Html.LabelFor(model => model.DelvDate)</td>
+            <td>
+                @Html.EditorFor(model => model.DelvDate)
+                @Html.ValueFor(model => model.ActualDP, "{0:dd/MM/yyyy}")
+                @Html.ValidationMessageFor(model => model.DelvDate)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.ExciseDutyPer)</td>
+            <td>
+                @Html.EditorFor(model => model.ExciseDutyPer)
+                @Html.ValidationMessageFor(model => model.ExciseDutyPer)
+            </td>
+            <td>@Html.LabelFor(model => model.VATPer)</td>
+            <td>
+                @Html.EditorFor(model => model.VATPer)
+                @Html.ValidationMessageFor(model => model.VATPer)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.CSTPer)</td>
+            <td>
+                @Html.EditorFor(model => model.CSTPer)
+                @Html.ValidationMessageFor(model => model.CSTPer)
+            </td>
+            <td>@Html.LabelFor(model => model.SATPer)</td>
+            <td>
+                @Html.EditorFor(model => model.SATPer)
+                @Html.ValidationMessageFor(model => model.SATPer)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.EntryTaxPer)</td>
+            <td>
+                @Html.EditorFor(model => model.EntryTaxPer)
+                @Html.ValidationMessageFor(model => model.EntryTaxPer)
+            </td>
+            <td>@Html.LabelFor(model => model.FreightRate)</td>
+            <td>
+                @Html.EditorFor(model => model.FreightRate)
+                @Html.ValidationMessageFor(model => model.FreightRate)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.NetAmount)</td>
+            <td>
+                <label id="lblNetAmount"></label>
+                @Html.ValidationMessageFor(model => model.NetAmount)
+            </td>
+            <td>@Html.LabelFor(model => model.DlvStatusName)</td>
+            <td>
+                @Html.DisplayFor(model => model.DlvStatusName)
+                @Html.ValidationMessageFor(model => model.DlvStatusName)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.WayBill)</td>
+            <td>
+                @Html.EditorFor(model => model.WayBill)
+                @Html.ValidationMessageFor(model => model.WayBill)
+            </td>
+            <td>@Html.LabelFor(model => model.OCE)</td>
+            <td>
+                @Html.EditorFor(model => model.OCE)
+                @Html.ValidationMessageFor(model => model.OCE)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.VerbalCommitment)</td>
+            <td>
+                @Html.EditorFor(model => model.VerbalCommitment)
+                @Html.ValidationMessageFor(model => model.VerbalCommitment)
+            </td>
+            <td>@Html.LabelFor(model => model.DelayReason)</td>
+            <td>
+                @Html.EditorFor(model => model.DelayReason)
+                @Html.ValidationMessageFor(model => model.DelayReason)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.DelvTerms)</td>
+            <td colspan="3">
+                @Html.TextAreaFor(model => model.DelvTerms, 0, 0,
+                 new { @style = "width:580px;height:50px;" })
+                @Html.ValidationMessageFor(model => model.DelvTerms)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.Remarks)</td>
+            <td>
+                @Html.EditorFor(model => model.Remarks)
+                @Html.ValidationMessageFor(model => model.Remarks)
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+    <table>
+        <tr>
+            <td>
+                <input type="submit" onclick="setCalculations()" class="btn btn-default" value='@ViewBag.AddEdit' />
+            </td>
+            <td>
+                @Html.ActionLink("Close", null, null, new { @onclick = "window.close();", @class = "btn btn-default" })
+            </td>
+            <td colspan="2">
+                <h5><b>&nbsp;&nbsp;@ViewBag.Message</b></h5>
+            </td>
+        </tr>
+    </table>
+
+    <br />
+    <span>List of Items:-</span>
+    <div style="width: 98%;overflow-x: scroll;">@Html.Raw(@Model.POItemsHtml)</div>
+    <br />
+    <br />
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#IsNonGst").attr("style", "width:55px;height:25px;");
+            $("#IsInclGst").attr("style", "width:55px;height:25px;");
+            $("#ItemCode").attr("placeholder", "start typing, then select...");
+            $("#ItemCode").attr("style", "width:280px;");
+            $("#ConsigneeName").attr("placeholder", "start typing, then select...");
+            $("#ConsigneeName").attr("style", "width:280px;");
+            $("#BillPO").attr("style", "width:280px;");
+            $("#InspClause").attr("style", "width:280px;");
+            $("#ModeOfDisp").attr("style", "width:280px;");
+            $("#WayBill").attr("style", "width:280px;");
+            $("#VerbalCommitment").attr("style", "width:280px;");
+            $("#Remarks").attr("style", "width:280px;");
+            $("#OCE").attr("style", "width:280px;");
+            $("#DelayReason").attr("style", "width:280px;");
+
+            if ('@Model.ItemRecId' != 0)//edit mode
+            {
+                SetConsigneeInfo('@Model.ConsigneeId');
+                $('#lblAmount').text('@Model.Amount');
+                $('#lblNetAmount').text('@Model.NetAmount');
+            }
+
+        });
+
+        //Date Picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+
+    </script>
+
+    <script type="text/javascript">
+        $("#ItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePOSaleItemList", "Item"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('ItemId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                data: { "itemid": ui.item.Id },
+                    success: function (data) {
+                        $('#BillingUnit').val(data.unitname);
+                        $('#UnitName').val(data.unitname);
+                        $('#lblUnitName').text(data.unitname);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+                });
+
+        }
+        });
+    </script>
+
+    <script>
+        function SetItemInfo() {
+            var itemid = document.getElementById('ItemId').value;
+            $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                    data: { "itemid": itemid },
+                    success: function (data) {
+                    $('#ItemName').val(data.itemname);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+                });
+        }
+    </script>
+
+    <script type="text/javascript">
+        $("#ConsigneeName").autocomplete({
+            source: function (request, response) {
+                var railwayid = document.getElementById('RailwayId').value;
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteConsignee", "HelpUtility"))",
+                    data: { "term": request.term, "railwyid": railwayid },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('ConsigneeId').value = ui.item.Id;
+
+            }
+        });
+    </script>
+
+    <script>
+        function SetConsigneeInfo(consigneeid) {
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getConsigneeDetail", "SaleGst"))",
+                data: { "consigneeid": consigneeid },
+                success: function (data) {
+                    var addr = '';
+                    if (data.Address2.length > 0) {
+                        addr = data.Address2;
+                    }
+                    if (data.Address3.length > 0) {
+                        addr += '<br/>'+data.Address3;
+                    }
+                    if (data.Address4.length > 0) {
+                        addr += '<br/>' + data.Address4;
+                    }
+                    document.getElementById("ConsgAdrDiv").innerHTML = addr;
+                    $('#lblConsgState').text(data.StateName);
+                    $('#lblConsgStateCode').text(data.StateCode);
+                    $('#lblConsgGSTIN').text(data.GSTinNo);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function deletePOItem(itemrecid) {
+            var a = confirm("Are you sure to delete this record?");
+            if (a == false) {
+                return;
+            }
+            var data = {
+                itemrecid: itemrecid
+            }
+            $.ajax({
+                url: '/PurchaseOrderItem/DeletePOItem',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    alert(d.message);
+                    if (d.status == true) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function round(value, decimals) {
+            //example: round(1.005, 2); //returns 1.01
+            return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+        }
+    </script>
+
+    <script type="text/javascript">
+        function setCalculations() {
+            //refer to erp_v1/purchaseorderentry for validation
+            
+            var isnongst = document.getElementById("IsNonGst").checked;
+            var isinclgst = document.getElementById("IsInclGst").checked;
+            
+            var qty = parseFloat(document.getElementById("OrdQty").value);
+            var rate = parseFloat(document.getElementById("Rate").value);
+            var discount = parseFloat(document.getElementById("Discount").value);
+            var excisedutyper = parseFloat(document.getElementById("ExciseDutyPer").value);
+            var vatper = parseFloat(document.getElementById("VATPer").value);
+            var satper = parseFloat(document.getElementById("SATPer").value);
+            var cstper = parseFloat(document.getElementById("CSTPer").value);
+            var entrytaxper = parseFloat(document.getElementById("EntryTaxPer").value);
+            var freightrate = parseFloat(document.getElementById("FreightRate").value);
+            
+            var discamt = discount * qty;
+            var amount = qty * rate;
+            var frghtamount = qty * freightrate;
+            var vatamt = 0;
+            var satamt = 0;
+            var cstamt = 0;
+            
+            if (isnongst == true)//ed-sat type tax
+            {
+                amount = amount - discamt;
+                var excisedutyamount = amount * excisedutyper / 100;
+                vatamt = (amount + excisedutyamount) * vatper / 100;
+                satamt = (amount + excisedutyamount) * satper / 100;
+                cstamt = (amount + excisedutyamount) * cstper / 100;
+                var entrytaxamount = (amount + excisedutyamount + vatamt + satamt + cstamt) * entrytaxper / 100;
+                //st-d
+                $('#ExciseDutyAmount').val(round(excisedutyamount, 2));//d
+                $('#EntryTaxAmount').val(round(entrytaxamount, 2));//d
+                $('#NetAmount').val(round(amount + excisedutyamount + vatamt + satamt + cstamt + entrytaxamount + frghtamount, 2));
+                //cl-d
+            }
+            else if (isnongst == false)//gst type tax
+            {
+                if (isinclgst == false)//exclusive gst
+                {
+                    amount = amount - discamt;
+                    vatamt = amount * vatper / 100;
+                    satamt = amount * satper / 100;
+                    cstamt = amount * cstper / 100;
+                    var urate = rate + rate * vatper / 100 + rate * satper / 100 + rate * cstper / 100;
+                    $('#UnitRate').val(round(urate, 2));//d
+                }
+                else if (isinclgst == true)//inclusive gst
+                {
+                    //getting basic rate
+                    var urate = parseFloat(document.getElementById("UnitRate").value);
+                    var brate = (urate * 100) / (100 + vatper + satper + cstper);
+                    $('#Rate').val(round(brate, 2));//d
+                    amount = brate * qty;
+                    amount = amount - discamt;
+                    //calculating taxes
+                    vatamt = amount * vatper / 100;
+                    satamt = amount * satper / 100;
+                    cstamt = amount * cstper / 100;
+                }
+                $('#NetAmount').val(round(amount + vatamt + satamt + cstamt + frghtamount, 2));//d
+            }
+            //st-d
+            $('#Amount').val(round(amount, 2));
+            $('#lblAmount').text(round(amount, 2));//note
+            $('#VATAmount').val(round(vatamt, 2));
+            $('#SATAmount').val(round(satamt, 2));
+            $('#CSTAmount').val(round(cstamt, 2));
+            $('#FreightAmount').val(round(frghtamount, 2));
+            var netamt = parseFloat(document.getElementById("NetAmount").value);
+            $('#lblNetAmount').text(netamt);//note
+            //cl-d
+        }
+    </script>
+
+}
+

@@ -1,0 +1,148 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.AdvanceMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Advance Entry List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+        @*<legend>Advance Detail</legend>*@
+            @using (Ajax.BeginForm("FilterIndex", "Advance", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                        <table class="table table-bordered">
+                            <tr>@Html.Hidden("hfEmpId", null, new { @id = "hfEmpId" })
+                                <td>From</td>
+                                <td>@Html.TextBox("txtDtFrom",null,new { @class = "datepicker" })</td>
+                                <td>To</td>
+                                <td>@Html.TextBox("txtDtTo",null,new { @class = "datepicker" })</td>
+                            </tr>
+                            <tr>
+                                <td>Employee</td>
+                                <td>@Html.TextBox("txtEmpName", null, new { @placeholder = "start typing, then select"})</td>
+                            </tr>
+                        </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th>
+            S.No.
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AdvDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AdvAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RecAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InstAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </th>
+        <th>Edit</th>
+        <th>Details</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EmpId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AdvDate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AdvAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.RecAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.InstAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Remarks)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.RecId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("hfEmpId").value = '@ViewBag.empid';
+            document.getElementById("txtEmpName").value = '@ViewBag.empname';
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtEmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployee", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+

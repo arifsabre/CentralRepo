@@ -1,0 +1,56 @@
+﻿@model List<ManufacturingManagement_V2.Models.SiteMenu>
+    @{
+        // Layout = null;
+        ViewBag.Title = "Simple";
+
+    }
+    <style type="text/css">
+    </style>
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            @*<ul class="nav" id="side-menu">
+                <li>
+                    <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+
+
+                </li>*@
+                @* <h2>Menu Hierarchy of It Register and Medical Test</h2>*@
+                @* <div style="border:solid 1px black; padding:10px; background-color:#FAFAFA;width:300px;color:black;">*@
+                @*  <div>*@
+                <div class="treeview">
+
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        <ul>
+                            @TreeView.GetTreeView(Model, Model.FirstOrDefault().ParentMenuID)
+                        </ul>
+                    }
+                </div>
+
+
+                @* </div>*@
+
+
+                @* Here We need some Jquery code for make this treeview collapsible *@
+                @section Scripts{
+            <script>
+            $(document).ready(function () {
+                $(".treeview li>ul").css('display', 'none'); // Hide all 2-level ul
+                $(".collapsible").click(function (e) {
+                    e.preventDefault();
+                    $(this).toggleClass("collapse expand");
+                    $(this).closest('li').children('ul').slideToggle();
+                });
+            });
+
+            </script>
+        }
+
+
+           @* </ul>*@
+
+    </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+
+

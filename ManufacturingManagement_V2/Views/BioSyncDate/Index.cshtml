@@ -1,0 +1,107 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+@{
+    ViewBag.Title = "Update Bio Attendance";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<script>
+    function callInsert(recid) {
+        $('#modal-Insert').modal('show');
+        var ifrm = document.getElementById("frmInsert");
+        ifrm.setAttribute('src', "http://localhost:58521//B_Live_Data/GetAllNetworkStatusLog")
+        //ifrm.setAttribute('src', "https://pragerp.com//B_Live_Data/GetAllNetworkStatusLog")
+    }
+</script>
+
+<script>
+    function reloadThis() {
+    window.location.reload();
+    }
+</script>
+<div class="pull-left" style="margin-top:5px;color:red">
+    [Kind Attention Please, Do not Update Attendnace until Biometric Last Update Date is Equal to Today Date]
+</div>
+<div>
+    
+    <table class="display nowrap" style="width:100%">
+        <tbody>
+            @foreach (var item in Model.Item_List)
+            {
+                <tr>
+                    <td style="color:green">
+                        [Biometric Last Update On:@Html.DisplayFor(model => item.LastUpdated)]
+                    </td>
+
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@using (Html.BeginForm("index", "BioSyncDate"))
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        @*<legend>AAABioSyncModel</legend>*@
+        <div class="editor-field">
+            <p style="font:large"><b>Please Select Date</b></p>
+            @Html.EditorFor(model => model.ReportDate)
+            @Html.ValidationMessageFor(model => model.ReportDate)
+        </div>
+        <p>
+            <h4>@ViewBag.Message</h4>
+            <input type="submit" class="btn btn-success" style="width:300px" value="ForAll"
+                   onclick="javascript: return ShowMessage()" ; formaction="@Url.Action("UpdateBIOAttendanceBydate")" />
+            @*<br /><b>['Date Check' validation has been disabled for this action]</b>*@
+        </p>
+        <p>
+            <input type="submit" class="btn btn-success" style="width:300px" value="Staff"
+                   onclick="javascript: return ShowMessage()" ; formaction="@Url.Action("UpdateBIOAttendanceBydateAAAASendSMS")" />
+            <h4>@ViewBag.Message1</h4>
+        </p>
+        <p>
+            <input type="submit" class="btn btn-success" style="width:300px" value="Worker"
+                   onclick="javascript: return ShowMessage()" ; formaction="@Url.Action("UpdateAttendance_Worker")" />
+
+        </p>
+        <p>
+            <button type="button" style="width:300px" class="btn btn-success"
+                    data-toggle="modal" onclick="callInsert()">
+                Reader Status
+            </button>
+        </p>
+    </fieldset>
+}
+<div class="modal fade" id="modal-Insert">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:900px;position:center">
+            <div class="modal-header with-border">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        onclick="reloadThis()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="box-title">Reader Status</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box box-primary">
+                    <iframe id="frmInsert" runat="server" scrolling="auto" frameborder="0" style="width:850px;height:500px;opacity:100;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function ShowMessage() {
+            var result = confirm("Do your want to Update Attendance Record!");
+            if (result) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+}

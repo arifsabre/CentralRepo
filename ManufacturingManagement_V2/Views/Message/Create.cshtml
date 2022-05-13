@@ -1,0 +1,297 @@
+﻿@model ManufacturingManagement_V2.Models.MessageModel
+@{
+    // Layout = null;
+    // Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+    // Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+
+    @*<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>*@
+    <link href="~/Contents/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Script/jquery.dataTables.js"></script>
+    <script src="~/Script/dataTables.bootstrap.js"></script>
+    <script src="~/Script/bootstrap.js"></script>
+    <script src="/Script/Jquery 3.5.1.js"></script>
+    <script src="/Script/jquery.dataTables.js"></script>
+    <script src="/Script/bootstrap.js"></script>
+    <script src="~/Script/dataTables.bootstrap.js"></script>
+    <script src="~/Script/AdminLTE/js/adminlte.js"></script>
+    <script src="~/Script/Site.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnclick').click(function () {
+                var str = $('#myAutocomplete').val();
+                var newstr = str.substr(0, str.length - 1)
+                $('#myAutocomplete').val(newstr);
+                //alert("Email Valid");
+            })
+            $('#btnLast').click(function () {
+                var str = 'Welcome To '
+                var newstr = str.substr(0, str.length - 2)
+                alert(newstr);
+            })
+        })
+
+    </script>
+
+</head>
+<body>
+
+    @using (Html.BeginForm("Index", "Message", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="pull-right" style="margin-top:3px">
+          
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-EmailList">
+                Email List
+            </button>
+        
+        </div>
+        <div class="container ">
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-xs-12">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @*@Html.LabelFor(m => m.CompCode, new { id = "CompCode", @style = "width:800px;height:25px;font-weight:bold" })*@
+                        <div class="col-lg-12">
+                            @*<label>Company</label>*@
+
+                            @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)
+                            @Html.TextBoxFor(m => m.FullName, new { @id = "myAutocomplete1", @style = "width:400px;height:25px;font-weight:bold" })
+                            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.CompCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*@Html.LabelFor(m => m.Subject, new{ id = "Subject",  @style = "width:800px;height:25px;font-weight:bold"})*@
+                        <div class="col-lg-12">
+                            @*<label>Subject</label>*@
+                            @* @Html.LabelFor(m => m.Subject)*@
+                            @Html.TextBoxFor(m => m.Subject, new { @class = "Editor", id = "Subject1", @style = "width:800px;height:30px;font-weight:bold" })
+                            @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-lg-12">
+                            @Html.TextAreaFor(m => m.SendTo, new { @id = "myAutocomplete", @style = "width:800px;height:120px;font-weight:bold;word-wrap:break-word" })
+                            @Html.ValidationMessageFor(model => model.SendTo, "", new { @class = "text-danger" })
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        @*@Html.LabelFor(m => m.Detail, new { id = "Detail", @style = "width:800px;height:25px;font-weight:bold" })*@
+                        <div class="col-lg-12">
+                            @Html.TextAreaFor(model => model.Detail, 0, 0, new { @class = "Editor", id = "Message1", @style = "width:800px;height:250px" })
+                            @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.files, new { id = "files", @style = "width:800px;height:25px;font-weight:bold" })
+                        <div class="col-lg-12">
+                            @Html.TextBoxFor(m => m.files, "", new { @type = "file", @multiple = "multiple", @id = "FileId" })
+                            @Html.ValidationMessageFor(model => model.files)
+
+                        </div>
+                    </div>
+
+
+                    <div class="Pull-right">
+                        <input type="submit" class="btn-success" id="btnclick" value="Send" />
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal-EmailList">
+            <div class="modal-dialog" style="width:400px;height:700px">
+                <div class="modal-content">
+                    <div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        @*<h3 class="box-title">Name and Email</h3>*@
+                    </div>
+                    <div class="modal-body">
+                        <div class="box box-primary">
+                            <table id="jdtabledesktop" class="table table-bordered table-hover " style="color: black; width: 100%; height: 600px;">
+                                <thead>
+                                    <tr>
+                                        <th>UserName</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Item_List1)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(model => item.FullName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => item.EmailAddress)
+                                            </td>
+
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+
+
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#myAutocomplete").attr("placeholder", "Enter Email Address Separated by Comma(,)");
+            $("#Subject1").attr("placeholder", "Enter Subject Here");
+            $("#Message1").attr("placeholder", "Write Message Here");
+            $("#myAutocomplete1").attr("placeholder", "Select Onbehalf of");
+
+        });
+    </script>
+    <script type="text/javascript">
+            var message = "@ViewBag.Message";
+            $(function () {
+                if (message != "") {
+                    alert(message);
+                }
+            });
+             $(function () {
+
+                function split(val) {
+                    return val.split(/,\s*/);
+                }
+                function extractLast(term) {
+                    return split(term).pop();
+                }
+
+                $("#myAutocomplete")
+              // don't navigate away from the field on tab when selecting an item
+              .on("keydown", function (event) {
+                  if (event.keyCode === $.ui.keyCode.TAB &&
+                      $(this).autocomplete("instance").menu.active) {
+                      event.preventDefault();
+                  }
+              })
+                .autocomplete({
+                    minLength: 0,
+                    source: function (request, response) {
+                        $.getJSON('@Url.Action("Search","Message")', {
+                            term: extractLast(request.term)
+                        }, response);
+                    },
+                    focus: function () {
+                        // prevent value inserted on focus
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        var terms = split(this.value);
+                        // remove the current input
+                        terms.pop();
+                        // add the selected item
+                        terms.push(ui.item.value);
+                        // add placeholder to get the comma-and-space at the end
+                        terms.push("");
+                        this.value = terms.join(",");
+                        return false;
+                    }
+                });
+             })
+
+
+    </script>
+
+    <script type="text/javascript">
+            var message = "@ViewBag.Message";
+            $(function () {
+                if (message != "") {
+                    alert(message);
+                }
+            });
+             $(function () {
+
+                function split(val) {
+                    return val.split(/,\s*/);
+                }
+                function extractLast(term) {
+                    return split(term).pop();
+                }
+
+                $("#myAutocomplete1")
+              // don't navigate away from the field on tab when selecting an item
+              .on("keydown", function (event) {
+                  if (event.keyCode === $.ui.keyCode.TAB &&
+                      $(this).autocomplete("instance").menu.active) {
+                      event.preventDefault();
+                  }
+              })
+                .autocomplete({
+                    minLength: 0,
+                    source: function (request, response) {
+                        $.getJSON('@Url.Action("SearchFullName", "Message")', {
+                            term: extractLast(request.term)
+                        }, response);
+                    },
+                    focus: function () {
+                        // prevent value inserted on focus
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        var terms = split(this.value);
+                        // remove the current input
+                        terms.pop();
+                        // add the selected item
+                        terms.push(ui.item.value);
+                        // add placeholder to get the comma-and-space at the end
+                        terms.push("");
+                        this.value = terms.join(",");
+                        return false;
+                    }
+                });
+             })
+
+
+    </script>
+
+
+</body>
+</html>

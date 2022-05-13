@@ -1,0 +1,205 @@
+﻿@model ManufacturingManagement_V2.Models.MachineMaintenanceMDI
+@{
+    ViewBag.Title = "IndexMachineName";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Machine List</title>
+    <script>
+        function GetDetails(id) {
+            $.ajax({
+                url: "/MachineMaintenance/Edit_MasterMachineRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#machineid1').val(response.machineid);
+                   // $('#ShortName1').val(response.ShortName);
+                    $('#machinename1').val(response.machinename);
+                    $('#CreatedBy').val(response.CreatedBy);
+                    $('#CreatedOn').val(response.CreatedOn);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+   
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert1" style="margin-top:5px;margin-bottom:5px">
+        Machine List
+    </button>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert" style="margin-top:5px;margin-bottom:5px">
+        Add New Machine
+    </button>
+       <div id="printbar" class="pull-right" style="margin-top:5px;margin-bottom:5px">
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th> Action</th>
+                                    <th>
+                                        Id
+                                    </th>
+                                    <th>
+                                        Company
+                                    </th>
+                                    <th>
+                                        Machine Name
+                                    </th>
+                                    <th>
+                                        Created By
+                                    </th>
+                                    <th>
+                                        CreatedOn
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a onclick="GetDetails(@item.machineid)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "Delete_Machine", "MachineMaintenance", new { id = item.machineid }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.machineid)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ShortName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.machinename)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CreatedBy)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CreatedOn)
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("AddMasterMachine", "MachineMaintenance", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            @*<div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Select Company</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.compcode, ViewBag.LocationList as SelectList)
+                                    @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                </div>
+                                <div class="form-group">
+                                    <label>Enter Machine Name</label>
+                                    <br />
+                                    @Html.TextAreaFor(model => model.machinename, 0, 0, new { @class = "Editor", @style = "width:400px;height:40px;" })
+                                    @* @Html.EditorFor(model => model.machinename, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.ValidationMessageFor(model => model.machinename, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.CreatedBy)
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Update</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_MasterMachine", "MachineMaintenance", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-md-8">
+                                    @*<div class="form-group">
+                                            <label>Select Company</label>
+                                            <br />
+                                            @Html.DropDownListFor(model => model.compcode, ViewBag.LocationList as SelectList)
+                                            @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "text-danger" })
+                                        </div>*@
+                                </div>
+
+                                <div class="col-md-8">
+                                    @*@Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <br />*@
+                                    <div class="form-group">
+                                        <label>Machine Name</label>
+                                        <input type="text" class="form-control" id="machinename1" name="machinename" style="width:400px">
+                                        @*  @Html.TextAreaFor(model => model.machinename, 0, 0, new { @class = "Editor", @style = "width:400px;height:40px;" })*@
+                                        @*  @Html.EditorFor(model => model.machinename, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @Html.ValidationMessageFor(model => model.machinename, "", new { @class = "text-danger" })
+                                        <input type="hidden" class="form-control" id="machineid1" name="machineid" style="width:400px">
+                                        @* @Html.HiddenFor(model => model.machineid)*@
+                                        @Html.HiddenFor(model => model.UpdatedBy)
+                                    </div>
+                                </div>
+
+                                @*<div class="clearfix"></div>*@
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+

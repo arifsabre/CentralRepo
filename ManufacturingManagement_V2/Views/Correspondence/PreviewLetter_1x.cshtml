@@ -1,0 +1,77 @@
+﻿@model ManufacturingManagement_V2.Models.CorrespondenceMdl
+@{
+    ViewBag.Title = "PRAG ERP";
+    Layout = null;//"~/Views/Shared/CorrespondenceLetter.cshtml";
+}
+<br />
+<input type="button" id="btnPrint" value="Print" onclick="printpage()" style:"align:right" />
+<tbody>
+                <tr>
+                    <td class="report-content-cell">
+                        <div class="main">
+                            <div class="form-group">
+                                @*<h2>Correspondence Detail</h2>*@
+                                <div style="color:black">
+                                    <div style="width:1000px;font-size:14pt;">
+                                        <table>
+                                            <tr>
+                                                <td style="vertical-align:top;width:70%;text-align:left;font-weight: bold;">@Html.DisplayFor(model => model.LetterNo) </td>
+                                                <td style="width:30%;text-align:right;font-weight: bold;">Date: @Html.DisplayFor(model => model.LetterDTStr)</td>
+                                            </tr>
+                                        </table>
+                                        <pre></pre>
+                                        <div style="width: 1000px; font-weight: bold;">To,</div>
+                                        <pre></pre>
+                                        <div style="width: 1000px; font-weight: bold;">M/s&nbsp;&nbsp;@Html.DisplayFor(model => model.PartyName)</div>
+                                        <pre></pre>
+                                        <div style="width: 1000px; font-weight: bold;">@Html.Raw(Model.CorpAddress)</div>
+                                        <pre></pre>
+                                        <div style="width: 1000px; font-weight: bold;">Kind Attn:&nbsp;&nbsp;@Html.DisplayFor(model => model.ContactPerson)</div>
+                                        <pre></pre>
+                                        <table>
+                                            <tr>
+                                                <td style="vertical-align:top;width:7%;font-weight: bold;">Subject: </td>
+                                                <td style="width:93%;">@Html.Raw(Model.CorpSubject)</td>
+                                            </tr>
+                                        </table>
+                                        <pre></pre>
+                                        @if (@Model.CorpReference.Length > 0)
+                                        { 
+                                            <table>
+                                            <tr>
+                                                <td style="vertical-align:top;width:7%;font-weight: bold;">Reference: </td>
+                                                <td style="width:93%;">@Html.Raw(Model.CorpReference)</td>
+                                            </tr>
+                                            </table>
+                                            <pre></pre>
+                                        }
+                                        <div class="testcc" style="vertical-align: top;"> @Html.Raw(Model.TextMatter)</div>
+                                        <pre></pre>
+                                        <div style="width: 1000px;">@Html.Raw(Model.Remarks)</div>
+                                        @if (@Model.Enclosures.Length > 0)
+                                        {
+                                        <pre></pre>
+                                        <table>
+                                            <tr>
+                                                <td style="vertical-align:top;width:10%;font-weight: bold;">Enclosures: </td>
+                                                <td style="width:90%;">@Html.Raw(Model.Enclosures)</td>
+                                            </tr>
+                                        </table>
+                                        }
+                                        @if (@Model.CcTo.Length > 0)
+                                        {
+                                        <pre></pre>
+                                        <table>
+                                            <tr>
+                                                <td style="vertical-align:top;width:10%;font-weight: bold;">CC To: </td>
+                                                <td style="width:90%;">@Html.Raw(Model.CcTo)</td>
+                                            </tr>
+                                        </table>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </td>
+                </tr>
+            </tbody>

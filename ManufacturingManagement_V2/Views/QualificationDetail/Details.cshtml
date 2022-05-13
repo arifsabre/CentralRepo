@@ -1,0 +1,56 @@
+﻿@model ManufacturingManagement_V2.Models.QualDetailMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<h2>Qualification Detail</h2>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id = Model.RecId }, new {@class="btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+
+<fieldset>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EmpId)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmpId)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Qualification)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Qualification)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PassingYear)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PassingYear)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Institute)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Institute)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.UnivBoard)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.UnivBoard)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Division)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Division)</td>
+                </tr>
+
+            </table>
+     </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

@@ -1,0 +1,101 @@
+﻿<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    <li>
+        <a href="/CompanyPolicy/IndexView">
+            <i class="fa fa-bars" aria-hidden="true"></i>
+            <span>View Company Policies</span>
+        </a>
+    </li>
+
+    <li>
+        <a href="/DocumentFile/IndexView">
+            <i class="fa fa-bars" aria-hidden="true"></i>
+            <span>View Company Documents</span>
+        </a>
+    </li>
+
+    <li>
+        <a href="/LibraryMasterUpload/IndexCategory">
+            <i class="fa fa-bars" aria-hidden="true"></i>
+            <span>My Files</span>
+        </a>
+    </li>
+
+    <li>
+        <a href='@Url.Action("Index", "Letter")'>
+            <i class="fa fa-bars" aria-hidden="true"></i>
+            <span>Correspondence</span>
+        </a>
+    </li>
+
+    <li>
+        <a href='@Url.Action("Index_GetAllFile", "Library")'>
+            <i class="fa fa-bars" aria-hidden="true"></i>
+            <span>E Library</span>
+        </a>
+    </li>
+
+    <li>
+        <a href='@Url.Action("IndexNew", "Circular")'>
+            <i class="fa fa-bars" aria-hidden="true"></i>
+            <span>Circulars</span>
+        </a>
+    </li>
+
+    <li>
+        <a href='@Url.Action("Index", "Message")'>
+            <i class="fa fa-bars" aria-hidden="true"></i>
+            <span>Interoffice Memo</span>
+        </a>
+    </li>
+
+    <li>
+        <a href='@Url.Action("IndexTrainningGroup", "Trainning")'>
+            <i class="fa fa-bars" aria-hidden="true"></i>
+            <span>Training</span>
+        </a>
+    </li>
+
+    @*Company Docs Category*@
+    <li class="treeview" id="mnuCompDocControl">
+        @*<li>*@
+        <a href="/Home/Index?deptt=DocumentControl">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuCompDocControl');">&nbsp;&nbsp;Document Admin</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/CompanyPolicy/Index">Upload Company Policies</a></li>
+            <li><a href="/DocumentFile/Index">Upload Company Documents</a></li>
+            <li>
+                <a href="/Home/DisplayErpV1?url=../Edit/DocumentCategoryEdt.aspx">
+                    Document Category
+                </a>
+            </li>
+            <li><a href="/DocSubCategory/Index">Document Sub Category</a></li>
+            <li><a href="/MasterDocumentName/Index">Master Document Name</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Edit/DocumentTypeEdt.aspx">Document Type</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Lib Docs Control*@
+    <li class="treeview" id="mnuLibDocControl">
+        @*<li>*@
+        <a href="/Home/Index?deptt=DocumentControl">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuLibDocControl');">&nbsp;&nbsp;Library Category</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/LibCategory/Index">Library Category</a></li>
+            <li><a href="/LibSubCategory/Index">Library Sub-Category</a></li>
+        </ul>
+        @*</li>*@
+
+</ul>
+@*ul-end*@

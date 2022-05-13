@@ -1,0 +1,73 @@
+﻿@model ManufacturingManagement_V2.Models.EmployeeMdl
+@{
+    ViewBag.Title = "EmpList";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Birthday List</title>
+</head>
+<body>
+    <p> Upcomming Birthday List</p>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <div>
+
+                            <div id="printbar" class="pull-right">
+                            </div>
+                        </div>
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>EmpId</th>
+                                    <th>Emp Name</th>
+                                    <th>Email</th>
+                                    <th>Birthday After</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.EmpId)</td>
+                                        <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                        <td>@Html.DisplayFor(model => item.Email)</td>
+                                        <td>@Html.DisplayFor(model => item.BirthdayAfter)</td>
+
+
+                                        <td>
+                                            <a onclick="GetDetails(@item.NewEmpId)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                            @*<a>
+                                                    @Html.ActionLink(" ", "LibraryMasterDeleteRecord", "LibraryMasterUpload", new { id = item.Id }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                                </a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+
+
+

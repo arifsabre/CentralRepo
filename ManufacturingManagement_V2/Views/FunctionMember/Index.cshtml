@@ -1,0 +1,113 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.FunctionMemberMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Function-Member List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+        <legend>Attendance Detail</legend>
+            @using (Ajax.BeginForm("FilterIndex", "FunctionMember", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                        <table class="table table-bordered">
+                            <tr>@Html.Hidden("hfUserId", null, new { @id = "hfUserId" })
+                                <td>Function</td>
+                                <td>@Html.DropDownList("ddlFctnId", ViewBag.QuailFctnList as SelectList,"ALL")</td>
+                                <td>Member</td>
+                                <td>@Html.TextBox("txtFnMember", null, new { @placeholder = "start typing, then select"})</td>
+                            </tr>
+                        </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:25px;">
+            S.No.
+        </th>
+        <th style="width:auto">
+            @Html.DisplayNameFor(model => model.FctnName)
+        </th>
+        <th style="width:auto">
+            @Html.DisplayNameFor(model => model.FnMember)
+        </th>
+        <th style="width:100px;">Edit</th>
+        @*<th>Details</th>*@
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FctnName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FnMember)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+            </td>
+            @*<td>
+                    @Html.ActionLink("Details", "Details", new { id = item.RecId })
+                </td>*@
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("hfUserId").value = '@ViewBag.fnuserid';
+            document.getElementById("txtFnMember").value = '@ViewBag.fnusername';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtFnMember").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteUsersList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfUserId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+
+

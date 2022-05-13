@@ -1,0 +1,186 @@
+﻿@model ManufacturingManagement_V2.Models.ComplaintMdl
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Resolve Complaint</b></h4>
+
+@*<div style="font-size:14pt;color:black;background-color:yellow;text-align:center;">
+   <b>Resolve Complaint</b>
+</div>*@
+@Html.HiddenFor(model => model.CompId)
+<div class="form-group">
+    <table class="table table-bordered">
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;width:10%;">Complaint&nbsp;Id</td>
+            <td>
+                @*@Html.Hidden("CompId", Model.CompId.ToString(), new { @id = "hfCompId" })*@
+                @Html.Label("lblCompId", Model.CompId.ToString(), new { @id = "CompId" })
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;width:10%;">Complaint&nbsp;Date</td>
+            <td>
+                @Html.Label("lblCompDate", Model.CompDT.ToString(), new { @id = "CompDate" })
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;">Complaint&nbsp;By</td>
+            <td>
+                @Html.Label("lblCompUserName", Model.CompUserName.ToString(), new { @id = "CompUserName" })
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;">Complaint&nbsp;Type</td>
+            <td>
+                @Html.Label("lblCompTypeName", Model.CompTypeName.ToString(), new { @id = "CompTypeName" })
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;">Complaint</td>
+            <td>
+                @Html.Label("lblCompMsg", Model.CompMsg.ToString(), new { @id = "CompMsg" })
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;">Remarks</td>
+            <td>
+                @*<input type="text" id="txtRemarks" maxlength="250" placeholder="Max :Length: 250 Chars" />*@
+                <textarea id="txtRemarks" rows="2" cols="30" maxlength="250" placeholder="Max :Length: 250 Chars"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;">Forward To</td>
+            <td>@Html.DropDownList("ddlRepUsers", ViewBag.ReplyUserList as SelectList)</td>
+        </tr>
+    </table>
+</div>
+<br/>
+<p>
+    <input id="reply" type="button" class="btn btn-default" value="Reply"/>
+    <input id="forward" type="button" class="btn btn-default" value="Forward"/>
+    @Html.ActionLink("Back To List", "ReplyView", "Complaint", null, new { id = "mylink", @class="btn btn-default" })
+</p>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            //reply
+            $('#reply').click(function () {
+
+                var isAllValid = true;
+                //validation
+                if (!($('#txtRemarks').val().trim() != '')) {
+                    isValidItem = false;
+                    alert('Reply not entered!')
+                    $('#txtRemarks').focus();
+                    return;
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        //order fields
+                        CompId: '@Model.CompId',
+                        Remarks: $('#txtRemarks').val().trim()
+                    }
+                    $(this).val('Please wait...');
+                    $.ajax({
+                        url: '/Complaint/ReplyComplaint',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                //$('#orderDate').val('');
+                                window.location.href = $('#mylink').attr('href');
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#reply').val('Reply');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            $('#reply').val('Reply');
+                        }
+                    });//
+                }
+            });
+            //end-reply
+
+            //forward
+            $("#forward").click(function () {
+                $(this).val('Please wait...');
+                if (!($('#txtRemarks').val().trim() != '')) {
+                    isValidItem = false;
+                    alert('Reply not entered!')
+                    $('#txtRemarks').focus();
+                    return;
+                }
+                var liAdminUser = document.getElementById("ddlRepUsers");
+                var adminUserIndex = liAdminUser.selectedIndex;
+                if (adminUserIndex == -1) {
+                    alert('User not selected!');
+                    return;
+                }
+                var adminUserId = liAdminUser.options[adminUserIndex].value;
+                var data = {
+                    CompId: '@Model.CompId',
+                    ForwardedTo: adminUserId,
+                    Remarks: $('#txtRemarks').val().trim()
+                }
+                //Makes ajax call to controller 
+                $.ajax({
+                    url: "/Complaint/ForwardComplaint",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database 
+                        if (d.status == true) {
+                            //will send status from server side
+                            alert(d.message);
+                            //clear form
+                            window.location.href = $('#mylink').attr('href')
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#forward').val('Forward');
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        $('#forward').val('Forward');
+                    }
+                });
+            });
+            //end-forward
+
+        });
+    </script>
+
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display:block;
+        visibility:hidden;
+        color:red;
+        font-size:90%;
+    }
+</style>

@@ -1,0 +1,86 @@
+﻿@model ManufacturingManagement_V2.Models.AAA_MedicalTest
+
+@*<div id="printbar" class="pull-left" style="margin-right:3px;margin-bottom:3px;margin-top:3px">
+</div>*@
+<section class="content">
+    <div id="printbar" class="pull-left" style="margin-right:3px;margin-bottom:3px;margin-top:3px">
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="box">
+                    <div class="box-header">
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-striped table-bordered table-hover" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>SNO</th>
+                                    <th>EmpId</th>
+                                    <th>Name</th>
+                                    <th>Vac_Type</th>
+                                    <th>Dose1</th>
+                                    <th>Dose1_Date</th>
+                                    <th>Dose2</th>
+                                    <th>Dose2_Date</th>
+                                    <th>Certificate</th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+
+                                        <td>
+
+                                            @Html.DisplayFor(model => item.RecordId)
+
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.EmpId)
+
+                                        </td>
+                                        <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                        <td>@Html.DisplayFor(model => item.VacType)</td>
+                                        <td>@Html.DisplayFor(model => item.Dose1)</td>
+                                        <td>@Html.DisplayFor(model => item.Dose1Date)</td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.Dose2)
+
+                                        </td>
+                                        <td>@Html.DisplayFor(model => item.Dose2Date)</td>
+                                        <td>
+                                            <a>
+                                                @Html.ActionLink("Show ", "GetQutation", new { id = item.RecordId })
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a>
+                                                @Html.HiddenFor(model => model.UserId)
+                                                @Html.ActionLink(" ", "DeleteVaccine", "B_MedicalTest", new { id = item.RecordId }, new { onclick = "return confirm('Are sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Script/Site.js"></script>
+
+@*<div class="pull-right" style="margin-bottom:3px">
+    <input type="button" value="Hide" class="btn btn-success"
+           onClick="window.Location.href=window.closed.href">
+</div>*@

@@ -1,0 +1,130 @@
+﻿@model ManufacturingManagement_V2.Models.OrderMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Order Detail</b></h4>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id=Model.OrderId }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.OrderNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.OrderNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.OrderDate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.OrderDate)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.VendorName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.VendorName)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.DelvSchedule)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DelvSchedule)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.DelvDate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DelvDate)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.OrderTypeName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.OrderTypeName)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.SpecialInst)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SpecialInst)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.RefDetail)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RefDetail)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.ItemCategory)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ItemCategory)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.RevisionNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RevisionNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.Packing)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Packing)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.Excise)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Excise)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.SaleTax)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SaleTax)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.TrpMode)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.TrpMode)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.Freight)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Freight)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.Insurance)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Insurance)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.DelvPlace)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DelvPlace)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.Inspection)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Inspection)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.PaymentTerms)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PaymentTerms)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.NetAmount)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.NetAmount)</td>
+                </tr>
+
+
+            </table>
+
+            @*place item detail here*@
+
+     </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

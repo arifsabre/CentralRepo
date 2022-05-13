@@ -1,0 +1,60 @@
+﻿@model ManufacturingManagement_V2.Models.MinimumWageMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Minumum Wage Detail</b></h4>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id = Model.RecId }, new {@class="btn btn-default" }) |
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+
+<fieldset>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.CompCode)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.CmpName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.AttYear)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.AttYear)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.AttMonth)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.AttMonth)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.Skilled)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Skilled)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.SemiSkilled)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SemiSkilled)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.UnSkilled)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.UnSkilled)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.BonusPer)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.BonusPer)</td>
+                </tr>
+            </table>
+        </div>
+</fieldset>
+@*@using (Html.BeginForm()) {   not applicable here
+    <p>
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}*@

@@ -1,0 +1,36 @@
+﻿@model ManufacturingManagement_V2.Models.AlertsMdl
+@{
+    ViewBag.Title = "AccountDashboard";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<h2>Accounts</h2>
+<div style="width:100%;border:solid;border-width:1px;border-color:blue;border-radius:4px;padding-left:2px;">
+@Html.Partial("AlertPartialSummary",Model)
+<br/>
+@*@Html.Partial("AlertPartialCompliance",Model)*@
+<table>
+    <tr>
+        <td style="width:50%">@Html.ActionLink("Account View", "../AccountMaster/Index")</td>
+        <td style="width:50%">@Html.ActionLink("Account Master", "../AccountMaster/CreateUpdate")</td>
+    </tr>
+    
+    <tr>
+        <td>@Html.ActionLink("Account Group View", "../AccountGroup/Index")</td>
+        <td>@Html.ActionLink("Account Group Entry", "../AccountGroup/CreateUpdate")</td>
+    </tr>
+</table> 
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+}

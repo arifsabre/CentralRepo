@@ -1,0 +1,189 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+   Layout = "~/views/shared/_DarkLayout.cshtml";
+  
+
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title HR Dashboard</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="~/bootstrap-3.3.6-dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/bootstrap-3.3.6-dist/css/bootstrap-theme.css" rel="stylesheet" />
+    <script src="~/bootstrap-3.3.6-dist/js/bootstrap.js"></script>
+    </head>
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            @*<div class="alert-success">
+                    Welcome <b> @WebSecurity.CurrentUserName</b> -<a href='@Url.Action("Logout","Account")'>Signout</a> <span style="color:crimson">|</span>
+                    @if (User.IsInRole("Administrator")|User.IsInRole("Manager"))
+                    {
+                        @Html.ActionLink("Create User", "Register", "Account") <span style="color:crimson">|</span>
+                        @Html.ActionLink("User List", "UseList", "Account")<span style="color:crimson">|</span>
+                    }
+                    @Html.ActionLink("Change Password", "ChangePassword", "Account") <span style="color:crimson">|</span>
+                    @Html.ActionLink("User Profile", "UserProfile", "Account")
+
+                </div>*@
+        </div>
+        @* @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))*@
+        @* {*@
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel panel-heading">
+                    <h3 class="panel-title">User & Role Management</h3>
+                </div>
+                <div class="panel-body text-center">
+                    <div class="col-md-3">
+                       
+                            <a href="#" title=" User Login"><i class="fa fa-user-plus"></i></a>
+                            @*<h4>Create Role</h4>*@
+                       
+                    </div>
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-user fa-3x"></i>
+                            <h4>Create User</h4>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-user fa-3x"></i>
+                            <h4>Deactive User</h4>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-user fa-3x"></i>
+                            <h4>Activate User</h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        @* }*@
+
+        @*@if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+            {*@
+        @*<div class="col-md-4">
+            <div class="panel panel-info">
+                <div class="panel panel-heading">
+                    <h3 class="panel-title">Employee Management</h3>
+                </div>
+                <div class="panel-body text-center ">
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>Emp List</h4>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>New Emp</h4>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>Block Emp</h4>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>Absent List</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+        @* @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))*@
+  
+        <div class="col-md-4">
+            <div class="panel panel-warning ">
+                <div class="panel panel-heading">
+                    <h3 class="panel-title">Report Management</h3>
+                </div>
+                <div class="panel-body text-center ">
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>Dem Listo</h4>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3">
+                        <a href='#)'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>Demo1 List</h4>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href=#'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>Demo2 List</h4>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href='@Url.Action("UseList","Account")'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>Demo3 List</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* @if (User.IsInRole("Administrator") || User.IsInRole("Manager")|| User.IsInRole("User"))*@
+
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel panel-heading">
+                    <h3 class="panel-title">T & A Management</h3>
+                </div>
+                <div class="panel-body text-center ">
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>Demo</h4>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>Demo1</h4>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>Demo2</h4>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href='#'>
+                            <i class="fas fa-users fa-3x"></i>
+                            <h4>Demo3</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+  
+  </body>
+</html>

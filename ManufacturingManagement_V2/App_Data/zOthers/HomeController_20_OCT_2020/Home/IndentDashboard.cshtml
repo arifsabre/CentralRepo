@@ -1,0 +1,28 @@
+﻿@model ManufacturingManagement_V2.Models.AlertsMdl
+@{
+    ViewBag.Title = "Indent";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Indent</h2>
+<div style="width:100%;border:solid;border-width:1px;border-color:blue;border-radius:4px;">
+@Html.Partial("AlertPartialSummary",Model)
+<table style="font-size:14pt;font-family:Verdana;">
+        <tr>
+            <td><h3>@Html.ActionLink("HOD Approval", "../Indent/IndentApprovalHOD")</h3></td>
+            <td><h3>@Html.ActionLink("New Indent", "../Indent/CreateUpdate")</h3></td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td><h3>@Html.ActionLink("Admin Approval", "../Indent/IndentApprovalAdmin")</h3></td>
+            <td><h3>@Html.ActionLink("View Indent", "../Indent/Index")</h3></td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td><h3>@Html.ActionLink("Indent Report", "../IndentReport/IndentReport")</h3></td>
+            <td><h3>@Html.ActionLink("Help -How To Indent", "IndentHelp", 
+            "IndentReport", null, new { id = "mylink", @target = "_new;" })</h3></td>
+        </tr>
+</table>
+<br/>
+</div>

@@ -1,0 +1,731 @@
+﻿@model ManufacturingManagement_V2.Models.EmployeeMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<h2>Employee Detail</h2>
+
+<fieldset>
+    <legend>EmployeeMdl</legend>
+        <div class="form-group">
+            <p>
+              <br/><img id="img1" alt="" src="" width="150px" height="150px" />
+            </p>
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EmpId)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmpId)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.NewEmpId)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.NewEmpId)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EmpName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmpName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.GradeName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.GradeName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.JoiningUnitName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.JoiningUnitName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.WorkingUnitName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.WorkingUnitName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DepCode)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DepName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.JobDesc)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.JobDesc)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.CategoryName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.CategoryName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Designation)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Designation)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Qualification)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Qualification)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.HODEmpId)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.HODEmpId)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.JoiningDate)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.JoiningDate, "{0:dd/MM/yyyy}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.BasicRate)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.BasicRate)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DA)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DA)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ConvAllowance)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ConvAllowance)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.HRA)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.HRA)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.MedicalAllowance)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.MedicalAllowance)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.CompAllowance)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.CompAllowance)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DWAllowance)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DWAllowance)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ESINumber)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ESINumber)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PFApplicable)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PFApplicable)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PFNumber)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PFNumber)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.SpecialPay)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SpecialPay)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Others)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Others)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.GrossSalary)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.GrossSalary)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.LICId)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.LICId)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.FatherName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.FatherName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.SpouseName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SpouseName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.SpouseAge)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SpouseAge)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.CAddress)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.CAddress)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.CCity)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.CCity)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PAddress)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PAddress)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PCity)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PCity)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ContactNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ContactNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Email)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Email)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.BirthDate)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.BirthDate, "{0:dd/MM/yyyy}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.GenderName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.GenderName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EmgContactNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmgContactNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EmgContactPer)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmgContactPer)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ServiceType)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ServiceTypeName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.OnroleDate)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.OnroleDate, "{0:dd/MM/yyyy}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.LeavingDate)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.LeavingDate, "{0:dd/MM/yyyy}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Reason)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Reason)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Remarks)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Remarks)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.IsActive)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.IsActive)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ReferredBy)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ReferredBy)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.StopDeduction)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.StopDeduction)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Age)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Age)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PrevExp)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PrevExp)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PragExp)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PragExp)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.TotalExp)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.TotalExp)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Religion)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Religion)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.IdentMark)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.IdentMark)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.BGroup)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.BGroup)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.FatherOccupation)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.FatherOccupation)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.MotherName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.MotherName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.MotherOccupation)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.MotherOccupation)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.MaritalStatus)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.MaritalStatus)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PhoneNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PhoneNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PanNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PanNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.AadharNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.AadharNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.VoterIdNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.VoterIdNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PassportNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PassportNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.DrvLicNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.DrvLicNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.AnnivDate)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.AnnivDate, "{0:dd/MM/yyyy}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.SpouseOccupation)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SpouseOccupation)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.SpouseQual)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SpouseQual)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.BankName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.BankName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.BranchAddress)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.BranchAddress)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.AccountNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.AccountNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.NameOnPassbook)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.NameOnPassbook)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.IfscCode)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.IfscCode)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.MicrCode)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.MicrCode)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PFNominee)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PFNominee)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PFNomineeAge)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PFNomineeAge)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PFNomineeRelation)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PFNomineeRelation)</td>
+                </tr>
+
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ESINominee)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ESINominee)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ESINomineeAge)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ESINomineeAge)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ESINomineeRelation)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ESINomineeRelation)</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.UAN)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.UAN)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.RefName1)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RefName1)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.RefContactNo1)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RefContactNo1)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.RefAddress1)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RefAddress1)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.RefName2)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RefName2)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.RefContactNo2)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RefContactNo2)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.RefAddress2)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RefAddress2)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EmgContactNo2)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmgContactNo2)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EmgContactPer2)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmgContactPer2)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.AppDate)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.AppDate, "{0:dd/MM/yyyy}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.UpdationLog)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.UpdationLog)</td>
+                </tr>
+
+            </table>
+            
+            @{int i = 0;}
+            <b>Qualification Detail:</b>
+            @if (Model.QualDetail.Any()) 
+            {
+        <table class="tablecontainer" style="width:100%;">
+            <tr>
+                <th style="width:35px;">
+                    S.No.
+                </th>
+                <th>
+                    Qualification
+                </th>
+                <th>
+                    Passing Year
+                </th>
+                <th>
+                    Institute
+                </th>
+                <th>
+                    Univ./Board
+                </th>
+                <th>
+                    Division %
+                </th>
+            </tr>
+            @{i = 1;}
+            @foreach (var item in Model.QualDetail)
+            {
+                <tr>
+                    <td>
+                        @i
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Qualification)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.PassingYear)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Institute)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.UnivBoard)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Division)
+                    </td>
+                </tr>
+                i++;
+            }
+        </table>
+            }
+            
+            @{i = 0;}
+            <br/><b>Experience Detail:</b>
+            @if (Model.ExpDetail.Any()) 
+            {
+        <table class="tablecontainer" style="width:100%;">
+            <tr>
+                <th style="width:35px;">
+                    S.No.
+                </th>
+                <th>
+                    Company
+                </th>
+                <th>
+                    Date From
+                </th>
+                <th>
+                    Date To
+                </th>
+                <th>
+                    Designation
+                </th>
+                <th>
+                    Profile
+                </th>
+            </tr>
+            @{i = 1;}
+            @foreach (var item in Model.ExpDetail)
+            {
+                <tr>
+                    <td>
+                        @i
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.FirmName)
+                    </td>
+                    <td>
+                        @Html.ValueFor(model => item.DateFrom, "{0:dd/MM/yyyy}")
+                    </td>
+                    <td>
+                        @Html.ValueFor(model => item.DateTo, "{0:dd/MM/yyyy}")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Designation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.JobDesc)
+                    </td>
+                </tr>
+                i++;
+            }
+        </table>
+            }
+
+            @{i = 0;}
+            <br/><b>Family Detail:</b>
+            @if (Model.FamilyDetail.Any()) 
+            {
+        <table class="tablecontainer" style="width:100%;">
+            <tr>
+                <th style="width:35px;">
+                    S.No.
+                </th>
+                <th>
+                    Member Name
+                </th>
+                <th>
+                    Birth Date
+                </th>
+                <th>
+                    Age
+                </th>
+                <th>
+                    Relation
+                </th>
+            </tr>
+            @{i = 1;}
+            @foreach (var item in Model.FamilyDetail)
+            {
+                <tr>
+                    <td>
+                        @i
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.MemberName)
+                    </td>
+                    <td>
+                        @Html.ValueFor(model => item.BirthDate, "{0:dd/MM/yyyy}")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Age)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Relation)
+                    </td>
+                </tr>
+                i++;
+            }
+        </table>
+            }
+
+            @{i = 0;}
+            <br/><b>PF Nominee Detail:</b>
+            @if (Model.PFNomineeDetail.Any()) 
+            {
+        <table class="tablecontainer" style="width:100%;">
+            <tr>
+                <th style="width:35px;">
+                    S.No.
+                </th>
+                <th>
+                    Member Name
+                </th>
+                <th>
+                    Birth Date
+                </th>
+                <th>
+                    Age
+                </th>
+                <th>
+                    Relation
+                </th>
+                <th>
+                    Share%
+                </th>
+                <th>
+                    Address
+                </th>
+                <th>
+                    Guardian
+                </th>
+                <th>
+                    Nominee For
+                </th>
+            </tr>
+            @{i = 1;}
+            @foreach (var item in Model.PFNomineeDetail)
+            {
+                <tr>
+                    <td>
+                        @i
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.MemberName)
+                    </td>
+                    <td>
+                        @Html.ValueFor(model => item.BirthDate, "{0:dd/MM/yyyy}")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Age)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Relation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.SharePercent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.MAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.GuardianDetail)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.NomineeForName)
+                    </td>
+                </tr>
+                i++;
+            }
+        </table>
+            }
+
+        </div>
+</fieldset>
+
+
+
+@using (Html.BeginForm()) {
+<h5><b>@ViewBag.Message</b></h5>    
+    <p>
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+@section Scripts {
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#PFApplicable").attr("style", "width:55px;height:25px;");
+            $("#ESIApplicable").attr("style", "width:55px;height:25px;");
+            $("#IsActive").attr("style", "width:55px;height:25px;");
+            //document.getElementById("IsActive").attr("style", "width:55px;height:25px;");
+            $("#EmpId").attr("placeholder", "start typing, then select");
+            $('#img1').attr('src', '/Employee/ShowEmpImage' + '?newempid='+@Model.NewEmpId);
+        });
+    </script>
+ }
+

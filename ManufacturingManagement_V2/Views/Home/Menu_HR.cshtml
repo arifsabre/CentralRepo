@@ -1,0 +1,231 @@
+﻿
+<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    <li>
+        <a href='@Url.Action("Index", "AAA_Events")'>
+            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
+            <span>PRAG Calendar</span>
+        </a>
+    </li>
+
+    @*Alerts*@
+    <li class="treeview" id="mnuAlertsHR">
+        @*<li>*@
+        <a href="/Home/Index?deptt=HR">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuAlertsHR');">&nbsp;&nbsp;Alerts</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/BirthdayAnniversaryReport/Index">Birthday/Anniversary</a></li>
+            <li><a href="/EmployeeReport/BirthdayAlertView">Employee Birthday</a></li>
+            <li><a href="/EmployeeReport/AnniversaryAlertView">Employee Anniversay</a></li>
+            <li><a href="/EmployeeReport/RetirementAlertView">Employee Retirement</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Biometric*@
+    <li class="treeview" id="mnuBiometric">
+        @*<li>*@
+        <a href="/Home/Index?deptt=HR">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuBiometric');">&nbsp;&nbsp;Biometric</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/B_LIVE_DATA/Index">Live Data From Machine</a></li>
+            <li><a href="/BioSyncDate/Index">Synchronise Attendance</a></li>
+            <li><a href="/Bio_EnrollData/Index">Biometric Enrolled Employee</a></li>
+            <li><a href="/BIOAllINOUT/Index">All Inout</a></li>
+            <li><a href="/B_FirstIn_LastOut/Index">Arrival-Departure</a></li>
+            <li><a href="/B_FirstInLastOut_CasualandGuard/Index">Arrival-Departure: Security Guard</a></li>
+            <li><a href="/B_HaffDay/Index">Half day Report</a></li>
+            <li><a href="/BiometricIncentiveReport/Index">Biometric Incentive Report</a></li>
+            <li><a href="/B_Daily_Attendance_Status/Index">Daily Attendance Status</a></li>
+            <li><a href="/B_LateArrival_ByDate_Staff/Index">Late Arrival Report</a></li>
+            <li><a href="/B_FirstIn_Lastout_WorkingHours/Index">Working Hours Report</a></li>
+            <li><a href="/B_Working_Hours_lessthan_830/Index">Working Hours Report 8:30 Hrs</a></li>
+            <li><a href="/B_GetAttendanceByName/Index">Attendance By Name</a></li>
+            <li><a href="/B_EmpListWith_Bio_Card_WithoutCard/Index">Card/Biometric List</a></li>
+            <li><a href="/B_INOUT_Misssing/Index">Missed and No Punch Report</a></li>
+            <li><a href="/HR/Index">SMS List</a></li>
+            <li><a href="/Shift/Index">Update Shift</a></li>
+        </ul>
+        @*</li>*@
+
+    <li class="treeview" id="mnuEmployeeMaster">
+        @*<li>*@
+        <a href="/Home/Index?deptt=HR">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuEmployeeMaster');">&nbsp;&nbsp;Employee Master</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Employee/Index">Employee List</a></li>
+            <li><a href="/Employee/Details">View Employee</a></li>
+            <li><a href="/Employee/CreateUpdate">New Employee</a></li>
+            <li><a href="/QualificationDetail/Index">Qualification Detail</a></li>
+            <li><a href="/ExperienceDetail/Index">Experience Detail</a></li>
+            <li><a href="/FamilyDetail/Index">Family Detail</a></li>
+            <li><a href="/PFNominee/Index">Nominee Detail</a></li>
+            <li><a href="/B_FirstInLastOut_CasualandGuard/Security_Index_Save">Add Security Staff</a></li>
+        </ul>
+        @*</li>*@
+
+    <li class="treeview" id="mnuEmployeeDetail">
+        @*<li>*@
+        <a href="/Home/Index?deptt=HR">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuEmployeeDetail');">&nbsp;&nbsp;Employee Detail</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Employee/UploadFile">Upload Files</a></li>
+            <li><a href="/Employee/Downloads">Download Files</a></li>
+            <li><a href="/SalaryDetail/Index">Salary Updation</a></li>
+            <li><a href="/PromotionDetail/Index">Promotion Entry</a></li>
+            <li><a href="/Qualification/CreateUpdate">Qualification Master</a></li>
+            <li><a href="/Employee/UpdateDirectory">Update Directory</a></li>
+            <li><a href="/Employee/IndexUpdateSMS">Update SMS</a></li>
+            <li><a href="/FlagSMS/IndexUpdateSMS">SMS Setting</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Attendance*@
+    <li class="treeview" id="mnuAttendance">
+        @*<li>*@
+        <a href="/Home/Index?deptt=HR">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuAttendance');">&nbsp;&nbsp;Attendance</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Attendance/GenerateAttendance">Generate Attendance</a></li>
+            <li><a href="/Attendance/Index">View Attendance</a></li>
+            <li><a href="/Attendance/getAttendanceBatchwise">Leaves Entry</a></li>
+            <li><a href="/AttendanceDetail/Index">Incentive View</a></li>
+            <li><a href="/AttendanceDetail/CreateUpdate">Incentive Entry</a></li>
+            @*<li><a href="/AttendanceDetail/getAttendanceDetailBatchwise">Incentive Entry -Batchwise</a></li>*@
+            <li><a href="/Salary/GenerateIncentive">Generate Incentive</a></li>
+            <li><a href="/B_OR_EMP_SECURITY/Index">Offrole-Security Staff</a></li>
+            <li><a href="/Bio_EnrollData/IndexMapBio">Map BioId To ERP</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Employee Accounts*@
+    <li class="treeview" id="mnuEmpAccount">
+        @*<li>*@
+        <a href="/Home/Index?deptt=HR">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuEmpAccount');">&nbsp;&nbsp;Accounts</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/EmployeeOpening/Index">Openings/Encashment Entry</a></li>
+            <li><a href="/VoucherEntryJournal/IndexEmployeeJV">Employee Voucher Entry</a></li>
+            <li><a href="/EmployeeTaxableReport/Index">Employee Taxable Report</a></li>
+            <li><a href="/FinancialLedgerReport/Index">Financial Ledger</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Salary*@
+    <li class="treeview" id="mnuSalary">
+        @*<li>*@
+        <a href="/Home/Index?deptt=HR">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuSalary');">&nbsp;&nbsp;Salary</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Salary/GenerateSalary">Generate Salary</a></li>
+            <li><a href="/Salary/SetAdvanceDeductionSingle">Advance Deduction Entry</a></li>
+            <li><a href="/Salary/SetAdvanceDeductionInstallmemnt">Set Deduction Installment</a></li>
+            <li><a href="/Advance/Index">Advance View</a></li>
+            <li><a href="/Advance/CreateUpdate">Advance Entry</a></li>
+            <li><a href="/MinimumWage/Index">Minimum Wages</a></li>
+            <li><a href="/FormValue/Index">Bonus Form Values</a></li>
+            <li><a href="/EmployeeFinalSalaryRpt/Index">Final Salary Settlement</a></li>
+            <li><a href="/SalaryReportArrear/Index">Arrear Report: August-2018</a></li>
+        </ul>
+        @*</li>*@
+
+    <li class="treeview" id="mnuMedicalHR">
+        @*<li>*@
+        <a href="/Home/Index?deptt=HR">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuMedicalHR');">&nbsp;&nbsp;Medical</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/B_MedicalTest/History">Medical Test</a></li>
+            <li><a href="/B_MedicalTest/UpdateMedicalIndex">Update Test</a></li>
+            <li><a href="/B_MedicalTest/IndexVaccine">Vaccination</a></li>
+            <li><a href="/B_MedicalTestReport/Index">Medical Test Report</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Documents*@
+    <li class="treeview" id="mnuDocumentsHR">
+        @*<li>*@
+        <a href="/Home/Index?deptt=HR">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuDocumentsHR');">&nbsp;&nbsp;Documents</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/WorkList/Index">Compliance</a></li>
+            <li><a href="/CompanyPolicy/UploadFile">Upload Company Policies</a></li>
+            <li><a href="/DocumentFile/UploadFile">Upload Company Documents</a></li>
+            <li><a href="/B_Holiday/Index">Create Update Holiday</a></li>
+            <li><a href="/RemainingLeavesReport/Index">Remaining Leaves</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Reports*@
+    <li class="treeview" id="mnuReportsHR">
+        @*<li>*@
+        <a href="/Home/Index?deptt=HR">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuReportsHR');">&nbsp;&nbsp;Reports</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/EmployeeReport/Index">Employee Data Report</a></li>
+            <li><a href="/EmployeeFormsReport/Index">Employee Forms Report</a></li>
+            <li><a href="/AttendanceReport/Index">Attendance Report</a></li>
+            <li><a href="/AttendanceReport/YearlyAttendanceView">Yearly Attendance Report</a></li>
+            <li><a href="/Form1415Report/Index">Form 14-15<br />Leave Statement<br />Leave Summary</a></li>
+            <li><a href="/SalaryReport/Index">Salary Reports</a></li>
+            <li><a href="/AdvanceReport/Index">Advance Reports</a></li>
+            <li><a href="/SalaryReport/AnnualReturnSalary">Annual Return</a></li>
+            <li><a href="/FormValueReport/Index">Bonus & Company Forms<br/>Report</a></li>
+            <li><a href="/LICReport/Index">LIC Reports</a></li>
+            <li><a href="/SalaryBreakupReport/Index">Salary Breakup Report</a></li>
+            <li><a href="/IncentiveReport/Index">Quarterly Incentive Report</a></li>
+            <li><a href="/IncentiveReport/IndexHourly">Hourly Incentive Report</a></li>
+        </ul>
+        @*</li>*@
+
+</ul>
+@*ul-end*@

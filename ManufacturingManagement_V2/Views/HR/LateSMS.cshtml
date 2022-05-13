@@ -1,0 +1,68 @@
+﻿@model ManufacturingManagement_V2.Models.EmployeeMdl
+@{
+    ViewBag.Title = "EmpList";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SMS Log</title>
+</head>
+<body>
+    <p>Today Sent SMS List of Late Employees</p>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <div>
+                            <div id="printbar" class="pull-right">
+                            </div>
+                        </div>
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+
+                                    <th>Emp Name</th>
+                                    <th>Late Date</th>
+                                    <th>Send Date</th>
+                                    <th>MobileNo</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+
+                                        <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                        <td>@Html.DisplayFor(model => item.EDate)</td>
+                                        <td>@Html.DisplayFor(model => item.SendDate)</td>
+                                        <td>@Html.DisplayFor(model => item.MobileNo)</td>
+                                        <td>
+                                            <a onclick="GetDetails(@item.NewEmpId)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</body>
+</html>
+
+

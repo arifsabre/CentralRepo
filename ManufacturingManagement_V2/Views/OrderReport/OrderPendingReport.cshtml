@@ -1,0 +1,141 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "OrderPendingReport";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Order Pending Report</b></h4>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    <h5><b>Report Options</b></h5>
+    <table class="table table-bordered">
+        @Html.HiddenFor(model => model.ItemId)
+        @Html.HiddenFor(model => model.VendorId)
+        <tr>
+            <td style="width:10%;">From</td>
+            <td>@Html.EditorFor(model => model.DateFrom)</td>
+            <td style="width:10%;">To</td>
+            <td>@Html.EditorFor(model => model.DateTo)</td>
+        </tr>
+        <tr>
+            <td>Vendor</td>
+            <td>@Html.EditorFor(model => model.VendorName)</td>
+            <td>Item</td>
+            <td>@Html.EditorFor(model => model.ItemCode)</td>
+        </tr>
+    </table>
+</div>
+    <p>
+       <input type="submit" class="btn btn-default" style="width:150px;" value="Submit" onclick="target = '_blank';" 
+           formaction="@Url.Action("OrderPendingReport")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+@section Scripts{
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#ItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteStockItemList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('ItemId').value = ui.item.Id;
+                @*$.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                    data: { "itemid": ui.item.Id },
+                    success: function (data) {
+                        //$('#txtRate').val(data.purchaserate);
+                        //$('#ddlUnit').val(data.unit);
+                        //$('#txtItemDesc').val(data.itemname);
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });*@
+            }
+        });
+</script>
+
+    <script type="text/javascript">
+        $("#VendorName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteVendor", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('VendorId').value = ui.item.Id;
+                @*$.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    //url: "@(Url.Action("getVendorDetail", "HelpUtility"))",//working
+                    url: "@(Url.Action("getAddressListForVendor", "HelpUtility"))",//working
+                    data: { "vendorid": ui.item.Id },
+                    success: function (data) {
+                        //ok for model based single record values
+                        //$('#txtRate').val(data.purchaserate);
+                        //$('#ddlUnit').val(data.unit);
+                        //alert(data.caddress);
+                        //getting multiple records as (key,value) pair type list
+                        $("#ddlVAddress").empty(); // clear before appending new list 
+                        $.each(data, function (i, item) {
+                            $("#ddlVAddress").append($('<option />', {
+                                value: item.Key,
+                                text: item.Value
+                            }));
+                        });
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });*@
+            }
+        });
+</script>
+    
+}

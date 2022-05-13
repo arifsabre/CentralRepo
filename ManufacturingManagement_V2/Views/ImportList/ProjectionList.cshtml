@@ -1,0 +1,226 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ImportListMdl>
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>PO Projection List</b></h4>
+
+<fieldset>
+        @*<legend>UserPermission</legend>*@
+            @using (Ajax.BeginForm("FilterProjectionList", "ImportList", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+                        <tr>
+                            <td><b>Fin. Year</b></td>
+                            <td>
+                                @*@Html.DropDownList("ddlFinYear", ViewBag.FinYearList as SelectList,
+                                new { @onchange="javascript:getDateRange(this.value);"})*@
+                                @Html.DropDownList("ddlFinYear", ViewBag.FinYearList as SelectList)
+                            </td>
+                            <td><b>RM Item</b></td>
+                            <td>
+                                @Html.TextBox("txtItemCode", null,
+                            new { @placeholder = "start typing, then select" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Date&nbsp;From</b></td>
+                        <td>@Html.TextBox("txtDtFrom", null, new { @class = "datepicker" })</td>
+                        <td><b>To&nbsp;Date</b></td>
+                        <td>@Html.TextBox("txtDtTo", null, new { @class = "datepicker" })</td>
+                    </tr>
+                    </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<p style="font-size:16px;font-weight:bold;">
+    <b>Current Stock:&nbsp;@Model.First().CurrentStock.ToString("#,##,##,##,##0.00")&nbsp;@Model.First().UnitName</b>,&nbsp;<b>Tender Qty:&nbsp;@Model.First().TenderQty.ToString("#,##,##,##,##0.00")&nbsp;@Model.First().UnitName</b>&nbsp;&nbsp;
+    @Html.ActionLink("Import List", "Index", "ImportList", 
+        new { id = "mylink", @target = "_blank;", @class = "btn btn-default" })
+    @Html.ActionLink("View Report", "ProjectionReportDirect", "ImportListReport", 
+        new { id = "rptLink", @target = "_new;", @class = "btn btn-default" })
+</p>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:25px;">
+            S.No.
+        </th>
+        <th style="display:none;">
+            Imp.Id
+        </th>
+        <th style="width:80px;">
+            Imp.Date
+        </th>
+        <th style="width:100px;">
+            Imp.Qty
+        </th>
+        <th style="width:50px;">
+            Update
+        </th>
+        <th style="width:100px;">
+            Openig
+        </th>
+        <th style="width:100px;">
+            Total
+        </th>
+        <th style="width:100px;">
+            DP Qty
+        </th>
+        <th style="width:100px;">
+            Balance
+        </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td class="indexColumn" style="display:none;">
+                @Html.Label("lblImpId" + i.ToString(), item.ImpId.ToString(), new { @id = "ImpId" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblImpDate" + i.ToString(), item.ImpDate.ToString("dd/MM/yyyy"), new { @id = "ImpDate" + (i - 1) })
+            </td>
+            <td>
+                @Html.TextBox("txtQty", item.Qty.ToString(), new { @id = "Qty" + (i - 1), style = "width: 100px; height: 25px; padding: 0; text-align:left;" })
+            </td>
+            <td>
+                @Html.ActionLink("Update", null, new { recid = item.ImpId },
+                new { onclick = "saveImpList('" + item.ImpId + "','" + i + "')", style = "color:black;" })
+            </td>
+            <td>
+                @Html.Label("lblOpeningStock" + i.ToString(), item.OpeningStock.ToString("#,##,##,##,##0.00"), new { @id = "OpeningStock" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblTotalStock" + i.ToString(), item.TotalStock.ToString("#,##,##,##,##0.00"), new { @id = "TotalStock" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblDelvQty" + i.ToString(), item.DelvQty.ToString("#,##,##,##,##0.00"), new { @id = "DelvQty" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblBalanceQty" + i.ToString(), item.BalanceQty.ToString("#,##,##,##,##0.00"), new { @id = "BalanceQty" + (i - 1) })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+     
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("hfItemId").value = '@ViewBag.itemid';
+            document.getElementById("txtItemCode").value = '@ViewBag.itemcode';
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+            document.getElementById("ddlFinYear").value = '@ViewBag.fyr';
+            $('#rptLink').attr('href', '/ImportListReport/ProjectionReportDirect' + '?itemid=' + '@ViewBag.itemid' + '&itemcode=' + '@ViewBag.itemcode' + '&dtfrom=' + '@ViewBag.dtfrom' + '&dtto=' + '@ViewBag.dtto');
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteStockItemList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfItemId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+    <script>
+        function saveImpList(impid,index) {
+            var qty = parseFloat($('#Qty' + (index - 1)).val().trim());
+            var idate = document.getElementById("ImpDate" + (index - 1).toString()).innerHTML;
+            var itmid = parseInt($('#hfItemId').val().trim());
+            if (itmid == 0)
+            {
+                alert('Invalid attempt!');
+                location.reload();//return; --note:
+            }
+            if (qty <= 0) {
+                alert('Invalid quantity!');
+                location.reload();//return; --note:
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("saveImportList", "ImportList")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    impid: impid,
+                    qty: qty,
+                    itemid: itmid,
+                    impdate: idate
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+</script>
+
+    <script type="text/javascript">
+        function getDateRange(fy) {
+            //var ddlSIndex = document.getElementById("CompCode").selectedIndex;
+            var ccode = @ViewBag.IListCCode// document.getElementsByTagName("option")[ddlSIndex].value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getDateRangeByFinYear", "HelpUtility"))",
+                data: { "ccode": ccode, "finyr": fy },
+                success: function (data) {
+                    document.getElementById('txtDtFrom').value = data.fromdt;
+                    document.getElementById('txtDtTo').value = data.todt;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });//
+
+        }
+</script>
+
+}
+

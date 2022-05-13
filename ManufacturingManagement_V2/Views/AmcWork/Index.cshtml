@@ -1,0 +1,175 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.AmcWorkMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <h4><b>AMC List</b></h4>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndex", "AmcWork", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+        <div class="form-group">
+            @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+            @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+            &nbsp;<b>From</b>
+            @Html.TextBox("txtDtFrom", null, new { @class = "datepicker", @style="width:85px;" })
+            &nbsp;<b>To</b>
+            @Html.TextBox("txtDtTo", null, new { @class = "datepicker", @style = "width:85px;" })
+            <b>Apply Date Filter</b>
+            <input type="checkbox" name="chkFilterByDT"
+                   @if (ViewBag.FilterByDT) { <text> checked</text>}
+                   style="width: 30px; height: 20px; padding: 0; text-align:center;">
+            &nbsp;<b>Item</b>
+            @Html.TextBox("txtItemCode", null, new
+            { @placeholder = "start typing, then select" })
+            &nbsp;<button class="btn btn-default">Submit</button>
+        </div>
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th style="width:120px;">
+                Challan&nbsp;No
+            </th>
+            <th style="width:70px;">
+                Challan&nbsp;Date
+            </th>
+            <th style="width:100px;">
+                PO&nbsp;Number
+            </th>
+            <th style="width:100px;">
+                Consignee
+            </th>
+            <th style="width:auto;">
+                Items
+            </th>
+            <th style="width:100px;">
+                Net&nbsp;Amount
+            </th>
+            <th style="width:60px;text-align:center;">Action&nbsp;Links&nbsp;&nbsp;&nbsp;</th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+    <tr>
+        <td>
+            @i
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.ChallanNoStr)
+        </td>
+        <td>
+            @Html.ValueFor(model => item.VDate, "{0:dd/MM/yyyy}")
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.PONumber)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.ConsigneeName)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.Items)
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.NetAmount, "{0:##,##,##,##,##0.00}")
+        </td>
+        <td style="width:60px;text-align:center;">
+            @Html.ActionLink("Edit", "CreateUpdate", new { id = item.AmcId })
+            @Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+                    new { tblid = 104, pkval = item.AmcId }, new { @target = "_blank" })
+            <br/>@Html.ActionLink("Delete", null, null,
+                    new { onclick = "deleteRecord('" + item.AmcId + "')" })
+            <br/>@Html.ActionLink("Upload", "UploadFile",
+                    new { amcid = item.AmcId, challanno = item.ChallanNo })
+            @Html.ActionLink("Display", "ShowDocument",
+                    new { amcid = item.AmcId }, new { @target = "_blank;" })
+            <br/>@Html.ActionLink("Report", "../AmcWorkReport/DisplayReportLink",
+                    new { amcid = item.AmcId }, new { @target = "_new" })
+        </td>
+    </tr>
+                i++;
+        }
+    </table>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+            document.getElementById("hfItemId").value = '@ViewBag.ItemId';
+            document.getElementById("txtItemCode").value = '@ViewBag.ItemCode';
+        });
+        </script>
+
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script type="text/javascript">
+        $("#txtItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                //var liObj = document.getElementById("ddlCompany");
+                //var objIndex = liObj.selectedIndex;
+                //var objId = liObj.options[objIndex].value;
+                //var objName = liObj.options[objIndex].text;//OK
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePOSaleItemList", "Item"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                    for (var i = 0; i < data.length ; i++) {
+                        customer[i] = { label: data[i].Value, Id: data[i].Key };
+                    }
+                }
+            });
+            response(customer);
+        }, minLength: 1,
+        select: function (event, ui) {
+            document.getElementById('hfItemId').value = ui.item.Id;//no need
+        }
+    });
+        </script>
+
+        <script>
+        function deleteRecord(amcid) {
+            var a = confirm("Are you sure to delete this record?");
+            if (a == false) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("deleteAmcWork", "AmcWork")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    rfqid: rfqid
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    //location.reload();
+                }
+            });
+        }
+        </script>
+
+    }

@@ -1,0 +1,64 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Company Forms Report</b></h4>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    <h5><b>Report Options</b></h5>
+    <table class="table table-bordered">
+        <tr>
+            <td style="width:10%;">Company</td>
+            <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)</td>
+        </tr>
+        <tr>
+            <td>Fin. Year</td>
+            <td>@Html.DropDownListFor(model => model.FinYear, ViewBag.FinYearList as SelectList)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Grade)</td>
+            <td>@Html.DropDownListFor(model => model.Grade, ViewBag.GradeList as SelectList)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.ReportFormat)</td>
+            <td>@Html.DropDownListFor(model => model.ReportFormat, ViewBag.ReportFormatList as SelectList)</td>
+        </tr>
+    </table>
+</div>
+<p>
+    <input type="submit" class="btn btn-default" style="width:155px;" value="Bonus Worksheet" onclick="target = '_blank';"
+           formaction="@Url.Action("BonusWorkingsheetReport")" />
+    <input type="submit" class="btn btn-default" style="width:155px;" value="Form C" onclick="target = '_blank';"
+           formaction="@Url.Action("FormCReport")" />
+    <input type="submit" class="btn btn-default" style="width:155px;" value="Form C- Bank Detail" onclick="target = '_blank';"
+           formaction="@Url.Action("FormCBankDetail")" />
+    <input type="submit" class="btn btn-default" style="width:155px;" value="Form C- NEFT" onclick="target = '_blank';"
+           formaction="@Url.Action("FormCNeftReport")" />
+    <br /><br/>
+    <input type="submit" class="btn btn-default" style="width:155px;margin-left:75px;" value="Form A" onclick="target = '_blank';"
+           formaction="@Url.Action("FormAReport")" />
+    <input type="submit" class="btn btn-default" style="width:155px;" value="Form B" onclick="target = '_blank';"
+           formaction="@Url.Action("FormBReport")" />
+    <input type="submit" class="btn btn-default" style="width:155px;" value="Form D" onclick="target = '_blank';"
+           formaction="@Url.Action("FormDReport")" />
+</p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+@section Scripts{
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+        });
+    </script>
+    
+}
+

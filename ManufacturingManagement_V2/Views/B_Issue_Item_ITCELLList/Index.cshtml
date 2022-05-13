@@ -1,0 +1,255 @@
+﻿@model ManufacturingManagement_V2.Models.AAA_ITAssestCell_MDI
+@{
+    ViewBag.Title = "Issue Item";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+      <script>
+        //$(function () {
+        //    $('#example1').DataTable();
+        //})
+        function GetDetails(id) {
+            $.ajax({
+                url: "/B_Issue_Item_ITCELLList/Edit_IssueItem_Record/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#Tran_Id').val(response.Tran_Id);
+                    $('#Serial_No').val(response.Serial_No);
+                    $('#Issue_Qty').val(response.Issue_Qty);
+                    $('#Comment').val(response.Comment);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert" style="margin-top:5px;margin-bottom:5px">
+        Add New Record
+    </button>
+    <div id="printbar" class="pull-right" style="margin-top:5px;margin-bottom:5px">
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div class="box box-primary">
+                    @*<div class="box-header">
+                        </div>*@
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Tran Id</th>
+                                    <th>Item Type</th>
+                                    <th>Item Name</th>
+                                    <th>Serial No</th>
+                                    <th>Issue Qty</th>
+                                    <th>Issue Date</th>
+                                    <th>Issue To</th>
+                                    <th>Comment</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.Tran_Id)</td>
+                                        <td>@Html.DisplayFor(model => item.Item_Type)</td>
+                                        <td>@Html.DisplayFor(model => item.Item_Name)</td>
+                                        <td>@Html.DisplayFor(model => item.Serial_No)</td>
+                                        <td>@Html.DisplayFor(model => item.Issue_Qty)</td>
+                                        <td>@Html.DisplayFor(model => item.Issue_Date)</td>
+                                        <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                        <td>@Html.DisplayFor(model => item.Comment)</td>
+                                        <td>
+                                            <a onclick="GetDetails(@item.Item_Id)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+
+
+                                            <a>
+                                                @Html.ActionLink(" ", "Delete_IssueItem", "B_Issue_Item_ITCELLList", new { id = item.Tran_Id }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>>
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Update Item Name</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_IssueItem_Name", "B_Issue_Item_ITCELLList", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:200px;width:200px;background-color:white">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Tran Id</label>
+                                        <input type="number" class="form-control" id="Tran_Id" name="Tran_Id" readonly="readonly">
+                                        <label>Serial No</label>
+                                        <input type="text" class="form-control" id="Serial_No" name="Serial_No" readonly="readonly">
+                                        <label>Issue Qty</label>
+                                        <input type="number" class="form-control" id="Issue_Qty" name="Issue_Qty">
+                                        <label>Comment</label>
+                                        <input type="text" class="form-control" id="Comment" name="Comment">
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    @using (Html.BeginForm("Add_IssueItem_Name", "B_Issue_Item_ITCELLList", FormMethod.Post))
+                    {
+                        <div class="modal-body" style="height:500px;width:400px">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    @*<label>Item Type</label>*@
+                                    @Html.DropDownListFor(m => m.Item_Type_Id, Model.AAA_Item_Type, "Please select Item Type ")
+
+                                    @*<label>Item Name</label>*@
+
+                                    @Html.DropDownListFor(m => m.Item_Id, Model.AAA_ItemMaster_ITCell, "Please Select Item")<br />
+                                    <label>Serial No</label><br />
+                                    @Html.EditorFor(model => model.Serial_No)<br />
+                                    <label>Issue Date</label><br />
+                                    @Html.EditorFor(model => model.Issue_Date)<br />
+
+                                    <label>Issue Qty</label><br />
+                                    @Html.EditorFor(model => model.Issue_Qty)<br />
+
+                                    <label>Issue To</label><br />
+                                    @Html.DropDownListFor(model => model.NewEmpId, ViewBag.EmpName as SelectList)
+
+                                    <label>comment</label><br />
+                                    @Html.EditorFor(model => model.Comment)<br />
+                                    @*<label>comment</label>*@
+                                    @Html.HiddenFor(model => model.Minus)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="~/Scripts/jquery-1.11.0.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+
+    <script type="text/javascript">
+        $(function () {
+            $("select").each(function () {
+                if ($(this).find("option").length <= 1) {
+                    $(this).attr("disabled", "disabled");
+                }
+            });
+
+            $("select").change(function () {
+                var value = 0;
+                if ($(this).val() != "") {
+                    value = $(this).val();
+                }
+                var id = $(this).attr("id");
+                $.ajax({
+                    type: "POST",
+                    url: "/B_Issue_Item_ITCELLList/AjaxMethod",
+                    data: '{type: "' + id + '", value: ' + value + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        var dropDownId;
+                        var list;
+                        switch (id) {
+                            case "Item_Type_Id":
+                                list = response.AAA_ItemMaster_ITCell;
+                                DisableDropDown("#Item_Id");
+                                PopulateDropDown("#Item_Id", list);
+                                break;
+
+                        }
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+
+        function DisableDropDown(dropDownId) {
+            $(dropDownId).attr("disabled", "disabled");
+            $(dropDownId).empty().append('<option selected="selected" value="0">Please select</option>');
+        }
+
+        function PopulateDropDown(dropDownId, list) {
+            if (list != null && list.length > 0) {
+                $(dropDownId).removeAttr("disabled");
+                $.each(list, function () {
+                    $(dropDownId).append($("<option></option>").val(this['Value']).html(this['Text']));
+                });
+            }
+        }
+    </script>
+    <script src="~/Script/Site.js"></script>
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
+
+    @*<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />*@
+
+    

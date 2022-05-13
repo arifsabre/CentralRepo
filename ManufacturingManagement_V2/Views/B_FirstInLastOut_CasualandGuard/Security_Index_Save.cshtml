@@ -1,0 +1,269 @@
+﻿@model ManufacturingManagement_V2.Models.Security_BLL
+@{
+    ViewBag.Title = "Security List";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Security Guard List</title>
+    <script>
+        function GetDetails(id) {
+            $.ajax({
+                url: "/B_FirstInLastOut_CasualandGuard/Edit_Security_Record/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ECode1').val(response.ECode);
+                    $('#EmpName1').val(response.EmpName);
+                    $('#IsActive1').val(response.IsActive);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        function Security_CompanyUpdate(id) {
+            $.ajax({
+                url: "/B_FirstInLastOut_CasualandGuard/Security_CompanyUpdate/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ECode2').val(response.ECode);
+                    $('#modal-Update_Company').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        function GetCompany() {
+            $.ajax({
+                // url: "/LibraryMasterUpload/Edit_CompanyRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    // $('#RecordId3').val(response.RecordId);
+                    $('#modal-ChangeCompany8').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-Insert" style="margin-top:3px;margin-bottom:3px">
+        Add New
+    </button>
+    <div id="printbar" class="pull-right" style="margin-top:3px;margin-bottom:3px">
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div class="box box-primary">
+
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>EmpId</th>
+                                    <th>Emp Name</th>
+                                    <th>Company</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="font-size:small">
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.ECode)</td>
+                                        <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.cmpname)
+                                                                                <a onclick="Security_CompanyUpdate(@item.ECode)">
+                                                                                    <i class="fa fa-edit">
+                                                                                    </i>
+                                                                                </a>
+                                                                            </td>
+                                        <td>@Html.DisplayFor(model => item.IsActive)</td>
+                                        <td>
+                                            <a onclick="GetDetails(@item.ECode)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "Delete_Security", "B_FirstInLastOut_CasualandGuard", new { id = item.ECode }, new { onclick = "return confirm('Are sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Update Record </h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_Security", "B_FirstInLastOut_CasualandGuard", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:400px;width:400px;background-color:white">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Emp Id</label>
+                                        <input type="number" class="form-control" id="ECode1" name="ECode" readonly="readonly">
+                                        <label>Employee Name</label>
+                                        <input type="text" class="form-control" id="EmpName1" name="EmpName">
+                                        @*<label>Status</label>
+                                            <input type="number" class="form-control" id="IsActive1" name="IsActive1">*@
+                                        @* @Html.HiddenFor(model => model.ECode)*@
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    Security_Add
+                    @using (Html.BeginForm("Security_Add", "B_FirstInLastOut_CasualandGuard", FormMethod.Post))
+                    {
+                        <div class="modal-body" style="height:400px;width:300px">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                   
+                                    <br />
+                                    <label>Employee Name</label>
+                                    @Html.EditorFor(model => model.EmpName)
+                                    <label>Select Company</label>
+                                    @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-Update_Company">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("Edit_Security_Company", "B_FirstInLastOut_CasualandGuard", FormMethod.Post))
+                    {
+                        <div class="modal-body" style="height:400px;width:300px">
+
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    @Html.HiddenFor(model => model.ECode, new { @id = "ECode2" })
+                                    <br />
+                                    <label>Select Company</label>
+                                    @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)
+                                   @* @Html.HiddenFor(model => model.ECode, new { @id = "ECode2" })*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @* ChangeCompany*@
+    <div class="modal fade" id="modal-ChangeCompany8">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                @*<div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="box-title">Company Screen</h3>
+                    </div>*@
+                <div class="modal-body">
+                    @*<div class="box box-primary">*@
+                    @using (Html.BeginForm("ChangeCompany", "Add_In_Stock_ITCELLLis", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-lg-10">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+
+                                @*@Html.HiddenFor(model => model.UpdatedBy)*@
+
+                                <input type="hidden" class="form-control" id="RecordId3" name="RecordId" style="color:white">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Select Company</label>
+                                @Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)
+                                @*@Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)*@
+                                @* @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "danger" })*@
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" id="modal-updateCompany" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="submit" id="modal-updateCompany" class="btn btn-success">Submit</button>
+                        </div>
+
+                    }
+                    @*  *@ @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+
+
+

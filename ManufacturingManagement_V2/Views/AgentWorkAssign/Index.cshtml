@@ -1,0 +1,300 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.AgentWorkAssignMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <h4><b>Agent Work Assignment (* Under Trial)</b></h4>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndex", "AgentWorkAssign", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+            <div class="form-group">
+                <table>
+                    <tr>
+                        <td><b>Work&nbsp;Name</b></td>
+                        <td>&nbsp;</td>
+                        <td>@Html.DropDownList("ddlWorkId", ViewBag.WorkIdList as SelectList, "ALL")</td>
+
+                        <td>&nbsp;&nbsp;</td>
+                        <td><b>Acknow.&nbsp;Status</b></td>
+                        <td>&nbsp;</td>
+                        <td>
+                            @Html.DropDownList("ddlAckStatus", ViewBag.AckStatusList as SelectList, "ALL")
+                            &nbsp;<b>Completion&nbsp;Status</b>
+                            @Html.DropDownList("ddlCompStatus", ViewBag.CompStatusList as SelectList, "ALL")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Bill&nbsp;Status</b></td>
+                        <td>&nbsp;</td>
+                        <td>@Html.DropDownList("ddlBillStatus", ViewBag.BillStatusList as SelectList, "ALL")</td>
+
+                        <td>&nbsp;&nbsp;</td>
+                        <td><b>Agent&nbsp;Name</b></td>
+                        <td>&nbsp;</td>
+                        <td>
+                            @Html.TextBox("txtAgentName", null, new
+                            {
+                                @placeholder = "start typing, then select",
+                                            @style = "width:225px;height:20px;"
+                            })
+                            @Html.Hidden("hfAgentId", null, new { @id = "hfAgentId" })
+                        </td>
+                        <td><button class="btn btn-default" style="height:32px;">Submit</button></td>
+                    </tr>
+                </table>
+                @*&nbsp;<b>Work&nbsp;Status</b>
+                    @Html.DropDownList("ddlWorkStatus", ViewBag.WorkStatusList as SelectList, "ALL")*@
+            </div>
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;" id="tblsl">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th style="width:50px;">
+                Agent&nbsp;Name<br />Service&nbsp;Type
+            </th>
+            <th style="width:auto;">
+                Work&nbsp;Name<br />Work&nbsp;Detail
+            </th>
+            <th style="width:auto;">
+                Unique&nbsp;IdNo
+            </th>
+            <th style="width:50px;">
+                Doc.&nbsp;No<br />Doc.&nbsp;Date
+            </th>
+            <th style="width:auto;">
+                Assign&nbsp;Date<br />R.Cmp.&nbsp;Date
+            </th>
+            <th style="width:auto;">
+                Comp.&nbsp;Status<br />Comp.&nbsp;Date
+            </th>
+            <th style="width:auto;">
+                Ack.&nbsp;Status<br />Ack.&nbsp;Date
+            </th>
+            <th style="width:auto;">
+                Delayed&nbsp;Days<br />Bill&nbsp;Status
+            </th>
+            <th style="width:50px;">Links</th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AgentName)
+                    <br />@Html.DisplayFor(modelItem => item.SVPTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkName)
+                    <br />@Html.DisplayFor(modelItem => item.WorkDetail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UniqueIdNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocNumber)
+                    <br />@Html.ValueFor(model => item.DocDate, "{0:dd/MM/yyyy}")
+                </td>
+                <td>
+                    @Html.ValueFor(model => item.AssignDate, "{0:dd/MM/yyyy}")
+                    <br />@Html.ValueFor(model => item.ReqCompDate, "{0:dd/MM/yyyy}")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompStatus)
+                    @if (item.CompStatus.ToString().ToLower() == "completed")
+                    {
+                        @Html.ValueFor(model => item.CompDate, "On {0:dd/MM/yyyy}")
+                    }
+                </td>
+                <td>
+                    @Html.DropDownList("ddlAckStatus", new SelectList(ViewBag.AckStatusList, "Value", "Text", item.AckStatus),
+                             new
+                             {
+                                 @id = "ddlAckStatus" + (i - 1),
+                                 style = "width: 90px;",
+                                      @onchange = "setAckDate('" + i + "')"
+                             })
+                    <br />@Html.TextBox("txtAckDate" + i.ToString(), @Html.ValueFor(model => item.AckDate, "{0:dd/MM/yyyy}"),
+                      new
+                      {
+                          @id = "txtAckDate" + (i - 1),
+                               @class = "datepicker",
+                               @style = "width:90px;height:20px;"
+                      })
+                    <br />@Html.ActionLink("Update", null, null,
+              new { onclick = "updateAcknowledgement('" + i + "', '" + item.RecId + "')" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DelayDays)
+                    @Html.DropDownList("ddlBillStatus", new SelectList(ViewBag.BillStatusList, "Value", "Text", item.BillStatus),
+                        new
+                             {
+                            @id = "ddlBillStatus" + (i - 1),
+                                 style = "width: 90px;"
+                        })
+                    <br />
+                    @Html.ActionLink("Update", null, null,
+                           new { onclick = "updateBillStatus('" + i + "', '" + item.RecId + "')" })
+                </td>
+                <td>
+                    @*@Html.ActionLink("View", "GoToEdit", new { porderid = item.RecId }, new { @target = "_blank" })*@
+                    @Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+                        new { tblid = 107, pkval = item.RecId }, new { @target = "_blank" })
+                </td>
+            </tr>
+            i++;
+        }
+        @{i = i - 1;}
+        @i.ToString()&nbsp;&nbsp;Records found.
+    </table>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById("hfAgentId").value = '@ViewBag.agentid';
+            document.getElementById("txtAgentName").value = '@ViewBag.agentname';
+        });
+        </script>
+
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script>
+            function setAckDate(indx) {
+
+                var liObj = document.getElementById("ddlAckStatus" + (indx - 1));
+                var indexObj = liObj.selectedIndex;
+                if (indexObj == -1) {
+                    alert('Status Not Selected!');
+                    return;
+                }
+                var _ackstatus = liObj.options[indexObj].value;
+                
+                if (_ackstatus == 'Received') {
+                    var date = new Date();
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+                    var x = ('0' + day).slice(-2) + "/" + ('0' + month).slice(-2) + "/" + year;
+                    $('#txtAckDate' + (indx - 1)).val(x);
+                }
+            }
+        </script>
+
+        <script>
+            function updateAcknowledgement(indx, recid) {
+
+                var liObj = document.getElementById("ddlAckStatus" + (indx - 1));
+                var indexObj = liObj.selectedIndex;
+                if (indexObj == -1) {
+                    alert('Status Not Selected!');
+                    return;
+                }
+                var _ackstatus = liObj.options[indexObj].value;
+
+                var _ackdate = $('#txtAckDate' + (indx - 1)).val();
+                if (_ackdate == '') {
+                    alert('Empty acknowledgement date!');
+                    return;
+                }
+
+                var data = {
+                    recid: recid,
+                    ackstatus: _ackstatus,
+                    ackdate: _ackdate
+                }
+                $.ajax({
+                    url: '/AgentWorkAssign/UpdateAcknowledgement',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            function updateBillStatus(indx, recid) {
+
+                var liObj = document.getElementById("ddlBillStatus" + (indx - 1));
+                var indexObj = liObj.selectedIndex;
+                if (indexObj == -1) {
+                    alert('Status Not Selected!');
+                    return;
+                }
+                var _billstatus = liObj.options[indexObj].value;
+
+                var data = {
+                    recid: recid,
+                    billstatus: _billstatus
+                }
+                $.ajax({
+                    url: '/AgentWorkAssign/UpdateBillStatus',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <script type="text/javascript">
+                $("#txtAgentName").autocomplete({
+                    source: function (request, response) {
+                        var customer = new Array();
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            type: "POST",
+                            url: "@(Url.Action("AutoCompleteAgent", "Agent"))",
+                            data: { "term": request.term },
+                            success: function (data) {
+                                for (var i = 0; i < data.length ; i++) {
+                                    customer[i] = { label: data[i].Value, Id: data[i].Key };
+                                }
+                            }
+                        });
+                        response(customer);
+                    }, minLength: 2,
+                    select: function (event, ui) {
+                        document.getElementById('hfAgentId').value = ui.item.Id;
+                    }
+                });
+        </script>
+
+    }
+
+

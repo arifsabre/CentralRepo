@@ -1,0 +1,181 @@
+﻿@model ManufacturingManagement_V2.Models.C_ComplaintMDI
+@{
+    ViewBag.Title = "CreateUpdate1";
+    //Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Closed Complaint  </title>
+    <link href="~/Contents/bootstrap.min.css" rel="stylesheet" />
+    
+    @*<script>
+        function deleteFittingItem(srno) {
+            var a = confirm("Are you sure to delete this Record?");
+            if (a == false) {
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "C_Fitting")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    srno: srno
+                }),
+                success: function () {
+                    alert("Record Deleted Successfully");
+                    location.reload();
+                }
+            });
+        }
+    </script>*@
+
+    
+    
+    
+    <script>
+       function showhide() {
+           var x = document.getElementById("newpost");
+            if (x.style.display == "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+    <script>
+       function showhide1() {
+
+            var x = document.getElementById("newpost");
+
+            if (x.style.display == "none") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body onload="JavaScript:showhide1();">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div>
+                <label>Complaint Id</label>
+                <br />
+                @Html.EditorFor(model => model.referenceno)
+            </div>
+
+            <div id="newpost">
+                <label>Select Company</label>
+                <br />
+                @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)
+                @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "text-danger" })
+                <br />
+                <label>Prag Unit SRNO</label>
+                <br />
+                @Html.DropDownListFor(model => model.srno, ViewBag.PragSRNO as SelectList)
+                @Html.ValidationMessageFor(model => model.srno, "", new { @class = "text-danger" })
+                <br />
+                <label>Recieved Date</label>
+                <br />
+                @Html.EditorFor(model => model.dateofcomplaintrecieved)
+                @Html.ValidationMessageFor(model => model.dateofcomplaintrecieved, "", new { @class = "text-danger" })
+                <br />
+                <label>Item Name</label>
+                <br />
+                @Html.DropDownListFor(model => model.itemid, ViewBag.ItemList as SelectList)
+                @Html.ValidationMessageFor(model => model.itemid, "", new { @class = "text-danger" })
+                <label>Problem Description</label>
+                <br />
+                @Html.TextAreaFor(model => model.detail, 0, 0, new { @class = "Editor", @style = "width:450px;height:70px;" })
+                @Html.ValidationMessageFor(model => model.detail, "", new { @class = "text-danger" })
+                <br />
+                <label>Complainer ID Or Name</label>
+                <br />
+                @Html.EditorFor(model => model.customername)
+                @Html.ValidationMessageFor(model => model.customername, "", new { @class = "text-danger" })
+                <br />
+                @Html.LabelFor(model => model.mobile1)
+                <br />
+                @Html.TextBoxFor(model => model.mobile1)
+                @Html.ValidationMessageFor(model => model.mobile1, "", new { @class = "text-danger" })
+                <br />
+                <label style="color:green">Name of Engineer Reached On Site</label>
+                <br />
+                @Html.DropDownListFor(model => model.newempid, ViewBag.AssignTo as SelectList, "Select")
+                @Html.ValidationMessageFor(model => model.newempid, "", new { @class = "text-danger" })
+                <br />
+                @Html.LabelFor(model => model.mobile2)
+                <br />
+                @Html.TextBoxFor(model => model.mobile2)
+                @Html.ValidationMessageFor(model => model.mobile2, "", new { @class = "text-danger" })
+                <br />
+                <label>Source</label>
+                <select name="recievedby" id="recievedby">
+                    <option value="Phone">Phone</option>
+                    <option value="Email">Email</option>
+                    <option value="Oral">Oral</option>
+                    <option value="Onther">Onther</option>
+                </select>
+                <label>Priority</label>
+                <select name="priority" id="priority">
+                    <option value="Normal">Normal</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+            <div>
+                <label>Problem Observed By Engineer</label>
+                <br />
+                @Html.TextAreaFor(model => model.observation, 0, 0, new { @class = "Editor", @style = "width:450px;height:60px;" })
+                @Html.ValidationMessageFor(model => model.observation, "", new { @class = "text-danger" })
+                <br />
+                <label>Root Cause</label>
+                <br />
+                @Html.TextAreaFor(model => model.rootcause, 0, 0, new { @class = "Editor", @style = "width:450px;height:60px;" })
+                @Html.ValidationMessageFor(model => model.rootcause, "", new { @class = "text-danger" })
+                <br />
+                <label>Action taken & Material Used</label>
+                <br />
+                @Html.TextAreaFor(model => model.actiontaken, 0, 0, new { @class = "Editor", @style = "width:450px;height:60px;" })
+                @Html.ValidationMessageFor(model => model.actiontaken, "", new { @class = "text-danger" })
+
+                <br />
+                <label>Date For Engineer Reached On Site</label>
+                <br />
+                @Html.EditorFor(model => model.attendeddate)
+                @Html.ValidationMessageFor(model => model.attendeddate, "", new { @class = "text-danger" })
+                <br />
+                <label>Complaint Closed Date</label>
+                <br />
+                @Html.EditorFor(model => model.dateofclosed)
+                @Html.ValidationMessageFor(model => model.dateofclosed, "", new { @class = "text-danger" })
+                @*<br />*@
+                <label>Select Status</label>
+                <select name="status" id="status">
+                    <option value="Closed">Closed</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Pending">Pending</option>
+                </select>
+            </div>
+            @Html.HiddenFor(model => model.updatedby)
+            @Html.HiddenFor(model => model.userid1)
+
+        </div>
+        <div class="pull-right">
+            <button type="button" class="btn btn-info" id="button1" onclick="showhide()">Show Other Detail</button>
+            <input type="submit" class="btn btn-success" value='@ViewBag.AddEdit' />
+            <h5>@ViewBag.Message</h5>
+        </div>
+        <br />
+    }
+    <script src="~/Script/Site4.js"></script>
+</body>
+</html>
+
+
+

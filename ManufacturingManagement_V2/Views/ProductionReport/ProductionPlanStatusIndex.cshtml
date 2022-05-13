@@ -1,0 +1,40 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Production Plan Report</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <h5><b>Report Options</b></h5>
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:10%;">Company</td>
+                    <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)</td>
+                </tr>
+                <tr>
+                    <td>Month</td>
+                    <td>
+                        @Html.EditorFor(model => model.AttMonth)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Year</td>
+                    <td>@Html.EditorFor(model => model.AttYear)</td>
+                </tr>
+            </table>
+        </div>
+    <p>
+       <input type="submit" class="btn btn-default" value="Submit" onclick="target='_blank';" 
+           formaction="@Url.Action("ProductionPlanStatusReport")" />
+        @Html.ActionLink("Back to Plan Entry", "../ProductionPlan/IndexStatus", null, new { @class="btn btn-default"})
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+    <span style="font-family:Verdana;color:blue;">[Note: List of Items is as per Item Group accessibility provided to logged-in user]</span>
+}
+

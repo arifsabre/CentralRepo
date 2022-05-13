@@ -1,0 +1,188 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.NitListMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <table>
+        <tr>
+            <td><h4><b>NIT List Processing</b></h4></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        </tr>
+    </table>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterNitProcessIndex", "NitList", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+            <div class="form-group">
+                <b>Uploading&nbsp;Date</b>
+                @Html.TextBox("txtUploadingDt", null, new { @class = "datepicker", @style = "width:90px;" })
+
+                &nbsp;<button class="btn btn-default">Submit</button>
+
+            </div>
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;" id="tblsl">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th style="width:50px;">
+                Dept&nbsp;/&nbsp;Railway
+            </th>
+            <th style="width:auto;">
+                Tender&nbsp;No<br /> Tender&nbsp;Title
+            </th>
+            <th style="width:80px;">
+                T.&nbsp;Status<br />Due&nbsp;Days
+            </th>
+            <th style="width:90px;">
+                Uploading<br />Date/Time
+            </th>
+            <th style="width:90px;">
+                Closing<br />Date/Time
+            </th>
+            <th style="width:50px;">Links</th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeptRailway)
+                </td>
+                <td>
+                    <b>@Html.DisplayFor(modelItem => item.TenderNo)</b>
+                    <br />@Html.DisplayFor(modelItem => item.TenderTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenderStatus)
+                    <br />@Html.DisplayFor(modelItem => item.DueDays)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UploadingDT)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClosingDT)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DispUser)
+                    <table>
+                        <tr>
+                            <td>Company</td>
+                            <td>
+                                @Html.TextBox("txtShortName" + i.ToString(), item.ShortName, new
+                                {
+                                    @id = "txtShortName" + (i - 1),
+                                    style = "width: 50px; height: 20px; padding: 0;"
+                                })
+                            </td>
+                        <tr>
+                        <tr>
+                            <td>Proceed&nbsp;To<br/>Checksheet</td>
+                            <td>
+                                @Html.CheckBox("chkPrcToCS" + i.ToString(), item.isPrcToCS,
+                            new
+                             {
+                                 @id = "chkPrcToCS" + (i - 1),
+                                 style = "width: 35px; height: 22px; padding: 0; text-align:center;"
+                             })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Not&nbsp;Our&nbsp;item</td>
+                            <td>
+                                @Html.CheckBox("chkNotOurItem" + i.ToString(), item.isNotOurItem,
+                            new
+                             {
+                                 @id = "chkNotOurItem" + (i - 1),
+                                 style = "width: 35px; height: 22px; padding: 0; text-align:center;"
+                             })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align:center;">
+                                @Html.ActionLink("Update", null, null, new { onclick = "updateForNitProcessing('" + i + "','" + item.TenderNo + "','" + item.ClosingDT + "')" })
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+            i++;
+        }
+        @{i = i - 1;}
+        @i.ToString()&nbsp;&nbsp;Records found (for selected options).
+    </table>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById("txtUploadingDt").value = '@ViewBag.uploadingdt';
+        });
+        </script>
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script>
+            function updateForNitProcessing(indx,tenderno,closingdate) {
+
+                var _prctocs = document.getElementById("chkPrcToCS" + (indx - 1)).checked;
+                var _notouritem = document.getElementById("chkNotOurItem" + (indx - 1)).checked;
+                var _shortname = $('#txtShortName' + (indx - 1)).val();
+
+                if (_prctocs == true && _notouritem == true) {
+                    alert('Invalid Processing!');
+                    return;
+                }
+
+                if (_prctocs == false && _notouritem == false) {
+                    alert('Processing option not selected!');
+                    return;
+                }
+                
+                var data = {
+                    PrcToCS: _prctocs,
+                    NotOurItem: _notouritem,
+                    ShortName: _shortname,
+                    TenderNo: tenderno,
+                    ClosingDT: closingdate
+                }
+
+                $.ajax({
+                    url: '/NitList/updateNitListForProcessing',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+    }
+
+

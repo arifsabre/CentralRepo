@@ -1,0 +1,35 @@
+﻿@model ManufacturingManagement_V2.Models.DocSubCategoryMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Document Sub Category Name</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <br/>
+        <div class="form-group">
+            @Html.HiddenFor(model => model.SubCategoryId)
+            @Html.LabelFor(model => model.SubCategoryName)
+            @Html.EditorFor(model => model.SubCategoryName)
+            @Html.ValidationMessageFor(model => model.SubCategoryName)
+    </div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+    </script>
+
+}

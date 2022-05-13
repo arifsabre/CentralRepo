@@ -1,0 +1,68 @@
+﻿@model ManufacturingManagement_V2.Models.EmailTrackMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Email Track Detail</h2>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id=Model.RecId }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+    <legend>StoreItemMdl</legend>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.EmDate)</td>
+                    <td style="vertical-align:top;font-weight:bold;">: @Html.ValueFor(model => model.EmDate, "{0:dd/MM/yyyy}"))</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.EmFrom)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmFrom)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.Railway)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Railway)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.EmSubject)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmSubject)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.UserName)</td>
+                    <td style="vertical-align:top;font-weight:bold;">: @Html.DisplayFor(model => model.UserName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.EmStatusName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmStatusName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.RepDate)</td>
+                    <td style="vertical-align:top;font-weight:bold;">: @Html.ValueFor(model => model.RepDate, "{0:dd/MM/yyyy hh:mm:tt}"))</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.Remarks)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Remarks)</td>
+                </tr>
+
+            </table>
+        </div>
+</fieldset>
+
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

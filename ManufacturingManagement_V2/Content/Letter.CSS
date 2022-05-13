@@ -1,0 +1,35 @@
+
+table {
+        page-break-after: auto;
+
+
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+@media print {
+
+    td {
+        page-break-inside: avoid;
+        page-break-after: auto;
+        margin: 0;
+    }
+
+
+    thead {
+        display: table-header-group;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+
+   
+}
+    
+
+        
+  

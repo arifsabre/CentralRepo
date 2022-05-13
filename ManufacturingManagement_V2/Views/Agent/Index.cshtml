@@ -1,0 +1,153 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.AgentMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Agent List</b></h4>
+
+<fieldset>
+    @using (Ajax.BeginForm("FilterIndex", "Agent", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            @Html.Hidden("hfCityId", null, new { @id = "hfCityId" })
+
+            @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Report", "../AgentReport/Index", null, 
+                new { @class = "btn btn-default", @target="_new" })
+
+            &nbsp;
+            @Html.DisplayNameFor(model => model.SVPTypeName)
+            @Html.DropDownList("ddlSVPType", ViewBag.SVPTypeList as SelectList)
+
+            &nbsp;
+            @Html.DisplayNameFor(model => model.CityName)
+            @Html.TextBox("txtCityName", null, new { @placeholder = "start typing, then select" })
+
+            &nbsp;
+            <button class="btn btn-default">Submit</button>
+        </div>
+    }
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th>Links</th>
+        <th>Document</th>
+        <th style="width:auto;">
+            Agent&nbsp;Name
+        </th>
+        <th style="width:150px;">
+            Railway_______
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.Company)
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.ContactNo)
+        </th>
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.CityName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.PostalAddress)
+        </th>
+        <th style="width:50px;word-wrap:break-word">
+            @Html.DisplayNameFor(model => model.EMail)
+        </th>
+        <th style="width:50px;">
+            Log&nbsp;View
+        </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.AgentId })
+                <br />@Html.ActionLink("Details", "Details", new { id = item.AgentId })
+            </td>
+            <td>
+                @Html.ActionLink("Upload", "UploadFile", new { agentid = item.AgentId, agentname = item.AgentName })
+                <br />@Html.ActionLink("Display", "ShowDocument", new { agentid = item.AgentId }, new { @target = "_blank;" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AgentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Railway)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactNo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostalAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EMail)
+            </td>
+            <td>
+                @Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+                    new { tblid = 91, pkval = item.AgentId }, new { @target = "_blank" })
+            </td>
+        </tr>
+        i++;
+    }
+    @{i = i - 1;}
+    @i.ToString()&nbsp;&nbsp;&nbsp;Records found.
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("hfCityId").value = '@ViewBag.cityid';
+            document.getElementById("txtCityName").value = '@ViewBag.cityname';
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#txtCityName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCity", "City"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfCityId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

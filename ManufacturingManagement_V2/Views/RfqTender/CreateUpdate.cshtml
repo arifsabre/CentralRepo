@@ -1,0 +1,499 @@
+﻿@model ManufacturingManagement_V2.Models.RfqTenderMdl
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>RFQ Tender Entry</b></h4>
+<div class="form-group">
+    <b><u>RFQ Details</u></b>
+    <table class="table table-bordered">
+        @Html.Hidden("hfRfqId", null, new { @id = "hfRfqId" })
+        @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+        @Html.Hidden("hfRailwayId", null, new { @id = "hfRailwayId" })
+        <tr>
+            <td style="width:18%;">@Html.DisplayNameFor(model => model.RailwayName)</td>
+            <td>
+                <input type="text" id="txtRailwayName" placeholder="start typing, then select" />
+                <span class="error">Invalid Railway!</span>
+            </td>
+            <td style="width:12%;">@Html.DisplayNameFor(model => model.RfqDate)</td>
+            <td>
+                <input type="text" id="txtRfqDate" class="datepicker" />
+                <span class="error">Invalid RFQ Date!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.ReferenceNo)</td>
+            <td>
+                <input type="text" id="txtReferenceNo" />
+                <span class="error">Invalid ReferenceNo!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.OfferType)</td>
+            <td>
+                @Html.DropDownList("ddlOfferType", ViewBag.OfferTypeList as SelectList)
+                <span class="error">Invalid OfferType!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.QuotationNo)</td>
+            <td>
+                <input type="text" id="txtQuotationNo" />
+                <span class="error">Invalid QuotationNo!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.QuotationDate)</td>
+            <td>
+                <input type="text" id="txtQuotationDate" class="datepicker" />
+                <span class="error">Invalid QuotationDate!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.EstProduct)</td>
+            <td>
+                <input type="text" id="txtEstProduct" />
+                <span class="error">Invalid EST Product!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.ProductDesc)</td>
+            <td>
+                <input type="text" id="txtProductDesc" />
+                <span class="error">Invalid Product Desc!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.DrgSpecChanged)</td>
+            <td>
+                <input type="text" id="txtDrgSpecChanged" />
+                <span class="error">Invalid Drg Spec Changed!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.ModeOfDisp)</td>
+            <td>
+                <input type="text" id="txtModeOfDisp" />
+                <span class="error">Invalid ModeOfDisp!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.InspAuthority)</td>
+            <td>
+                <input type="text" id="txtInspAuthority" />
+                <span class="error">Invalid InspAuthority!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.TC1PmtTerms)</td>
+            <td>
+                <input type="text" id="txtTC1PmtTerms" />
+                <span class="error">Invalid Payment Terms!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Remarks)</td>
+            <td>
+                <input type="text" id="txtRemarks" />
+                <span class="error">Invalid Remarks!</span>
+            </td>
+        </tr>
+        <tr><td colspan="4"><b><u>Items Detail</u></b></td></tr>
+        <tr>
+            <td>Item</td>
+            <td>
+                <input type="text" id="txtItemCode" style="width:280px;"
+                       placeholder="start typing, then select" />
+                <span class="error">Item not selected!</span>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;">Item Description</td>
+            <td colspan="3">
+                <textarea id="txtItemName" name="txtItemName" rows="4" cols="80"></textarea>
+                <span class="error">Item description not entered!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Quantity</td>
+            <td>
+                <input type="text" id="txtQty" />
+                <span class="error">Invalid Qty!</span>
+            </td>
+            <td>Unit</td>
+            <td>
+                @Html.DropDownList("ddlUnit", ViewBag.UnitList as SelectList,
+                    new { disabled = "true" })
+                <input type="text" id="txtUnitName" />
+                <span class="error">Unit not selected!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Rate</td>
+            <td>
+                <input type="text" id="txtRate" />
+                <span class="error">Invalid Rate!</span>
+            </td>
+            <td align="left">
+                <input type="button" class="btn btn-default" id="add" value="Add" />
+            </td>
+        </tr>
+    </table>
+
+    <span>List of Items:-</span>
+    <div id="orderItems" style="width:98%;overflow-x:scroll;">
+    </div>
+
+    <br/>
+    <div>
+        <input id="submit" class="btn btn-default" type="button" value='@ViewData["AddEdit"]' />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        @Html.ActionLink("Create New", "CreateUpdate", new { id = 0 },
+              new { @style = "display:none;", @class = "btn btn-default", @id = "myLink" })
+        <br/><br />
+    </div>
+</div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("txtRfqDate").value = '@ViewBag.VDate';
+            document.getElementById("txtQuotationDate").value = '@ViewBag.VDate';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePOSaleItemList", "Item"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfItemId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                data: { "itemid": ui.item.Id },
+                success: function (data) {
+                    $('#txtRate').val(data.purchaserate);
+                    $('#ddlUnit').val(data.unit);
+                    $('#txtItemName').val(data.itemname);
+                    $('#txtUnitName').val(data.unitname);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+                });
+                //detail-2
+                //fillUnitList(ui.item.Id);
+                //
+        }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtRailwayName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteRailway", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfRailwayId').value = ui.item.Id;
+        }
+        });
+    </script>
+
+    <script>
+        //Date Picker
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+
+        $(document).ready(function () {
+            var orderItems = [];
+
+            //Add button click function
+            $('#add').click(function () {
+
+                //alert($('#txtItemDesc').val().trim());
+                //Check validation of order item
+
+                var isValidItem = true;
+                if ($('#txtItemName').val().trim() == '' || $('#hfItemId').val().trim() == 0) {
+                    isValidItem = false;
+                    $('#txtItemName').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtItemName').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //chk duplicate item
+                $("#myTable tr").each(function (index, item) {
+                    if (index > -1) {
+                        var tds = $(this).find("td");
+                        if ($(this).closest('tr').find('td:eq(7)').text().trim() == $('#hfItemId').val().trim()) {
+                            alert('Duplicate item entry is not allowed!');
+                            document.getElementById("txtItemName").focus();
+                            isValidItem = false;
+                            return;
+                        }
+                    }
+                });
+
+                if (!($('#txtQty').val().trim() != '' && !isNaN($('#txtQty').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtQty').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtQty').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#txtRate').val().trim() != '' && !isNaN($('#txtRate').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtRate').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtRate').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Add item to list if valid
+                if (isValidItem) {
+                    var liUnit = document.getElementById("ddlUnit");
+                    var unitIndex = liUnit.selectedIndex;
+                    var unitId = liUnit.options[unitIndex].value;
+                    var unitName = liUnit.options[unitIndex].text;
+
+                    //unit name validation
+                    var uname = unitName;
+                    if (unitName.includes('/') == true) {
+                        uname = $('#txtUnitName').val();
+                        var arr = unitName.split('/');
+                        if (arr.includes($('#txtUnitName').val()) == false) {
+                            alert('Invalid unit name entered!');
+                            document.getElementById("txtUnitName").focus();
+                            return;
+                        }
+                    }
+                    $('#txtUnitName').val(uname);//d
+                    //
+
+                    orderItems.push({
+                        ItemId: parseInt($('#hfItemId').val().trim()),
+                        ItemName: $('#txtItemName').val(),
+                        ItemCode: $('#txtItemCode').val(),
+                        Qty: parseFloat($('#txtQty').val().trim()),
+                        Unit: parseInt(unitId),
+                        UnitName: uname,
+                        Rate: parseFloat($('#txtRate').val().trim())
+                    })
+                    //Clear fields
+                    $('#txtQty,#txtRate').val('');
+                    $('#txtItemName,#txtItemCode').val('');
+
+                }
+                //populate order items
+                GeneratedItemsTable();
+
+            });
+
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                //if (orderItems.length == 0) {
+                //    $('#orderItems').html('<span style="color:red;">Please add order items</span>');
+                //    isAllValid = false;
+                //}
+
+                if ($('#txtReferenceNo').val().trim() == '') {
+                    $('#txtReferenceNo').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#txtReferenceNo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var liOfferType = document.getElementById("ddlOfferType");
+                    var offerTypeIndex = liOfferType.selectedIndex;
+                    var offerTypeId = liOfferType.options[offerTypeIndex].value;
+                    //var offerTypeName = liOfferType.options[offerTypeIndex].text;
+                    var data = {
+                        //order fields
+                        RfqId: parseInt($('#hfRfqId').val().trim()),
+                        ReferenceNo: $('#txtReferenceNo').val(),
+                        OfferType: offerTypeId,
+                        RfqDate: $('#txtRfqDate').val().trim(),
+                        QuotationNo: $('#txtQuotationNo').val(),
+                        QuotationDate: $('#txtQuotationDate').val(),
+                        RailwayId: parseInt($('#hfRailwayId').val().trim()),
+                        EstProduct: $('#txtEstProduct').val().trim(),
+                        ProductDesc: $('#txtProductDesc').val().trim(),
+                        DrgSpecChanged: $('#txtDrgSpecChanged').val().trim(),
+                        ModeOfDisp: $('#txtModeOfDisp').val().trim(),
+                        InspAuthority: $('#txtInspAuthority').val().trim(),
+                        TC1PmtTerms: $('#txtTC1PmtTerms').val().trim(),
+                        Remarks: $('#txtRemarks').val().trim(),
+                        //ledger fields
+                        Ledgers: orderItems
+                    }
+
+                    $(this).val('Please wait...');
+
+                    $.ajax({
+                        url: '/RfqTender/CreateUpdate',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                orderItems = [];
+                                //$('#orderNo').val('');
+                                //$('#orderDate').val('');
+                                $('#orderItems').empty();
+                                //reload/refresh
+                                window.location.href = document.getElementById('myLink').href;
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submit').val(d.AddEdit);
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            //$('#submit').val('Save');
+                            $('#submit').val(d.AddEdit);
+                        }
+                    });
+                }
+
+            });
+
+            //edit mode
+            $(function () {
+                var mainObject = @Html.Raw(Json.Encode(Model))
+                orderItems = @Html.Raw(Json.Encode(Model.Ledgers))
+                //
+                hfRfqId.value = mainObject.RfqId;
+                txtReferenceNo.value = mainObject.ReferenceNo;
+                txtRfqDate.value = mainObject.RfqDate.substring(0,10);
+                ddlOfferType.value = mainObject.OfferType;
+                txtQuotationNo.value = mainObject.QuotationNo;
+                txtQuotationDate.value = mainObject.QuotationDate.substring(0, 10);
+                hfRailwayId.value = mainObject.RailwayId;
+                txtRailwayName.value = mainObject.RailwayName;
+                txtEstProduct.value = mainObject.EstProduct;
+                txtProductDesc.value = mainObject.ProductDesc;
+                txtDrgSpecChanged.value = mainObject.DrgSpecChanged;
+                txtModeOfDisp.value = mainObject.ModeOfDisp;
+                txtInspAuthority.value = mainObject.InspAuthority;
+                txtTC1PmtTerms.value = mainObject.TC1PmtTerms;
+                txtRemarks.value = mainObject.Remarks;
+                GeneratedItemsTable();
+            });
+
+            //function for show added items in table
+            function GeneratedItemsTable() {
+                if (orderItems.length > 0) {
+                    var $table = $('<table class="tablecontainer" id="myTable" style="width:100%;"/>');
+                    $table.append('<th>Item&nbsp;Code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');//0//note spaces for width
+                    $table.append('<th>Item&nbsp;Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');//1//note spaces for width
+                    $table.append('<th>Quantity</th>');//2
+                    $table.append('<th>Unit&nbsp;Name</th>');//3
+                    $table.append('<th>Rate</th>');//4
+                    $table.append('<th colspan=2>Action</th>');//5=Remove
+                    //$table.append('<th>&nbsp;</th>');//6=Edit
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">ItemId</td>');//7
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">Unit</td>');//8
+                    $table.append('</tr></thead>');
+                    var $tbody = $('<tbody/>');
+                    $.each(orderItems, function (i, val) {
+                        var $row = $('<tr/>');
+                        //static for all rows---------------
+                        $row.append($('<td/>').html(val.ItemCode));//0
+                        $row.append($('<td/>').html(val.ItemName));//1
+                        $row.append($('<td/>').html(val.Qty));//2
+                        $row.append($('<td/>').html(val.UnitName));//3
+                        $row.append($('<td/>').html(val.Rate));//4
+                        //--------------------------------------------
+                        var $remove = $('<a href="#"><i class="fa fa-trash-o" style="font-size:15pt;"></a>');
+                        $remove.click(function (e) {
+                            var opt = confirm("Are you sure to delete this entry?");
+                            if (opt == true) {
+                                e.preventDefault();
+                                orderItems.splice(i, 1);
+                                GeneratedItemsTable();
+                            }
+                        });
+                        $row.append($('<td/>').html($remove));//5
+                        //--------------------------------------------
+                        var $edit = $('<a href="#"><i class="fa fa-pencil-square" style="font-size:25pt;"></a>');
+                        $edit.click(function (e) {
+                            e.preventDefault();
+                            txtItemCode.value = $(this).closest('tr').find('td:eq(0)').text();
+                            txtItemName.value = $(this).closest('tr').find('td:eq(1)').text();
+                            txtQty.value = $(this).closest('tr').find('td:eq(2)').text();
+                            txtUnitName.value = $(this).closest('tr').find('td:eq(3)').text();
+                            txtRate.value = $(this).closest('tr').find('td:eq(4)').text();
+                            //remove=5
+                            //edit=6
+                            hfItemId.value = $(this).closest('tr').find('td:eq(7)').text();//itemid
+                            ddlUnit.value = $(this).closest('tr').find('td:eq(8)').text();//unit
+                            orderItems.splice(i, 1);
+                            GeneratedItemsTable();
+                        });
+                        //--------------------------------------------
+                        $row.append($('<td/>').html($edit));//6
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.ItemId));//7
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.Unit));//8
+                        $tbody.append($row);
+                    });
+                    console.log("current", orderItems);
+                    $table.append($tbody);
+                    $('#orderItems').html($table);
+                }
+                else {
+                    $('#orderItems').html('');
+                }
+            }
+        });
+
+    </script>
+
+
+}
+

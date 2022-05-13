@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - PRAG ERP</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Site.css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    <style type="text/css">
+        #img1 {
+            height: 40px;
+            width: 120px;
+        }
+
+        #img2 {
+            width: 50px;
+            height: 50px;
+        }
+
+        #img3 {
+            width: 60px;
+            height: 60px;
+        }
+
+        #img4 {
+            height: 40px;
+            width: 120px;
+        }
+
+        #img5 {
+            height: 60px;
+            width: 60px;
+        }
+
+        .auto-style22 {
+            width: 300px;
+            color: black;
+            text-align: right;
+        }
+
+        .collapse {
+            width: 15px;
+            background-image: url('../Images/ui-icons_454545_256x240.png');
+            background-repeat: no-repeat;
+            background-position: -36px -17px;
+            display: inline-block;
+            cursor: pointer;
+        }
+            .expand
+
+        {
+            width: 15px;
+            background-image: url('../Images/ui-icons_454545_256x240.png');
+            background-repeat: no-repeat;
+            background-position: -50px -17px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .treeview ul {
+            font: 14px Arial, Sans-Serif;
+            margin: 0px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .treeview > li > a {
+            font-weight: bold;
+        }
+
+        .treeview li {
+        }
+
+            .treeview li a {
+                padding: 4px;
+                font-size: 12px;
+                display: inline-block;
+                text-decoration: none;
+                width: auto;
+            }
+
+        
+    </style>
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#ffffff">
+        <header style="background-color:#ffffff">
+
+            <div style="background-image: url('http://localhost:54708/Images/105.jpg')">
+                <table style="background-color:#ffffff">
+                    <tr>
+                        <td>
+
+                            <img id="img1" alt="" src="http://192.168.0.167:80/Images/praginnovation.jpg" />
+                        </td>
+                        <td style="color:black; font-weight:bold;border-radius:20px">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            @ViewBag.CompName &nbsp;&nbsp;:&nbsp;&nbsp; <a href="/Login/ChangeCompany" style="width: 100px;background-color:lightgray;border-radius:20px; color:black;font-weight:bold;">Change Company </a>&nbsp;&nbsp; @ViewBag.FinYear&nbsp;&nbsp; : &nbsp;&nbsp; <a href="/Login/ChangeFinYear" style="width: 100px; color:black;font-weight:bold;border-radius:20px;background-color:lightgray">Change Fin Year</a>
+
+                        </td>
+
+                        <td style="color:black;font-weight:bold;text-align:center">
+                            <img id="img2" alt="" src="http://192.168.0.167:80/Images/loginprofileicon.jpg" />
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color:black;font-weight:bold;text-align:right;width:500px">
+                            <a href="/Home/Index" style="width: 57px; color:black;font-weight:bold;border-radius:30px;background-color:lightgray;border-radius:20px">Home</a>
+                            &nbsp;&nbsp;<a href="/AAA_Events/Index" style="width: 57px; color:black;font-weight:bold;border-radius:30px;background-color:lightgray">Event/Calendar</a>
+                            <a target="_blank" href="/Notification/Index" style="width: 57px; color:black;font-weight:bold;background-color:lightgray;border-radius:20px">Notification</a>
+                            &nbsp;&nbsp;
+                            <a href="/Login/LoginUser" style="width: 57px; color:black;font-weight:bold;background-color:lightgray;border-radius:20px">Logout</a>
+                        </td>
+                        <td style="color:black;font-weight:bold;text-align:center;background-color:lightgray;border-radius:20px">
+                            [@ViewBag.UserName]<br />@ViewBag.Dept
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </header>
+    </div>
+    <hr />
+    <br />
+    <br />
+    @*<br />*@
+    @*<br />
+    <br />
+    <br />*@
+    <div id="body" style="min-height:600px;background-color:white ">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+
+    @*<div class="navbar navbar-inverse navbar-fixed-bottom ">*@
+    @*<div>
+            @Html.Partial("../Home/pageFooter")
+        </div>*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+

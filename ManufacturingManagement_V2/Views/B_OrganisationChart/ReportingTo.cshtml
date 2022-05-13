@@ -1,0 +1,141 @@
+﻿@model ManufacturingManagement_V2.Models.EmployeeMdl
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutHR.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+        <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />*@
+    @*<script src="~/Scripts/jquery-1.11.0.min.js"></script>*@
+    <script>
+
+        //$(function () {
+        //    $('#example1').DataTable();
+        //})
+        function GetDetails(id) {
+            $.ajax({
+                url: "/B_OrganisationChart/EditReportingTo_Record/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#NewEmpId').val(response.NewEmpId);
+                    $('#EmpName').val(response.EmpName);
+                    $('#Grade').val(response.Grade);
+                   // $('#NewEmpId').val(response.NewEmpId);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body style="background-color:lightgrey">
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+
+                        @*<div>
+        @Html.ActionLink("Back To Home", "../B_Update_OrgChart/Index")
+        </div>*@
+                        @*@if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success alert-dismissable">
+                                @ViewBag.Message;
+                                <a href="#" class="close" data-dissmiss="alert">x</a>
+                            </div>
+                        }*@
+
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>EmpId</th>
+                                    <th>Employee Name</th>
+                                    <th>Grade</th>
+                                    @* <th>Reporting To</th>*@
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.GetempList)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.NewEmpId)</td>
+                                        <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                        <td>@Html.DisplayFor(model => item.Grade)</td>
+                                        @* <td>@Html.DisplayFor(model => item.ReportingTo)</td>*@
+
+                                        <td>
+                                            <a onclick="GetDetails(@item.NewEmpId)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            @*<tfoot>
+                            </tfoot>*@
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Update Orgchart</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("EditReportingTo", "B_OrganisationChart", FormMethod.Post))
+                        {
+                            <div>
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Id</label>
+                                        <input type="number" class="form-control" id="NewEmpId" name="NewEmpId" readonly="readonly">
+                                        <label>Name</label>
+                                        <input type="text" class="form-control" id="EmpName" name="EmpName" width="150" readonly="readonly">
+                                        <label>Grade</label>
+                                        <input type="text" class="form-control" id="Grade" name="Grade" width="150" readonly="readonly">
+                                        <label>ReportingTo</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.ReportingTo, ViewBag.Reportingto as SelectList)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Assign</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

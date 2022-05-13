@@ -1,0 +1,47 @@
+﻿@model ManufacturingManagement_V2.Models.EmployeeMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Employee Insert API Call [Post]</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:10%;">@Html.LabelFor(model => model.EmpName)</td>
+                <td>
+                    @Html.EditorFor(model => model.EmpName)
+                    @Html.ValidationMessageFor(model => model.EmpName)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value='Submit' />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+
+        //Date Picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+
+    </script>
+
+}
+

@@ -1,0 +1,103 @@
+﻿@model ManufacturingManagement_V2.Models.PartyMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Party Detail</b></h4>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id = Model.RecId }, new {@class="btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("View Log", "../EventLogReport/getLogDetail", 
+     new { tblid = 77, pkval = Model.RecId }, new {@target="_blank", @class = "btn btn-default" })
+</p>
+
+<fieldset>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.RailwayName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.RailwayName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.AcCode)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.AcCode)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.AcDesc)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.AcDesc)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.ContPer)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ContPer)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.Address1)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Address1)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.Address2)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Address2)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.Address3)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Address3)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.Address4)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Address4)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.StateName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.StateName)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.StateCode)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.StateCode)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.TinNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.TinNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.GSTinNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.GSTinNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.PhoneOff)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PhoneOff)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.FaxNo)</td>
+                    <td colspan="3" style="vertical-align:top;">: @Html.DisplayFor(model => model.FaxNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.Email)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Email)</td>
+                </tr>
+
+            </table>
+        </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

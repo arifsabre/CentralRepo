@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ComplaintMdl>
+@{
+    ViewBag.Title = "ReplyView";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Compalint Reply -Forwarded</b></h4>
+@*<div style="font-size:14pt;color:black;background-color:yellow;text-align:center;">
+        <b>Compalint Reply -Forwarded</b>
+    </div>*@
+@Html.Partial("ComplaintLinks")
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th style="width:50px;">
+            Comp.Date
+        </th>
+        <th style="width:140px;">
+            Comp.From
+        </th>
+        <th style="width:50px;">
+            Comp.Type
+        </th>
+        <th style="width:25px;">
+            CompId
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.CompMsg)
+        </th>
+        <th style="width:140px;">
+            ReplyFrom
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.Remarks)
+        </th>
+        <th style="width:50px;">
+            ReplyDate
+        </th>
+        <th style="width:45px;"> Action </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.ValueFor(model => item.CompDT, "{0:dd/MM/yyyy hh:mm tt}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CompUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CompTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CompId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CompMsg)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReplyUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReplyDTStr)
+            </td>
+            <td>
+                @Html.ActionLink("Proceed", "ResolveComplaint", new { compid = item.CompId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>

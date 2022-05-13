@@ -1,0 +1,140 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.InvoiceControlMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Invoice Control List</b></h4>
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "InvoiceControl", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>From</td>
+                            <td>@Html.TextBox("txtDtFrom", null, new { @class = "datepicker" })</td>
+                            <td>To</td>
+                            <td>@Html.TextBox("txtDtTo", null, new { @class = "datepicker" })</td>
+                        </tr>
+                    </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th style="width:100px;">
+            Inv. NO<br />Inv. Date
+        </th>
+        <th style="width:100px;">
+            Unloading
+        </th>
+        <th style="width:100px;">
+            RC<br />Received
+        </th>
+        <th style="width:100px;">
+            R Note<br />Received
+        </th>
+        <th style="width:100px;">
+            Bill&nbsp;Submitted<br />Part1
+        </th>
+        <th style="width:100px;">
+            Bill&nbsp;Submitted<br />Part2
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.RCInfo)
+        </th>
+        <th style="width:60px;">Action</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.BillNo)
+                <br />@Html.ValueFor(model => item.VDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsUnloaded)
+                @if (item.IsUnloaded == true)
+                {
+                    @Html.ValueFor(model => item.UnloadingDate, "{0:dd/MM/yyyy}")
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsRCReceived)
+                @if (item.IsRCReceived == true)
+                {
+                    @Html.ValueFor(model => item.RCRecDate, "{0:dd/MM/yyyy}")
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsRNoteReceived)
+                @if (item.IsRNoteReceived == true)
+                {
+                    @Html.ValueFor(model => item.RNoteDate, "{0:dd/MM/yyyy}")
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsBillSubmitted)
+                @Html.DisplayFor(model => item.BillPerP1) %
+                @if (item.IsBillSubmitted == true)
+                {
+                    @Html.ValueFor(model => item.BillSubmitDate, "{0:dd/MM/yyyy}")
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsBillSubmittedP2)
+                @Html.DisplayFor(model => item.BillPerP2) %
+                @if (item.IsBillSubmitted == true)
+                {
+                    @Html.ValueFor(model => item.BillSubmitDateP2, "{0:dd/MM/yyyy}")
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.RCInfo)
+            </td>
+            <td>
+                @Html.ActionLink("Update", "CreateUpdate", new { id = item.SaleRecId })
+                <br />@Html.ActionLink("UploadQR", "UploadFile", new { salerecid = item.SaleRecId, invoiceno = item.BillNo }, new { @target = "_new;" })
+                <br />@Html.ActionLink("DisplayQR", "ShowDocument", new { salerecid = item.SaleRecId }, new { @target = "_blank;" })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+}
+

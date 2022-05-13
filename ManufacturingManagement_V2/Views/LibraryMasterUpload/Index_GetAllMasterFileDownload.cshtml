@@ -1,0 +1,41 @@
+﻿@model ManufacturingManagement_V2.Models.LibFileUploadMDI
+@{
+    ViewBag.Title = "Index_GetAllMasterFile";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+@*<h4>GetAllMasterFile</h4>*@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AllMasterFile</title>
+</head>
+<body>
+    <br />
+    Download Master File
+    <div id="printbar" class="pull-right">
+    </div>
+    @using (Html.BeginForm())
+    {
+        @*<div id="printbar" class="pull-right">
+            </div>*@
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10 text-success">
+                @ViewBag.FileStatus
+            </div>
+        </div>
+        <div class="form-group">
+            <div style="background-color:white">
+
+                @Html.Action("MasterFileDetailsDownload", "LibraryMasterUpload")
+
+            </div>
+        </div>
+
+    }
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,268 @@
+﻿@model ManufacturingManagement_V2.Models.ObjectInfoMdl
+@{
+    ViewBag.Title = "InsertNewTask";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Object Information List</title>
+
+    <script>
+        //$(function () {
+        //    $('#jdtabledesktop').DataTable();
+        //})
+        function GetDetails(id) {
+            $.ajax({
+                url: "/ObjectInfo/EditRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ObjectId').val(response.ObjectId);
+                    $('#SlNo').val(response.SlNo);
+                    $('#EntryName').val(response.EntryName);
+                    $('#SPName').val(response.SPName);
+                    $('#RptName').val(response.RptName);
+                    $('#Remarks').val(response.Remarks);
+                    $('#Location').val(response.Location);
+                    $('#RouteMap').val(response.RouteMap);
+                    $('#RptLink').val(response.RptLink);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+
+    </script>
+</head>
+<body>
+    <div>
+        <h4><b>Object Information</b></h4>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert">
+            Add New Record
+        </button>
+        <div id="printbar" class="pull-right">
+            
+        </div>
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    @*<div class="box-header">
+                        </div>*@
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>ObjectId</th>
+                                    <th>EntryName</th>
+                                    <th>RptName</th>
+                                    <th>SPName</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ObjectInfoList)
+                                {
+                                    <tr>
+                                        @*@Html.HiddenFor(model => model.ObjectId)*@
+                                        <td>
+                                            <a onclick="GetDetails(@item.ObjectId)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "DeleteRecord", "ObjectInfo", new { id = item.ObjectId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                        <td>@Html.DisplayFor(model => item.ObjectId)</td>
+                                        <td>@Html.DisplayFor(model => item.EntryName)</td>
+                                        <td>@Html.DisplayFor(model => item.RptName)</td>
+                                        <td>@Html.DisplayFor(model => item.SPName)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Update Object Information</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("UpdateRecord", "ObjectInfo", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        @Html.HiddenFor(model => model.ObjectId)
+
+                                        @Html.LabelFor(model => model.EntryName)
+                                        <br />
+                                        @Html.DropDownListFor(model => model.EntryId, ViewBag.ObjGroupList as SelectList)
+                                        @Html.ValidationMessageFor(model => model.EntryName)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.SlNo)
+                                        <br />
+                                        @Html.EditorFor(model => model.SlNo)
+                                        @Html.ValidationMessageFor(model => model.SlNo)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.RptName)
+                                        <br />
+                                        @Html.EditorFor(model => model.RptName)
+                                        @Html.ValidationMessageFor(model => model.RptName)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.SPName)
+                                        <br />
+                                        @Html.EditorFor(model => model.SPName)
+                                        @Html.ValidationMessageFor(model => model.SPName)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.Remarks)
+                                        <br />
+                                        @Html.TextAreaFor(model => model.Remarks, 0, 0,
+                                                new { @style = "width:268px;height:40px;" })
+                                        @Html.ValidationMessageFor(model => model.Remarks)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.Location)
+                                        <br />
+                                        @Html.TextAreaFor(model => model.Location, 0, 0,
+                                            new { @style = "width:268px;height:40px;" })
+                                        @Html.ValidationMessageFor(model => model.Location)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.RouteMap)
+                                        <br />
+                                        @Html.TextAreaFor(model => model.RouteMap, 0, 0,
+                                                new { @style = "width:268px;height:40px;" })
+                                        @Html.ValidationMessageFor(model => model.RouteMap)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.RptLink)
+                                        <br />
+                                        @Html.TextAreaFor(model => model.RptLink, 0, 0,
+                                                new { @style = "width:268px;height:40px;" })
+                                        @Html.ValidationMessageFor(model => model.RptLink)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Add New Record</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("InsertRecord", "ObjectInfo", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <br />
+                                        @Html.LabelFor(model => model.EntryName)
+                                        <br />
+                                        @Html.DropDownListFor(model => model.EntryId, ViewBag.ObjGroupList as SelectList)
+                                        @Html.ValidationMessageFor(model => model.EntryName)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.SlNo)
+                                        <br />
+                                        @Html.EditorFor(model => model.SlNo)
+                                        @Html.ValidationMessageFor(model => model.SlNo)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.RptName)
+                                        <br />
+                                        @Html.EditorFor(model => model.RptName)
+                                        @Html.ValidationMessageFor(model => model.RptName)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.SPName)
+                                        <br />
+                                        @Html.EditorFor(model => model.SPName)
+                                        @Html.ValidationMessageFor(model => model.SPName)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.Remarks)
+                                        <br />
+                                        @Html.TextAreaFor(model => model.Remarks, 0, 0,
+                                                new { @style = "width:268px;height:40px;" })
+                                        @Html.ValidationMessageFor(model => model.Remarks)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.Location)
+                                        <br />
+                                        @Html.TextAreaFor(model => model.Location, 0, 0,
+                                            new { @style = "width:268px;height:40px;" })
+                                        @Html.ValidationMessageFor(model => model.Location)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.RouteMap)
+                                        <br />
+                                        @Html.TextAreaFor(model => model.RouteMap, 0, 0,
+                                                new { @style = "width:268px;height:40px;" })
+                                        @Html.ValidationMessageFor(model => model.RouteMap)
+
+                                        <br />
+                                        @Html.LabelFor(model => model.RptLink)
+                                        <br />
+                                        @Html.TextAreaFor(model => model.RptLink, 0, 0,
+                                                new { @style = "width:268px;height:40px;" })
+                                        @Html.ValidationMessageFor(model => model.RptLink)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,120 @@
+﻿@model ManufacturingManagement_V2.Models.UserMdl
+@{
+    ViewBag.Title = "UpdateProfile";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>User-Profile: @ViewBag.UserName</b></h4>
+<table style="font-size:11pt;">
+    <tr>
+        <td>
+            @Html.ActionLink("Login Detail", "UpdateProfile", null,
+                new { @style = "color:blue;text-decoration:underline;" })
+        </td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>
+            @Html.ActionLink("User Detail", "UserDetail", null,
+            new { @style = "color:blue;text-decoration:underline;" })
+        </td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td>
+            @Html.ActionLink("Reports", "UserReport", null,
+            new { @style = "color:blue;text-decoration:underline;" })
+        </td>
+    </tr>
+</table>
+
+<h5><b>Login Detail</b></h5>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div class="form-group">
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:10%;">@Html.LabelFor(model => model.Title)</td>
+                <td style="width:20%;">
+                    @Html.DropDownListFor(model => model.Title, ViewBag.TitleList as SelectList)
+                    @Html.ValidationMessageFor(model => model.Title)
+                </td>
+                <td rowspan="5" align="left" style="width:70%;">
+                    <img id="img1" alt="" src="" width="150px" height="150px" />
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.UserName)</td>
+                <td>
+                    @Html.EditorFor(model => model.UserName)
+                    @Html.ValidationMessageFor(model => model.UserName)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.FullName)</td>
+                <td>
+                    @Html.EditorFor(model => model.FullName)
+                    @Html.ValidationMessageFor(model => model.FullName)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.MobileNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.MobileNo)
+                    @Html.ValidationMessageFor(model => model.MobileNo)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.EMail)</td>
+                <td>
+                    @Html.EditorFor(model => model.EMail)
+                    @Html.ValidationMessageFor(model => model.EMail)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <span style="color:blue;">
+                        <b>Profile Policy:</b>
+                        <br />1. User Id must have minimum 8 characters.
+                        <br />2. Full User Name is required.
+                        <br />3. Valid Mobile Number, 10 digits without country code.
+                        <br />4. Valid EMail-Id, for official communications.
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <input type="submit" class="btn btn-default" value='Submit' />
+                    @Html.ActionLink("View Updation Log", "../EventLogReport/getLogDetail",
+                        new { tblid = 1, pkval = Model.UserId },
+                        new { @target = "_blank", @class = "btn btn-default" })
+                    @Html.ActionLink("Change Password", "../Login/ChangePassword", null,
+                        new { @class = "btn btn-default" })
+                </td>
+            </tr>
+        </table>
+    </div>
+    <span style="color:red;">@ViewBag.Message</span>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("Title").value = '@Model.Title';//note
+            $("#MobileNo").attr("maxlength", "10");
+            $("#UserName").attr("maxlength", "100");
+            $("#FullName").attr("maxlength", "100");
+            $("#EMail").attr("maxlength", "100");
+            $('#img1').attr('src', '/Employee/ShowEmpImage' + '?newempid='+@Model.EmpId);
+        });
+
+    </script>
+
+}
+
+

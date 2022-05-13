@@ -1,0 +1,101 @@
+﻿@{
+Layout = "~/views/shared/_DarkLayout.cshtml";
+}
+@*<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - PRAG ERP</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/Site.css")
+        @Styles.Render("~/Content/MenuH.css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                    <div class="float-left">@*<div class="float-left" style="height:45px;">*@
+                       @* <p class="site-title"><img src="~/Images/prag-logo.png">
+                    </div>
+                    <div class="float-left">
+                        <div class="usr" style="font-size:x-large;"> Prag Group of Industries ERP System V.2</div><br/>
+                        <span style="font-size:14px;color:darkviolet;font-weight:bold;">@ViewBag.CompName</span>
+                        &nbsp;
+                        <span style="font-size:12px;color:darkviolet;font-weight:bold;">(Financial Year : @ViewBag.FinYear)</span>
+                        <br/>
+                        <span style="width: 57px; color:darkgreen;font-weight:bold;">[@ViewBag.UserName]</span>
+                        <div class="float-right">
+                            <a href="/Home/Index" style="width: 57px; color:blue;font-weight:bold;">Home</a>
+                            &nbsp;&nbsp;&nbsp;
+                            <a href="/Login/LoginUser" style="width: 57px; color:blue;font-weight:bold;">Logout</a>
+                        </div>
+                    </div>
+            </div>
+        </header>*@
+        <div id="main">
+            <div id="menuCtr">
+                <div class="menubox">
+        <ul class="menu">
+            <li class="first"><a href="/Indent/IndentApprovalHOD">Indent Approval [HOD]</a>
+                @*<ul>
+                    <li><a href="/Indent/Index">Indent Entry</a>
+                </ul>*@
+            </li>
+            <li><a href="/Indent/IndentApprovalAdmin">Indent Approval [Admin]</a>
+                @*<ul>
+                    <li><a href="/Indent/Index">Indent Entry</a>
+                </ul>*@
+            </li>
+            <li><a href="/Indent/CreateUpdate">New Indent</a>
+                @*<ul>
+                    <li><a href="/Indent/Index">View Indent</a>
+                </ul>*@
+            </li>
+            <li ><a href="/Indent/Index">View Indent</a>
+                @*<ul>
+                    <li><a href="/Indent/Index">View Indent</a>
+                </ul>*@
+            </li>
+            <li><a href="/IndentReport/IndentReport">Indent Report</a>
+                @*<ul>
+                    <li><a href="/IndentReport/IndentReport">Indent Report</a>
+                </ul>*@
+            </li>
+            @*<li><a href="#">Reports</a>
+                <ul>
+                    <li><a href="/EmployeeReport/Index">Employee Report</a>
+                </ul>
+            </li>*@
+            <li><a href="#">Options</a>
+                <ul>
+                    <li><a href="/Home/IndentDashboard">Dashboard</a>
+                    <li><a href="/Login/ChangePassword">Change Password</a>
+                    <li><a href="/Login/ChangeCompany">Change Company</a>
+                    <li><a href="/Login/ChangeFinYear">Change Financial Year</a>
+                </ul>
+            </li>
+            </ul>
+                    </div>
+            </div>
+            <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <div id="slideCtr"> </div>
+            </div>
+        @*<footer style="height:50px;">
+            <div class="content-wrapper" style="height:50px;" >
+                <div class="float-left">
+                    <a href="http://www.praggroup.com" target="_blank"><p style="text-align:center;font-weight:normal;font-size:14px;vertical-align:middle;">&copy; @DateTime.Now.Year - Prag Group of Industries, MIS Deptt, ERP V.2, Contact No : (+91) 522 3980 332</p></a>
+                   
+                </div>
+            </div>
+        </footer>*@
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+  @*  </body>
+</html>*@

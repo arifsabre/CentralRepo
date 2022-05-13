@@ -1,0 +1,67 @@
+﻿@model ManufacturingManagement_V2.Models.CiviRateMDI
+@{
+    ViewBag.Title = "Index Detail";
+    //Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+    //Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Work Detail </title>
+</head>
+<body>
+    <div id="printbar" class="pull-left" style="margin-right:3px;margin-bottom:3px;margin-top:3px">
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    @*<div class="box-header">
+                    </div>*@
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover table-condensed" style="width: 100%; color: black; margin:10px">
+                        <thead style="background-color:gray">
+                                <tr>
+                                    @*<th>Id</th>*@
+                                    @*<th>Chapter No</th>*@
+                                    <th>Chapter</th>
+                                    <th>Work Description</th>
+                                    <th>Rate</th>
+                                    @*<th>Action</th>*@
+                                    <th>Unit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List2)
+                                {
+                                <tr>
+                                    @*<td>@Html.DisplayFor(model => item.RecordId)</td>*@
+                                    @*<td>@Html.DisplayFor(model => item.SubCategoryId)</td>*@
+                                    @*<td>@Html.DisplayFor(model => item.Category)</td>*@
+                                    <td style="vertical-align:top">@Html.DisplayFor(model => item.SubCategory)</td>
+                                    <td>@Html.DisplayFor(model => item.Description)</td>
+
+
+                                    <td>
+                                        @Html.DisplayFor(model => item.Rate)
+                                    </td>
+                                    <td>@Html.DisplayFor(model => item.Unit)</td>
+
+                                </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <script src="~/Script/Site.js"></script>
+  
+</body>
+</html>

@@ -1,0 +1,1036 @@
+﻿@{
+    ViewBag.Title = "User Manual";
+    Layout = "~/views/shared/LayoutHelpContent.cshtml";
+}
+
+<h2>PRAG ERP User Manual: HR</h2>
+
+<table>
+    <tr>
+        <td style="width:7%;text-align:left;"><h3><label id="shDesc" style="color:blue;" onclick="ShowHideALL()">Show</label></h3></td>
+        <td style="text-align:left;font-size:10pt;"><h3>@Html.ActionLink("Back", null,null,new{@onclick="window.close()", @style="color:blue;"})</h3></td>
+    </tr>
+</table>
+
+<div style="font-family:Verdana;">
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv1)"><u>1. Biometric Attendance</u></label>
+    </span>
+    <div id="MDiv1" style="display:none;margin-left:20px;">
+    
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div1)">1. Live Data from Machine</label></h4>
+        <div id="div1" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays screen for recently thumb impression records.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div2)">2. Synchronize Attendance</label></h4>
+        <div id="div2" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is to update biometric records from biometric machine server to ERP server.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div3)">3. All In-Out Report</label></h4>
+        <div id="div3" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays report of biometric records for each and every thumb impression.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div4)">4. Off-role Employee Report</label></h4>
+        <div id="div4" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays attendance report from biometric records for off-role employees.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div5)">5. Arrival Departure Report</label></h4>
+        <div id="div5" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays first-in and last-out thumb impression report.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;"  onclick="ShowHideDiv(div6)">6. Half day Present Report</label></h4>
+        <div id="div6" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays attendance report from biometric for half-day present members.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div7)">7. Biometric Incentive Report</label></h4>
+        <div id="div7" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays biometric incentive report.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;"  onclick="ShowHideDiv(div8)">8. Daily Attendance Status Report</label></h4>
+        <div id="div8" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays attendance report for a single day from biometric thumb impression.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div9)">9. Late Arrival Report</label></h4>
+        <div id="div9" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays report for late coming members based on biometric thumb impression.
+        </div>
+
+    @*<br/> extra 1
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div10)">10. new</label></h4>
+        <div id="div10" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+    @*<br/> extra 2
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div11)">11. new</label></h4>
+        <div id="div11" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv2)"><u>2. Employee</u></label>
+    </span>
+    <div id="MDiv2" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div12)">1. View Employee List</label></h4>
+        <div id="div12" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays list of employees/workers.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div13)">2. New Employee</label></h4>
+        <div id="div13" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is master entry of employees/workers.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div14)">3. Qualification Detail</label></h4>
+        <div id="div14" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Entry of members qualification detail.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div15)">4. Experience Detail</label></h4>
+        <div id="div15" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Entry of members experience detail.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div16)">5. Family Detail</label></h4>
+        <div id="div16" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Entry of members family detail.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div17)">6. Nominee Detail</label></h4>
+        <div id="div17" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Entry of members nominee detail.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div18)">7. Upload Files</label></h4>
+        <div id="div18" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            All documents of member uploaded from here.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div19)">8. Download Files</label></h4>
+        <div id="div19" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            All documents of member viewed/downloaded from here.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div20)">9. Salary Updation Entry</label></h4>
+        <div id="div20" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            All salary related values entered/updated from here.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div21)">10. Promotion Entry</label></h4>
+        <div id="div21" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            All promotion related values entered/updated from here.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div22)">11. Opening Entry</label></h4>
+        <div id="div22" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            All employee related opening entries made from here.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div23)">12. Add Qualification</label></h4>
+        <div id="div23" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is qualification master entry.
+        </div>
+   
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div24)">13. Update Directory</label></h4>
+        <div id="div24" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is to update employee/worker telephone directory.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div25)">14. Employee List with Photograph</label></h4>
+        <div id="div25" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays all staff members/workers photographs.
+        </div>
+
+    @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div26)">15. New</label></h4>
+        <div id="div26" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div27)">16. New</label></h4>
+        <div id="div27" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+  </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv3)"><u>3. Attendance</u></label>
+    </span>
+    <div id="MDiv3" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div28)">1. Generate Attendance</label></h4>
+        <div id="div28" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is to generate attendance, specificaly holidays/week-off days for all staff/workers.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div29)">2. View Attendance List</label></h4>
+        <div id="div29" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays all attendance records.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div30)">3. Leaves Entry</label></h4>
+        <div id="div30" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            All leaves entries of staff/workers is entered here.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div31)">4. Incentive View</label></h4>
+        <div id="div31" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays incentive records.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div32)">5. Generate Incentive</label></h4>
+        <div id="div32" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is to prepare incentive records.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div33)">6. Attendance Change History</label></h4>
+        <div id="div33" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            From this link we can get all attendance change history.
+        </div>
+
+    @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div44)">7. New</label></h4>
+        <div id="div34" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div35)">8. New</label></h4>
+        <div id="div35" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+</div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv4)"><u>4. Salary</u></label>
+    </span>
+    <div id="MDiv4" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div36)">1. Generate Salary</label></h4>
+        <div id="div36" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is to generate all staff/workers salary for the month.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div37)">2. Advance Deduction Entry</label></h4>
+        <div id="div37" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            After salary generation advance deduction entry is updated from this link.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div38)">3. Set Deduction Installment</label></h4>
+        <div id="div38" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is to set advance deduction installment for the staff/worker to deduct from salary.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div39)">4. Advance View</label></h4>
+        <div id="div39" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays all advance entry records.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div40)">5. Advance Entry</label></h4>
+        <div id="div40" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Advance entry is made from here. 
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div41)">6. Minimum Wages Updation</label></h4>
+        <div id="div41" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Minimum wages updation made from this link which is required to calculate bonus and other related reports.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div42)">7. Company's Forms Value Entry</label></h4>
+        <div id="div42" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Bonus reports form's values are entered by this link. 
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div43)">8. Final Salary Report</label></h4>
+        <div id="div43" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            This is the final salary calculation report for resigned/left-out staff/workers.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div44)">9. Arrear Report: August-2018</label></h4>
+        <div id="div44" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Arrear report for DA increase in August-2018.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div45)">10. New</label></h4>
+        <div id="div45" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div46)">11. New</label></h4>
+        <div id="div46" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+</div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv5)"><u>5. Compliance</u></label>
+    </span>
+    <div id="MDiv5" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div47)">1. Compliance View</label></h4>
+        <div id="div47" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays list of compliances entered by HR department in the system.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div48)">2. Compliance Entry</label></h4>
+        <div id="div48" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Compliances are entered this link.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div49)">3. Compliance Report</label></h4>
+        <div id="div49" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays compliance reports with applicable filters.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div50)">4. Compliance Alert on Dashboard</label></h4>
+        <div id="div50" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Compliance alerts displayed on dashboard for list of pending task(s) to be completed within 30 days.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div51)">5. Government Department Master</label></h4>
+        <div id="div51" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Master entry for government departments used in complaince entries.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div52)">6. Upload Company Policy</label></h4>
+        <div id="div52" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Company policy documents are uploaded from this link.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div53)">7. Upload Company Documents</label></h4>
+        <div id="div53" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Company documents are uploaded from this link.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div54)">8. Create/Update Holiday List</label></h4>
+        <div id="div54" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Holiday master records are entered from this link.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div55)">9. Remaining Leaves Report</label></h4>
+        <div id="div55" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays report on available CL/PL for all staff/workers.
+        </div>
+
+    @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div56)">10. New</label></h4>
+        <div id="div56" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+   <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div57)">11. New</label></h4>
+        <div id="div57" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv6)"><u>6. General Reports</u></label>
+    </span>
+    <div id="MDiv6" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div58)">1. Annual Return on Salary</label></h4>
+        <div id="div58" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Report on annual return from salary.
+        </div>
+        
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div59)">2. Quarterly Incentive Report</label></h4>
+        <div id="div59" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Report of incentives quarterly.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div60)">3. Salary Breakup Report</label></h4>
+        <div id="div60" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays report on individual heads for salary to all staff/workers.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div61)">10. New</label></h4>
+        <div id="div61" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+   <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div62)">11. New</label></h4>
+        <div id="div62" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv7)"><u>7. Employee Data Reports</u></label>
+    </span>
+    <div id="MDiv7" style="display:none;margin-left:20px;">
+
+    <br/>
+
+        <div>Report Variations:</div>
+            <div style="margin-left:20px;">
+               <br/>(a) Short Report
+               <br/>(b) Employee Register
+               <br/>(c) Retirement Alert
+               <br/>(d) Strength Report
+            </div>
+            <div><br/>Report Options:</div>
+            <div style="margin-left:20px;">
+               <br/>(a) Company 
+               <br/>(b) Employee Type
+               <br/>(c) Grade
+               <br/>(d) Department
+               <br/>(e) Category
+               <br/>(f) Sorted On
+               <br/>(g) Sorted By
+               <br/>(h) Report Format
+               <br/>(i) Date Range on Joining Date
+               <br/>(j) Applicability of Joining Date Filter
+               <br/>(k) List of Columns for Register
+            </div><br/>
+
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div63)">1. Short Report</label></h4>
+        <div id="div63" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Employee reports on basic columns
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div64)">2. Employee Register</label></h4>
+        <div id="div64" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Employee register displays selected columns by user.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div65)">3. Retirement Alert</label></h4>
+        <div id="div65" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays alert on employees who are going to retired in provided period.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div66)">4. Strength Report</label></h4>
+        <div id="div66" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Display report on strength of employees in all companies.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div67)">10. New</label></h4>
+        <div id="div67" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+   <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div68)">11. New</label></h4>
+        <div id="div68" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv8)"><u>8. Employee Forms Report</u></label>
+    </span>
+    <div id="MDiv8" style="display:none;margin-left:20px;">
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div69)">1. Data Form</label></h4>
+        <div id="div69" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays employee data form report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div70)">2. PF Nominee Form</label></h4>
+        <div id="div70" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays employees PF Nominee form report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div71)">3. Gratuity Nominee Form</label></h4>
+        <div id="div71" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays employees Gratuity Nominee form report.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div72)">10. New</label></h4>
+        <div id="div72" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+   <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div73)">11. New</label></h4>
+        <div id="div73" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+    </div>
+    
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv9)"><u>9. Attendance Report</u></label>
+    </span>
+    <div id="MDiv9" style="display:none;margin-left:20px;">
+     
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div74)">1. Attendance Register</label></h4>
+        <div id="div74" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys attendance register report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div75)">2. Daily Absent Slip</label></h4>
+        <div id="div75" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays daily absent report for staff/workers.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div76)">3. Absent Summary Report</label></h4>
+        <div id="div76" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays absent summary report based on attendance.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div77)">10. New</label></h4>
+        <div id="div77" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+   <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div78)">11. New</label></h4>
+        <div id="div78" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv10)"><u>10. Form 14-15 Report</u></label>
+    </span>
+    <div id="MDiv10" style="display:none;margin-left:20px;">
+     
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div79)">1. Form -14/15</label></h4>
+        <div id="div79" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays individual staff/worker form-14/15 report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div80)">2. Leave Statement Report</label></h4>
+        <div id="div80" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays individual staff/worker leave statement report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div81)">3. Leave Summary Report</label></h4>
+        <div id="div81" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays leave summary report in given period.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div82)">10. New</label></h4>
+        <div id="div82" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+   <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div83)">11. New</label></h4>
+        <div id="div83" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv11)"><u>11. Salary Reports</u></label>
+    </span>
+    <div id="MDiv11" style="display:none;margin-left:20px;">
+     
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div84)">1. Salary Sheet/ Wage Sheet</label></h4>
+        <div id="div84" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Salary Sheet/ Wage Sheet report .
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div85)">2. Salary with Bank Detail</label></h4>
+        <div id="div85" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys Salary with Bank Detail report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div86)">3. Salary Slip Report</label></h4>
+        <div id="div86" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys Salary Slip report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div87)">4. Salary Register</label></h4>
+        <div id="div87" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys Salary Reggister report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div88)">5. Form-12 Staff/Worker</label></h4>
+        <div id="div88" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys Form-12 report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div89)">6. Incentive Report</label></h4>
+        <div id="div89" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys Incentives report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div90)">7. ESI Return</label></h4>
+        <div id="div90" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys ESI return report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div91)">8. PF Return</label></h4>
+        <div id="div91" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys PF return report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div92)">9. PF Summary</label></h4>
+        <div id="div92" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys PF summary report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div93)">10. ESI Return (CSV)</label></h4>
+        <div id="div93" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys ESI return in CSV format to upload on website.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div94)">11. PF Return (CSV)</label></h4>
+        <div id="div94" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys PF return in CSV format to upload on website.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div95)">12. Salary Report to HO</label></h4>
+        <div id="div95" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Dispalys salary for Head Office.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div96)">10. New</label></h4>
+        <div id="div96" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+   <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div97)">11. New</label></h4>
+        <div id="div97" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv12)"><u>12. Advance Reports</u></label>
+    </span>
+    <div id="MDiv12" style="display:none;margin-left:20px;">
+     
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div98)">1. Advance Outstanding</label></h4>
+        <div id="div98" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Advance Outstanding report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div99)">2. Advance Deduction List</label></h4>
+        <div id="div99" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Advance Deduction List report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div100)">3. Advance Deduction Ledger</label></h4>
+        <div id="div100" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Advance Deduction Ledger report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div101)">4. Balance Without Deduction</label></h4>
+        <div id="div101" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays report on balance advance without deduction.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div102)">10. New</label></h4>
+        <div id="div102" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+   <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div103)">11. New</label></h4>
+        <div id="div103" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv13)"><u>13. Bonus Reports</u></label>
+    </span>
+    <div id="MDiv13" style="display:none;margin-left:20px;">
+     
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div104)">1. Bonus Report -Summary</label></h4>
+        <div id="div104" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Bonus Report -Summary.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div105)">2. Bonus Report -Detailed</label></h4>
+        <div id="div105" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Bonus Report -Detailed.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div106)">3. Bonus Worksheet Report</label></h4>
+        <div id="div106" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Bonus Worksheet Report.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div107)">10. New</label></h4>
+        <div id="div107" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+   <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div108)">11. New</label></h4>
+        <div id="div108" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+    
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv14)"><u>14. Company Forms Reports</u></label>
+    </span>
+    <div id="MDiv14" style="display:none;margin-left:20px;">
+     
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div109)">1. Form A Report</label></h4>
+        <div id="div109" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Form-A report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div110)">2. Form B Report</label></h4>
+        <div id="div110" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Form-B report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div111)">3. Form C Report</label></h4>
+        <div id="div111" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Form-C report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div112)">4. Form D Report</label></h4>
+        <div id="div112" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Form-D report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div113)">5. Form C With Bank Detail</label></h4>
+        <div id="div113" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Form-C report with bank detail.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div114)">10. New</label></h4>
+        <div id="div114" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+   <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div115)">11. New</label></h4>
+        <div id="div115" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+    
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv15)"><u>15. LIC Reports</u></label>
+    </span>
+    <div id="MDiv15" style="display:none;margin-left:20px;">
+     
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div116)">1. LIC Worksheet Report</label></h4>
+        <div id="div116" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays LIC Worksheet report.
+        </div>
+
+        <br/>
+        <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div117)">2. Gratuity Worksheet Report</label></h4>
+        <div id="div117" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays Gratuity Worksheet report.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div118)">10. New</label></h4>
+        <div id="div118" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+   <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div119)">11. New</label></h4>
+        <div id="div119" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideALL() {
+            var all = document.getElementsByClassName("lnk");
+            var mx = all.length;
+            if (document.getElementById('shDesc').innerText == 'Show') {
+                document.getElementById('shDesc').innerHTML = 'Hide';
+                var x;
+                for (x = 0; x < mx ; x++) {
+                    all[x].style.display = "block";
+                }
+            }
+            else if (document.getElementById('shDesc').innerText == 'Hide') {
+                document.getElementById('shDesc').innerText = 'Show';
+                var x;
+                for (x = 0; x < mx ; x++) {
+                    all[x].style.display = "none";
+                }
+            }
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+
+}
+

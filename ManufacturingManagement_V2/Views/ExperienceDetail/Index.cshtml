@@ -1,0 +1,126 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ExperienceDetailMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Experience Detail List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "ExperienceDetail", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            @Html.Hidden("hfNewEmpId", null, new { @id = "hfNewEmpId" })
+                        <td>
+                            <b>Employee</b>
+                            @Html.TextBox("txtEmpName", null, new { @placeholder = "start typing, then select" })
+                            <button class="btn btn-default">Submit</button>
+                        </td>
+                    </tr>
+                    </table>
+                </div>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirmName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateFrom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Designation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JobDesc)
+        </th>
+        <th>Links</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FirmName)
+            </td>
+            <td>
+                @Html.ValueFor(model => item.DateFrom, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.ValueFor(model => item.DateTo, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Designation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.JobDesc)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+                <br />@Html.ActionLink("Details", "Details", new { id = item.RecId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            document.getElementById("hfNewEmpId").value = '@ViewBag.newempid';
+            document.getElementById("txtEmpName").value = '@ViewBag.empname';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtEmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfNewEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+
+

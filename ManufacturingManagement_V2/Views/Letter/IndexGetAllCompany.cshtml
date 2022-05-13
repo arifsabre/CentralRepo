@@ -1,0 +1,311 @@
+﻿@model ManufacturingManagement_V2.Models.LetterMDI
+@{
+    ViewBag.Title = "IndexGetAllCompany";
+
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>All Letter History</title>
+    <script>
+        //RecordDetails
+        function GetRecord(id) {
+            $.ajax({
+                url: "/Letter/RecordDetailArchive/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordIde').val(response.RecordId);
+                    $('#DepNamee').val(response.DepName);
+                    $('#FinYeare').val(response.FinYear);
+                    $('#ShortNamee').val(response.ShortName);
+                    $('#LetterNoe').val(response.LetterNo);
+                    $('#Subjecte').val(response.Subject);
+                    $('#SendToe').val(response.SendTo);
+                    $('#SendDatee').val(response.SendDate);
+                    // $('#FileName1').val(response.FileName);
+                    $('#Keywordse').val(response.Keywords);
+                    $('#SendViae').val(response.SendVia);
+                    $('#TrackNoe').val(response.TrackNo);
+                    $('#TrackNoPoste').val(response.TrackNoPost);
+                    $('#TrackNoHande').val(response.TrackNoHand);
+                    $('#CreatedBye').val(response.CreatedBy);
+                    // $('#Emaile').val(response.Email);
+                    $("#Emaile").prop("checked", response.Email);
+                    // $('#Poste').val(response.Post);
+                    $("#Poste").prop("checked", response.Post);
+                    // $('#ByHande').val(response.Byhand, true);
+                    $("#ByHande").prop("checked", response.ByHand);
+                    $('#modal-ViewDetail').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        function FiileList(recid) {
+            $('#modal-ShowFiles').modal('show');
+            var ifrm = document.getElementById("frmList");
+            //ifrm.setAttribute('src', "http://localhost:58521//Letter/Details?id=" + recid)
+            ifrm.setAttribute('src', "https://pragerp.com://Letter/Details?id=" + recid)
+        }
+       </script>
+</head>
+<body>
+    <script src="~/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+    <div class="pull-left">
+     @Html.ActionLink("Archive(21-22)", "IndexGetAllCompany", "Letter", null, new { @class = "btn btn-Primary" })
+    </div>
+    <div id="printbar" class="pull-right" style="margin-right:3px;margin-bottom:3px;margin-top:3px">
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover table-responsive table-condensed " style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Id</th>
+                                    <th>FinYear</th>
+                                    <th>Company</th>
+                                   
+                                    <th>LetterNo</th>
+                                    <th>Subject</th>
+                                    <th>SendTo</th>
+                                    <th>SendOn</th>
+                                    <th>Keyword</th>
+                                    </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_ListRef)
+                                {
+                                <tr>
+                                    <td>
+                                        <a onclick="GetRecord(@item.RecordId)">
+                                            <i class="fa fa-eye">
+                                            </i>
+                                        </a>
+                                        <a onclick="FiileList(@item.RecordId)">
+                                            <i class="fa fa-file" style="font-size:12pt;"></i>
+                                        </a>
+                                       
+                                    </td>
+                                    <td>
+
+                                        @Html.DisplayFor(model => item.RecordId)
+
+                                    </td>
+                                    <td>
+
+                                        @Html.DisplayFor(model => item.FinYear)
+
+                                    </td>
+                                    <td>
+
+                                        @Html.DisplayFor(model => item.ShortName)
+
+                                    </td>
+                                   
+                                    <td>@Html.DisplayFor(model => item.LetterNo)</td>
+                                    <td>@Html.DisplayFor(model => item.Subject)</td>
+                                    <td>@Html.DisplayFor(model => item.SendTo)</td>
+
+                                    <td>
+                                        @Html.DisplayFor(model => item.SendDate)
+                                       
+                                    </td>
+                                    <td>@Html.DisplayFor(model => item.Keywords)</td>
+                                  
+                                    
+                                </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   <div class="modal fade" id="modal-ViewDetail">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:850px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Record Detail</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_HODApproval12", "ContractorIndent", FormMethod.Post))
+                        {
+                            <div>
+                                <table>
+
+                                    <tr>
+                                        <td style="padding:10px">Record Number </td>
+                                        <td><input type="number" class="form-control" id="RecordIde" name="RecordId" style="border:none;width:100px"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Fin Year</td>
+                                        <td> <input type="text" class="form-control" id="FinYeare" name="FinYear" style="border:none;width:350px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Company</td>
+                                        <td> <input type="text" class="form-control" id="ShortNamee" name="ShortName" style="border:none;width:350px"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">Department</td>
+                                        <td> <input type="text" class="form-control" id="DepNamee" name="DepName" style="border:none;width:350px"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Subject
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Subjecte" name="Subject" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                           Letter No
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="LetterNoe" name="LetterNoe" style="border:none;width:350px" readonly="readonly">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Send To
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="SendToe" name="SendTo" style="border:none;width:350px">
+                                            @* <input type="text" class="form-control" id="WorkDetail2" name="WorkDetail" style="border:none;width:500px">*@
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Send Date
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="SendDatee" name="SendDate" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Keywords
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Keywordse" name="Keywords" style="border: none; width: 350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:green;color:white;padding:10px">
+                                            Doccument Status
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="SendViae" name="SendVia" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            By Post
+                                        </td>
+                                        <td>
+                                            @*@Html.DisplayFor(model => model.Post)*@
+                                            <input type="checkbox" id="Poste" name="Poste">
+                                            @*  <input type="text" class="form-control" id="SendViae" name="SendVia" value="model => model.Post" style="border:none;width:350px">*@
+                                        </td>
+                                        <td style="padding:10px">
+                                            TrackNo
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="TrackNoPoste" name="ByPost" style="border:none;width:200px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            By Email
+                                        </td>
+                                        <td>
+                                            @*@Html.CheckBoxFor(model => model.Email)*@
+                                            <input type="checkbox" id="Emaile" name="Emaile">
+                                        </td>
+                                        <td style="padding:10px">
+                                            Email To
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="TrackNoe" name="TrackNo" style="border:none;width:200px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            By Hand
+                                        </td>
+                                        <th>
+                                            @*@Html.CheckBoxFor(model => model.ByHand)*@
+                                            <input type="checkbox" id="ByHande" name="ByHande">
+                                        </th>
+                                        <td style="padding:10px">
+                                            ByHand To
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="TrackNoHande" name="TrackNoHand" style="border:none;width:200px">
+                                        </td>
+
+                                    </tr>
+
+                                </table>
+
+                            </div>
+                            <div class="modal-footer">
+
+                                @*  @*<button type="submit" id="modal-hodApproval" class="btn btn-primary">Submit</button>*@
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-ShowFiles">
+        <div class="modal-dialog">
+            <div class="modal-content modal-sm" style="width:600px;height:250px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">File List</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmList" runat="server" scrolling="no" frameborder="0"
+                                style="width:570px;height:150px;opacity:100">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>

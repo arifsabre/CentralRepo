@@ -1,0 +1,128 @@
+﻿<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    @*<li class="active"><a href="#"><i class="fa fa-server" aria-hidden="true"></i><span>Dashboard</span></a></li>*@
+    <li>
+        <a href='@Url.Action("Index", "LibTask")'>
+            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
+            <span>My Tasks</span>
+        </a>
+    </li>
+    @*<li><a href='@Url.Action("Indexcategory", "LibraryMasterUpload")'><i class="fa fa-tasks" aria-hidden="true"></i><span>My Files</span></a></li>*@
+    <li><a href='@Url.Action("Indexcategory", "LibraryMasterUpload")'><i class="fa fa-bars" aria-hidden="true"></i><span>My Files</span></a></li>
+
+    @*<li><a href='@Url.Action("Index", "Correspondence")'><i class="fa fa-bars" aria-hidden="true"></i><span>Correspondence</span></a></li>*@
+
+    @*<li><a href='@Url.Action("IndexList", "ObjectInfo")'><i class="fa fa-tasks" aria-hidden="true"></i><span>Report List</span></a></li>*@
+
+    @*Utilities Menu*@
+    <li class="treeview" id="mnuUtilities">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Home">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuUtilities');">&nbsp;&nbsp;Utilities</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/CompanyPolicy/IndexView">View Company Policies</a></li>
+            <li><a href="/DocumentFile/IndexView">View Company Documents</a></li>
+            <li><a href="/Notification/CreateUpdate">Send Notification</a></li>
+            <li><a href="/Employee/EmployeeDirectory">View Directory</a></li>
+            <li><a href="/B_EmpDirectory/Index">Print Directory</a></li>
+            <li><a href="/Complaint/ComplaintView">Complaint</a></li>
+            <li><a href="/Feedback/FeedbackView">Feedback</a></li>
+            <li><a href="/Login/ChangePassword">Change Password</a></li>
+            <li><a href="/Login/LoginUser">Sign Out</a></li>
+        </ul>
+        @*</li>*@
+
+        @*User Profile*@
+    <li class="treeview" id="mnuUserProfile">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Home">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuUserProfile');">&nbsp;&nbsp;User Profile</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/UserAdmin/UpdateProfile">Login Detail</a></li>
+            <li><a href="/UserAdmin/UserDetail">User Detail</a></li>
+            <li><a href="/UserAdmin/UserReport">User Report</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Collaboration*@
+    <li class="treeview" id="mnuCollaboration">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Marketing">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuCollaboration');">&nbsp;&nbsp;Collaboration</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Home/DisplayErpV1?url=../Dashboard/CollaborationDsb.aspx">Collaboration Dashboard</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/CollabFileUpload.aspx">Upload Project Files</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/CollabFileUpdate.aspx">Update Project Files</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/CollabCategoryMaster.aspx">Collaboration Category</a></li>
+        </ul>
+        @*</li>*@
+
+        @*OK-Working*@
+        @*<li>
+                    <a href='@Url.Action("DisplayErpExplorer", "Home")'>
+                        <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
+                        <span>ERP Explorer</span>
+                    </a>
+            </li>*@
+
+    <li>
+        <a target="_new" href='@Url.Action("AnnexureHelp", "Home", new { fileName="PRAG_ERP_EXPLORER.pdf"})'>
+            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
+            <span>&nbsp;&nbsp;User Manual</span>
+        </a>
+    </li>
+
+    @*Annexures Menu*@
+    <li class="treeview" id="mnuAnnexures">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Home">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuAnnexures');">&nbsp;&nbsp;Annexures</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Displaydashboard/UserTrainingView?trnstatus=c">Training Completed List</a></li>
+            <li><a href="/Displaydashboard/UserTrainingView?trnstatus=e">Training Exempted List</a></li>
+            <li><a href="/Displaydashboard/UserTrainingView?trnstatus=p">Training Pending List</a></li>
+            <li>
+                <a target="_new"
+                   href='@Url.Action("AnnexureHelp", "Home", new { fileName = "Report_Requirement.pdf"})'>
+                    Report Requirement Form
+                </a>
+            </li>
+            <li>
+                <a target="_new"
+                   href='@Url.Action("AnnexureHelp", "Home", new { fileName = "Module_Requirement.pdf"})'>
+                    Module Requirement Form
+                </a>
+            </li>
+        </ul>
+        @*</li>*@
+
+    <li>
+        <a href="/Home/Index?deptt=Admin">
+            <i class="fa fa-bars" aria-hidden="true"></i>
+            <span>Admin Section</span>
+        </a>
+    </li>
+
+</ul>
+@*ul-end*@

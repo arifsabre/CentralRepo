@@ -1,0 +1,201 @@
+﻿@model ManufacturingManagement_V2.Models.MachineMaintenanceMDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Maintenance</title>
+    <script>
+    </script>
+</head>
+<body>
+    @*  <br />*@
+    <div class="row" style="margin-top:5px;margin-bottom:5px">
+        <div class="col-md-pull-10">
+            <div class="col-md-6 pull-left">
+                <div class="panel panel-info">
+                    <div class="panel panel-heading">
+                        <h4 class="panel-title">&nbsp;&nbsp;&nbsp;Machine Schedule Dashboard</h4>
+                    </div>
+                    <div class="panel-body text-center">
+                        <div class="col-md-4">
+                            <a href='@Url.Action("DailyScheduleTask", "MachineMaintenance")'>
+
+                                <h4>Daily</h4>
+                                <h4>@ViewBag.Daily</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href='@Url.Action("WeeklyScheduleTask", "MachineMaintenance")'>
+
+                                <h4>Weekly</h4>
+                                <h4>@ViewBag.Weeky</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href='@Url.Action("MonthlyScheduleTask", "MachineMaintenance")'>
+
+                                <h4 style="text-align:right">Monthly</h4>
+                                <h4>@ViewBag.Month</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href='@Url.Action("QuaterlyScheduleTask", "MachineMaintenance")'>
+
+                                <h4>Quaterly</h4>
+                                <h4>@ViewBag.Quaterly</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href='@Url.Action("HalfYearlyScheduleTask", "MachineMaintenance")'>
+
+                                <h4>Half_Yearly</h4>
+                                <h4>@ViewBag.Halfyear</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href='@Url.Action("YearlyScheduleTask", "MachineMaintenance")'>
+                                <h4>Yearly</h4>
+                                <h4>@ViewBag.Yearly</h4>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-Insert1" style="margin-top:5px;margin-bottom:5px">
+        Monthly Schedule List
+    </button>
+    @Html.ActionLink("Add New Machine", "IndexMachineName", "MachineMaintenance", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Add New CheckPoint", "Index", "MachineMaintenance", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Add BreakDown Machine", "IndexBreakDownList", "MachineMaintenance", null, new { @class = "btn btn-default" })
+    <div id="printbar" class="pull-right" style="margin-top:5px;margin-bottom:5px">
+    </div>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-Insert1" style="margin-top:5px;margin-bottom:5px">
+                            Monthly Schedule List
+                        </button>*@
+                    <div class="box-body">
+
+
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Task Id
+                                    </th>
+                                    <th>
+                                        Company
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.machinename)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.schedulename)
+                                    </th>
+                                    <th>
+                                        Assignee
+                                    </th>
+                                    <th>
+                                        Responsibility
+                                    </th>
+                                    <th>
+                                        Checking Responsibility
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.checkdetail)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.detailofworkdone)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.condition)
+                                    </th>
+                                    <th>
+                                        Next Due Date
+                                    </th>
+
+                                    <th> Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ShortName)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.machinename)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.schedulename)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.assignee)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmpName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.username)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.checkdetail)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.detailofworkdone)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.condition)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.NextDueDate)
+                                        </td>
+
+                                        <td>
+                                            <a onclick="GetDetails(@item.id)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                            @*<a>
+                                                    @Html.ActionLink(" ", "LibraryDeleteRecord", "MachineMaintenance", new { id = item.id }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                                </a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,174 @@
+﻿@model ManufacturingManagement_V2.Models.PartyMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Party Detail</b></h4>
+
+<h5><b>@ViewBag.ModifyInfo</b></h5>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+        <div class="form-group">
+            <table class="table table-bordered">
+                @Html.HiddenFor(model => model.RecId)
+                @Html.HiddenFor(model => model.RailwayId)
+                @Html.HiddenFor(model => model.AcCode)
+                <tr>
+                    <td>@Html.LabelFor(model => model.RailwayName)</td>
+                    <td>
+                        @Html.EditorFor(model => model.RailwayName)
+                        @Html.ValidationMessageFor(model => model.RailwayName)
+                    </td>
+                    <td colspan="4"><b>[Note: B = Bill/Invoice, D = Dispatch Documents]</b></td>
+                </tr>
+                <tr>
+                    <td><b>Party&nbsp;Name</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.AcDesc)
+                        @Html.ValidationMessageFor(model => model.AcDesc)
+                    </td>
+                    <td>[D]</td>
+                    <td><b>Contact&nbsp;Person</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.ContPer)
+                        @Html.ValidationMessageFor(model => model.ContPer)
+                    </td>
+                    <td>[D]</td>
+                </tr>
+                <tr>
+                    <td><b>Address&nbsp;1</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.Address1)
+                        @Html.ValidationMessageFor(model => model.Address1)
+                    </td>
+                    <td>[D]</td>
+                    <td><b>Address&nbsp;2</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.Address2)
+                        @Html.ValidationMessageFor(model => model.Address2)
+                    </td>
+                    <td>[B/D]</td>
+                </tr>
+                <tr>
+                    <td><b>Address&nbsp;3</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.Address3)
+                        @Html.ValidationMessageFor(model => model.Address3)
+                    </td>
+                    <td>[B/D]</td>
+                    <td><b>Address&nbsp;4</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.Address4)
+                        @Html.ValidationMessageFor(model => model.Address4)
+                    </td>
+                    <td>[B/D]</td>
+                </tr>
+                <tr>
+                    <td><b>State&nbsp;Name</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.StateName)
+                        @Html.ValidationMessageFor(model => model.StateName)
+                    </td>
+                    <td>[B]</td>
+                    <td><b>State&nbsp;Code</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.StateCode)
+                        @Html.ValidationMessageFor(model => model.StateCode)
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td><b>TIN</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.TinNo)
+                        @Html.ValidationMessageFor(model => model.TinNo)
+                    </td>
+                    <td>&nbsp;</td>
+                    <td><b>GSTIN</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.GSTinNo)
+                        @Html.ValidationMessageFor(model => model.GSTinNo)
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PhoneOff)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PhoneOff)
+                        @Html.ValidationMessageFor(model => model.PhoneOff)
+                    </td>
+                    <td>&nbsp;</td>
+                    <td><b>FAX&nbsp;No</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.FaxNo)
+                        @Html.ValidationMessageFor(model => model.FaxNo)
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td><b>Mobile&nbsp;No</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.MobileNo)
+                        @Html.ValidationMessageFor(model => model.MobileNo)
+                    </td>
+                    <td>&nbsp;</td>
+                    <td><b>Email</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.Email)
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            &nbsp;&nbsp;&nbsp;
+        </p>
+}
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#RailwayName").attr("placeholder", "start typing, then select");
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#RailwayName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteRailway", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('RailwayId').value = ui.item.Id;
+            }
+        });
+</script>
+
+}

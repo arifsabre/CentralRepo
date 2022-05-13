@@ -1,0 +1,100 @@
+﻿@model ManufacturingManagement_V2.Models.LibTask
+
+@{
+    ViewBag.Title = "InsertNewTask";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Task List</title>
+
+    <script>
+        //$(function () {
+        //    $('#jdtabledesktop').DataTable();
+        //})
+       // function GetDetails(id) {
+       //     $.ajax({
+       //         url: "/LibTask/Edit_TaskListRecord/" + id,
+       //         typr: "GET",
+       //         contentType: "application/json;charset=UTF-8",
+       //         dataType: "json",
+       //         success: function (response) {
+       //             $('#TaskId').val(response.TaskId);
+       //             $('#Task').val(response.Task);
+       //             //$('#TaskDate').val(response.TaskDate);
+       //             //$('#TaskStatus').val(response.TaskStatus);
+       //             $('#Status').val(response.Status);
+       //             $('#UserId').val(response.UserId);
+       //             $('#modal-Update').modal('show');
+       //         },
+       //         error: function (response) {
+       //             alert(response.responseText);
+       //         }
+       //     });
+       //     return false;
+       //}
+    </script>
+</head>
+<body>
+    <div>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert">
+            Add New Task
+        </button>
+        <div id="printbar" class="pull-right">
+        </div>
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+
+
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>TaskId</th>
+                                    <th>Task Name</th>
+                                    <th>Task Date</th>
+                                    <th>Task Status</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.TaskList)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.TaskId)</td>
+                                        <td>@Html.DisplayFor(model => item.Task)</td>
+                                        <td>@Html.DisplayFor(model => item.TaskDate)</td>
+                                        <td>@Html.DisplayFor(model => item.TaskStatus)</td>
+                                        <td>@Html.DisplayFor(model => item.Status)</td>
+
+                                        <td>
+                                            <a onclick="GetDetails(@item.TaskId)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "DeleteTask", "LibTask", new { id = item.TaskId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.GovtDepartmentMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Govt Department List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.DepName)
+        </th>
+        <th style="width:50px;">Edit</th>
+        <th style="width:50px;">Details</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.DepId })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.DepId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+

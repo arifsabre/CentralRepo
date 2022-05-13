@@ -1,0 +1,159 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.JobworkReceiptMdl>
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <h4><b>Jobwork Receipt</b></h4>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndex", "JobworkReceipt", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+        <div class="form-group">
+            From
+            @Html.TextBox("txtDtFrom", null, new { @class = "datepicker", @style="width:90px;" })
+
+            &nbsp;To
+            @Html.TextBox("txtDtTo", null, new { @class = "datepicker", @style = "width:90px;" })
+
+            &nbsp;Status
+            @Html.DropDownList("ddlStatus", ViewBag.JobworkStatusList as SelectList)
+
+            &nbsp;Challan&nbsp;No
+            @Html.TextBox("txtChallanNo",null,new { @style="width:70px;"})
+
+            &nbsp;&nbsp;<button class="btn btn-default">Submit</button>
+
+        </div>
+            
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;">
+        <tr>
+            <th style="width:35px;">
+                S.No.
+            </th>
+            <th style="width:90px;">
+                Challan<br/>Number
+            </th>
+            <th style="width:60px;">
+                @Html.DisplayNameFor(model => model.ChallanDate)
+            </th>
+            <th style="width:auto;">
+                Vendor<br/><i>Process</i>
+            </th>
+            <th style="width:60px;">
+                Issued Item
+            </th>
+            <th style="width:60px;">
+                @Html.DisplayNameFor(model => model.IssuedQty)
+            </th>
+            <th style="width:60px;">
+                @Html.DisplayNameFor(model => model.RMUnitName)
+            </th>
+            <th style="width:60px;">
+                @Html.DisplayNameFor(model => model.RecDateStr)
+            </th>
+            <th style="width:60px;">
+                Processed&nbsp;Item<br />Qty
+            </th>
+            <th style="width:60px;">
+                Recvd.Qty<br />WasteQty<br />Inv.W.Qty
+            </th>
+            <th style="width:60px;">
+                @Html.DisplayNameFor(model => model.RemainingQty)
+            </th>
+            <th style="width:80px;">Links</th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ChallanNo)
+                </td>
+                <td>
+                    @Html.ValueFor(model => item.ChallanDate, "{0:dd/MM/yyyy}")
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.VendorName)
+                    <br>
+                    <span style="font-size:9pt;">
+                        <i>@Html.DisplayFor(model => item.ProcessDesc)</i>
+                    </span>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.RMItemCode)
+                </td>
+                <td>
+                    @Html.ValueFor(model => item.IssuedQty, "{0:##,##,##,##,##0.00}")
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.RMUnitName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.RecDateStr)
+                </td>
+                <td>
+                    @if (item.FGItemCode.Length == 0)
+                    {
+                        @Html.DisplayFor(model => item.Remarks)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => item.FGItemCode)
+                    }
+                    <br />@Html.ValueFor(model => item.FgItemQty, "{0:##,##,##,##,##0.00}")
+                    &nbsp;@Html.DisplayFor(model => item.FGUnitName)
+                </td>
+                <td>
+                    @Html.ValueFor(model => item.ReceivedQty, "{0:##,##,##,##,##0.00}")
+                    @*<br />@Html.ValueFor(model => item.WasteQty, "{0:##,##,##,##,##0.00}")*@
+                    <br />@Html.ValueFor(model => item.InvWQty, "{0:##,##,##,##,##0.00}")
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.RemainingQty)
+                </td>
+                <td>
+                    @Html.ActionLink("New", "CreateUpdate", new { id = 0, dispid = item.DispId })
+                    <br />@Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId, dispid = item.DispId })
+                    <br />@Html.ActionLink("Details", "Details", new { id = item.RecId })
+                    <br />@Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+  new { tblid = 57, pkval = item.RecId }, new { @target = "_blank" })
+                </td>
+            </tr>
+            i++;
+        }
+
+    </table>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+            document.getElementById("txtChallanNo").value = '@ViewBag.challanno';
+        });
+        </script>
+
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+    }
+

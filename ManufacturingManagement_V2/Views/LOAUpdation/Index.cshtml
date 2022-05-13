@@ -1,0 +1,422 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.UpdateLOAMdl>
+@{
+    ViewBag.Title = "UpdateLOA";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>LOA Updation</b></h4>
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "LOAUpdation", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        @Html.Hidden("hfTenderId", null, new { @id = "hfTenderId" })
+                        <tr>
+                            <td>
+                                <b>Tender No</b>
+                                @Html.TextBox("txtTenderNo", null,
+                                new { @placeholder = "start typing, then select" })
+                                <button class="btn btn-default">Submit</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            }   
+</fieldset>
+
+<div id="dvRailway" style="font-weight:bold;color:black;"></div>
+
+<h5><b><label onclick="ShowHideDiv(divS1)">Step 1: LOA Detail</label></b></h5>
+<div id="divS1" style="display:block;">
+    <table class="table table-bordered">
+        <tr>
+            <td style="width:150px;"><b>AAL/CO</b></td>
+            <td>
+                @Html.DropDownList("ddlAalCo", ViewBag.AalCoList as SelectList,
+            new { @id = "AalCo", style = "width: 150px; height: 25px; padding: 0; text-align:left;" })
+        </td>
+    </tr>
+    <tr>
+        <td><b>AAL/CO Number</b></td>
+        <td>
+            @Html.TextBox("txtLoaNumber", Model.First().LoaNumber,
+        new { @id = "LoaNumber", style = "width: 350px; height: 25px; padding: 0; text-align:left;" })
+    </td>
+    </tr>
+    <tr>
+        <td><b>AAL/CO Date</b></td>
+        <td>
+            @Html.TextBox("txtLoaDate", Model.First().LoaDateStr,
+        new { @id = "LoaDate", style = "width: 150px; height: 25px; padding: 0; text-align:left;", @class = "datepicker" })
+        (dd/MM/yyyy)
+    </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;"><b>Case File Number</b></td>
+        <td>
+            @Html.TextBox("txtTCFileNo", Model.First().TCFileNo,
+            new
+                 {
+                     @id = "TCFileNo",
+                     style = "width: 350px; height: 25px; padding: 0; text-align:left;",
+            @placeholder = "Company-Party-Year-FileNo"
+                 })
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;"><b>Checksheet Delv. Schedule</b></td>
+        <td>
+            @Html.TextArea("txtDelvSchedule", Model.First().DelvSchedule,
+            new { @id = "DelvSchedule", style = "width: 350px; height: 100px; padding: 0; text-align:left;" })
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;">
+            <b>LOA Delv. Schedule</b>
+            <label style="font-weight:bold;font-size:9pt;color:black;" onclick="CopyText()">
+                <u>Copy from above</u>
+            </label>
+        </td>
+        <td>
+            @Html.TextArea("txtLoaDelvSchedule", Model.First().LoaDelvSchedule,
+            new { @id = "LoaDelvSchedule", style = "width: 350px; height: 100px; padding: 0; text-align:left;" })
+        </td>
+    </tr>
+    </table>
+</div>
+
+<h5><b><label onclick="ShowHideDiv(divS2)">Step 2: LOA Qty/Rate Updation</label></b></h5>
+<div id="divS2" style="display:block;">
+    <table class="tablecontainer" style="width:100%;">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th style="width:auto;">
+                Item Code<br />->Short Name<br />->Consignee
+            </th>
+            <th style="width:80px;">
+                OfferedQty<br />Rate/Tax%
+            </th>
+            <th style="width:100px;">
+                LOA Qty
+            </th>
+            <th style="width:100px;">
+                LOA Rate
+            </th>
+            <th style="width:100px;">
+                LOA Amount
+            </th>
+            <th style="width:50px;">
+                Action
+            </th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ItemCode)
+                    <br />->@Html.DisplayFor(model => item.ShortName)
+                    <br />->@Html.DisplayFor(model => item.ConsigneeName)
+                </td>
+                <td>
+                    @Html.ValueFor(modelItem => item.OfferedQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.BasicRate, "{0:##,##,##,##,##0.00}")
+                    /@Html.ValueFor(modelItem => item.SaleTaxPer, "{0:##,##,##,##,##0.00}")
+                </td>
+                <td>
+                    @Html.TextBox("txtLoaQty" + i.ToString(), item.LoaQty, new
+                    {
+                        @id = "LoaQty" + (i - 1),
+                    style = "width: 100px; height: 25px; padding: 0; text-align:left;"
+                    })
+                </td>
+                <td>
+                    @Html.TextBox("txtLoaRate" + i.ToString(), item.LoaRate, new
+                    {
+                        @id = "LoaRate" + (i - 1),
+                    style = "width: 100px; height: 25px; padding: 0; text-align:left;"
+                    })
+                </td>
+                <td>
+                    @Html.ValueFor(modelItem => item.LoaAmt, "{0:##,##,##,##,##0.00}")
+                </td>
+                <td>
+                    @Html.ActionLink("UpdateQty&Rate", null, null,
+                    new { onclick = "UpdateQtyRate('" + i + "', '" + item.RecId + "', '" + item.TenderId + "','" + item.ItemCode + "')" })
+                </td>
+            </tr>
+            i++;
+        }
+
+    </table>
+</div>
+
+<h5><b><label onclick="ShowHideDiv(divS3)">Step 3: SD/BG Amount</label></b></h5>
+<div id="divS3" style="display:block;">
+    <table class="table table-bordered">
+        <tr>
+            <td style="width:150px;"><b>LOA Amount for the Tender</b></td>
+            <td style="vertical-align:top;">@Html.ValueFor(modelItem => Model.First().CalcLoaAmount, "{0:##,##,##,##,##0.00}")</td>
+        </tr>
+        <tr>
+            <td><b>SD/BG Amount</b></td>
+            <td>
+                @Html.TextBox("txtSdBgAmount", Model.First().SdBgAmount,
+            new { @id = "SdBgAmount", style = "width: 150px; height: 25px; padding: 0; text-align:left;" })
+        </td>
+    </tr>
+    </table>
+</div>
+
+<div style="color:black;font-size:8pt;font-family:Verdana;font-weight:bold;">
+    <table class="table table-bordered">
+        <tr>
+            <td colspan="3"><b>Rules:</b></td>
+        </tr>
+        <tr>
+            <td colspan="2"><b><u>Contract Value</u></b></td>
+            <td><b><u>:SD/BG Amount (rounded off to nearest higher Rs. 10)</u></b></td>
+        </tr>
+        <tr>
+            <td style="width:5px;vertical-align:top;">1.</td>
+            <td style="width:120px;">Above Rs. 25 lakh and Upto Rs. 50 cr.</td>
+            <td style="vertical-align:top;">:@@5% of contract value subject to Max. Rs. 50 lakh.</td>
+        </tr>
+        <tr>
+            <td style="width:5px;vertical-align:top;">2.</td>
+            <td>Above Rs. 50 cr.</td>
+            <td>:Rs. 1 cr.</td>
+        </tr>
+    </table>
+           Note: Kindly notify for any change in the above rule or edit 
+           SD/BG Amount ownself, if required.
+</div>
+
+<table class="table table-bordered">
+    <tr>
+        <td style="width:150px;"><button class="btn btn-default" onclick="CalculateAmount()">Calculate Amount</button></td>
+        <td><button class="btn btn-default" onclick="updateLoaInformation('1')">Update LOA</button></td>
+    </tr>
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="~/Scripts/DateTimePicker.js">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("DelvSchedule").readOnly = true;
+            document.getElementById("hfTenderId").value = '@ViewBag.tenderid';
+            document.getElementById("txtTenderNo").value = '@ViewBag.tenderno';
+            document.getElementById("AalCo").value = '@ViewBag.aalco';
+            getTenderDetail(@ViewBag.tenderid);
+        });
+    </script>
+
+    @*//Date Picker*@
+    @*<script type="text/javascript">
+        $(function () {
+            $("#LoaDate").datepicker({
+                dateFormat: "dd/mm/yy",
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                autoclose: true,
+                changeMonth: true,
+                changeYear: true,
+                gotoCurrent: true
+            });
+        });
+    </script>*@
+
+    <script type="text/javascript">
+        $("#txtTenderNo").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteTenderNo", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfTenderId').value = ui.item.Id;
+                getTenderDetail(ui.item.Id);
+            }
+        });
+    </script>
+
+    <script>
+        function getTenderDetail(tenderid) {
+            //var itemId = $('#ddlItem').val();
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getPODetail", "HelpUtility"))",
+                    data: { "tenderid": tenderid },
+                    success: function (data) {
+                        //$('lblRailwayName').text(data.railwayname);
+                        document.getElementById("dvRailway").innerHTML = data.railwayname;
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                    }
+            });
+        }
+</script>
+
+    <script>
+        function UpdateQtyRate(index, recid, tenderid, itemcode) {
+
+            if (itemcode == 'Step-3 Not Completed')
+            {
+                alert('Invalid Attempt, Step-3 Not Completed!');
+                return;
+            }
+
+            var _qty = $('#LoaQty' + (index - 1)).val();
+            var _rate = $('#LoaRate' + (index - 1)).val();
+
+            if (!(_qty != '' && !isNaN(_qty))) {
+                alert('Invalid Qty!');
+                return;
+            }
+
+            if (!(_rate != '' && !isNaN(_rate))) {
+                alert('Invalid Rate!');
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("updateLoaQtyRate", "LOAUpdation")',
+                dataType: 'json',//instead of html
+                data: ({
+                    recid: recid,
+                    tenderid: tenderid,
+                    qty: _qty,
+                    rate: _rate
+                }),
+                success: function (d) {
+                    alert(d.message);
+                    if (d.status == true) {
+                        location.reload();
+                        updateLoaInformation('0');//note
+                    }
+                }
+        });
+    }
+</script>
+
+    <script>
+        function updateLoaInformation(chk) {
+            //var _qty = $('#LoaQty' + (index - 1)).val();
+            
+            var liObj = document.getElementById("AalCo");
+            var liIndex = liObj.selectedIndex;
+            var aalco = liObj.options[liIndex].value;
+
+            //note
+            if (chk == '1') {
+                var amt = parseFloat(@Model.First().CalcLoaAmount);
+                if (amt == 0 && aalco != 'n') {
+                    alert('Not any item updated for LOA qty/rate, LOA Amount for the Tender must not be zero!');
+                    return;
+                }
+            }
+
+            //var sd = document.getElementById("chkBGSend").checked;
+            //var rd = document.getElementById("chkBGRecd").checked;
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("updateLoaInformation", "LOAUpdation")',
+                dataType: 'json',//instead of html
+                data: ({
+                    tenderid: '@Model.First().TenderId',
+                    aalco: aalco,
+                    loanumber: $('#LoaNumber').val(),
+                    loadate: $('#LoaDate').val(),
+                    loaamount: $('#SdBgAmount').val(),
+                    loadelvscd: $('#LoaDelvSchedule').val(),
+                    tcfileno: $('#TCFileNo').val(),
+                }),
+                success: function (d) {
+                    if (chk == '1') {
+                        alert(d.message);//note
+                    }
+                    if (d.status == true) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function CalculateAmount() {
+            var amt = parseFloat(@Model.First().CalcLoaAmount);
+            var bgamt = 0;
+            //calculation
+            if (amt <= 2500000) {
+                bgamt = 0;
+            }
+            else if (amt > 2500000 && amt <= 500000000) {
+                bgamt = amt * 5 / 100;
+                if (bgamt > 5000000) {
+                    bgamt = 5000000;
+                }
+            }
+            else if (amt > 500000000) {
+                bgamt = 10000000;
+            }
+            //display & rounding
+            //rounding amount by rs 10
+            @*//SELECT case when @amt % 10 > 0 then @amt - @amt % 10 + 10 else @amt end *@
+            if (bgamt % 10 > 0)
+            {
+                bgamt = bgamt - bgamt % 10 + 10;
+            }
+            document.getElementById('SdBgAmount').value = bgamt;
+        }
+</script>
+
+
+    <script type="text/javascript">
+        function CopyText() {
+            document.getElementById("LoaDelvSchedule").value = document.getElementById("DelvSchedule").value;
+        }
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            //if (id.style.display == "block") {
+            //    id.style.display = "none";
+            //}
+            //else {
+            //    id.style.display = "block";
+            //}
+        }
+    </script>
+
+}
+

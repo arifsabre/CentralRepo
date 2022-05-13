@@ -1,0 +1,96 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ProductionPlanDPDetailMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Production Plan- DP/Qty Detail</b></h4>
+
+<p style="font-size:14px;font-weight:bold;">
+    <table class="table table-bordered">
+        <tr>
+            <td style="width:10%;"><b>Plan&nbsp;Month</b></td>
+            <td colspan="2">@ViewBag.Month</td>
+        </tr>
+        <tr>
+            <td><b>Item&nbsp;Code</b></td>
+            <td colspan="2">@ViewBag.ItemCode</td>
+        </tr>
+        <tr>
+            <td><b>Item&nbsp;Name</b></td>
+            <td colspan="2">@ViewBag.ShortName</td>
+        </tr>
+        <tr>
+            <td><b>Item&nbsp;Unit</b></td>
+            <td>
+                @ViewBag.Unit
+            </td>
+            <td style="width:7%;" align="right">
+                @Html.ActionLink("Close", null, null, new { @onclick = "window.close()", @class = "btn btn-default" })
+            </td>
+        </tr>
+    </table>
+</p>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:150px;">
+            Railway
+        </th>
+        <th style="width:120px;">
+            Case&nbsp;FileNo
+        </th>
+        <th style="width:auto;">
+            Consignee
+        </th>
+        <th style="width:100px;">
+            PO Number
+        </th>
+        <th style="width:90px;">
+            PO Date
+        </th>
+        <th style="width:100px;">
+            Pending&nbsp;Qty
+        </th>
+        <th style="width:100px;">
+            DP
+        </th>
+
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.RailwayName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CaseFileNo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ConsigneeName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PONumber)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PODate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PendingQty)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DelvDate)
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+

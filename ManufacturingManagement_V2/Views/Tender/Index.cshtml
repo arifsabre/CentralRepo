@@ -1,0 +1,457 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.TenderMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <table>
+        <tr>
+            <td><h4><b>View Tenders</b></h4></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        </tr>
+    </table>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndex", "Tender", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+            <div class="form-group" onload="ShowHideDiv()">
+                @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default", @target = "_blank" })
+
+                &nbsp;&nbsp;
+                <b>Date&nbsp;From</b>
+                @Html.TextBox("txtDtFrom", null, new { @class = "datepicker", @style = "width:90px;" })
+
+                &nbsp;<b>To</b>
+                @Html.TextBox("txtDtTo", null, new { @class = "datepicker", @style = "width:90px;" })
+
+                &nbsp;<b>Tender Status</b>
+                @Html.DropDownList("ddlStatus", ViewBag.StatusList as SelectList)
+
+                &nbsp;<button class="btn btn-default">Submit</button>
+                &nbsp;
+                <input type="checkbox" onchange="ShowHideDiv()" id="chkOptions"
+                       name="chkOptions" @if (ViewBag.Options) { <text> checked</text>}
+                       style="width: 30px; height: 20px; padding: 0; text-align:center;
+            vertical-align:middle;">Options
+
+                <div id="dvOptions" style="display:none;">
+                    <table>
+                        <tr>
+                            <td><b>Railway</b></td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextBox("txtRailway", null,
+                                   new
+                                        {
+                                            @placeholder = "start typing, then select",
+                                            @style = "width:300px;height:20px;"
+                                        })
+                                @Html.Hidden("hfRailwayId", null, new { @id = "hfRailwayId" })
+                            </td>
+
+                            <td><b>&nbsp;Tender No</b></td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextBox("txtTenderNo", null,
+                                   new
+                                        {
+                                            @placeholder = "start typing, then select",
+                                            @style = "width:220px;height:20px;"
+                                        })
+                                @Html.Hidden("hfTenderId", null, new { @id = "hfTenderId" })
+                            </td>
+
+                            <td>
+                                &nbsp;
+                                <input type="checkbox" id="chkIsReTender" name="chkIsReTender"
+                                       @if (ViewBag.isReTender) { <text> checked</text>}
+                                       style="width: 30px; height: 20px; padding: 0; text-align:center;
+                             vertical-align:middle;">Is&nbsp;Re-Tender
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Item&nbsp;Group</b></td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextBox("txtGroup", null,
+                                 new
+                                  {
+                                      @placeholder = "start typing, then select",
+                             @style = "width:300px;height:20px;"
+                                  })
+                                @Html.Hidden("hfGroupId", null, new { @id = "hfGroupId" })
+                            </td>
+
+                            <td><b>&nbsp;Item&nbsp;Name</b></td>
+                            <td>&nbsp;</td>
+                            <td colspan="2">
+                                @Html.TextBox("txtItem", null,
+                                 new
+                                      {
+                                          @placeholder = "start typing, then select",
+                                          @style = "width:300px;height:20px;"
+                                      })
+                                @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;" id="tblsl">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th style="width:120px;">Links</th>
+            <th style="width:50px;">
+                Tender&nbsp;No<br />T.&nbsp;Sl.&nbsp;No.<br />[T.&nbsp;Id]
+            </th>
+            <th style="width:120px;">
+                Tender&nbsp;Type<br /> Railway
+            </th>
+            <th style="width:auto;">
+                Items-Qty
+            </th>
+            <th style="width:100px;">
+                Opening&nbsp;Date<br />Time
+            </th>
+            <th style="width:100px;">
+                QutnNo<br />Date
+            </th>
+            <th style="width:auto;">
+                Status/LOANo/<br />Remarks
+            </th>
+            <th style="width:120px;">
+                PO&nbsp;Number<br />PO&nbsp;Date
+            </th>
+            <th style="width:120px;">
+                ETender<br />S1/S2/S3
+            </th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "CreateUpdate", new { id = item.TenderId }, new { @target = "_blank" })
+                    @*@Html.ActionLink("Edit", "GoToEdit", new { tenderid = item.TenderId }, new { @target = "_blank" })*@
+
+                    <br />
+                    @Html.ActionLink("TenderFile", "DisplayTenderFile",
+                                new { tenderid = item.TenderId }, new { @target = "_blank" })
+
+                    <br />
+                    @Html.ActionLink("UploadFile", "UploadTenderFile",
+                                new { tenderid = item.TenderId, tenderno = item.TenderNo }, new { @target = "_blank" })
+
+                    <br />
+                    @Html.ActionLink("Checksheet", "TenderChecksheetReport", new { tenderid = item.TenderId }, new { @target = "_blank" })
+
+                    <br />
+                    @Html.ActionLink("E.T.Format", "ETFormatReport", new { tenderid = item.TenderId }, new { @target = "_blank" })
+
+                    @*<br />
+        @Html.ActionLink("Dispatch", "../TenderDispatch/Index", new { tenderid = item.TenderId }, new { @target = "_blank" })*@
+
+                    <br />
+                    @Html.ActionLink("UpdateAAL/CO", "../LOAUpdation/Index", new { tenderid = item.TenderId }, new { @target = "_blank" })
+
+                    <br />
+                    @Html.ActionLink("UpdateBG", "../BankGuarantee/CreateUpdate", new { id = item.TenderId }, new { @target = "_blank" })
+
+                    @if (@ViewBag.allowDelete == 1)
+                    {
+                        <br />
+                        @Html.ActionLink("DeleteETender", null, null, new { onclick = "deleteETender('" + item.TenderId + "')" })
+                        <br/>
+                        @Html.ActionLink("DeleteTender", null, null, new { onclick = "deleteTender('" + item.TenderId + "')" })
+                    }
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenderNo)
+                    @if (item.SerialNo.ToString().Length > 0)
+                    {
+                        <br />@Html.DisplayFor(modelItem => item.SerialNo)
+                    }
+                    <br />[@Html.DisplayFor(modelItem => item.TenderId)]
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenderType)
+                    <br />@Html.DisplayFor(modelItem => item.RailwayName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemsQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OpeningDate)
+                    <br />@Html.DisplayFor(modelItem => item.OpeningTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuotationNo)
+                    @if (item.QuotationNo.ToString().Length > 0)
+                    {
+                        <br />@Html.DisplayFor(modelItem => item.QuotationDateStr)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusDesc)
+                    @if (item.LoaNumber.ToString().Length > 0)
+                    {
+                        <br />@Html.DisplayFor(modelItem => item.LoaNumber)
+                        <br />@Html.DisplayFor(modelItem => item.LoaDateStr)
+                    }
+                    <br />@Html.DisplayFor(modelItem => item.Remarks)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PONumber)
+                    <br />@Html.DisplayFor(modelItem => item.PODateStr)
+                </td>
+                <td>
+                    @if (item.Step1.ToLower() == "pending")
+                    {
+                        @Html.ActionLink(item.Step1, "../ETender/CreateUpdate",
+                        new { id = item.TenderId }, new { @target = "_blank", style = "color:fuchsia;" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink(item.Step1, "../ETender/CreateUpdate",
+                        new { id = item.TenderId }, new { @target = "_blank", style = "color:green;" })
+                    }
+                    <br />
+                    @if (item.Step2.ToLower() == "pending")
+                    {
+                        @Html.ActionLink(item.Step2, "../ETenderItem/CreateUpdate",
+                        new { tenderid = item.TenderId }, new { @target = "_blank", style = "color:fuchsia;" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink(item.Step2, "../ETenderItem/CreateUpdate",
+                        new { tenderid = item.TenderId }, new { @target = "_blank", style = "color:green;" })
+                    }
+                    <br />
+                    @if (item.Step3.ToLower() == "pending")
+                    {
+                        @Html.ActionLink(item.Step3, "../ETenderConsignee/CreateUpdate",
+                        new { tenderid = item.TenderId }, new { @target = "_blank", style = "color:fuchsia;" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink(item.Step3, "../ETenderConsignee/CreateUpdate",
+                        new { tenderid = item.TenderId }, new { @target = "_blank", style = "color:green;" })
+                    }
+                </td>
+            </tr>
+            i++;
+        }
+        @{i = i - 1;}
+        @i.ToString()&nbsp;&nbsp;Records found (for selected options).
+    </table>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            $("#txtRailway").attr("placeholder", "start typing, then select");
+            $("#txtGroup").attr("placeholder", "start typing, then select");
+            $("#txtItem").attr("placeholder", "start typing, then select");
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+            document.getElementById("hfRailwayId").value = '@ViewBag.railwayid';
+            document.getElementById("txtRailway").value = '@ViewBag.railway';
+            document.getElementById("hfGroupId").value = '@ViewBag.groupid';
+            document.getElementById("txtGroup").value = '@ViewBag.group';
+            document.getElementById("hfItemId").value = '@ViewBag.itemid';
+            document.getElementById("txtItem").value = '@ViewBag.item';
+            document.getElementById("hfTenderId").value = '@ViewBag.tenderId';
+            document.getElementById("txtTenderNo").value = '@ViewBag.tenderNo';
+            ShowHideDiv();
+        });
+        </script>
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script type="text/javascript">
+            function ShowHideDiv() {
+                var dv = document.getElementById("dvOptions");
+                if (document.getElementById("chkOptions").checked) {
+                    dv.style.display = "block";
+                }
+                else {
+                    dv.style.display = "none";
+                }
+            }
+        </script>
+
+        <script>
+            function deleteTender(tenderid) {
+                var a = confirm("Are you sure to delete Tender?");
+                if (a == false) {
+                    return;
+                }
+                var data = {
+                    tenderid: tenderid
+                }
+                $.ajax({
+                    url: '/Tender/Delete',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            function deleteETender(tenderid) {
+                var a = confirm("Are you sure to delete E-Tender?");
+                if (a == false) {
+                    return;
+                }
+                var data = {
+                    tenderid: tenderid
+                }
+                $.ajax({
+                    url: '/ETender/Delete',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <script type="text/javascript">
+                $("#txtRailway").autocomplete({
+                    source: function (request, response) {
+                        var customer = new Array();
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            type: "POST",
+                            url: "@(Url.Action("AutoCompleteRailway", "HelpUtility"))",
+                            data: { "term": request.term },
+                            success: function (data) {
+                                for (var i = 0; i < data.length ; i++) {
+                                    customer[i] = { label: data[i].Value, Id: data[i].Key };
+                                }
+                            }
+                        });
+                        response(customer);
+                    }, minLength: 2,
+                    select: function (event, ui) {
+                        document.getElementById('hfRailwayId').value = ui.item.Id;
+                    }
+                });
+        </script>
+
+        <script type="text/javascript">
+                $("#txtGroup").autocomplete({
+                    source: function (request, response) {
+                        var customer = new Array();
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            type: "POST",
+                            url: "@(Url.Action("AutoCompleteItemGroup", "HelpUtility"))",
+                            data: { "term": request.term },
+                            success: function (data) {
+                                for (var i = 0; i < data.length ; i++) {
+                                    customer[i] = { label: data[i].Value, Id: data[i].Key };
+                                }
+                            }
+                        });
+                        response(customer);
+                    }, minLength: 2,
+                    select: function (event, ui) {
+                        document.getElementById('hfGroupId').value = ui.item.Id;
+                    }
+                });
+        </script>
+
+        <script type="text/javascript">
+        $("#txtItem").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var groupId = '0';
+                if (document.getElementById('hfGroupId').value != "0") {
+                    groupId = document.getElementById('hfGroupId').value;
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAllItemListGroup", "HelpUtility"))",
+                    data: { "term": request.term, "groupid": groupId },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfItemId').value = ui.item.Id;
+            }
+        });
+        </script>
+
+        <script type="text/javascript">
+            $("#txtTenderNo").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteTenderNo", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfTenderId').value = ui.item.Id;
+            }
+        });
+        </script>
+
+    }
+
+

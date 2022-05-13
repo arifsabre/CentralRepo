@@ -1,0 +1,325 @@
+﻿@model ManufacturingManagement_V2.Models.PowerConsuptionMDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script>
+        //viewDetails
+        function viewdetailrecord(id) {
+            $.ajax({
+                url: "/PowerConsuption/ViewPowerFactorRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#Id2').val(response.Id);
+                    $('#ShortName2').val(response.ShortName);
+                    $('#ReadingDate2').val(response.ReadingDate);
+                    $('#MeterReadingKwh2').val(response.MeterReadingKwh);
+                    $('#MeterReadingKvah2').val(response.MeterReadingKvah);
+                    $('#DailyConKwh2').val(response.DailyConKwh);
+                    $('#DailyConKvah2').val(response.DailyConKvah);
+                    $('#MTDConKwh2').val(response.MTDConKwh);
+                    $('#MTDConKvah2').val(response.MTDConKvah);
+                    $('#PFDaily2').val(response.PFDaily);
+                    $('#MTDPFDaily2').val(response.MTDPFDaily);
+                    $('#MeterPFDaily2').val(response.MeterPFDaily);
+                    $('#Demand2').val(response.Demand);
+                    $('#Remark2').val(response.Remark);
+                    $('#username2').val(response.username);
+                    $('#CreatedOn2').val(response.CreatedOn);
+                    $('#UpdatedBy2').val(response.UpdatedBy);
+                    $('#UpdatedOn2').val(response.UpdatedOn);
+                    $('#modal-detailrecord').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+           return false;
+        }
+    </script>
+</head>
+<body>
+    <br />
+    @Html.ActionLink("Back To Home", "Index", "PowerConsuption", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("PF All Company", "AllCompany", "PowerConsuption", null, new { @class = "btn btn-default" })
+
+
+    <div id="printbar" class="pull-right" style="margin-top:5px;margin-bottom:5px">
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Id</th>
+                                    <th>Company</th>
+                                    <th>Reading_Date</th>
+                                    <th>Reading_Kwh</th>
+                                    <th>Reading_Kvah</th>
+                                    @*<th>Daily Consuption in Kwh</th>
+                                        <th>Daily Consuption in Kvah</th>
+                                        <th>MTD Consuption in Kwh</th>
+                                        <th>MTD Consuption  in Kvah</th>
+                                        <th>MTD</th>
+                                        <th>Instant</th>*@
+                                    <th>PF_Daily</th>
+                                    <th>Created_By</th>
+                                    <th>Remark</th>
+                                    @* <th>Demand</th>*@
+
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a onclick="viewdetailrecord(@item.Id)">
+                                                <i class="fa fa-eye">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "Delete_Entry", "PowerConsuption", new { id = item.Id }, new { onclick = "return confirm('Are sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                        <td>@Html.DisplayFor(model => item.Id)</td>
+                                        @*  <td>@Html.DisplayFor(model => item.CreatedOn)</td>*@
+                                        <td>
+                                            @Html.DisplayFor(model => item.ShortName)
+
+                                        </td>
+                                        <td>@Html.DisplayFor(model => item.ReadingDate)</td>
+                                        @*<td>@Html.DisplayFor(model => item.ReadingTime)</td>*@
+                                        <td>@Html.DisplayFor(model => item.MeterReadingKwh)</td>
+                                        <td>@Html.DisplayFor(model => item.MeterReadingKvah)</td>
+                                        @*<td>@Html.DisplayFor(model => item.DailyConKwh)</td>
+                                            <td>@Html.DisplayFor(model => item.DailyConKvah)</td>
+                                            <td>@Html.DisplayFor(model => item.MTDConKwh)</td>
+                                            <td>@Html.DisplayFor(model => item.MTDConKvah)</td>
+                                            <td>@Html.DisplayFor(model => item.MTDPFDaily)</td>
+                                            <td>@Html.DisplayFor(model => item.MeterPFDaily)</td>*@
+                                        <td>@Html.DisplayFor(model => item.PFDaily)</td>
+                                        <td>@Html.DisplayFor(model => item.username)</td>
+                                        <td>@Html.DisplayFor(model => item.Remark)</td>
+                                        @* <td>@Html.DisplayFor(model => item.Demand)</td>*@
+
+
+                                        @*  <td>@Html.DisplayFor(model => item.CreatedOn)</td>*@
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @*//ViewRecord*@
+    <div class="modal fade" id="modal-detailrecord">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:850px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Power Factor Details</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_HODApproval", "ContractorIndent", FormMethod.Post))
+                        {
+                            <div>
+                                <br />
+                                <table>
+                                    <tr>
+
+                                        Power Factor Information
+
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Id </td>
+                                        <td><input type="number" class="form-control" id="Id2" name="Id" style="border:none"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Company</td>
+                                        <td> <input type="text" class="form-control" id="ShortName2" name="ShortName" style="border:none;width:350px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Reading Date
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="ReadingDate2" name="ReadingDateDisp" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td style="padding:10px">
+                                            Meter Reading In Kwh
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="MeterReadingKwh2" name="MeterReadingKwh" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Meter Reading Kvah
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="MeterReadingKvah2" name="MeterReadingKvah" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Daily Consumption In Kwh
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="DailyConKwh2" name="DailyConKwh" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Daily Consumption In Kvah
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="DailyConKvah2" name="DailyConKvah" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            MTD Consumption in Kwh
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="MTDConKwh2" name="MTDConKwh" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            MTD Consumption in Kvah
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="MTDConKvah2" name="MTDConKvah" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            PF Daily
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="PFDaily2" name="PFDaily" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            MTD PF Daily
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="MTDPFDaily2" name="MTDPFDaily" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Meter PF Daily
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="MeterPFDaily2" name="MeterPFDaily" style="border:none">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Demand
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Demand2" name="Demand" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Remark
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Remark2" width="450" name="Remark" style="width:700px;height:30px;border:none">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Created By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="username2" name="Username" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Created ON
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="CreatedOn2" name="CreatedOn" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Updated By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="UpdatedBy2" name="UpdatedOn" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Updated On
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="UpdatedOn2" name="UpdatedOn" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+
+                                @*  @*<button type="submit" id="modal-hodApproval" class="btn btn-primary">Submit</button>*@
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Script/Site.js"></script>
+
+
+
+</body>
+</html>

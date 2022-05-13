@@ -1,0 +1,70 @@
+﻿<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    @*Accounts*@
+    <li class="treeview" id="mnuAccounts">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Accounts">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuAccounts');">&nbsp;&nbsp;Accounts</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/AccountMaster/Index">View Account Master</a></li>
+            <li><a href="/AccountGroup/Index">View Account Group</a></li>
+            <li><a href="/AccountMaster/CreateUpdate">Create Account Master</a></li>
+            <li><a href="/AccountGroup/CreateUpdate">Create Account Group</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Vouchers*@
+    <li class="treeview" id="mnuVouchers">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Accounts">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuVouchers');">&nbsp;&nbsp;Vouchers</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/VoucherEntryJournal/Index">Journal Voucher</a></li>
+            <li><a href="/VoucherEntryContra/Index">Contra Voucher</a></li>
+            <li><a href="/VoucherEntryGeneralPayment/Index">Payment Voucher</a></li>
+            <li><a href="/VoucherEntryGeneralReceipt/Index">Receipt Voucher</a></li>
+            <li><a href="/VoucherEntryBillPayment/Index">Bill Payment Voucher</a></li>
+            <li><a target="_blank" href="/VoucherEntryBillReceipt/Index">Bill Receipt Voucher [Marketing]</a></li>
+            <li><a href="/VoucherReport/Index">Print Voucher</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Reports*@
+    <li class="treeview" id="mnuReportsAccount">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Accounts">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuReportsAccount');">&nbsp;&nbsp;Reports</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/OpeningTrialReport/Index">Opening Trial</a></li>
+            <li><a href="/TrialBalanceReport/Index">Trial Balance</a></li>
+            <li><a href="/FinancialLedgerReport/Index">Financial Ledger</a></li>
+            <li><a href="/DBCBookReport/DayBookIndex">Day Book</a></li>
+            <li><a href="/DBCBookReport/CashBookIndex">Cash Book</a></li>
+            <li><a href="/DBCBookReport/BankBookIndex">Bank Book</a></li>
+            <li><a href="/JournalBookReport/Index">Journal Book</a></li>
+            <li><a href="/DailyCashBalanceReport/Index">Daily Cash Balance</a></li>
+            <li><a href="/BalanceSheetReport/Index">Balance Sheet</a></li>
+            <li><a href="/ProfitNdLossReport/Index">Profit and Loss</a></li>
+            <li><a href="/PendingPaymentToVendorReport/Index">Pending Payment To Vendors</a></li>
+            <li><a href="/BillPaymentToVendorReport/Index">Bill Payment To Vendors</a></li>
+        </ul>
+        @*</li>*@
+
+</ul>
+@*ul-end*@

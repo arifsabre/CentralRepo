@@ -1,0 +1,90 @@
+﻿@model ManufacturingManagement_V2.Models.LibTask
+@{
+    ViewBag.Title = "GetNotificationListByUser";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Message List</title>
+    <script>
+        //$(function () {
+        //     $('#example1').DataTable();
+        // })
+        function GetDetails(id) {
+            $.ajax({
+                url: "/LibTask/Edit_TaskListRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#NoticeDT').val(response.NoticeDT);
+                    $('#NoticeMsg').val(response.TaskNoticeMsg);
+                    $('#Username').val(response.Username);
+                   $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+
+</head>
+<body>
+    <div>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert1">
+            Notification By User
+        </button>
+        <div id="printbar" class="pull-right">
+        </div>
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    @*<div class="box-header">
+                        </div>*@
+                    <div class="box-body">
+
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>NoticeDate</th>
+                                    <th>Notice Message</th>
+                                    <th>Sender</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.TaskList)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.NoticeDT)</td>
+                                        <td>@Html.DisplayFor(model => item.NoticeMsg)</td>
+                                        <td>@Html.DisplayFor(model => item.UserName)</td>
+                                        <td>
+                                            @*<a onclick="GetDetails(@item.TaskId)">
+                                                    <i class="fa fa-edit">
+                                                    </i>
+                                                </a>*@
+                                            @*<a>
+                                                    @Html.ActionLink(" ", "DeleteTask", "LibTask", new { id = item.TaskId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                                </a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>

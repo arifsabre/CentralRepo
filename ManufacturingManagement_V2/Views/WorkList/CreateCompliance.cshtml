@@ -1,0 +1,148 @@
+﻿@model ManufacturingManagement_V2.Models.WorkListMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Compliance Entry (Repeatable Task)</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        @Html.HiddenFor(model => model.RecId)
+        @Html.HiddenFor(model => model.CompCode)
+        @Html.HiddenFor(model => model.DepId)
+        @Html.HiddenFor(model => model.TaskOpt)
+        <table class="table table-bordered">
+            @if (Model.TaskOpt == 2405 || Model.TaskOpt == 2410)
+            {
+                <tr>
+                    <td style="width:10%;">@Html.LabelFor(model => model.CompName)</td>
+                    <td>
+                        @Html.DisplayFor(model => model.CompName)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.DepName)</td>
+                    <td>
+                        @Html.DisplayFor(model => model.DepName)
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td style="width:10%;">@Html.LabelFor(model => model.TaskOpt)</td>
+                <td>
+                    @Html.DisplayFor(model => model.TaskOptName)
+                    @Html.ValidationMessageFor(model => model.TaskOpt)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Completion Date</b></td>
+                <td>
+                    @Html.EditorFor(model => model.CompDT)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.TaskName)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.TaskName, 0, 0,
+                    new { @style = "width:268px;height:40px;" })
+                    @Html.ValidationMessageFor(model => model.TaskName)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.WorkDesc)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.WorkDesc, 0, 0,
+                    new { @style = "width:268px;height:60px;" })
+                    @Html.ValidationMessageFor(model => model.WorkDesc)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.RecDT)</td>
+                <td>
+                    @Html.EditorFor(model => model.RecDT)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value="Submit" />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </p>
+    <h5>@ViewBag.Message</h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //$("#EmpId").attr("placeholder", "start typing, then select");
+            $("#TaskName").attr("placeholder", "Max Length: 100 Chars");
+            $("#TaskName").attr("maxlength", "100");
+            $("#WorkDesc").attr("placeholder", "Max Length: 250 Chars");
+            $("#WorkDesc").attr("maxlength", "250");
+            document.getElementById("CompDT").focus();
+        });
+
+        //Date Picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+
+    </script>
+
+    <script type="text/javascript">
+        $("#EmpId").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('NewEmpId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getAdvanceDeductionInfo", "Advance"))",
+                    data: { "newempid": ui.item.Id },
+                    success: function (data) {
+                        $('#lblAdvanceInfo').text(data.advanceinfo);
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            }
+        });
+    </script>
+
+}

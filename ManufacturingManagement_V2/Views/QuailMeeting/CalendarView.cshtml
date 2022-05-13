@@ -1,0 +1,284 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.QuailCalendarMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>QUAIL Meeting Calendar (* Under Testing)</h2>
+
+<div id="dialog" style="display: none">
+</div>
+
+<fieldset>
+        <legend>Advance Detail</legend>
+            @using (Ajax.BeginForm("FilterCalendarView", "QuailMeeting", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                        <table>
+                            <tr>
+                                <td>
+                                Year
+                                @Html.TextBox("txtYear",null,new { @style="width:60px;" })
+                                Month
+                                @Html.DropDownList("ddlMonth", ViewBag.MonthList as SelectList,new { @style="width:140px;" })
+                                <button style="height:35px;width:110px;">Submit</button>
+                                @Html.ActionLink("List View", "Index")
+                                @Html.ActionLink("New Meeting", "CreateUpdate", null, new { target="_new"})
+                                </td>
+                            </tr>
+                        </table>
+                      </div>
+            }   
+</fieldset>
+
+<table id="CustomerGrid" class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+           Week
+        </th>
+        <th style="width:100px;">
+           @Html.DisplayNameFor(model => model.Monday)
+        </th>
+        <th style="width:100px;">
+           @Html.DisplayNameFor(model => model.Tuesday)
+        </th>
+        <th style="width:100px;">
+           @Html.DisplayNameFor(model => model.Wednesday)
+        </th>
+        <th style="width:100px;">
+           @Html.DisplayNameFor(model => model.Thursday)
+        </th>
+        <th style="width:100px;">
+           @Html.DisplayNameFor(model => model.Friday)
+        </th>
+        <th style="width:100px;">
+           @Html.DisplayNameFor(model => model.Saturday)
+        </th>
+        <th style="width:100px;">
+           @Html.DisplayNameFor(model => model.Sunday)
+        </th>
+    </tr>
+    @{int i = 1;}
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(model => item.WKN)
+        </td>
+        <td>
+           @if (!(item.Monday.Month == @ViewBag.Mth && item.Monday.Year == @ViewBag.Yr))
+           {
+              <div style="font-size:20pt;text-align:center;color:gray;">@Html.ValueFor(model => item.Monday, "{0:dd}")</div>
+           }
+           else
+           {
+              <div style="font-size:20pt;text-align:center;">@Html.ValueFor(model => item.Monday, "{0:dd}")</div>  
+           }
+
+            <h4><label style="color:black;text-align:center;" onclick="ShowHideDiv(1,@i.ToString())">.....</label></h4>
+            <div style="font-size:9pt;color:black;text-align:center;">@Html.Raw(item.MondayInfo)</div>
+            <div id="div1+@i.ToString()" class="lnk" style="display:none;margin-left:5px;text-align:center;font-size:8pt;">
+                Meeting:&nbsp;<a id="A_lnk1+@i.ToString()" class="details" href="javascript:;">Add</a>&nbsp;<a id="B_lnk1+@i.ToString()" class="details" href="javascript:;">Edit</a>
+                <br/>Card:&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.MondayQmId)">Add</a>&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.MondayQmId)">Edit</a>
+                <a target="_blank" href="/QuailBookReport/QuailCardReport?qmid=@Html.Raw(item.MondayQmId)">Preview</a>
+            </div>
+
+        </td>
+        <td>
+           @if (!(item.Tuesday.Month == @ViewBag.Mth && item.Tuesday.Year == @ViewBag.Yr))
+           {
+              <div style="font-size:20pt;text-align:center;color:gray;">@Html.ValueFor(model => item.Tuesday, "{0:dd}")</div>
+           }
+           else
+           {
+              <div style="font-size:20pt;text-align:center;">@Html.ValueFor(model => item.Tuesday, "{0:dd}")</div>  
+           }
+           
+            <h4><label style="color:black;text-align:center;" onclick="ShowHideDiv(2,@i.ToString())">.....</label></h4>
+            <div style="font-size:9pt;color:black;text-align:center;">@Html.Raw(item.TuesdayInfo)</div>
+            <div id="div2+@i.ToString()" class="lnk" style="display:none;margin-left:5px;text-align:center;font-size:8pt;">
+                Meeting:&nbsp;<a id="A_lnk2+@i.ToString()" class="details" href="javascript:;">Add</a>&nbsp;<a id="B_lnk2+@i.ToString()" class="details" href="javascript:;">Edit</a>
+                <br/>Card:&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.TuesdayQmId)">Add</a>&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.TuesdayQmId)">Edit</a>
+                <a target="_blank" href="/QuailBookReport/QuailCardReport?qmid=@Html.Raw(item.TuesdayQmId)">Preview</a>
+            </div>
+
+        </td>
+        <td>
+           @if (!(item.Wednesday.Month == @ViewBag.Mth && item.Wednesday.Year == @ViewBag.Yr))
+           {
+              <div style="font-size:20pt;text-align:center;color:gray;">@Html.ValueFor(model => item.Wednesday, "{0:dd}")</div>
+           }
+           else
+           {
+              <div style="font-size:20pt;text-align:center;">@Html.ValueFor(model => item.Wednesday, "{0:dd}")</div>  
+           }
+
+            <h4><label style="color:black;text-align:center;" onclick="ShowHideDiv(3,@i.ToString())">.....</label></h4>
+            <div style="font-size:9pt;color:black;text-align:center;">@Html.Raw(item.WednesdayInfo)</div>
+            <div id="div3+@i.ToString()" class="lnk" style="display:none;margin-left:5px;text-align:center;font-size:8pt;">
+                Meeting:&nbsp;<a id="A_lnk3+@i.ToString()" class="details" href="javascript:;">Add</a>&nbsp;<a id="B_lnk3+@i.ToString()" class="details" href="javascript:;">Edit</a>
+                <br/>Card:&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.WednesdayQmId)">Add</a>&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.WednesdayQmId)">Edit</a>
+                <a target="_blank" href="/QuailBookReport/QuailCardReport?qmid=@Html.Raw(item.WednesdayQmId)">Preview</a>
+            </div>
+
+        </td>
+        <td>
+           @if (!(item.Thursday.Month == @ViewBag.Mth && item.Thursday.Year == @ViewBag.Yr))
+           {
+              <div style="font-size:20pt;text-align:center;color:gray;">@Html.ValueFor(model => item.Thursday, "{0:dd}")</div>
+           }
+           else
+           {
+              <div style="font-size:20pt;text-align:center;">@Html.ValueFor(model => item.Thursday, "{0:dd}")</div>  
+           }
+
+            <h4><label style="color:black;text-align:center;" onclick="ShowHideDiv(4,@i.ToString())">.....</label></h4>
+            <div style="font-size:9pt;color:black;text-align:center;">@Html.Raw(item.ThursdayInfo)</div>
+            <div id="div4+@i.ToString()" class="lnk" style="display:none;margin-left:5px;text-align:center;font-size:8pt;">
+                Meeting:&nbsp;<a id="A_lnk4+@i.ToString()" class="details" href="javascript:;">Add</a>&nbsp;<a id="B_lnk4+@i.ToString()" class="details" href="javascript:;">Edit</a>
+                <br/>Card:&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.ThursdayQmId)">Add</a>&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.ThursdayQmId)">Edit</a>
+                <a target="_blank" href="/QuailBookReport/QuailCardReport?qmid=@Html.Raw(item.ThursdayQmId)">Preview</a>
+            </div>
+
+        </td>
+        <td>
+           @if (!(item.Friday.Month == @ViewBag.Mth && item.Friday.Year == @ViewBag.Yr))
+           {
+              <div style="font-size:20pt;text-align:center;color:gray;">@Html.ValueFor(model => item.Friday, "{0:dd}")</div>
+           }
+           else
+           {
+              <div style="font-size:20pt;text-align:center;">@Html.ValueFor(model => item.Friday, "{0:dd}")</div>  
+           }
+
+            <h4><label style="color:black;text-align:center;" onclick="ShowHideDiv(5,@i.ToString())">.....</label></h4>
+            <div style="font-size:9pt;color:black;text-align:center;">@Html.Raw(item.FridayInfo)</div>
+            <div id="div5+@i.ToString()" class="lnk" style="display:none;margin-left:5px;text-align:center;font-size:8pt;">
+                Meeting:&nbsp;<a id="A_lnk5+@i.ToString()" class="details" href="javascript:;">Add</a>&nbsp;<a id="B_lnk5+@i.ToString()" class="details" href="javascript:;">Edit</a>
+                <br/>Card:&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.FridayQmId)">Add</a>&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.FridayQmId)">Edit</a>
+                <a target="_blank" href="/QuailBookReport/QuailCardReport?qmid=@Html.Raw(item.FridayQmId)">Preview</a>
+            </div>
+
+        </td>
+        <td>
+           @if (!(item.Saturday.Month == @ViewBag.Mth && item.Saturday.Year == @ViewBag.Yr))
+           {
+              <div style="font-size:20pt;text-align:center;color:gray;">@Html.ValueFor(model => item.Saturday, "{0:dd}")</div>
+           }
+           else
+           {
+              <div style="font-size:20pt;text-align:center;">@Html.ValueFor(model => item.Saturday, "{0:dd}")</div>  
+           }
+
+            <h4><label style="color:black;text-align:center;" onclick="ShowHideDiv(6,@i.ToString())">.....</label></h4>
+            <div style="font-size:9pt;color:black;text-align:center;">@Html.Raw(item.SaturdayInfo)</div>
+            <div id="div6+@i.ToString()" class="lnk" style="display:none;margin-left:5px;text-align:center;font-size:8pt;">
+                Meeting:&nbsp;<a id="A_lnk6+@i.ToString()" class="details" href="javascript:;">Add</a>&nbsp;<a id="B_lnk6+@i.ToString()" class="details" href="javascript:;">Edit</a>
+                <br/>Card:&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.SaturdayQmId)">Add</a>&nbsp;<a target="_blank" href="/QuailBook/CreateUpdate?qmid=@Html.Raw(item.SaturdayQmId)">Edit</a>
+                <a target="_blank" href="/QuailBookReport/QuailCardReport?qmid=@Html.Raw(item.SaturdayQmId)">Preview</a>
+            </div>
+
+        </td>
+        <td>
+           @if (!(item.Sunday.Month == @ViewBag.Mth && item.Sunday.Year == @ViewBag.Yr))
+           {
+              <div style="font-size:20pt;text-align:center;color:gray;">@Html.ValueFor(model => item.Sunday, "{0:dd}")</div>
+           }
+           else
+           {
+              <div style="font-size:20pt;text-align:center;">@Html.ValueFor(model => item.Sunday, "{0:dd}")</div>  
+           }
+           <div style="font-size:9pt;color:black;text-align:center;">@Html.Raw(item.SundayInfo)</div>
+        </td>
+    </tr>
+    i++;
+}
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+<link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css" rel="stylesheet" type="text/css"/>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("ddlMonth").value = '@ViewBag.Mth';
+            document.getElementById("txtYear").value = '@ViewBag.Yr';
+        });
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideDiv(col,row) {
+            //var x = document.getElementById("div1+" + id);
+            var x = document.getElementById("div" + col + "+" + row);
+            if (x.style.display == "block") {
+                x.style.display = "none";
+            }
+            else {
+                x.style.display = "block";
+            }
+        }
+    </script>
+
+
+    @*popup*@
+    <script type="text/javascript">
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                title: "View Details",
+                beforeClose: function (event, ui) {
+                    if (!$("#terms").prop("checked")) {
+                        event.preventDefault();
+                        //$("[for = terms]").addClass("invalid");
+                        $('#lblAdminQuery').text('Not OK');
+                    }
+                    else {
+                        $('#lblAdminQuery').text('OK');
+                    }
+                    //window.location.href = "../QuailBook/CreateUpdate?qmid=" + d.qmid + "&indx=" + rindex + "&colindex=" + nxtcindex + "&chksubitem="+x+"&qlbpriority="+prt+"&tp=0";
+                    window.location.href = "../QuailMeeting/CalendarView";
+                }
+            });
+            //$("#CustomerGrid .details").click(function (id) {
+            $("#CustomerGrid .details").click(function () {
+                //var x = document.getElementsByClassName(".details");
+                    //$("#forward").click(function () {
+                    //var customerId = '0';//$(this).closest("tr").find("td").eq(0).html();
+                var rno = 1;//$(this).closest("tr").find("td").eq(0).html();
+                var x = $(this).attr("id");
+                    //alert(x);
+                    $.ajax({
+                        type: "POST",
+                        url: "/QuailMeeting/QuailDialogPartial",
+                        data: '{rno: "' + rno + '" }',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "html",
+                        success: function (response) {
+                            $('#dialog').html(response);
+                            $('#dialog').dialog('open');
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+            });
+        });
+    </script>
+    @*cl-popup*@
+
+}
+

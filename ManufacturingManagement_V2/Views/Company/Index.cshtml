@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.CompanyMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Company List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:25px;">
+            S.No.
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CmpName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address3)
+        </th>
+        <th style="width:40px;">Edit</th>
+        <th style="width:40px;">Details</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CmpName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address3)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.CompCode })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.CompCode })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+

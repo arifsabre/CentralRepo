@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - PRAG ERP</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/Site.css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                    <div class="float-left">@*<div class="float-left" style="height:45px;">*@
+                        <p class="site-title"><img src="~/Images/prag-logo.png">
+                    </div>
+                    <div class="float-left" style="margin-left:10px;">
+                        <div class="usr" style="font-size:x-large;"> Prag Group of Industries ERP System V.2</div><br/>
+                        <span style="font-size:14px;color:darkviolet;font-weight:bold;">@ViewBag.CompName</span>
+                        &nbsp;
+                        <span style="font-size:12px;color:darkviolet;font-weight:bold;">(Financial Year : @ViewBag.FinYear)</span>
+                        <br/>
+                        <span style="width: 57px; color:darkgreen;font-weight:bold;">[@ViewBag.UserName]</span>
+                        <div class="float-right">
+                            <a href="/Home/Index" style="width: 57px; color:blue;font-weight:bold;">Home</a>
+                            &nbsp;&nbsp;
+                            <a target="_blank" href="/Notification/Index" style="width: 57px; color:blue;font-weight:bold;">Notification</a>
+                            &nbsp;&nbsp;
+                            <a href="/Login/LoginUser" style="width: 57px; color:blue;font-weight:bold;">Logout</a>
+                        </div>
+                    </div>
+            </div>
+        </header>
+        <div id="body" style="min-height:400px;">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        @Html.Partial("../Home/pageFooter")
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+
+        <iframe id="Iframe1" runat="server" scrolling="no" frameborder="0"
+            src="http://192.168.0.218:105/Notification/Index"
+            style="width:90%;height:15px;opacity:0.00;">
+        </iframe>
+
+    </body>
+</html>
+
+

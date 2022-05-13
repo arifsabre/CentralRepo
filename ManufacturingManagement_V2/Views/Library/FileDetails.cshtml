@@ -1,0 +1,133 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.LibFileUploadMDI>
+@*Library List*@
+@*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert">
+        Download Request
+    </button>
+    <div id="printbar" class="pull-right">
+    </div>*@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>All Library File</title>
+    <script>
+    </script>
+</head>
+<body>
+    <table id="jdtabledesktop" class="table table-condensed table-responsive table-hover" style="width:100%">
+        <thead>
+            <tr style="text-align:left">
+                <th class="col-md-2" style="text-align:left">
+                    <label>Update/Delete</label>
+
+                </th>
+                <th class="col-md-2" style="text-align:left">
+                    <label>Id</label>
+                    @*@Html.DisplayNameFor(model => model.RecordId)*@
+                </th>
+                <th class="col-md-2" style="text-align:left">
+                    <label>Category</label>
+                    @* @Html.DisplayNameFor(model => model.LibCategory)*@
+                </th>
+                <th class="col-md-2" style="text-align:left">
+                    <label>SubCategory</label>
+                    @*@Html.DisplayNameFor(model => model.LibSubCategory)*@
+                </th>
+                <th class="col-md-2" style="text-align:left">
+                    <label>Description</label>
+                    @*   @Html.DisplayNameFor(model => model.Description)*@
+                </th>
+
+                <th class="col-md-2" style="text-align:left">
+                    <label>Uploaded_By</label>
+                    @*   @Html.DisplayNameFor(model => model.username)*@
+                </th>
+
+                <th class="col-md-2" style="text-align:left">
+                    <label>FileName</label>
+                    @* @Html.DisplayNameFor(model => model.FileName)*@
+                </th>
+                @*<th class="col-md-2" style="text-align:left">
+                        <label>Download</label>
+                         @Html.DisplayNameFor(model => model.FileName)
+                    </th>*@
+                <th class="col-md-2" style="text-align:center">
+                    <label>View</label>
+                    @* @Html.DisplayNameFor(model => model.FileName)*@
+                </th>
+                @*<th class="col-md-2" style="text-align:left">
+                        @Html.DisplayNameFor(model => model.FileContent)
+                    </th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="text-align:left">
+                    <td>
+                        <a onclick="GetDetails(@item.RecordId)">
+                            <i class="fa fa-pencil">
+                            </i>
+                        </a>
+
+                        <a onclick="CatUpdate(@item.RecordId)">
+                            <i class="fa fa-pencil">
+                            </i>
+                        </a>
+                        <a onclick="SubCatUpdate(@item.RecordId)">
+                            <i class="fa fa-pencil">
+                            </i>
+                        </a>
+                        <a>
+                            @Html.ActionLink(" ", "LibraryDeleteRecordProc", "Library", new { id = item.RecordId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                        </a>
+                    </td>
+                    <td style="text-align:left">
+                        @Html.DisplayFor(modelItem => item.RecordId)
+
+                    </td>
+                    <td style="text-align:left">
+                        @Html.DisplayFor(modelItem => item.LibCategory)
+                        @*<a onclick="CatUpdate(@item.RecordId)">
+                            <i class="fa fa-percent">
+                            </i>
+                        </a>*@
+                    </td>
+                    <td style="text-align:left">
+                        @Html.DisplayFor(modelItem => item.LibSubCategory)
+                        @*<a onclick="SubCatUpdate(@item.RecordId)">
+                            <i class="fa fa-pencil">
+                            </i>
+                        </a>*@
+                    </td>
+
+                    <td style="text-align:left">
+                        @Html.DisplayFor(modelItem => item.Description)
+                        @*<a onclick="GetDetails(@item.RecordId)">
+                            <i class="fa fa-pencil">
+                            </i>
+                        </a>*@
+                    </td>
+                    <td style="text-align:left">
+                        @Html.DisplayFor(modelItem => item.username)
+                    </td>
+                    <td style="text-align:left">
+                        @Html.DisplayFor(modelItem => item.FileName)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.FileContent)
+                        </td>*@
+                    @*<td style="text-align:left">
+                            @Html.ActionLink("Downlaod", "DownLoadFile", new { id = item.Id })
+                        </td>*@
+                    <td style="text-align:center">
+                        @Html.ActionLink("View", "GetFile", new { id = item.Id })
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    </body>
+</html>
+

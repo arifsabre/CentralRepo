@@ -1,0 +1,325 @@
+﻿@model ManufacturingManagement_V2.Models.IT_Register
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+
+    <script>
+        //$(function () {
+        //     $('#example1').DataTable();
+        // })
+        function UpdateRecord(id) {
+            $.ajax({
+                url: "/IT_Register/IT_Register_Record/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#Id1').val(response.Id);
+                    $('#compcode2').val(response.compcode);
+                    $('#NewEmpId2').val(response.NewEmpId);
+                    $('#Location12').val(response.Location);
+                    $('#DeviceName12').val(response.DeviceName);
+                    $('#SerialNumber12').val(response.SerialNumber);
+                    $('#Uses12').val(response.Uses);
+                    $('#OSVersion12').val(response.OSVersion);
+                    $('#LabelName12').val(response.LabelName);
+                    $('#Remark12').val(response.Remark);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function GetCompany() {
+            $.ajax({
+                // url: "/LibraryMasterUpload/Edit_CompanyRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    // $('#RecordId3').val(response.RecordId);
+                    $('#modal-ChangeCompany8').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert" style="margin-top:3px;margin-bottom:3px">
+        Add New Record
+    </button>
+    <div id="printbar" class="pull-right" style="margin-top:3px;margin-bottom:3px">
+    </div>
+
+    <section class="content">
+        Issued Item List
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover table-condensed table-responsive " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Company</th>
+                                    <th>Location</th>
+                                    <th>Issue</th>
+                                    <th>Device/PC</th>
+                                    <th>Serial/Mac</th>
+                                    <th>Uses</th>
+                                    <th>OS</th>
+                                    <th>Label</th>
+                                    <th>Remark</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size:small">
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.Id)</td>
+                                        <td>@Html.DisplayFor(model => item.ShortName)</td>
+                                        <td>@Html.DisplayFor(model => item.Location)</td>
+                                        <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                        <td>@Html.DisplayFor(model => item.DeviceName)</td>
+                                        <td>@Html.DisplayFor(model => item.SerialNumber)</td>
+                                        <td>@Html.DisplayFor(model => item.Uses)</td>
+                                        <td>@Html.DisplayFor(model => item.OSVersion)</td>
+                                        <td>@Html.DisplayFor(model => item.LabelName)</td>
+                                        <td>@Html.DisplayFor(model => item.Remark)</td>
+                                        <td>
+                                            <a onclick="UpdateRecord(@item.Id)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "IT_Register_Delete_Record", "IT_Register", new { id = item.Id }, new { onclick = "return confirm('Are sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    @using (Html.BeginForm("Index", "IT_Register", FormMethod.Post))
+                    {
+                        <div class="modal-body" style="height:600px;width:500px">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Company</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)
+                                    <br />
+                                    <label>Location</label>
+                                    <br />
+                                    @Html.TextAreaFor(model => model.Location, 0, 0, new { @class = "Editor", @style = "width:500px;height:30px;", @id = "Location1" })
+                                    <br />
+                                    <label>Issue To</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.NewEmpId, ViewBag.EMPName as SelectList)
+                                    <br />
+                                    <label>Device/PC</label>
+                                    <br />
+                                    @Html.TextAreaFor(model => model.DeviceName, 0, 0, new { @class = "Editor", @style = "width:500px;height:100px;", @id = "DeviceName1" })
+
+                                    <br />
+                                    <label>Serial Number/MAC</label>
+                                    <br />
+                                    @Html.TextAreaFor(model => model.SerialNumber, 0, 0, new { @class = "Editor", @style = "width:500px;height:100px;", @id = "SerialNumber1" })
+
+                                    <br />
+                                    <label>Uses</label>
+                                    <br />
+                                    @Html.TextAreaFor(model => model.Uses, 0, 0, new { @class = "Editor", @style = "width:500px;height:100px;" })
+                                    @*@Html.ValidationMessageFor(model => model.Uses, "", new { @class = "text-danger" })*@
+                                    <br />
+                                    <label>Os Version</label>
+                                    <br />
+                                    @Html.TextAreaFor(model => model.OSVersion, 0, 0, new { @class = "Editor", @style = "width:500px;height:30px;" })
+                                    @*@Html.ValidationMessageFor(model => model.OSVersion, "", new { @class = "text-danger" })*@
+                                    <br />
+                                    <label>Label Name</label>
+                                    <br />
+                                    @Html.TextAreaFor(model => model.LabelName, 0, 0, new { @class = "Editor", @style = "width:500px;height:30px;" })
+                                    @*@Html.ValidationMessageFor(model => model.LabelName, "", new { @class = "text-danger" })*@
+                                    <br />
+                                    <label>Remark</label>
+                                    <br />
+                                    @Html.TextAreaFor(model => model.Remark, 0, 0, new { @class = "Editor", @style = "width:500px;height:30px;" })
+                                    @*@Html.ValidationMessageFor(model => model.Remark, "", new { @class = "text-danger" })*@
+                                    <br />
+                                    @Html.HiddenFor(model => model.UserId)
+                                    @Html.HiddenFor(model => model.CreatedBy)
+                                </div>
+                            </div>
+                        </div>
+                        <br /><br /><br /><br /><br /><br /><br />
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Update Record </h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("IT_Register_Edit_Record", "IT_Register", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:600px;width:500px;background-color:white">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Id</label>
+                                        <input type="number" class="form-control" id="Id1" name="Id">
+
+                                        <label>Company</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList, new { id = "compcode2" })
+                                        <br />
+
+                                        <label>Issue To</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.NewEmpId, ViewBag.EMPName as SelectList, new { id = "NewEmpId2" })
+                                        <br />
+
+                                        <label>Location</label>
+                                        <br />
+                                        <input type="text" class="form-control" id="Location12" name="Location" style="width:500px">
+                                        @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+
+                                        <br />
+                                        <label>Device/PC</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.DeviceName, 0, 0, new { @class = "Editor", @style = "width:500px;height:100px;", @id = "DeviceName12" })
+                                        @Html.ValidationMessageFor(model => model.DeviceName, "", new { @class = "text-danger" })
+                                        <br />
+                                        <label>Serial Number/MAC</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.SerialNumber, 0, 0, new { @class = "Editor", @style = "width:500px;height:100px;", @id = "SerialNumber12" })
+                                        @Html.ValidationMessageFor(model => model.SerialNumber, "", new { @class = "text-danger" })
+                                        <br />
+                                        <label>Uses</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.Uses, 0, 0, new { @class = "Editor", @style = "width:500px;height:100px;", @id = "Uses12" })
+                                        @Html.ValidationMessageFor(model => model.Uses, "", new { @class = "text-danger" })
+                                        <br />
+                                        <label>Os Version</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.OSVersion, 0, 0, new { @class = "Editor", @style = "width:500px;height:30px;", @id = "OSVersion12" })
+                                        @Html.ValidationMessageFor(model => model.OSVersion, "", new { @class = "text-danger" })
+                                        <br />
+                                        <label>Label Name</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.LabelName, 0, 0, new { @class = "Editor", @style = "width:500px;height:30px;", @id = "LabelName12" })
+                                        @Html.ValidationMessageFor(model => model.LabelName, "", new { @class = "text-danger" })
+                                        <br />
+                                        <label>Remark</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.Remark, 0, 0, new { @class = "Editor", @style = "width:500px;height:30px;", @id = "Remark12" })
+                                        @Html.ValidationMessageFor(model => model.Remark, "", new { @class = "text-danger" })
+                                        <br />
+                                        @Html.HiddenFor(model => model.UpdatedBy)
+
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="button" id="modal-Update" class="btn btn-success" data-dismiss="modal">Close</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* ChangeCompany*@
+    <div class="modal fade" id="modal-ChangeCompany8">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                @*<div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="box-title">Company Screen</h3>
+                    </div>*@
+                <div class="modal-body">
+                    @*<div class="box box-primary">*@
+                    @using (Html.BeginForm("ChangeCompany", "Add_In_Stock_ITCELLLis", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-lg-10">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                @*@Html.HiddenFor(model => model.UpdatedBy)*@
+                                <input type="hidden" class="form-control" id="RecordId3" name="RecordId" style="color:white">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Select Company</label>
+                                @Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)
+                                @*@Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)*@
+                                @* @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "danger" })*@
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" id="modal-updateCompany" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="submit" id="modal-updateCompany" class="btn btn-success">Submit</button>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>

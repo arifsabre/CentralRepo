@@ -1,0 +1,80 @@
+﻿<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    @*Admin Utilities*@
+    <li class="treeview" id="mnuUtilitiesAdmin">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Admin">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuUtilitiesAdmin');">&nbsp;&nbsp;Admin Utilities</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Admin/Index">Utility List</a></li>
+            <li><a href="/ObjectInfo/Index">Object Information</a></li>
+            <li><a href="/Admin/getObjectFile">Get Object File(s)</a></li>
+            <li><a href="/Admin/createSingleFile">Create Single File</a></li>
+            <li><a href="/Admin/CreateDBPList">Create DBP List</a></li>
+            <li><a href="/Admin/ExecuteOneAction?opt=0">Execute Action</a></li>
+            <li><a href="/Admin/UploadFile">Upload File</a></li>
+            <li><a href="/Admin/Downloads">Download File</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Company*@
+    <li class="treeview" id="mnuCompany">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Admin">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuCompany');">&nbsp;&nbsp;Company</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Company/Index">View Company</a></li>
+            <li><a href="/Company/CreateUpdate">Create Company</a></li>
+        </ul>
+        @*</li>*@
+
+        @*User Admin*@
+    <li class="treeview" id="mnuUserAdmin">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Admin">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuUserAdmin');">&nbsp;&nbsp;User Admin</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/UserPermission/Index">Set User Permission</a></li>
+            <li><a href="/UserAdmin/Index">View Users</a></li>
+            <li><a href="/UserAdmin/CreateUpdate">Create User</a></li>
+            <li><a href="/DocSubCategory/Index">Document Sub Category</a></li>
+            <li><a href="/MasterDocumentName/Index">Master Document Name</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Reports*@
+    <li class="treeview" id="mnuReportsAdmin">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Admin">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuReportsAdmin');">&nbsp;&nbsp;Reports</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/UserPermissionReport/Index">User Permission Report</a></li>
+            <li><a href="/CollabPermissionReport/Index">Collab Permission Report</a></li>
+            <li><a href="/UsersLogReport/Index">User's Log Report</a></li>
+            <li><a href="/EventLogReport/Index">Event Log Report</a></li>
+        </ul>
+        @*</li>*@
+
+</ul>
+@*ul-end*@

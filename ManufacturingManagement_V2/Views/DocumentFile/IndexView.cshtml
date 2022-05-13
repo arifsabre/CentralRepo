@@ -1,0 +1,129 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.DocumentFileMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <h4><b>View Company Documents</b></h4>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndexView", "DocumentFile", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+            <div class="form-group">
+                <table class="table table-bordered">
+                    <tr>
+                        <td style="width:10%;">@Html.DisplayNameFor(model => model.CCode)</td>
+                        @*<td>@Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList, new { @onchange="setLink()"})</td>*@
+                        <td>@Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.CategoryId)</td>
+                        <td>@Html.DropDownList("ddlCategory", ViewBag.CatgeoryList as SelectList, "All Documents")</td>
+                    </tr>
+                    <tr>
+                        <td>Sub&nbsp;Category</td>
+                        <td>
+                            @Html.DropDownList("ddlSubCategory", ViewBag.SubCatgeoryList as SelectList, "All")
+                            <button class="btn btn-default">Submit</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        }
+    </fieldset>
+
+    @*<div id="dialog" style="display: block;"></div>*@
+    <span style="color:blue;font-weight:bold;">
+        List of <i>@ViewBag.CName, Sub Category- @ViewBag.SubCName</i>
+    </span>
+
+    <table class="tablecontainer" style="width:100%;">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            @if (@ViewBag.CName == "All Documents")
+            {
+                <th style="width:auto;">
+                    @Html.DisplayNameFor(model => model.CategoryName)
+                </th>
+            }
+            <th style="width:auto;">
+                Sub&nbsp;Category
+            </th>
+            <th style="width:auto;">
+                @Html.DisplayNameFor(model => model.DocFileName)
+            </th>
+            <th style="width:auto;">
+                @Html.DisplayNameFor(model => model.FileDesc)
+            </th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                @if (@ViewBag.CName == "All Documents")
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubCategoryName)
+                </td>
+                <td>
+                    @Html.ActionLink(item.DocFileName, "../DocumentFile/ShowDocument",
+                    new { fileName = item.DocFileName, categoryid = item.CategoryId, subcategoryid = item.SubCategoryId, ccode = item.CCode },
+                    new { target = "_blank", style = "font-weight:normal;" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileDesc)
+                </td>
+            </tr>
+            i++;
+        }
+        @{i = i - 1;}
+        &nbsp;&nbsp;@i.ToString()&nbsp;&nbsp;Document(s) found.
+    </table><br />
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                //setLink();//to execute on loading time
+            });
+        </script>
+
+        @*<script type="text/javascript">
+                function setLink() {
+                    var liObj = document.getElementById("ddlCompany");
+                    var objIndex = liObj.selectedIndex;
+                    var objId = liObj.options[objIndex].value;
+                    //var objName = liObj.options[objIndex].text;//OK
+                    $.ajax({
+                        cache: false,
+                        async: false,
+                        type: "POST",
+                        url: "@(Url.Action("getISODocsLinkDetail", "DocumentFile"))",
+                        data: { "ccode": objId },
+                        success: function (data) {
+                            $('#dialog').html(data.result);
+                            action = data.Action;
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to retrieve states.');
+                        }
+                    });
+                }
+            </script>*@
+    }

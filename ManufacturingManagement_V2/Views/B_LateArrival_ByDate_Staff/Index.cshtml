@@ -1,0 +1,43 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Late Arrival Report</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:10%;">Date From</td>
+                    <td>@Html.EditorFor(model => model.DateFrom)</td>
+                </tr>
+                <tr>
+                    <td>To</td>
+                    <td>@Html.EditorFor(model => model.DateTo)</td>
+                </tr>
+                <tr>
+                    <td>Report Format</td>
+                    <td>@Html.DropDownListFor(model => model.ReportFormat, ViewBag.ReportFormatList as SelectList)</td>
+                </tr>
+            </table>
+        </div>
+        <table class="table table-bordered">
+            <tr>
+                <td style="column-gap:normal">
+                    <input type="submit" class="btn btn-default" value="Staff" onclick="target = '_blank';"
+                           formaction="@Url.Action("Get_B_Late_ArrivalByDateStaff")" />
+                    @*<input type="submit" class="btn btn-default" style="width:150px;" value="Worker" onclick="target = '_blank';"
+                formaction="@Url.Action("Get_B_Late_ArrivalByDateWorker")" />*@
+
+                    <input type="submit" class="btn btn-default" value="Head Office" onclick="target = '_blank';"
+                           formaction="@Url.Action("Get_B_Late_ArrivalByDateHOStaff")" />
+                </td>
+            </tr>
+        </table>
+ }
+<h5><b>@ViewBag.Message</b></h5>
+    
+

@@ -1,0 +1,148 @@
+﻿@model ManufacturingManagement_V2.Models.FormValueMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Bonus Form Values</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <h5><b>Form A Values</b></h5>
+        <table class="table table-bordered">
+            <tr>
+                @Html.HiddenFor(model => model.RecId)
+                <td>@Html.LabelFor(model => model.CompCode)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)
+                    @Html.ValidationMessageFor(model => model.CompCode)
+                </td>
+                <td>@Html.LabelFor(model => model.FinYear)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.FinYear, ViewBag.FinYearList as SelectList)
+                    @Html.ValidationMessageFor(model => model.FinYear)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.NetProfit)</td>
+                <td>
+                    @Html.EditorFor(model => model.NetProfit)
+                    @Html.ValidationMessageFor(model => model.NetProfit)
+                </td>
+                <td>@Html.LabelFor(model => model.PrvYrBonusAmt)</td>
+                <td>
+                    @Html.EditorFor(model => model.PrvYrBonusAmt)
+                    @Html.ValidationMessageFor(model => model.PrvYrBonusAmt)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.DepreciationAmt)</td>
+                <td>
+                    @Html.EditorFor(model => model.DepreciationAmt)
+                    @Html.ValidationMessageFor(model => model.DepreciationAmt)
+                </td>
+                <td>@Html.LabelFor(model => model.RateOfDevRebate)</td>
+                <td>
+                    @Html.EditorFor(model => model.RateOfDevRebate)
+                    @Html.ValidationMessageFor(model => model.RateOfDevRebate)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.CapitalAmtPer)</td>
+                <td>
+                    @Html.EditorFor(model => model.CapitalAmtPer)
+                    @Html.ValidationMessageFor(model => model.CapitalAmtPer)
+                </td>
+                <td>@Html.LabelFor(model => model.CapitalAmount)</td>
+                <td>
+                    @Html.EditorFor(model => model.CapitalAmount)
+                    @Html.ValidationMessageFor(model => model.CapitalAmount)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.RevSurpAmtPer)</td>
+                <td>
+                    @Html.EditorFor(model => model.RevSurpAmtPer)
+                    @Html.ValidationMessageFor(model => model.RevSurpAmtPer)
+                </td>
+                <td>@Html.LabelFor(model => model.RevSurpAmount)</td>
+                <td>
+                    @Html.EditorFor(model => model.RevSurpAmount)
+                    @Html.ValidationMessageFor(model => model.RevSurpAmount)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.SurpAllocPer)</td>
+                <td>
+                    @Html.EditorFor(model => model.SurpAllocPer)
+                    @Html.ValidationMessageFor(model => model.SurpAllocPer)
+                </td>
+                <td>@Html.LabelFor(model => model.BonusPer)</td>
+                <td>
+                    @Html.EditorFor(model => model.BonusPer)
+                    @Html.ValidationMessageFor(model => model.BonusPer)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.BonusAmount)</td>
+                <td>
+                    @Html.EditorFor(model => model.BonusAmount)
+                    @Html.ValidationMessageFor(model => model.BonusAmount)
+                </td>
+            </tr>
+            <tr><td colspan="3"><h5><b>Form D Values</b></h5></td></tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.NoOfMales)</td>
+                <td>
+                    @Html.EditorFor(model => model.NoOfMales)
+                    @Html.ValidationMessageFor(model => model.NoOfMales)
+                </td>
+                <td>@Html.LabelFor(model => model.NoOfFemales)</td>
+                <td>
+                    @Html.EditorFor(model => model.NoOfFemales)
+                    @Html.ValidationMessageFor(model => model.NoOfFemales)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.NoOfWDays)</td>
+                <td>
+                    @Html.EditorFor(model => model.NoOfWDays)
+                    @Html.ValidationMessageFor(model => model.NoOfWDays)
+                </td>
+                <td>@Html.LabelFor(model => model.PayableBonusAmt)</td>
+                <td>
+                    @Html.EditorFor(model => model.PayableBonusAmt)
+                    @Html.ValidationMessageFor(model => model.PayableBonusAmt)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.PaymentDate)</td>
+                <td>
+                    @Html.EditorFor(model => model.PaymentDate)
+                    @Html.ValidationMessageFor(model => model.PaymentDate)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("FinYear").value = '@Model.FinYear';
+        });
+    </script>
+}

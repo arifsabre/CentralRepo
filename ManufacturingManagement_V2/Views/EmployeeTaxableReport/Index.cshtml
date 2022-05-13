@@ -1,0 +1,107 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Item Master Report</b></h4>
+
+@{var lstStatus = new List<System.Web.UI.WebControls.ListItem>
+{
+          new System.Web.UI.WebControls.ListItem { Text = "In Use", Value="i" },
+          new System.Web.UI.WebControls.ListItem { Text = "Deleted", Value="d" },
+          new System.Web.UI.WebControls.ListItem { Text = "All", Value="a" },
+    };
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <h5><b>Report Options</b></h5>
+        <table class="table table-bordered">
+            <tr>
+                @Html.HiddenFor(model => model.NewEmpId)
+                <td style="width:10%;"><b>Company</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Fin. Year</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.FinYear, ViewBag.FinYearList as SelectList)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Employee</b></td>
+                <td>
+                    @Html.EditorFor(model => model.EmpName)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Filter&nbsp;Amount</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Amount)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Add&nbsp;Summary</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Detailed)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value="View Report" onclick="target = '_blank';" style="width:150px;"
+               formaction="@Url.Action("DisplayReport")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#EmpName").attr("style", "width:300px;");
+            $("#Detailed").attr("style", "width:55px;height:25px;");
+            $("#EmpName").attr("placeholder", "start typing, then select");
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#EmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('NewEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+
+

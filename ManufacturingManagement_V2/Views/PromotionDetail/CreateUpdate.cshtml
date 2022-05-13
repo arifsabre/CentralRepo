@@ -1,0 +1,90 @@
+﻿@model ManufacturingManagement_V2.Models.PromotionDetailMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Promotion Entry</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr><td colspan="3"><h5><b>Promotion Details</b></h5></td></tr>
+                <tr>
+                    @Html.HiddenFor(model => model.RecId)
+                @Html.HiddenFor(model => model.EmpId)
+                @Html.HiddenFor(model => model.NewEmpId)
+                @Html.HiddenFor(model => model.EmpName)
+                <td style="width:10%;">@Html.LabelFor(model => model.EmpId)</td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.EmpId) /
+                @Html.DisplayFor(model => model.EmpName)
+                @Html.ValidationMessageFor(model => model.EmpId)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.PromotionDate)</td>
+                <td>
+                    @Html.EditorFor(model => model.PromotionDate)
+                @Html.ValidationMessageFor(model => model.PromotionDate)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.CategoryId)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.CategoryId, ViewBag.EmpCategoryList as SelectList)
+                @Html.ValidationMessageFor(model => model.CategoryId)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.DesigId)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.DesigId, ViewBag.DesignationList as SelectList)
+                @Html.ValidationMessageFor(model => model.DesigId)
+            </td>
+            </tr>
+            @*<tr>
+       <td>@Html.LabelFor(model => model.dateChk)</td>
+       <td>@Html.EditorFor(model => model.dateChk)
+       @Html.ValidationMessageFor(model => model.dateChk)</td>
+         ok for display only  <td>@Html.LabelFor(model => model.dateChk)</td>
+        <td>
+            @Html.Partial("~/views/home/date.cshtml", Model.dateChk)
+        </td>
+    </tr>*@
+            </table>
+        </div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class = "btn btn-default" value=@ViewBag.AddEdit />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")*@
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+
+        //Date Picker 
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+
+    </script>
+}

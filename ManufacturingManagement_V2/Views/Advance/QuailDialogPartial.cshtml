@@ -1,0 +1,48 @@
+﻿@model ManufacturingManagement_V2.Models.AdvanceMdl
+<h4>QUAIL ITEM</h4>
+SNo = @Model.RecId
+
+
+<p>
+    <span style="font-weight:bold;">Complaint Type:</span> 
+    @Html.DropDownList("ddlQualP", ViewBag.QualPList as SelectList, new { style = "width:120px;" })
+    <span style="font-weight:bold;">Remarks:</span> 
+    <input type="text" style="width:350px;" placeholder="max length: 250" maxlength="250" id="txtRemarks"/>
+    <input id="submit" type="button" value='Submit' onclick="CreateComplaint();" style="height:35px;" />
+</p>
+
+
+<label for = "terms" >I accept the terms</label>
+<input type = "checkbox" id = "terms">
+
+
+
+
+<script>
+    function CreateComplaint() {
+        document.getElementById("terms").checked = true;
+        window.close();
+        @*var compmsg = $('#txtCompMsg').val();
+        if (compmsg.trim() == '') {
+            alert('No complaint entered!');
+            return;
+        }
+        var liCompType = document.getElementById("ddlCompType");
+        var compIndex = liCompType.selectedIndex;
+        var comptype = liCompType.options[compIndex].value;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdateComplaint", "Complaint")',
+            dataType: 'html',
+            data: ({
+                compid: compid,
+                comptype: comptype,
+                compmsg: compmsg
+            }),
+            success: function () {
+                //alert("Successfully posted!");
+            }
+        });
+        location.reload();*@
+    }
+</script>

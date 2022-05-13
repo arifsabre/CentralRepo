@@ -1,0 +1,44 @@
+﻿@model ManufacturingManagement_V2.Models.ContractorIndentMDI
+
+@{
+    ViewBag.Title = "NewCoplaint";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+
+<br />
+<div>
+    <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+        <thead>
+            @*<tr>
+                    <th style="color:red">Below is Your's Reference No To track The Status Of the Complaint</th>
+                    <th>Created On</th>
+                </tr>*@
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.Item_List)
+            {
+                <tr>
+                    <td style="color:red;font-size:larger">
+
+                        Task Has been Registered <br />
+                        Your's Task Number is -
+                        @Html.DisplayFor(model => item.RecordId)
+                        <br />
+                        For More Details Go To Maintenance ==> Complaints List
+
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(model => item.CreatedOn)
+
+                        </td>*@
+
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>
+
+

@@ -1,0 +1,890 @@
+﻿<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+
+to get CSS reference for various elements go to
+--https://adminlte.io/themes/AdminLTE/index.html > UI Elements
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>PRAG ERP</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="~/Contents/bootstrap.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+
+    <link href="~/Contents/PageContainer.css" rel="stylesheet" />
+
+    <link href="~/Contents/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Ionicons -->
+
+    <link href="~/Contents/Ionicons/css/ionicons.css" rel="stylesheet" />
+    <!-- fullCalendar -->
+    @*<link href="~/Content/Calendar/fullcalendar.css" rel="stylesheet" />
+        <link href="~/Content/Calendar/fullcalendar.print.css" rel="stylesheet" />*@
+    <!-- Theme style -->
+
+    <link href="~/Contents/AdminLTE/css/AdminLTE.css" rel="stylesheet" />
+    @* <link href="~/Contents/metisMenu/metisMenu.css" rel="stylesheet" />*@
+    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+          page. However, you can choose any other skin. Make sure you
+          apply the skin class to the body tag so the changes take effect. -->
+
+    <link href="~/Contents/AdminLTE/css/skins/_all-skins.css" rel="stylesheet" />
+    <!-- Data Table -->
+    <link href="~/Contents/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Contents/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="~/Contents/Buttons-1.6.3/css/buttons.bootstrap.css" rel="stylesheet" />
+    <link href="~/Contents/Buttons-1.6.3/css/buttons.dataTables.css" rel="stylesheet" />
+
+    <link href="~/Contents/searchBuilder.bootstrap.css" rel="stylesheet" />
+    <link href="~/Contents/searchBuilder.dataTables.css" rel="stylesheet" />
+    <link href="~/Contents/searchBuilder.jqueryui.css" rel="stylesheet" />
+    <link href="~/Contents/autoFill.bootstrap.css" rel="stylesheet" />
+    <link href="~/Contents/autoFill.dataTables.css" rel="stylesheet" />
+    <link href="~/Contents/autoFill.jqueryui.css" rel="stylesheet" />
+
+    <!-- Google Font -->
+    @*<link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=SoAurce+Sans+Pro:300,400,600,700,300italic,400italic,600italic">*@
+    <!-- Calendar -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @*@Styles.Render("~/Contents/css")*@  @*working -to be checked*@
+    @Scripts.Render("~/bundles/modernizr")
+    @* @Scripts.Render("~/bundles/login")*@
+
+    @* @Scripts.Render("~/bundles/login")*@
+
+    <style>
+        /*fortopheaderhorizontal*/
+        /*body {
+                    margin: 0;
+                }*/
+
+        .icon-bar {
+            width: 100%;
+            /*background-color: teal;*/
+            background-color: #3c8dbc;
+            overflow: auto;
+            border-top: solid;
+        }
+
+            .icon-bar a {
+                float: left;
+                width: 8%;
+                text-align: center;
+                padding: 12px 0;
+                transition: all 0.1s ease;
+                color: white;
+                font-size: 18px;
+                /*margin-left:55px;*/
+            }
+
+                .icon-bar a:hover {
+                    background-color: black;
+                }
+
+        .active {
+            background-color: #4CAF50;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function setOpt(opt) {
+            //toggle menu
+            var x = '@ViewBag.mnuOpt';
+            if (opt == x) {
+                opt = "x";
+            }
+            //document.getElementById("mnuCaption").innerHTML = opt;
+            //console.log = "mnu" + opt;
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("setMenuOpt", "Home")',
+                dataType: 'html',
+                data: ({
+                    //parameters to controller
+                    smenu: opt
+                }),
+                success: function () {
+                    //alert('kx');
+                }
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        function setMenu() {
+            var items = document.getElementsByClassName("treeview");
+            var x = '@ViewBag.mnuOpt';
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].id == x) {
+                    items[i].setAttribute('class', "treeview active");
+                }
+                else {
+                    items[i].setAttribute('class', "treeview");
+                }
+            }
+            //
+            var deptcoll = document.getElementsByClassName("dept");
+            var y = '@ViewBag.Dept';
+            for (var i = 0; i < deptcoll.length; i++) {
+                if (deptcoll[i].id == y) {
+                    deptcoll[i].setAttribute('style', deptcoll[i].getAttribute('style') + "color:blue;font-weight:bold;");
+                }
+                else {
+                    deptcoll[i].setAttribute('style', deptcoll[i].getAttribute('style') + "color:white;font-weight:normal;");
+                }
+            }
+            //
+            var cntdv = document.getElementById("cntDiv");
+            //var h = screen.height * window.devicePixelRatio - 268;//500 is ok;
+            var h = screen.height - 268;//500;//to set
+            cntdv.setAttribute('style', "margin-left: 5px; height: "+h+"px; overflow-y: scroll;");
+        }
+    </script>
+
+    @*<script type="text/javascript">
+            function setDepartment() {
+                var liObj = document.getElementById("ddlAddress");
+                var sIndex = liObj.selectedIndex;
+                var ccode = liObj.options[sIndex].value;
+                alert(ccode);
+            }
+        </script>*@
+
+    <script type="text/javascript">
+        setInterval(
+            function () {
+                //hlNotification.arguments("display", "none");
+                ShowCurrentTime();
+                //PageMethods.
+            }, 1000)
+
+        var secondTick = 0;
+        function ShowCurrentTime() {
+            var date = new Date();
+            var day = date.getDate();       // yields day
+            var month = date.getMonth() + 1;// yields month (add one as '.getMonth()' is zero indexed)
+            var year = date.getFullYear();  // yields year
+            var hour = date.getHours();     // yields hours
+            var minute = date.getMinutes(); // yields minutes
+            var second = date.getSeconds(); // yields seconds
+            // After this construct a string with the above results as below
+            var time = ('0' + day).slice(-2) + "/" + ('0' + month).slice(-2) + "/" + year + " " + ('0' + hour).slice(-2) + ':' + ('0' + minute).slice(-2) + ':' + ('0' + second).slice(-2);
+            //PageMethods.GetCurrentTime("a", OnSuccess);
+            document.getElementById("CDateTime").innerText = ' [' + time + ']'; //secondTick;--ok
+            //secondTick++;--ok
+
+        }
+    </script>
+
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition skin-blue-light sidebar-mini" onload="setMenu()">
+    <div class="wrapper">
+        <!-- Main Header -->
+        <header class="main-header">
+            <!-- Logo -->
+            @*<a href="index2.html" class="logo">
+            *@
+            <a target="_blank" href="http://praggroup.com" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
+                <!-- logo for regular state and mobile devices -->
+                @*<span class="logo-lg"><b>Prag</b>Industries</span>*@
+                <span class="logo-lg"> <i class="fa fa-graduation-cap" aria-hidden="true"></i><b>PRAG-</b>ERP</span>
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+            </a>
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="hidden-xs" style="font-family:'Courier New'">
+                        <b>&nbsp;&nbsp;&nbsp;&nbsp;@ViewBag.CompName</b>
+                    </span>
+                    <span class="hidden-xs" style="font-family:'Courier New'">
+                        &nbsp;&nbsp;<b>Financial Year:</b>&nbsp;@ViewBag.FinYear
+                    </span>
+                    &nbsp;&nbsp;&nbsp;
+                    <span id="dvIdleTime" class="hidden-xs"
+                          style="font-family:'Courier New';
+                                  font-weight:bold;color:yellow;font-size:8pt;">
+                    </span>
+                </a>
+
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+
+                    <ul class="nav navbar-nav">
+
+                        @*departments drop-down*@
+                        <li class="dropdown messages-menu">
+                            @*messages-menu*@
+                            <!-- Menu toggle button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                @*<i class="fa fa-envelope-o"></i> uncomment it to view list*@
+                                <span class="label label-success">@ViewBag.totalNotification</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header"></li> @*You have [@ViewBag.totalNotification] messages*@
+                                <li>
+                                    <!-- inner menu: contains the messages -->
+                                    <ul class="menu">
+                                        <li>
+                                            <!-- start message -->
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <!-- User Image -->
+                                                    @*<img src="~/Contents/AdminLTE/img/avatar5.png" class="img-circle" alt="User Image">*@
+                                                </div>
+                                                <!-- Message title and timestamp -->
+                                                @*<h4>
+                                                    Support Team
+                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                </h4>*@
+                                                <!-- The message -->
+                                                @*<p>Test</p>*@
+                                            </a>
+                                        </li>
+                                        <!-- end message -->
+                                    </ul>
+                                    <!-- /.menu -->
+                                </li>
+                                @*<li class="footer"><a href="/LibTask/GetNotificationListByUser">See All Messages</a></li>*@
+                            </ul>
+
+                            <ul class="dropdown-menu">
+                                @*<li class="header">Select Department</li>
+                                @Html.Partial("../Home/Menu_DeptDropDown")*@
+                            </ul>
+
+                        </li>
+                        @*end-departments drop-down*@
+
+                        <!-- Messages: style can be found in dropdown.less-->
+                        <li class="dropdown messages-menu">
+                            <!-- Menu toggle button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                @*<i class="fa fa-envelope-o"></i> uncomment to view*@
+                                <span class="label label-success">@ViewBag.totalNotification</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header"></li> @*You have [@ViewBag.totalNotification]messages*@
+                                <li>
+                                    <!-- inner menu: contains the messages -->
+                                    <ul class="menu">
+                                        <li>
+                                            <!-- start message -->
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <!-- User Image -->
+                                                    @*<img src="~/Contents/AdminLTE/img/avatar5.png" class="img-circle" alt="User Image">*@
+                                                </div>
+                                                <!-- Message title and timestamp -->
+                                                @*<h4>
+                                                    Support Team
+                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                </h4>*@
+                                                <!-- The message -->
+                                                @*<p>Test</p>*@
+                                            </a>
+                                        </li>
+                                        <!-- end message -->
+                                    </ul>
+                                    <!-- /.menu -->
+                                </li>
+                                @*<li class="footer"><a href="/LibTask/GetNotificationListByUser">See All Messages</a></li>*@
+                            </ul>
+
+                        </li>
+                        <!-- /.messages-menu -->
+                        <!-- Notifications Menu -->
+                        <li class="dropdown notifications-menu">
+                            <!-- Menu toggle button -->
+                            <a href="/Notification/Index" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                @*<span class="label label-warning">@ViewBag.AllNotice</span>
+                                <span class="label label-warning">@ViewBag.MsgInfo</span>*@
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">
+                                    @*You have [@ViewBag.AllNotice] Notice*@
+                                    <a href="/Notification/Index">
+                                        <div style="text-align:center;color:blue;">View Notification(s)</div>
+                                    </a>
+                                    <div style="display:none;">
+                                        @*Notice Board*@
+                                        <iframe id="Iframe1" runat="server" scrolling="no" frameborder="0"
+                                                src="https://pragerp.com/Notification/Index"
+                                                @*src="http://localhost:58521/Notification/Index"*@
+                                                style="width:50%;height:1px;opacity:0.00;">
+                                        </iframe>
+                                    </div>
+                                </li>
+                                @*
+                                <li class="header">@ViewBag.AllNotice</li>*@
+                                <li>
+                                    <!-- Inner Menu: contains the notifications -->
+                                    <ul class="menu">
+                                        <li>
+                                            <!-- start notification -->
+                                            @*<a href="#">
+                                                <i class="fa fa-users text-aqua"></i> New members joined today
+                                            </a>*@
+                                        </li>
+                                        <!-- end notification -->
+                                    </ul>
+                                </li>
+                                @*<li class="footer">
+                                    <a href="/LibTask/GetAllNotificationList">
+                                        View All Notice
+                                    </a>
+                                </li>*@
+                            </ul>
+                        </li>
+
+                        <!-- Tasks Menu -->
+                        <li class="dropdown tasks-menu">
+                            <!-- Menu Toggle Button -->
+                            <a href="/LibTask/Index" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-flag-o"></i>
+                                <span class="label label-danger">@ViewBag.totaltask</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                @*<li class="header">You have Completed [@ViewBag.totalcomp] tasks</li>*@
+                                <li>
+                                    <!-- Inner menu: contains the tasks -->
+                                    <ul class="menu">
+                                        <li>
+                                            <!-- Task item -->
+                                            <a href="/LibTask/Index">
+                                                <div style="text-align:center;color:blue;">View All Tasks</div>
+                                                <!-- Task title and progress text -->
+                                                <!--<h3>-->
+                                                @*@ViewBag.totalcomp*@
+                                                @*<small class="pull-right">20%</small>*@
+                                                <!--</h3>-->
+                                                <!-- The progress bar -->
+                                                <!--<div class="progress xs">-->
+                                                <!-- Change the css width attribute to simulate progress -->
+                                                <!--<div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar"
+                                                     aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                    <span class="sr-only">20% Complete</span>
+                                                </div>
+                                            </div>-->
+                                            </a>
+                                        </li>
+                                        <!-- end task item -->
+                                    </ul>
+                                </li>
+                                @*<li class="footer">
+                                    <a href="/LibTask/Index">View All Tasks</a>
+                                </li>*@
+                            </ul>
+                        </li>
+                        <!-- User Account Menu -->
+                        <li class="dropdown user user-menu">
+
+                            <!-- Menu Toggle Button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <!-- The user image in the navbar-->
+                                @*<img src="~/Contents/AdminLTE/img/avatar5.png" class="user-image" alt="User Image">*@
+                                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                @* <span class="hidden-xs"> Hi! &nbsp;@WebSecurity.CurrentUserName</span>*@
+                                <span class="hidden-xs"> Hi! &nbsp;@ViewBag.UserName</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- The user image in the menu -->
+                                <li class="user-header">
+                                    <img src="~/Contents/AdminLTE/img/avatar5.png" class="img-circle" alt="User Image">
+                                    @*<p>
+                                        Arif Khan - Developer
+                                        <small>Member since Nov. 2017</small>
+                                    </p>*@
+                                </li>
+                                <!-- Menu Body -->
+                                @*
+                                <li class="user-body">
+                                *@
+                                @*<div class="row">
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Followers</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Sales</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Friends</a>
+                                    </div>
+                                </div>*@
+                                <!-- /.row -->
+                                @*
+                                </li>*@
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="/UserAdmin/UpdateProfile" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="/Login/LoginUser" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button comment by Arif -->
+                        @*
+                        <li>
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>*@
+                    </ul>
+                </div>
+            </nav>
+
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+
+                <!-- Sidebar user panel (optional) -->
+                @*<div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="~/Content/AdminLTE/img/Arif467.jpg" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p>Arif Khan</p>
+                        <!-- Status -->
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>*@
+
+                <!-- search form (Optional) -->
+                @*<form action="#" method="get" class="sidebar-form">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>*@
+                <!-- /.search form -->
+                <!-- Sidebar Menu -->
+                <div id="deptCaption" style="font-weight: bold;height: 53px;
+                        background-color: gray; /*#3c8dbc*/
+                        vertical-align: middle;border-top:solid;color:white;
+                        border-color:black;">
+                    <span style="font-size:16pt;margin-left:5px;">
+                        &nbsp;&nbsp;&nbsp;@ViewBag.Dept
+                    </span>
+                </div>
+                <div style="height: 480px; overflow-y: scroll; font-size:10pt;">
+                    @*menu collection*@
+                    <ul class="sidebar-menu" data-widget="tree">
+                        <li>
+                            <a href="/Login/ChangeCompany">
+                                <i class="fa fa-university" aria-hidden="true"></i>
+                                <u>Change Company</u>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="sidebar-menu" data-widget="tree">
+                        <li>
+                            <a href="/Login/ChangeFinYear">
+                                <i class="fa fa-bars" aria-hidden="true"></i>
+                                <u>Change Financial Year</u>
+                            </a>
+                        </li>
+                    </ul>
+                    @if (@ViewBag.Dept == "Home")
+                    {
+                        @Html.Partial("../Home/Menu_Home")
+                    }
+                    else if (@ViewBag.Dept == "Accounts")
+                    {
+                        @Html.Partial("../Home/Menu_Account")
+                    }
+                    else if (@ViewBag.Dept == "Admin")
+                    {
+                        @Html.Partial("../Home/Menu_Admin")
+                    }
+                    else if (@ViewBag.Dept == "HR")
+                    {
+                        @Html.Partial("../Home/Menu_HR")
+                    }
+                    else if (@ViewBag.Dept == "Compliance")
+                    {
+                        @Html.Partial("../Home/Menu_Compliance")
+                    }
+                    else if (@ViewBag.Dept == "Marketing")
+                    {
+                        @Html.Partial("../Home/Menu_Marketing")
+                    }
+                    else if (@ViewBag.Dept == "Quality")
+                    {
+                        @Html.Partial("../Home/Menu_Quality")
+                    }
+                    else if (@ViewBag.Dept == "Production")
+                    {
+                        @Html.Partial("../Home/Menu_Production")
+                    }
+                    else if (@ViewBag.Dept == "Stores")
+                    {
+                        @Html.Partial("../Home/Menu_Stores")
+                    }
+                    else if (@ViewBag.Dept == "ITCELL")
+                    {
+                        @Html.Partial("../Home/Menu_ITCell")
+                    }
+                    else if (@ViewBag.Dept == "DocumentControl")
+                    {
+                        @Html.Partial("../Home/Menu_ELibrary")
+                    }
+                    else if (@ViewBag.Dept == "Maintenance")
+                    {
+                        @Html.Partial("../Home/Menu_Maintenance")
+                    }
+                    else if (@ViewBag.Dept == "CRM")
+                    {
+                        @Html.Partial("../Home/Menu_CRM")
+                    }
+                </div>
+                <!-- /.sidebar-menu -->
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style="height:250px;">
+            <div id="myDIV" class="icon-bar">
+                @*<div id="myDIV" style="font-size:16pt;font-weight:bold;height:53px;background-color:black;vertical-align:middle;">*@
+
+                <!--departments according to order index of sidebar menu as above -->
+
+                <a href="/Home/Index?deptt=Home" title="Home" style="width:70px;">
+                    @*for anchor tag class="active"*@
+                    <i class="fa fa-home">
+                        <span class="dept" id="Home" style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                            HOME
+                        </span>
+                    </i>
+                </a>
+
+                @*<a href="/Home/Index?deptt=Accounts" title="Accounts" style="width:80px;">
+                <i class="fa fa-briefcase">
+                    <span style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                        ACCOUNTS
+                    </span>
+                </i>
+            </a>*@
+
+                @*<a href="/Home/Index?deptt=Admin" title="Admin" style="width:75px;">
+                <i class="fa fa-briefcase">
+                    <span style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                        ADMIN
+                    </span>
+                </i>
+            </a>*@
+
+                <a href="/Home/Index?deptt=Compliance" title="Compliance" style="width:100px;">
+                    <i class="fa fa-legal">
+                        <span class="dept" id="Compliance" style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                            COMPLIANCE
+                        </span>
+                    </i>
+                </a>
+
+                <div id="HR">
+                    <a href="/Home/Index?deptt=HR" title="HR" style="width:60px;">
+                        <i class="fa fa-users">
+                            <span class="dept" id="HR" style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                                HR
+                            </span>
+                        </i>
+                    </a>
+                </div>
+
+
+                <a href="/Home/Index?deptt=Marketing" title="Marketing" style="width:90px;">
+                    <i class="fa fa-line-chart">
+                        <span class="dept" id="Marketing" style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                            MARKETING
+                        </span>
+                    </i>
+                </a>
+
+                <a href="/Home/Index?deptt=Quality" title="Quality Control" style="width:70px;">
+                    <i class="fa fa-android">
+                        <span class="dept" id="Quality" style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                            QUALITY
+                        </span>
+                    </i>
+                </a>
+
+                <a href="/Home/Index?deptt=Production" title="Production" style="width:110px;">
+                    <i class="fa fa-cogs">
+                        <span class="dept" id="Production" style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                            PRODUCTION
+                        </span>
+                    </i>
+                </a>
+
+                <a href="/Home/Index?deptt=Stores" title="Stores" style="width:70px;">
+                    <i class="fa fa-android">
+                        <span class="dept" id="Stores" style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                            STORES
+                        </span>
+                    </i>
+                </a>
+
+                <a href="/Home/Index?deptt=ITCELL" title="IT CELL" style="width:80px;">
+                    <i class="fa fa-bandcamp">
+                        <span class="dept" id="ITCELL" style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                            ITCELL
+                        </span>
+                    </i>
+                </a>
+
+                <a href="/Home/Index?deptt=DocumentControl" title="Document Control" style="width:140px;">
+                    <i class="fa fa-book">
+                        <span class="dept" id="DocumentControl" style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                            DOCUMENT&nbsp;CONTROL
+                        </span>
+                    </i>
+                </a>
+
+                <a href="/Home/Index?deptt=Maintenance" title="Maintenance" style="width:120px;">
+                    <i class="fa fa-book">
+                        <span class="dept" id="Maintenance" style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                            MAINTENANCE
+                        </span>
+                    </i>
+                </a>
+
+                <a href="/Home/Index?deptt=CRM" title="CRM" style="width:60px;">
+                    <i class="fa fa-support">
+                        <span class="dept" id="Maintenance" style="font-family:'Verdana';font-size:7pt;font-weight:normal;">
+                            CRM
+                        </span>
+                    </i>
+                </a>
+
+            </div>
+
+            <!-- Content Header (Page header) -->
+            @*<section class="content-header">*@
+            @*<h1>
+            My Home
+            <small>Optional description</small>
+        </h1>*@
+            @*<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+            <li class="active">Here</li>
+        </ol>*@
+            @*  </section>*@
+            <!-- Main content -->
+            <section class="content container-fluid">
+                <script>
+                    var jqX = jQuery.noConflict(true);
+                    (function ($) {
+                        $(document).ready(function () {
+                            //...
+                        });
+                    }(jqX));
+                </script>
+                <!---| Your Page Content Here |--->
+                <!--<div id="mnuCaption" style="margin-left: 5px; font-weight: bold;">-->
+                @*@ViewBag.mnuOption //not required when auto shrink is stopped*@
+                <!--</div>-->
+                <div id="cntDiv">
+                    @*style added by setMenu*@
+                    @*style="margin-left: 5px; height: 500px; overflow-y: scroll;"*@
+                    @RenderBody()
+                </div>
+            </section>
+            <!-- /.content -->
+            @RenderSection("scripts", required: false)
+
+            <div style="font-size:9pt;color:blue;background-color:white;">
+                <table>
+                    <tr>
+                        <td>
+                            <a target="_blank" href="http://praggroup.com">
+                                &nbsp;&nbsp;<b>PRAG MIS DEPARTMENT</b>
+                            </a>
+                            &nbsp;&nbsp; <b>ERP V.2.1</b> &nbsp;&nbsp;
+                            Copyright &copy; @DateTime.Now.Year
+                            &nbsp;&nbsp;All Rights Reserved&nbsp;&nbsp;
+                            Contact No : Extn. 332 / 0522 - 26 52 033 / (+91) 89 22 00 88 25
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <span id="CDateTime" class="hidden-xs"
+                                  style="font-family:'Courier New';
+                                  font-weight:bold;color:blue;font-size:9pt;">
+                                [&nbsp;DateTime]
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+                @*&nbsp;&nbsp;(Best Viewed Resolution. 1366x768 on Google Chrome)*@
+            </div>
+
+        </div>
+
+        <!-- /.content-wrapper -->
+        <!-- Main Footer -->
+        <!-- defined in _LayoutCommon_Footer-->
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Create the tabs -->
+            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <!-- Home tab content -->
+                <div class="tab-pane active" id="control-sidebar-home-tab">
+                    <h3 class="control-sidebar-heading">Recent Activity</h3>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript:;">
+                                <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Arif's Birthday</h4>
+                                    <p>Will be 23 on April 24th</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.control-sidebar-menu -->
+                    @*<h3 class="control-sidebar-heading">Tasks Progress</h3>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript:;">
+                                <h4 class="control-sidebar-subheading">
+                                    Custom Template Design
+                                    <span class="pull-right-container">
+                                        <span class="label label-danger pull-right">70%</span>
+                                    </span>
+                                </h4>
+                                <div class="progress progress-xxs">
+                                    <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>*@
+                    <!-- /.control-sidebar-menu -->
+                </div>
+                <!-- /.tab-pane -->
+                <!-- Stats tab content -->
+                <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+                <!-- /.tab-pane -->
+                <!-- Settings tab content -->
+                <div class="tab-pane" id="control-sidebar-settings-tab">
+                    <form method="post">
+                        <h3 class="control-sidebar-heading">General Settings</h3>
+                        <div class="form-group">
+                            <label class="control-sidebar-subheading">
+                                Report panel usage
+                                <input type="checkbox" class="pull-right" checked>
+                            </label>
+                            <p>
+                                Some information about this general settings option
+                            </p>
+                        </div>
+                        <!-- /.form-group -->
+                    </form>
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
+    immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED JS SCRIPTS -->
+    <!-- jQuery 3 -->
+    @*
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>*@
+    @*
+        <script src="~/Scripts/jquery-3.4.1.js"></script>*@
+    @*
+        <script src="~/Script/Jquery 3.5.1.js"></script>*@
+    @*
+        <script src="~/Scripts/jquery-3.3.1.js"></script>*@
+
+    @*old code*@
+    <script src="~/Script/jquery.dataTables.js"></script>
+            <script src="~/Script/dataTables.bootstrap.js"></script>
+            <script src="~/Script/bootstrap.js"></script>
+
+            <script src="/Script/Jquery 3.5.1.js"></script>
+            @*<script src="~/Scripts/jquery-3.4.1.js"></script>*@
+
+            <script src="/Script/jquery.dataTables.js"></script>
+            @*<script src="/Script/dataTables.bootstrap.js"></script>*@
+            <script src="/Script/bootstrap.js"></script>
+            <script src="/Script/Buttons-1.6.3/js/buttons.bootstrap.js"></script>
+            <script src="/Script/Buttons-1.6.3/js/dataTables.buttons.js"></script>
+            <script src="/Script/Buttons-1.6.3/js/buttons.flash.js"></script>
+            <script src="/Script/Buttons-1.6.3/js/buttons.html5.js"></script>
+            <script src="/Script/Buttons-1.6.3/js/buttons.print.js"></script>
+            <script src="/Script/JSZip-2.5.0/jszip.js"></script>
+            <script src="/Script/pdfmake-0.1.36/pdfmake.js"></script>
+            <script src="/Script/pdfmake-0.1.36/vfs_fonts.js"></script>
+            <script src="/Script/Buttons-1.6.3/js/buttons.colVis.js"></script>
+
+            <script src="~/Script/dataTables.bootstrap.js"></script>
+            <script src="~/Script/dataTables.searchBuilder.js"></script>
+            <script src="~/Script/searchBuilder.bootstrap.js"></script>
+            <script src="~/Script/searchBuilder.jqueryui.js"></script>
+            <script src="~/Script/autoFill.bootstrap.js"></script>
+            <script src="~/Script/autoFill.jqueryui.js"></script>
+            <script src="~/Script/dataTables.autoFill.js"></script>
+            <!-- Bootstrap 3.3.7 -->
+            @*
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>*@
+
+            <!-- AdminLTE App -->
+            @*
+        <script src="dist/js/adminlte.min.js"></script>*@
+            <script src="~/Script/AdminLTE/js/adminlte.js"></script>
+
+            <!-- Optionally, you can add Slimscroll and FastClick plugins.
+         Both of these plugins are recommended to enhance the
+         user experience. -->
+            <!-- Calendar --></body>
+</html>

@@ -1,0 +1,189 @@
+﻿@model ManufacturingManagement_V2.Models.C_ComplaintMDI
+@{
+    ViewBag.Title = "Index";
+   Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Shed List  </title>
+    <link href="~/Contents/bootstrap.min.css" rel="stylesheet" />
+    <script>
+        function deleteShed(ShedId) {
+            var a = confirm("Are you sure to delete this Record?");
+            if (a == false) {
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteShed", "C_CRM")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    ShedId: ShedId
+                }),
+                success: function () {
+                    alert("Record Deleted Successfully");
+                    location.reload();
+                }
+            });
+        }
+    </script>
+    <script>
+        function updatedshed(ShedId) {
+            $('#modal-Updateshed').modal('show');
+            var ifrm = document.getElementById("frmUpdateshed");
+            //ifrm.setAttribute('src', "http://localhost:58521//C_CRM/UpdateShed?id=" + ShedId)
+            ifrm.setAttribute('src', "https://pragerp.com/C_CRM/UpdateShed?id=" + ShedId)
+        }
+    </script>
+    <script>
+        function Saveshed() {
+            $('#modal-Insertshed').modal('show');
+            var ifrm = document.getElementById("frmInsertshed");
+            //ifrm.setAttribute('src', "http://localhost:58521//C_CRM/Createshed")
+             ifrm.setAttribute('src', "https://pragerp.com/C_CRM/Createshed")
+        }
+    </script>
+
+    @*<script>
+        function DoneComplaint(referenceno) {
+            $('#modal-closedComplaint').modal('show');
+            var ifrm = document.getElementById("frmclosed");
+            ifrm.setAttribute('src', "http://localhost:58521//C_CRM/ClosedComplaint?id=" + referenceno)
+            //ifrm.setAttribute('src', "https://pragerp.com/C_CRM/ClosedComplaint?id=" + referenceno)
+        }
+    </script>
+
+    <script>
+        function CheckWaranty() {
+            $('#modal-CheckWaranty').modal('show');
+            var ifrm = document.getElementById("frmwaranty");
+            ifrm.setAttribute('src', "http://localhost:58521//C_CRM/CheckWarantyIndex")
+            // ifrm.setAttribute('src', "https://pragerp.com/C_CRM/CheckWarantyIndex")
+        }
+    </script>*@
+</head>
+<body>
+    <div style="margin-top:3px;margin-bottom:3px;">
+             <button type="button" class="btn btn-success"
+                data-toggle="modal" onclick="Saveshed()">
+            Add New Shed Traning Record
+        </button>
+        <div id="printbar" class="pull-right">
+        </div>
+    </div>
+    Traning Shed List
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    @*<div class="box-header">
+                        </div>*@
+                    <div class="box-body">
+                        <table id="jdtabledesktop4" class="table-responsive table-condensed  table-hover" style="width:100%;text-align:left">
+                            <thead>
+                                <tr>
+                                    <th>Shed Id</th>
+                                    <th>Shed Name</th>
+                                    <th>Trainer</th>
+                                    <th>Training From</th>
+                                    <th>Training To</th>
+                                    <th>Action</th>
+                                   </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        @*<td style="vertical-align:top;">@i</td>*@
+                                        <td>@Html.DisplayFor(model => item.ShedId)</td>
+                                        <td>@Html.DisplayFor(model => item.ShedName)</td>
+                                        @*<td>@Html.DisplayFor(model => item.shortname)</td>*@
+                                        <td>@Html.DisplayFor(model => item.Tranner)</td>
+
+                                        <td>@Html.DisplayFor(model => item.StartDate)</td>
+                                        <td>@Html.DisplayFor(model => item.EndDate)</td>
+                                      
+                                        @*<td>
+                                           
+                                            <a onclick="Assign(@item.referenceno)">
+                                                <i class="fa fa-pencil-square"></i>
+                                            </a>
+                                        </td>*@
+                                        <td>
+                                            <a onclick="updatedshed(@item.ShedId)">
+                                                <i class="fa fa-pencil-square"></i>
+                                            </a>
+
+                                            @Html.ActionLink(" ", null, new { srno = item.ShedId },
+                                             new
+                                             {
+                                                 onclick = "deleteShed('" + item.ShedId + "')",
+                                                 @class = "fa fa-trash-o"
+                                             })
+                                        </td>
+                                    </tr>
+                                    //i++;
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Updateshed" style="margin-left:250px;margin-top:50px">
+        <div class="modal-dialog col-lg-12">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Update Shed Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmUpdateshed" runat="server" scrolling="no" frameborder="0"
+                                style="width:500px;height:500px;opacity:50;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-Insertshed" style="margin-left:250px">
+        <div class="modal-dialog col-lg-12">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Add Shed Traning Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmInsertshed" runat="server" scrolling="no" frameborder="0"
+                                style="width:500px;height:700px;opacity:50;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+
+    
+
+    <script src="~/Script/Site4.js"></script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "AdminTaskInfo";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>@ViewBag.TaskName (Admin Access)</b></h4>
+
+<br />
+<span style="font-family:verdana;font-size:12pt;">
+    Document Status Info: opt = 1
+    <br /><br />
+    Photograph to directory updation: opt = 2
+</span>
+
+<br />
+<br />
+<h5><b>@ViewBag.Message</b></h5>
+
+<br />
+@Html.ActionLink("Back", "../Admin/Index", null, new { @class = "btn btn-default" })
+

@@ -1,0 +1,139 @@
+﻿@model ManufacturingManagement_V2.Models.AttendanceMdl
+@using Newtonsoft.Json
+
+@{
+        ViewBag.Title = "GenerateAttendance";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+ 
+    <h4><b>Attendance Generation (Back-date joined employees)</b></h4>
+
+    <h3>[* Creates attendance record for the employees joined from back-date in selected month.]</h3>
+    <br/>
+        <div class="form-group">
+            <h4>Enter Year/Month</h4>
+            <br/>
+            <table class="table table-bordered">
+                <tr>
+                    <td><b>Year</b></td>
+                    <td>
+                        <input type="text" id="txtAttYear" />
+                        <span class="error">Invalid year!</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Month</b></td>
+                    <td>
+                        @Html.DropDownList("ddlMonth", ViewBag.MonthList as SelectList)
+                    <span class="error">Invalid month!</span>
+                </td>
+            </tr>
+            </table>
+        </div>
+        <div style="padding:10px 0px; text-align:left;">
+            <input id="submit" class="btn btn-default" type="button" value="Submit" style="padding:10px 20px" />
+            @Html.ActionLink("Close", null,null,new{@onclick="window.close()"})
+        </div>
+ 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("ddlMonth").value = '@ViewBag.month';
+            document.getElementById("txtAttYear").value = '@ViewBag.year';
+        });
+    </script>
+
+    <script>
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+                if ($('#txtAttYear').val().trim() == '') {
+                    $('#txtAttYear').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#txtAttYear').siblings('span.error').css('visibility', 'hidden');
+                }
+                //Save if valid
+                if (isAllValid) {
+
+                    var liMonth = document.getElementById("ddlMonth");
+                    var monthIndex = liMonth.selectedIndex;
+                    var monthId = liMonth.options[monthIndex].value;
+
+                    var data = {
+                        AttMonth: monthId,
+                        AttYear: parseInt($('#txtAttYear').val().trim())
+                    }
+                    $(this).val('Please wait...');
+                    $.ajax({
+                        url: '/Attendance/GenerateAttendanceForBackdateJoinedEmployees',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                //$('#txtAttDay').val('');
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submit').val('Submit');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            $('#submit').val('Submit');
+                        }
+                    });
+                }
+
+            });
+
+    </script>
+}
+ 
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display:block;
+        visibility:hidden;
+        color:red;
+        font-size:90%;
+    }
+ 
+ 
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+    .tablecontainer table {
+        width: 100%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+    }
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+    .ui-widget {
+        font-size:12px !important;
+    }
+</style>
+

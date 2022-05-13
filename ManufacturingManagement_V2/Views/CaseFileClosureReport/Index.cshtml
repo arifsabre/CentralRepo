@@ -1,0 +1,77 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Case File Closure Report</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <h5><b>Report Options</b></h5>
+        <table class="table table-bordered">
+            @Html.HiddenFor(model => model.NewEmpId)
+            <tr>
+                <td style="width:10%;"><b>Company</b></td>
+                <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)</td>
+            </tr>
+            <tr>
+                <td><b>PO Number</b></td>
+                <td>
+                    @Html.EditorFor(model => model.InvoiceNo)
+                    <label id="lblPOrderId" style="font-weight:normal;"></label>
+                </td>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value="Submit" onclick="target='_blank';"
+               formaction="@Url.Action("DisplayClosureReport")" />
+    </p>
+    <h5>@ViewBag.Message</h5>
+}
+
+@section Scripts{
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            $("#InvoiceNo").attr("placeholder", "start typing, then select");
+            $("#InvoiceNo").attr("style", "width:300px;");
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#InvoiceNo").autocomplete({
+            source: function (request, response) {
+                var liCCode = document.getElementById("CompCode");
+                var indexCCode = liCCode.selectedIndex;
+                var ccode = liCCode.options[indexCCode].value;
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePurchaseNumbers", "HelpUtility"))",
+                    data: { "term": request.term, "ccode": ccode },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('NewEmpId').value = ui.item.Id;
+                $('#lblPOrderId').text('P.OrderId: ' + ui.item.Id);
+            }
+        });
+    </script>
+
+}

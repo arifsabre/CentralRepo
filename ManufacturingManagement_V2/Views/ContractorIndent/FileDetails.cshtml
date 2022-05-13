@@ -1,0 +1,91 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ContractorIndentMDI>
+
+<table id="jdtabledesktop" class="display nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                Task Number
+                @* @Html.DisplayNameFor(model => model.RecordId)*@
+            </th>
+            <th>
+                Download Quatation
+            </th>
+            <th>
+                <label>View Quotation</label>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.cmpname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                Work Category
+                @* @Html.DisplayNameFor(model => model.WorkCategory)*@
+            </th>
+            <th>
+                Work Detail
+                @*@Html.DisplayNameFor(model => model.WorkDetail)*@
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Contractor)
+            </th>
+
+            <th>
+                Estimate Amount
+                @* @Html.DisplayNameFor(model => model.EstimateAmount)*@
+            </th>
+            @*<th class="col-md-2" style="text-align:left">
+            @Html.Label("UpoloadedFileName")
+        </th>*@
+            @*<th>
+            Instruction Given By
+
+        </th>*@
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecordId)
+            </td>
+            <td>
+                @Html.ActionLink("Downlaod", "DownLoadFile", new { id = item.Id })
+            </td>
+            <td>
+                @Html.ActionLink("View", "GetQutation", new { id = item.Id })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cmpname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkCategory)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkDetail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contractor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimateAmount)
+            </td>
+            @*<td>
+            @Html.DisplayFor(modelItem => item.FileName)
+        </td>*@
+            @*<td >
+            @Html.DisplayFor(modelItem => item.InstructionGivenBy)
+        </td>*@
+
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,197 @@
+﻿@model ManufacturingManagement_V2.Models.IndentLedgerMdl
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Indent Execution</h2>
+
+@{var lstPMode = new List<System.Web.UI.WebControls.ListItem>
+    {
+          new System.Web.UI.WebControls.ListItem { Text = "Not Required", Value="n" },
+          new System.Web.UI.WebControls.ListItem { Text = "Indent", Value="i" },
+          new System.Web.UI.WebControls.ListItem { Text = "PO", Value="p" },
+    };
+ }
+
+<p>
+    @*@Html.ActionLink("Create Attendance Detail", "../AttendanceDetail/CreateUpdate")*@
+</p>
+    @Html.HiddenFor(model => model.IndentId)
+    @Html.HiddenFor(model => model.VNo)
+<p style="font-size:16px;font-weight:bold;">
+    Indent No: @Html.DisplayFor(model => model.StrIndentNo) Indent By: @Html.DisplayFor(model => model.IndentByName), Date: @Html.DisplayFor(model => model.VDate) 
+    <br/>HOD Approval By: @Html.DisplayFor(model => model.HODUserName) At: @Html.DisplayFor(model => model.HODApprovalOnStr)
+    <br/>Admin Approval By: @Html.DisplayFor(model => model.AdminUserName) At: @Html.DisplayFor(model => model.AdminApprovalOnStr)
+    &nbsp;&nbsp;[Admin Remarks: @Html.DisplayFor(model => model.AdminRemarks)]
+</p>
+@Html.ActionLink("Back to List", "IndentExecution")
+
+<div class="container" style="max-width:640px">
+        <div class="form-group">
+<table border="1">
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Item No</td>
+        <td>
+            @Html.Hidden("RecId", Model.RecId.ToString(), new { @id = "hfRecId" })
+            @Html.Label("lblItemSlNo",Model.ItemSlNo.ToString(),new { @id = "ItemSlNo"})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Item Code</td>
+        <td>
+            @Html.Label("lblItemCode",Model.ItemCode.ToString(),new { @id = "ItemCode"})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Item Description</td>
+        <td>
+            @Html.Label("lblItemDesc",Model.ItemDesc.ToString(),new { @id = "ItemDesc"})
+        </td>
+    </tr>
+    <tr style="vertical-align:top;font-weight:bold;">
+        <td>Reason</td>
+        <td>
+            @Html.Label("lblRemarks",Model.Remarks.ToString(),new { @id = "Remarks"})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Unit</td>
+        <td>
+            @Html.Label("lblUnitName",Model.UnitName.ToString(),new { @id = "UnitName"})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Approx Rate</td>
+        <td>
+            @Html.Label("lblApproxRate",Model.ApproxRate.ToString(),new { @id = "ApproxRate"})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Indent Qty</td>
+        <td>
+            @Html.Label("lblIndQty",Model.IndQty.ToString(),new { @id = "IndQty"})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Approved Qty</td>
+        <td>
+            @Html.Label("lblAppQty",Model.AppQty.ToString(),new { @id = "AppQty"})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bolder;">Expected Date</td>
+        <td>
+            @Html.Label("ExpectedDT",Model.ExpectedDT.ToString(),new { @id = "ExpectedDT"})
+        </td>
+    </tr> 
+    <tr>
+        <td style="vertical-align:top;font-weight:bolder;">P. Mode</td>
+        <td>
+           @Html.DropDownList("ddlPurchaseMode", new SelectList(lstPMode,"Value","Text",Model.PurchaseMode.ToString()),new { @id = "PurchaseMode" })
+        </td>
+    </tr> 
+    <tr>
+        <td style="vertical-align:top;font-weight:bolder;">Stock Qty</td>
+        <td>
+           @Html.TextBox("txtStockQty",Model.StockQty.ToString(),new { @id = "StockQty" })
+        </td>
+    </tr> 
+    <tr>
+        <td style="vertical-align:top;font-weight:bolder;">P.Required Qty</td>
+        <td>
+           @Html.TextBox("txtPRequiredQty", Model.PRequiredQty.ToString(), new { @id = "PRequiredQty" })
+        </td>
+    </tr> 
+</table>
+</div>
+</div>
+
+<h5><b>@ViewBag.Message</b></h5>
+        <p>
+            @*<input type="submit" class="btn btn-default" value="Submit" />*@
+            <input id="submit" type="button" value="Submit" style="padding:10px 20px" />
+            @Html.ActionLink("Back To List", "IndentExecution", "Indent", null, new { id = "mylink" })
+            @*<input type="hidden" id="txtStkRecId"/>*@
+            @*<label id="lblInfo"></label>*@
+        </p>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            //execute
+            $("#submit").click(function () {
+                var isAllValid = true;
+                //validation of order
+                if (!($('#StockQty').val().trim() != '' && !isNaN($('#StockQty').val().trim()))) {
+                    isValidItem = false;
+                    alert('Invalid Stock Qty!');
+                    $('#StockQty').focus();
+                    return;
+                }
+                if (!($('#PRequiredQty').val().trim() != '' && !isNaN($('#PRequiredQty').val().trim()))) {
+                    isValidItem = false;
+                    alert('Invalid P.Required Qty!');
+                    $('#PRequiredQty').focus();
+                    return;
+                }
+                var liPMode = document.getElementById("PurchaseMode");
+                var pmodeIndex = liPMode.selectedIndex;
+                if (pmodeIndex == -1) {
+                    alert('P.Mode not selected!');
+                    isValidItem = false;
+                    return;
+                }
+                var pmode = liPMode.options[pmodeIndex].value;
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        //order fields
+                        RecId: '@Model.RecId',
+                        StockQty: parseFloat($('#StockQty').val().trim()),
+                        PurchaseMode: pmode,
+                        AppQty: parseFloat(document.getElementById('AppQty').innerHTML),//to compare
+                        PRequiredQty: parseFloat($('#PRequiredQty').val().trim())
+                    }
+                    $(this).val('Please wait...');
+                    $.ajax({
+                        url: '/Indent/ExecuteIndent',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                //$('#orderDate').val('');
+                                window.location.href = $('#mylink').attr('href');
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submit').val('Submit');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            $('#submit').val('Submit');
+                        }
+                    });
+                }
+            });
+            //end-execute
+        });
+    </script>
+
+}
+
+
+

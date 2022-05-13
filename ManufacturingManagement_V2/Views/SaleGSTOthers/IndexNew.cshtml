@@ -1,0 +1,178 @@
+﻿@model ManufacturingManagement_V2.Models.SaleMdl
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View Sale Entry</title>
+
+    <script>
+        function deleteSale(salerecid) {
+            var a = confirm("Are you sure to delete this record?");
+            if (a == false) {
+                return;
+            }
+            var data = {
+                salerecid: salerecid
+            }
+            $.ajax({
+                url: '/SaleGSTOthers/Delete',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    alert(d.message);
+                    if (d.status == true) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function callUpdate(recid) {
+            $('#modal-Update').modal('show');
+            var ifrm = document.getElementById("frmUpdate");
+            ifrm.setAttribute('src', '@ViewBag.baseurl' + "//SaleGSTOthers/CreateUpdate?id=" + recid);
+        }
+    </script>
+
+    <script>
+        function callInsert() {
+            $('#modal-Insert').modal('show');
+            var ifrm = document.getElementById("frmInsert");
+            ifrm.setAttribute('src', '@ViewBag.baseurl' + "//SaleGSTOthers/CreateUpdate");
+        }
+    </script>
+
+</head>
+<body>
+    <div>
+        <h4><b>View Sale Entry</b></h4>
+        @*<button type="button" class="btn btn-default"
+                data-toggle="modal" onclick="callInsert()">
+            Create New
+        </button>*@
+        @Html.ActionLink("Create New", "CreateUpdate", new { id = 0 },
+            new {@class = "btn btn-default", @target="_new" })
+
+        <div id="printbar" class="pull-right">
+        </div>
+    </div>
+    <section class="content" style="width:96%;">
+        @*note*@
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="display overlay-wrapper" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width:12px;vertical-align: top;">S.No.</th>
+                                    <th style="width:50px;text-align: left;vertical-align:top;" align="left">Action</th>
+                                    <th style="width:50px;vertical-align:top;">InvoiceMode</th>
+                                    <th style="width:50px;vertical-align:top;">VType</th>
+                                    <th style="width:30px;vertical-align:top;">VNo</th>
+                                    <th style="width:auto;vertical-align:top;">VDate</th>
+                                    <th style="width:30px;vertical-align:top;">PayingAuthName</th>
+                                    <th style="width:30px;vertical-align:top;">ConsigneeName</th>
+                                    <th style="width:30px;vertical-align:top;">RCInfo</th>
+                                </tr>
+                            </thead>
+                            @{int i = 1;}
+                            <tbody>
+                                @foreach (var item in Model.ObjectList)
+                                {
+                                <tr>
+                                    <td style="vertical-align:top;">@i</td>
+                                    <td style="vertical-align:top;">
+                                        @*Edit*@
+                                        <a onclick="callUpdate(@item.SaleRecId)">
+                                            <i class="fa fa-pencil-square" style="font-size:15pt;"></i>
+                                        </a>
+                                        @*<a target="_new" href=/SaleGstOthers/CreateUpdate/@item.SaleRecId>
+                                            <i class="fa fa-pencil-square" style="font-size:15pt;"></i>
+                                        </a>*@
+                                        &nbsp;&nbsp;&nbsp;
+                                        @*Delete*@
+                                        @Html.ActionLink(" ", null, null,
+                                           new
+                                                {
+                                                    onclick = "deleteSale('" + item.SaleRecId + "')",
+                                               @class = "fa fa-trash-o",
+                                                    @style = "font-size:15pt;"
+                                                })
+                                    </td>
+                                    <td style="vertical-align:top;">@Html.DisplayFor(model => item.InvoiceMode)</td>
+                                    <td style="vertical-align:top;">@Html.DisplayFor(model => item.VType)</td>
+                                    <td style="vertical-align:top;">@Html.DisplayFor(model => item.VNo)</td>
+                                    <td style="vertical-align:top;">@Html.ValueFor(model => item.VDate, "{0:dd/MM/yyyy}")</td>
+                                    <td style="vertical-align:top;">@Html.DisplayFor(model => item.PayingAuthName)</td>
+                                    <td style="vertical-align:top;">@Html.DisplayFor(model => item.ConsigneeName)</td>
+                                    <td style="vertical-align:top;">@Html.DisplayFor(model => item.RCInfo)</td>
+                                </tr>
+                                    i++;
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border" >
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Update Sale Entry</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmUpdate" runat="server" scrolling="yes" frameborder="0"
+                              align="left" style="width:650px;height:650px;opacity:100;">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">New Sale Entry</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmInsert" runat="server" scrolling="no" frameborder="0"
+                                style="width:550px;height:920px;opacity:100;">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+
+

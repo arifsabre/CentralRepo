@@ -1,0 +1,40 @@
+﻿@model ManufacturingManagement_V2.Models.UnitConversionMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Unit Conversion Detail</h2>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id = Model.RecId }, new {@class="btn btn-default" }) |
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+
+<fieldset>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:10%;font-weight:bold;">@Html.DisplayNameFor(model => model.MainUnitName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.MainUnitName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.AltUnitName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.AltUnitName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.ConvFactor)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ConvFactor)</td>
+                </tr>
+            </table>
+     </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

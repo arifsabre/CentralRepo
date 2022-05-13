@@ -1,0 +1,66 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<h4><b>Incentive Report</b></h4>
+@{var lstQtr = new List<System.Web.UI.WebControls.ListItem>
+    {
+          new System.Web.UI.WebControls.ListItem { Text = "Qtr-1: Jan-Feb-March", Value="1" },
+          new System.Web.UI.WebControls.ListItem { Text = "Qtr-2: April-May-June", Value="2" },
+          new System.Web.UI.WebControls.ListItem { Text = "Qtr-3: July-Aug-Sep", Value="3" },
+          new System.Web.UI.WebControls.ListItem { Text = "Qtr-4: Oct-Nov-Dec", Value="4" }
+    };
+ }
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+<div class="form-group">
+    <h5><b>Report Options</b></h5>
+    <table class="table table-bordered">
+        <tr>
+            <td style="width:10%;">Company</td>
+            <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)</td>
+        </tr>
+        <tr>
+            <td>Year</td>
+            <td>@Html.EditorFor(model => model.AttYear)</td>
+        </tr>
+        <tr>
+            <td>Quarter</td>
+            <td>@Html.DropDownListFor(model => model.AttMonth, new SelectList(lstQtr, "Value", "Text"))</td>
+        </tr>
+        <tr>
+            <td>Grade</td>
+            <td>@Html.DropDownListFor(model => model.Grade, ViewBag.GradeList as SelectList)</td>
+        </tr>
+        <tr>
+            <td>Add Bank Detail</td>
+            <td>@Html.EditorFor(model => model.Detailed)</td>
+        </tr>
+        <tr>
+            <td>Report Format</td>
+            <td>@Html.DropDownListFor(model => model.ReportFormat, ViewBag.ReportFormatList as SelectList)</td>
+        </tr>
+    </table>
+</div>
+    <p>
+       <input type="submit" class="btn btn-default" value="Submit" onclick="target='_blank';" formaction="@Url.Action("IncentiveQuarterly")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#Detailed").attr("style", "width:55px;height:25px;");
+        });
+    </script>
+
+}
+

@@ -1,0 +1,104 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.LetterMDI>
+
+<table id="jdtabledesktop" class="display nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                SR_NO
+
+            </th>
+            <th>
+               Id
+            </th>
+
+            <th>
+                Company
+            </th>
+            <th>
+                Subject
+
+            </th>
+            <th>
+                Letter_No
+            </th>
+            <th>
+                File_Name
+            </th>
+
+
+            <th>
+                Send To
+            </th>
+
+            <th>
+                Keywords
+
+            </th>
+            <th>
+                View
+            </th>
+            <th>
+                download
+            </th>
+            <th>
+                CreatedBy
+            </th>
+       
+            <th>
+                UpdatedBy
+            </th>
+         
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecordId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cmpname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LetterNo)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.FileName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SendTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Keywords)
+            </td>
+            <td>
+                @Html.ActionLink("View", "GetFileView", new { id = item.Id })
+            </td>
+            <td>
+                @Html.ActionLink("Downlaod", "DownLoadFile", new { id = item.Id })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+        
+
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedBy)
+
+            </td>
+          
+
+        </tr>
+        }
+    </tbody>
+</table>
+

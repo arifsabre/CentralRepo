@@ -1,0 +1,303 @@
+﻿@model ManufacturingManagement_V2.Models.AccountMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Account Master</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    <h5><b>Master Information</b></h5>
+    <table class="table table-bordered">
+        @Html.HiddenFor(model => model.RecId)
+        @Html.HiddenFor(model => model.AcCode)
+        @Html.HiddenFor(model => model.GrCode)
+        @Html.HiddenFor(model => model.RailwayId)
+        <tr>
+            <td style="width:10%;"><b>Account&nbsp;Group</b></td>
+            <td>
+                @Html.EditorFor(model => model.GrDesc)
+                @Html.ValidationMessageFor(model => model.GrDesc)
+            </td>
+            <td><b>Account&nbsp;Name</b></td>
+            <td>
+                @Html.EditorFor(model => model.AcDesc)
+                @Html.ValidationMessageFor(model => model.AcDesc)
+            </td>
+        </tr>
+        <tr>
+            <td><b>Short&nbsp;Name</b></td>
+            <td>
+                @Html.EditorFor(model => model.ShortName)
+                @Html.ValidationMessageFor(model => model.ShortName)
+            </td>
+            <td><b>Alias</b></td>
+            <td>
+                @Html.EditorFor(model => model.AliasName)
+                @Html.ValidationMessageFor(model => model.AliasName)
+            </td>
+        </tr>
+        <tr>
+            <td><b>Opn.&nbsp;Balance</b></td>
+            <td>
+                @Html.EditorFor(model => model.OpBalance)
+                @Html.ValidationMessageFor(model => model.OpBalance)
+            </td>
+            <td><b>Dr/Cr</b></td>
+            <td>
+                @Html.DropDownListFor(model => model.DrCr, ViewBag.DrCrList as SelectList)
+                @Html.ValidationMessageFor(model => model.DrCr)
+            </td>
+        </tr>
+    </table>
+    <h5><b><label onclick="ShowHideDiv(divAccountDet)">Detail Information</label></b></h5>
+    <div id="divAccountDet" style="display:block;">
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:10%;"><b>Contact&nbsp;Person</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.ContPer)
+                    @Html.ValidationMessageFor(model => model.Address.ContPer)
+                </td>
+                <td><b>GSTIN</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.GSTinNo)
+                    @Html.ValidationMessageFor(model => model.Address.GSTinNo)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Address&nbsp;1</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.Address1)
+                    @Html.ValidationMessageFor(model => model.Address.Address1)
+                </td>
+                <td><b>Address&nbsp;2</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.Address2)
+                    @Html.ValidationMessageFor(model => model.Address.Address2)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Address&nbsp;3</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.Address3)
+                    @Html.ValidationMessageFor(model => model.Address.Address3)
+                </td>
+                <td><b>Address&nbsp;4</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.Address4)
+                    @Html.ValidationMessageFor(model => model.Address.Address4)
+                </td>
+            </tr>
+            <tr>
+                <td><b>State&nbsp;Code</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.StateCode)
+                    @Html.ValidationMessageFor(model => model.Address.StateCode)
+                </td>
+                <td><b>State&nbsp;Name</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.StateName)
+                    @Html.ValidationMessageFor(model => model.Address.StateName)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Phone&nbsp;(Office)</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.PhoneOff)
+                    @Html.ValidationMessageFor(model => model.Address.PhoneOff)
+                </td>
+                <td><b>Phone&nbsp;(Resi.)</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.PhoneResi)
+                    @Html.ValidationMessageFor(model => model.Address.PhoneResi)
+                </td>
+            </tr>
+            <tr>
+                <td><b>FAX&nbsp;No</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.FaxNo)
+                    @Html.ValidationMessageFor(model => model.Address.FaxNo)
+                </td>
+                <td><b>Mobile&nbsp;No</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.MobileNo)
+                    @Html.ValidationMessageFor(model => model.Address.MobileNo)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Email</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Address.Email)
+                    @Html.ValidationMessageFor(model => model.Address.Email)
+                </td>
+                <td><b>Railway</b></td>
+                <td>
+                    @Html.EditorFor(model => model.Railway)
+                    @Html.ValidationMessageFor(model => model.Railway)
+                </td>
+            </tr>
+            @*<tr>
+            <td>@Html.LabelFor(model => model.Address.HAcDesc)</td>
+            <td>
+                @Html.EditorFor(model => model.Address.HAcDesc)
+                @Html.ValidationMessageFor(model => model.Address.HAcDesc)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.Address.TinNo)</td>
+            <td>
+                @Html.EditorFor(model => model.Address.TinNo)
+                @Html.ValidationMessageFor(model => model.Address.TinNo)
+            </td>
+            <td>@Html.LabelFor(model => model.Address.TinDate)</td>
+            <td>
+                @Html.EditorFor(model => model.Address.TinDate)
+                @Html.ValidationMessageFor(model => model.Address.TinDate)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.Address.CstNo)</td>
+            <td>
+                @Html.EditorFor(model => model.Address.CstNo)
+                @Html.ValidationMessageFor(model => model.Address.CstNo)
+            </td>
+            <td>@Html.LabelFor(model => model.Address.CstDate)</td>
+            <td>
+                @Html.EditorFor(model => model.Address.CstDate)
+                @Html.ValidationMessageFor(model => model.Address.CstDate)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.Address.CrLimit)</td>
+            <td>
+                @Html.EditorFor(model => model.Address.CrLimit)
+                @Html.ValidationMessageFor(model => model.Address.CrLimit)
+            </td>
+            <td>@Html.LabelFor(model => model.Address.PartyDiscount)</td>
+            <td>
+                @Html.EditorFor(model => model.Address.PartyDiscount)
+                @Html.ValidationMessageFor(model => model.Address.PartyDiscount)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.Address.CrDays)</td>
+            <td>
+                @Html.EditorFor(model => model.Address.CrDays)
+                @Html.ValidationMessageFor(model => model.Address.CrDays)
+            </td>
+            <td>@Html.LabelFor(model => model.Address.CustomerType)</td>
+            <td>
+                @Html.EditorFor(model => model.Address.CustomerType)
+                @Html.ValidationMessageFor(model => model.Address.CustomerType)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.Address.CategoryId)</td>
+            <td>
+                @Html.EditorFor(model => model.Address.CategoryId)
+                @Html.ValidationMessageFor(model => model.Address.CategoryId)
+            </td>
+            <td>@Html.LabelFor(model => model.Address.AreaId)</td>
+            <td>
+                @Html.EditorFor(model => model.Address.AreaId)
+                @Html.ValidationMessageFor(model => model.Address.AreaId)
+            </td>
+        </tr>*@
+        </table>
+    </div>
+</div>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#BSheet").attr("style", "width:55px;height:25px;");
+            $("#GrDesc").attr("placeholder", "start typing, then select");
+            $("#Railway").attr("placeholder", "start typing, then select");
+            $("#AliasName").attr("maxlength", "50");
+            $("#AliasName").attr("placeholder", "Max Length: 50 Chars");
+            $("#ShortName").attr("maxlength", "10");
+            $("#ShortName").attr("placeholder", "Max Length: 10 Chars");
+            $("#AcDesc").attr("maxlength", "150");
+            $("#AcDesc").attr("placeholder", "Max Length: 150 Chars");
+        });
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        $("#GrDesc").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAccountWithGroup", "HelpUtility"))",
+                    data: { "term": request.term, "rectype": 'g' },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('GrCode').value = ui.item.Id;
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#Railway").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteRailway", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('RailwayId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

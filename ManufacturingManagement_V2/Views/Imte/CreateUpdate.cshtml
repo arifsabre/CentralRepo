@@ -1,0 +1,93 @@
+﻿@model ManufacturingManagement_V2.Models.ImteMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>IMTE Master Entry</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    @Html.HiddenFor(model => model.ImteId)
+                    <td style="width:10%">@Html.LabelFor(model => model.ImteTypeId)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.ImteTypeId, ViewBag.ImteTypeList as SelectList)
+                        @Html.ValidationMessageFor(model => model.ImteTypeId)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.IdNo)</td>
+                    <td>
+                        @Html.EditorFor(model => model.IdNo)
+                        @Html.ValidationMessageFor(model => model.IdNo)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.ImteRange)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ImteRange)
+                        @Html.ValidationMessageFor(model => model.ImteRange)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.Location)</td>
+                    <td>
+                        @Html.EditorFor(model => model.Location)
+                        @Html.ValidationMessageFor(model => model.Location)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PurchaseYear)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PurchaseYear)
+                        @Html.ValidationMessageFor(model => model.PurchaseYear)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.LeastCount)</td>
+                    <td>
+                        @Html.EditorFor(model => model.LeastCount)
+                        @Html.ValidationMessageFor(model => model.LeastCount)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.IsInUse)</td>
+                    <td>
+                        <b>@Html.DisplayFor(model => model.InUseStatus)</b>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    <h3>@ViewBag.Message</h3>
+    <br />
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#IsInUse").attr("style", "width:55px;height:25px;");
+            $("#IsInUse").attr("enabled", "false");
+        });
+    </script>
+
+}
+
+

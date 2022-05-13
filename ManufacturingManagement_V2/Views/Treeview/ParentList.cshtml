@@ -1,0 +1,194 @@
+﻿@model ManufacturingManagement_V2.Models.AAA_SiteMenu
+@{
+    ViewBag.Title = "Index";
+ }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(function () {
+            $('#example1').DataTable();
+        })
+        function GetDetails(id) {
+            $.ajax({
+                url: "/Treeview/Edit_ParentMenu_Record/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ParentMenuID').val(response.ParentMenuID);
+                    $('#ParentMenuName').val(response.ParentMenuName);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+
+<body style="background-color:lightgray">
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+
+                        <div style="color:black;background-color:lightgray;width:1100px">
+                           @* @Html.ActionLink("Back To Home", "../Treeview/Index")*@
+                            @* @Html.ActionLink("Item Type", "../B_ITAssestCell/Index")|
+                                @Html.ActionLink("Item Master", "../B_Item_Master_ItCell/Index")|
+                                @Html.ActionLink("Add in Stock ", "../Add_In_Stock_ITCELLLis/Index")|
+                                @Html.ActionLink("Issue Item", "../B_Issue_Item_ITCELLList/Index")|
+                                @Html.ActionLink("Mark Scrap Item", "../B_Scrap_Item/Index")|
+                                @Html.ActionLink("Approve Scrap Item", "../B_GetApproval_ScrapItem/Index")|
+                                @Html.ActionLink("Upload Invoice/Doc", "../B_Upload_Invoice_ITCEll/Index")|
+                                @Html.ActionLink("Download Invoice/Doc", "../B_GetInvoiceDetail/Index")*@
+                        </div>
+                        @if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success alert-dismissable">
+                                @ViewBag.Message;
+                                <a href="#" class="close" data-dissmiss="alert">x</a>
+                            </div>
+                        }
+
+
+                        <table id="example1" class="table table-bordered table-hover " style="background-color:lightgray; width:1100px" ">
+                            <thead>
+                                <tr>
+                                    <th>Parent Id/th>
+                                    <th>Parent Menu Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.ParentMenuID)</td>
+                                        <td>@Html.DisplayFor(model => item.ParentMenuName)</td>
+
+                                        <td>
+                                            <a onclick="GetDetails(@item.ParentMenuID)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                            @*<a style="color:black">
+                                                @Html.ActionLink("", "RemoveEmployee", "B_ITAssestCell", new { Id = item.Item_Type_Id }, new { onclick = "return confirm('Are  sure wants to delete?');", @class = "fa fa-trash-o" })
+                                                </a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Update Parent Menu </h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html
+                            .BeginForm("Edit_ParentMenu", "Treeview", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <input type="number" class="form-control" id="ParentMenuID" name="ParentMenuID">
+                                        <input type="text" class="form-control" id="ParentMenuName" name="ParentMenuName">
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-Insert" style="margin-right:20px;font-size:medium;">
+        Add New Parent
+    </button>
+
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Add New Record</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Add_ParentMenu", "Treeview", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+
+                                        <label>Item Type</label>
+
+                                        @*<input  class="form-control text-box single-line input-validation-error" data-val="true" data-val-date="The field  must be a String." data-val-required="The Item_Type field is required." id="Item_Type_Item" name="Item_Type_Item" type="text" value="NA" aria-required="true" aria-describedby="Item_Type-error" aria-invalid="true" />*@
+
+                                        @Html.TextBoxFor(model => model.ParentMenuName, new { @class = "form-control", @placeholder = "ParentMenuName" })
+                                        @Html.ValidationMessageFor(model => model.ParentMenuName, "", new { @class = "error" })
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success alert-dismissable">
+                @ViewBag.Message;
+                <a href="#" class="close" data-dissmiss="alert">x</a>
+            </div>
+        }
+    </div>
+
+</body>
+</html>

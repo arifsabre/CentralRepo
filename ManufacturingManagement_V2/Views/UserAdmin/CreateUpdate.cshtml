@@ -1,0 +1,191 @@
+﻿@model ManufacturingManagement_V2.Models.UserMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>User Entry</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    <h5><b>User Details</b></h5>
+    <table class="table table-bordered">
+        <tr>
+            @Html.HiddenFor(model => model.UserId)
+            @Html.HiddenFor(model => model.EmpId)
+            @Html.HiddenFor(model => model.HODUserId)
+            <td>@Html.LabelFor(model => model.UserName)</td>
+            <td>
+                @Html.EditorFor(model => model.UserName)
+                @Html.ValidationMessageFor(model => model.UserName)
+            </td>
+            <td>@Html.LabelFor(model => model.Title)</td>
+            <td>
+                @Html.DropDownListFor(model => model.Title, ViewBag.TitleList as SelectList)
+                @Html.ValidationMessageFor(model => model.Title)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.FullName)</td>
+            <td>
+                @Html.EditorFor(model => model.FullName)
+                @Html.ValidationMessageFor(model => model.FullName)
+            </td>
+            <td>@Html.LabelFor(model => model.PassW)</td>
+            <td>
+                @Html.EditorFor(model => model.PassW)
+                @Html.ValidationMessageFor(model => model.PassW)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.LoginType)</td>
+            <td>
+                @Html.DropDownListFor(model => model.LoginType, ViewBag.LoginTypeList as SelectList)
+                @Html.ValidationMessageFor(model => model.LoginType)
+            </td>
+            <td>@Html.LabelFor(model => model.Department)</td>
+            <td>
+                @Html.DropDownListFor(model => model.Department, ViewBag.DepartmentList as SelectList)
+                @Html.ValidationMessageFor(model => model.Department)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.MobileNo)</td>
+            <td>
+                @Html.EditorFor(model => model.MobileNo)
+                @Html.ValidationMessageFor(model => model.MobileNo)
+            </td>
+            <td>@Html.LabelFor(model => model.EMail)</td>
+            <td>
+                @Html.EditorFor(model => model.EMail)
+                @Html.ValidationMessageFor(model => model.EMail)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.EmpName)</td>
+            <td>
+                @Html.EditorFor(model => model.EmpName)
+                @Html.ValidationMessageFor(model => model.EmpName)
+            </td>
+            <td>@Html.LabelFor(model => model.HODUserName)</td>
+            <td>
+                @Html.EditorFor(model => model.HODUserName)
+                @Html.ValidationMessageFor(model => model.HODUserName)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.IsActive)</td>
+            <td>
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </td>
+        </tr>
+        <tr><td colspan="4"><b>Select Companies</b></td></tr>
+        <tr>
+            <td colspan="4">
+                @foreach (var comp in Model.AllCompanies)
+                {
+                    <li style="width:100%;">
+                        <input type="checkbox" name="SelectedCompanies"
+                               value="@comp.CompCode" id="@comp.CompCode"
+                               style="width:55px;height:20px;"
+                               @{if (Model.SelectedCompanies.Contains(comp.CompCode)) { <text> checked='checked' </text>  } } />
+                        <span>&nbsp;&nbsp;@comp.Company</span>
+                    </li>
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+    <h2>@ViewBag.Message</h2>
+        <p>
+            <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#IsActive").attr("style", "width:55px;height:25px;");
+            $("#EmpName").attr("placeholder", "start typing, then select");
+            $("#HODUserName").attr("placeholder", "start typing, then select");
+            document.getElementById("Title").value = '@Model.Title';//note
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#EmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('EmpId').value = ui.item.Id;
+                @*$.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getAdvanceDeductionInfo", "Advance"))",
+                    data: { "newempid": ui.item.Id },
+                    success: function (data) {
+                        $('#lblAdvanceInfo').text(data.advanceinfo);
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });*@
+            }
+        });
+</script>
+
+    <script type="text/javascript">
+        $("#HODUserName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteHODUsersList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('HODUserId').value = ui.item.Id;
+            }
+        });
+</script>
+
+}
+

@@ -1,0 +1,84 @@
+﻿@model ManufacturingManagement_V2.Models.B_INTEGRATIONMDI
+@{
+    ViewBag.Title = "Netork Status";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="100" />
+    <title>Network Status</title>
+</head>
+@*onload="JavaScript:timedRefresh(10000);"*@
+<body>
+    <div style="color:red">
+        Reader Status 
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Device Id</th>
+                                    <th>Location</th>
+                                    <th>IP Address</th>
+                                    <th>DateTime</th>
+                                    <th>Status</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @Html.TextBoxFor(model => item.DeviceId)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => item.DeviceLocation)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => item.DeviceIP)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => item.ReaderPingdateTime)
+                                        </td>
+                                        @if (item.DeviceStatus == "TimedOut" || item.DeviceStatus == "DestinationHostUnreachable")
+                                        {
+                                            <td>
+                                                @Html.TextBoxFor(model => item.DeviceStatus, new { @style = "font-size:10pt;color:red" })
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @Html.TextBoxFor(model => item.DeviceStatus, new { @style = "font-size:10pt;color:green" })
+                                            </td>
+                                        }
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
+@*<script type="text/JavaScript">
+        function timedRefresh(timeoutPeriod) {
+        setTimeout("location.reload(true);", timeoutPeriod);
+        }
+    </script>*@

@@ -1,0 +1,46 @@
+﻿@model ManufacturingManagement_V2.Models.C_ComplaintMDI
+@{
+    ViewBag.Title = "New Complaint";
+    // Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<link href="~/Contents/bootstrap.min.css" rel="stylesheet" />
+<br /><br /><br /><br />
+<div>
+    <table id="jdtabledesktop4" class="display nowrap" style="width:100%">
+        <thead>
+            @*<tr>
+                    <th style="color:red">Below is Your's Reference No To track The Status Of the Complaint</th>
+                    <th>Created On</th>
+                </tr>*@
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.Item_List)
+            {
+                <tr>
+                    <td style="color:red;font-size:larger">
+                        Complaint Has been Registered <br />
+                        Your's Complaint Number is -
+                        @Html.DisplayFor(model => item.referenceno) and Prag Unit Item SR No-
+                        @Html.DisplayFor(model => item.pragno)
+                        <br />
+                        For More Details Go To CRM ==>Complaints List
+
+                    </td>
+                    @*<td>
+                                  @Html.DisplayFor(model => item.CreatedOn)
+                        </td>*@
+
+                </tr>
+
+
+            }
+
+
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>
+
+

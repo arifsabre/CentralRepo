@@ -1,0 +1,173 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.NotificationUserMdl>
+@{
+    ViewBag.Title = "PRAG ERP Notification";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+@*@Html.AntiForgeryToken()*@
+<h4><b>Notification:</b> @ViewData["UserName"]</h4>
+
+@Html.Partial("NotificationLinks")
+
+<table class="table table-bordered" style="width:100%">
+    <tr>
+        <td>
+            <span style="font-weight:bold;">Reply Message:</span> 
+            <input type="text" placeholder="Enter reply (if any), Max Length: 250 Chars"
+            style="width:350px;" id="txtReplyMsg"/>
+        </td>
+        <td align="right">[@ViewBag.MsgInfo]</td>
+   </tr>
+</table>
+
+@*<audio controls preload="none" autoplay="autoplay" style="width:100%;">
+     <source src="~/Images/SKGV.mp4" type='audio/wav'>
+</audio>  ok working manually*@
+
+@*<video controls preload="none" autoplay="autoplay" style="width:100%;">
+     <source src="~/Images/SKGV.mp4" type='audio/wav'>
+</video> ok working manually*@
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:25px;">
+            S.No.
+        </th>
+        <th style="width:35px;">
+            @Html.DisplayNameFor(model => model.NoticeNo)
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.NoticeDT)
+        </th>
+        <th style="width:120px;">
+            @Html.DisplayNameFor(model => model.SendingUserName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.NoticeMsg)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.ReplyMsg)
+        </th>
+        <th style="width:45px;">
+            @Html.DisplayNameFor(model => model.IsAttended)
+        </th>
+        <th style="width:45px;"> Reply </th>
+        @*<th>Reply With Msg</th>*@
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.NoticeNo)
+            </td>
+            <td>
+                @Html.ValueFor(model => item.NoticeDT, "{0:dd/MM/yyyy hh:mm tt}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.SendingUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.NoticeMsg)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReplyMsg)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsAttended)
+            </td>
+            <td>
+                @*@Html.ActionLink("Reply", "updateNotificationAttended", new { recid = item.RecId },new { onclick = "getAlert('"+item.RecId+"')" })*@
+                @Html.ActionLink("Reply", null, new { recid = item.RecId }, new { onclick = "replyNotification('" + item.RecId + "')" })
+            </td>
+            @*<td>
+                    @Html.ActionLink("ReplyWithMsg", "ReplyWithMsg", new { id = item.RecId })
+                </td>*@
+        </tr>
+        i++;
+    }
+
+</table>
+
+<script type="text/javascript">
+    setInterval(
+        function ()
+        {
+                $.post("@Url.Action("getNotification", "Notification")", {},
+                function (data) {
+                    //$('#lblInfo').text(data.msg);
+                    if (data.recid != '0') {
+                        //displays msg also
+                        var a = confirm(data.noticemsg);
+                        if (a == true)
+                        {
+                            //mark attended on OK click
+                            markattended(data.recid);
+                        }
+                        //reload index to refresh notification list
+                        location.reload();
+                    }
+                });
+        }, 5000)
+</script>
+
+<script>
+    function markattended(recid) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("updateNotificationAttended", "Notification")',
+            dataType: 'html',
+            data: ({
+                //insert your parameters to pass to controller
+                recid: recid
+            }),
+            success: function () {
+                //alert("Successfully posted!");
+            }
+        });
+    }
+</script>
+
+<script>
+    function replyNotification(recid) {
+        //alert(recid);
+        var msg = $('#txtReplyMsg').val();
+        //alert(msg)
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("updateNotificationAttended", "Notification")',
+            dataType: 'html',
+            data: ({
+                //insert your parameters to pass to controller
+                recid: recid,
+                replymsg: msg
+            }),
+            success: function () {
+                //alert("Successfully posted!");
+            }
+        });
+    }
+</script>
+
+@*@section Scripts{
+ to check for auti play
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript">
+$(function () {
+    var APlayer = document.getElementById("audio");
+    APlayer.src = "/Images/SKGV.mp4";
+    APlayer.load();
+    APlayer.play();
+    });
+</script>
+}*@
+
+
+
+
+
+
+

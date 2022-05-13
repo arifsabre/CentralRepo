@@ -1,0 +1,546 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ProductionPlanStatusMdl>
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+<fieldset>
+    @using (Ajax.BeginForm("FilterIndexStatus", "ProductionPlan", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <table>
+            <tr>
+                <td>
+                    <h4><b>Production Plan List/Entry</b></h4>
+                </td>
+                <td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <b>Month</b>
+                    @Html.TextBox("txtMonth", null, new { @style = "width:50px;", @onchange = "SetReportLink()" })
+
+                    <b>Year</b>
+                    @Html.TextBox("txtYear", null, new { @style = "width:70px;", @onchange = "SetReportLink()" })
+
+                    <b>&nbsp;</b>
+                    <button class="btn btn-default">Submit</button>
+                </td>
+            </tr>
+        </table>
+
+        @Html.ActionLink("Add additional Item in Plan", "../ProductionPlan/CreateUpdate", null,
+            new { @class = "btn btn-default" })
+
+        <b>&nbsp;</b>//Set Sub-assembly Plan
+        @Html.ActionLink("Generate Final Production Plan", null, null,
+                new { onclick = "generateSubassemblyPlan()", @class = "btn btn-default" })
+
+        <b>&nbsp;</b>//View Report
+        @Html.ActionLink("View Production Plan", "../ProductionReport/ProductionPlanStatusIndex", null,
+            new { id = "linkPlanStatus", @target = "_new;", @class = "btn btn-default" })
+
+        <b>&nbsp;</b>
+        @Html.ActionLink("Detailed Production Plan", "DisplayBomReport", "MaterialRequirementReport", null,
+                new { id = "linkMatListF1", @target = "_new;", @class = "btn btn-default" })
+
+        <b>&nbsp;</b>
+        @Html.ActionLink("Material Requirement List", "DisplayBomReport", "MaterialRequirementReport", null,
+                new { id = "linkMatListF2", @target = "_new;", @class = "btn btn-default" })
+    }
+</fieldset>
+
+    <table class="tablecontainer" style="width:100%;" id="tblpp">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th style="width:80px;">
+                Item&nbsp;Code<br />Short&nbsp;Name<br />--------<br />[ItemId]-Unit
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:black;">@Model.ElementAt(0).PrvMonth<br />(Prv)</span>
+                <br />-----
+                <span style="font-size:8pt;">WIP&nbsp;Qty</span>
+            </th>
+            <th style="width:120px;text-align:left;">
+                <span style="color: black;">LGD</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:blue;">@Model.ElementAt(0).Month1<br />(M1)</span>
+                <br />-----
+                <span style="font-size:8pt;"><br />Insp/PrdQty</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:darkslategray;">@Model.ElementAt(0).Month2<br />(M2)</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:darkcyan;">@Model.ElementAt(0).Month3<br />(M3)</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:darkcyan;">@Model.ElementAt(0).Month4<br />(M4)</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:darkcyan;">@Model.ElementAt(0).Month5<br />(M5)</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:darkcyan;">@Model.ElementAt(0).Month6<br />(M6)</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:darkcyan;">@Model.ElementAt(0).Month7<br />(M7)</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:darkcyan;">@Model.ElementAt(0).Month8<br />(M8)</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:darkcyan;">@Model.ElementAt(0).Month9<br />(M9)</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:darkcyan;">@Model.ElementAt(0).Month10<br />(M10)</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:darkcyan;">@Model.ElementAt(0).Month11<br />(M11)</span>
+            </th>
+            <th style="width:120px;text-align:right;">
+                <span style="color:darkcyan;">@Model.ElementAt(0).Month12<br />(M12)</span>
+            </th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ItemCode)
+                    <br />@Html.DisplayFor(model => item.ShortName)
+                    <div>
+                        ------------
+                        <br />[@Html.DisplayFor(model => item.ItemId)]
+                        @Html.DisplayFor(model => item.UnitName)
+                        @if (item.IsAutoPlanned == true)
+                        {
+                           <span style="color:blue;">Auto&nbsp;Planned</span>
+                        }
+                    </div>
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:black;font-size:8pt;">@Model.ElementAt(0).PrvMonth&nbsp;(Prv)</span>
+                    <br />@Html.ValueFor(modelItem => item.PrvWipQty, "{0:##,##,##,##,##0.00}")
+                    @*<br />@Html.ValueFor(modelItem => item.PrvPrdQty, "{0:##,##,##,##,##0.00}")
+                        <br />@Html.ValueFor(modelItem => item.PrvInspQty, "{0:##,##,##,##,##0.00}")
+                        <br />@Html.ValueFor(modelItem => item.PrvProducedQty, "{0:##,##,##,##,##0.00}")
+                        <br />@Html.ValueFor(modelItem => item.PrvInspectedQty, "{0:##,##,##,##,##0.00}")*@
+                </td>
+                <td style="text-align:left;">
+                    <br /><br />ADP<br />CDP<br />CIP<br />CPP<br />ED.IP<br />ED.PP
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:blue;font-size:8pt;">
+                        @Model.ElementAt(0).Month1&nbsp;(M1)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 1
+                        }, new { target = "_new" })
+                    </span>
+                    <br />@Html.ValueFor(modelItem => item.M1DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M2DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M3DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M4DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />
+                    @Html.TextBox("txtInspQty" + i.ToString(), item.InspQty, new
+                    {
+                        @id = "InspQty" + (i - 1),
+                    style = "width: 55px; height: 20px; padding: 0; text-align:right;"
+                    })
+                    <br />
+                    @Html.TextBox("txtPrdQty" + i.ToString(), item.PrdQty, new
+               {
+                   @id = "PrdQty" + (i - 1),
+                   style = "width: 55px; height: 20px; padding: 0; text-align:right;"
+               })
+                </td>
+                <td style="text-align:right;">
+                    <span style="color: darkslategray; font-size: 8pt;">
+                        @Model.ElementAt(0).Month2&nbsp;(M2)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 2
+                        }, new { target = "_new" })
+                    </span>
+                    <br />@Html.ValueFor(modelItem => item.M2DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M3DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M4DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M5DPQty, "{0:##,##,##,##,##0.00}")
+                    <br /><br />
+                    @Html.ActionLink("Set_Plan", null, null,
+                       new { onclick = "generateProductionPlan('" + i + "', '" + item.ItemId + "', '" + item.PPMonth + "','" + item.PPYear + "')", @style = "font-weight:bold;" })
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:darkcyan;font-size:8pt;">
+                        @Model.ElementAt(0).Month3&nbsp;(M3)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 3
+                        }, new { target = "_new" })
+                    </span>
+                    @Html.ValueFor(modelItem => item.M3DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M4DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M5DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M6DPQty, "{0:##,##,##,##,##0.00}")
+                    <br /><br />
+                    <span style="color:blue;font-size:9pt;">
+                        @Html.ActionLink("ALL_DP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 0
+                        }, new { target = "_new" })
+                    </span>
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:darkcyan;font-size:8pt;">
+                        @Model.ElementAt(0).Month4&nbsp;(M4)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 4
+                        }, new { target = "_new" })
+                    </span>
+                    <br />
+                    @Html.ValueFor(modelItem => item.M4DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M5DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M6DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M7DPQty, "{0:##,##,##,##,##0.00}")
+                    <br /><br />
+                    @Html.ActionLink("Mat.List", "DisplayBomReport", "MaterialRequirementReport", null,
+                    new { id = "mylink" + (i - 1), @target = "_new;", name = item.ItemId })
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:darkcyan;font-size:8pt;">
+                        @Model.ElementAt(0).Month5&nbsp;(M5)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 5
+                        }, new { target = "_new" })
+                    </span>
+                    <br />@Html.ValueFor(modelItem => item.M5DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M6DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M7DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M8DPQty, "{0:##,##,##,##,##0.00}")
+                    <br /><br />
+                    @Html.ActionLink("BOM", "DisplayBomReport", "MaterialRequirementReport", null,
+                    new { id = "mylinkBom" + (i - 1), @target = "_new;", name = item.ItemId })
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:darkcyan;font-size:8pt;">
+                        @Model.ElementAt(0).Month6&nbsp;(M6)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 6
+                        }, new { target = "_new" })
+                    </span>
+                    <br />@Html.ValueFor(modelItem => item.M6DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M7DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M8DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M9DPQty, "{0:##,##,##,##,##0.00}")
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:darkcyan;font-size:8pt;">
+                        @Model.ElementAt(0).Month7&nbsp;(M7)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 7
+                        }, new { target = "_new" })
+                    </span>
+                    <br />@Html.ValueFor(modelItem => item.M7DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M8DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M9DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M10DPQty, "{0:##,##,##,##,##0.00}")
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:darkcyan;font-size:8pt;">
+                        @Model.ElementAt(0).Month8&nbsp;(M8)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 8
+                        }, new { target = "_new" })
+                    </span>
+                    <br />@Html.ValueFor(modelItem => item.M8DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M9DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M10DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M11DPQty, "{0:##,##,##,##,##0.00}")
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:darkcyan;font-size:8pt;">
+                        @Model.ElementAt(0).Month9&nbsp;(M9)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 9
+                        }, new { target = "_new" })
+                    </span>
+                    <br />@Html.ValueFor(modelItem => item.M9DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M10DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M11DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M12DPQty, "{0:##,##,##,##,##0.00}")
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:darkcyan;font-size:8pt;">
+                        @Model.ElementAt(0).Month10&nbsp;(M10)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 10
+                        }, new { target = "_new" })
+                    </span>
+                    <br />@Html.ValueFor(modelItem => item.M10DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M11DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M12DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M13DPQty, "{0:##,##,##,##,##0.00}")
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:darkcyan;font-size:8pt;">
+                        @Model.ElementAt(0).Month11&nbsp;(M11)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 11
+                        }, new { target = "_new" })
+                    </span>
+                    <br />@Html.ValueFor(modelItem => item.M11DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M12DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M13DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M14DPQty, "{0:##,##,##,##,##0.00}")
+                </td>
+                <td style="text-align:right;">
+                    <span style="color:darkcyan;font-size:8pt;">
+                        @Model.ElementAt(0).Month12&nbsp;(M12)
+                        <br />
+                        @Html.ActionLink("ViewDP", "DPDetail", new
+                        {
+                            ppmonth = item.PPMonth,
+                            ppyear = item.PPYear,
+                            itemid = item.ItemId,
+                        itemcode = item.ItemCode,
+                            shortname = item.ShortName,
+                            unit = item.UnitName,
+                        monthfor = 12
+                        }, new { target = "_new" })
+                    </span>
+                    <br />@Html.ValueFor(modelItem => item.M12DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M13DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M14DPQty, "{0:##,##,##,##,##0.00}")
+                    <br />@Html.ValueFor(modelItem => item.M15DPQty, "{0:##,##,##,##,##0.00}")
+                </td>
+            </tr>
+            i++;
+        }
+
+    </table>
+    <span style="font-family:Verdana;color:blue;">[Note: List of Items is as per Item Group accessibility provided to logged-in user]</span>
+    <br/><br/>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        @*@Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/jqueryui")
+            @Styles.Render("~/Content/themes/base/css")*@
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtMonth").value = '@ViewBag.ppmonth';
+            document.getElementById("txtYear").value = '@ViewBag.ppyear';
+            SetMaterialRequirementLink();
+            SetReportLink();
+        });
+        </script>
+
+        <script>
+            function SetReportLink() {
+                var _month = $('#txtMonth').val();
+                var _year = $('#txtYear').val();
+                var mylink1 = document.getElementById("linkMatListF1");
+                var mylink2 = document.getElementById("linkMatListF2");
+                var mylink3 = document.getElementById("linkPlanStatus");
+                mylink1.href = '/ProductionReport/DisplayProductionPlanMaterialList?format=1&ppmonth=' + _month + '&ppyear=' + _year;
+                mylink2.href = '/ProductionReport/DisplayProductionPlanMaterialList?format=2&ppmonth=' + _month + '&ppyear=' + _year;
+                mylink3.href = '/ProductionReport/DisplayPlanStatusReport?ppmonth=' + _month + '&ppyear=' + _year;
+            }
+        </script>
+
+        <script>
+            function SetMaterialRequirementLink() {
+                $("#tblpp tr").each(function (index, item) {
+                    if (index > 0) {
+                        var tds = $(this).find("td");
+                        //
+                        var mylinkB = document.getElementById("mylinkBom" + (index - 1));
+                        var _itemidB = mylinkB.name;
+                        mylinkB.href = '/MaterialRequirementReport/DisplayBomReport?fgitemid=' + _itemidB + '&prdqty=1';
+                        //
+                        var mylinkR = document.getElementById("mylink" + (index - 1));
+                        var _itemidR = mylinkR.name;
+                        var _prdqty = $('#PrdQty' + (index - 1)).val();
+                        mylinkR.href = '/MaterialRequirementReport/DisplayBomReport?fgitemid=' + _itemidR + '&prdqty=' + _prdqty;
+                        //
+                    }
+                });
+            }
+        </script>
+
+        <script>
+        function generateProductionPlan(recid, itemid, mth, yr) {
+            var _prdqty = $('#PrdQty' + (recid - 1)).val();
+            var _inspqty = $('#InspQty' + (recid - 1)).val();
+
+            if (!(_prdqty != '' && !isNaN(_prdqty))) {
+                alert('Invalid Production Plan Qty!');
+                //$('#PrdQty' + (recid - 1)).focus();
+                return;
+            }
+
+            if (!(_inspqty != '' && !isNaN(_inspqty))) {
+                alert('Invalid Inspection Plan Qty!');
+                //$('#InspQty' + (recid - 1)).focus();
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("generateProductionPlan", "ProductionPlan")',
+                dataType: 'json',//instead of html
+                data: ({
+                    itemid: itemid,
+                    ppmonth: mth,
+                    ppyear: yr,
+                    prdqty: _prdqty,
+                    inspqty: _inspqty
+                }),
+                success: function (d) {
+                    alert(d.message);
+                    if (d.status == true) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+        </script>
+
+        <script>
+        function generateSubassemblyPlan() {
+            var _month = $('#txtMonth').val();
+            var _year = $('#txtYear').val();
+
+            if (!(_month != '' && !isNaN(_month))) {
+                alert('Invalid month!');
+                $('#txtMonth' + (recid - 1)).focus();
+                return;
+            }
+
+            if (!(_year != '' && !isNaN(_year))) {
+                alert('Invalid year!');
+                $('#txtYear' + (recid - 1)).focus();
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("generateSubassemblyPlanTotal", "ProductionPlan")',
+                dataType: 'json',//instead of html
+                data: ({
+                    ppmonth: _month,
+                    ppyear: _year
+                }),
+                success: function (d) {
+                    alert(d.message);
+                    if (d.status == true) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+        </script>
+
+    }
+

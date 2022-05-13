@@ -1,0 +1,194 @@
+﻿@model ManufacturingManagement_V2.Models.LibFileUploadMDI
+@{
+    ViewBag.Title = "LibraryDownloadRequest";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Download Request</title>
+    <script>
+        function GetDetails(id) {
+            $.ajax({
+                url: "/Library/Edit_LibraryDownloadRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ReqId').val(response.ReqId);
+                    $('#DownloadReason').val(response.DownloadReason);
+                    $('#Approved').val(response.Approved);
+                    $('#ApprovedBy').val(response.ApprovedBy);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert1">
+            Download Request List
+        </button>
+        <div id="printbar" class="pull-right">
+        </div>
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ReqId</th>
+                                    <th>DownloadReason</th>
+                                    <th>RequestedBy</th>
+                                    <th>RequestedOn</th>
+                                    <th>Download Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.ReqId)</td>
+                                        <td>@Html.DisplayFor(model => item.DownloadReason)</td>
+                                        <td>@Html.DisplayFor(model => item.username)</td>
+                                        <td>@Html.DisplayFor(model => item.RequestOn)</td>
+                                        <td>@Html.DisplayFor(model => item.Approved)</td>
+
+
+                                        <td>
+                                            <a onclick="GetDetails(@item.ReqId)">
+                                                <i class="fa fa-reply">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "LibraryDownloadDeleteRecord", "Library", new { id = item.ReqId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @*<div class="modal fade" id="modal-Insert">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="box-title">Download Request</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box box-primary">
+                            @using (Html.BeginForm("LibraryDownloadRequestSave", "Library", FormMethod.Post))
+                            {
+
+                                <div class="modal-body">
+                                    <div class="col-lg-12">
+
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <br />
+                                        <div class="form-group">
+
+                                            @Html.HiddenFor(model => model.userid)
+
+                                            <div class="col-md-10">
+                                                <br />
+                                                <label>Download Reason</label>
+                                                <br />
+                                                @Html.TextAreaFor(model => model.DownloadReason)
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    @*Approved*@
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Approve Request</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_LibraryDownloadRequest", "Library", FormMethod.Post))
+                        {
+
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <br />
+                                    <div class="form-group">
+
+                                        @Html.HiddenFor(model => model.ReqId)
+                                        @Html.HiddenFor(model => model.username)
+
+                                        <div class="col-md-10">
+                                            <br />
+                                            <label>Download Reason</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.DownloadReason)
+                                            <br />
+                                            <label>Select Approval Status </label>
+                                            <select class="form-control" id="Approved" name="Approved">
+                                                <option>Approved</option>
+                                                <option>Reject</option>
+                                            </select>
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Approve</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+
+
+

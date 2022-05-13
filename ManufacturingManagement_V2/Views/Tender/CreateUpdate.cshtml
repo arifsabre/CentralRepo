@@ -1,0 +1,736 @@
+﻿@model ManufacturingManagement_V2.Models.TenderMdl
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Tender Entry</b></h4>
+<div class="form-group">
+    <b><u>Tender Details</u></b>
+    @if (@ViewData["AddEdit"].ToString().ToLower() == "update")
+    {
+        <table>
+            <tr>
+                <td>
+                    <span>Step&nbsp;1&nbsp;(E-Tender&nbsp;Entry):&nbsp;</span>
+                    @if (Model.Step1.ToLower() == "pending")
+                    {
+                        @Html.ActionLink(Model.Step1, "../ETender/CreateUpdate",
+                        new { id = Model.TenderId }, new { @target = "_blank", style = "color:fuchsia;text-decoration:underline;" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink(Model.Step1, "../ETender/CreateUpdate",
+                        new { id = Model.TenderId }, new { @target = "_blank", style = "color:green;text-decoration:underline;" })
+                    }
+                </td>
+                <td>
+                    &nbsp;&nbsp;<span>Step&nbsp;2&nbsp;(E-Tender&nbsp;Item&nbsp;Entry):&nbsp;</span>
+                    @if (Model.Step2.ToLower() == "pending")
+                    {
+                        @Html.ActionLink(Model.Step2, "../ETenderItem/CreateUpdate",
+                        new { tenderid = Model.TenderId, itemrecid = 0 },
+                        new { @target = "_blank", style = "color:fuchsia;text-decoration:underline;" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink(Model.Step2, "../ETenderItem/CreateUpdate",
+                        new { tenderid = Model.TenderId, itemrecid = 0 },
+                        new { @target = "_blank", style = "color:green;text-decoration:underline;" })
+                    }
+                </td>
+                <td>
+                    &nbsp;&nbsp;<span>Step&nbsp;3&nbsp;(E-Tender&nbsp;Consignee&nbsp;Entry):&nbsp;</span>
+                    @if (Model.Step3.ToLower() == "pending")
+                    {
+                        @Html.ActionLink(Model.Step3, "../ETenderConsignee/CreateUpdate",
+                        new { tenderid = Model.TenderId, itemrecid = 0 },
+                        new { @target = "_blank", style = "color:fuchsia;text-decoration:underline;" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink(Model.Step3, "../ETenderConsignee/CreateUpdate",
+                        new { tenderid = Model.TenderId, itemrecid = 0 },
+                        new { @target = "_blank", style = "color:green;text-decoration:underline;" })
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    @Html.ActionLink("Update AAL/CO", "../LOAUpdation/Index",
+                    new { tenderid = Model.TenderId }, new { @target = "_blank", style = "text-decoration:underline;" })
+                    &nbsp;&nbsp;@Html.ActionLink("Update BG", "../BankGuarantee/CreateUpdate",
+new { id = Model.TenderId }, new { @target = "_blank", style = "text-decoration:underline;" })
+                    &nbsp;&nbsp;
+                    @Model.LoaInfo
+                </td>
+            </tr>
+        </table>
+    }
+
+    <table class="table table-bordered">
+        @Html.Hidden("hfTenderId", null, new { @id = "hfTenderId" })
+        @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+        @Html.Hidden("hfRailwayId", null, new { @id = "hfRailwayId" })
+        <tr>
+            <td style="width:18%;">@Html.DisplayNameFor(model => model.RailwayName)</td>
+            <td>
+                <input type="text" id="txtRailwayName" placeholder="start typing, then select" />
+                <span class="error">Invalid Railway!</span>
+            </td>
+            <td style="width:12%;">@Html.DisplayNameFor(model => model.TenderNo)</td>
+            <td>
+                <input type="text" id="txtTenderNo" />
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.SerialNo)</td>
+            <td>
+                <input type="text" id="txtSerialNo" />
+                <span class="error">Invalid!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.TenderType)</td>
+            <td>
+                <input type="text" id="txtTenderType" />
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.POType)</td>
+            <td>
+                <input type="text" id="txtPOType" />
+                <span class="error">Invalid!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.RecDate)</td>
+            <td>
+                <input type="text" id="txtRecDate" class="datepicker" />
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.OpeningDate)</td>
+            <td>
+                <input type="text" id="txtOpeningDate" class="datepicker" />
+                <span class="error">Invalid!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.OpeningTime)</td>
+            <td>
+                <input type="text" id="txtOpeningTime" />
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.QuotationNo)</td>
+            <td>
+                <input type="text" id="txtQuotationNo" />
+                <span class="error">Invalid!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.QuotationDate)</td>
+            <td>
+                <input type="text" id="txtQuotationDate" class="datepicker" />
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.StatusDesc)</td>
+            <td>
+                @Html.DropDownList("ddlTenderStatus", ViewBag.StatusList as SelectList)
+                <span class="error">Invalid!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.Remarks)</td>
+            <td>
+                <input type="text" id="txtRemarks" />
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.TC1PmtTerms)</td>
+            <td colspan="3">
+                <textarea id="txtTC1PmtTerms" name="txtTC1PmtTerms" rows="3" cols="80"></textarea>
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.EstProduct)</td>
+            <td>
+                <input type="text" id="txtEstProduct" />
+                <span class="error">Invalid!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.ProductDesc)</td>
+            <td>
+                <input type="text" id="txtProductDesc" />
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.DrgSpecChanged)</td>
+            <td>
+                <input type="text" id="txtDrgSpecChanged" />
+                <span class="error">Invalid!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.ModeOfDisp)</td>
+            <td>
+                <input type="text" id="txtModeOfDisp" />
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.DelvSchedule)</td>
+            <td colspan="3">
+                <textarea id="txtDelvSchedule" name="txtDelvSchedule" rows="2" cols="80"></textarea>
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.InspAuthority)</td>
+            <td colspan="3">
+                <textarea id="txtInspAuthority" name="txtInspAuthority" rows="2" cols="80"></textarea>
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Clarification)</td>
+            <td colspan="3">
+                <textarea id="txtClarification" name="txtClarification" rows="1" cols="80"></textarea>
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+
+        <tr><td colspan="4"><b><u>Items Detail</u></b></td></tr>
+        <tr>
+            <td>Item</td>
+            <td colspan="3">
+                <input type="text" id="txtItemCode" style="width:280px;" 
+                       placeholder="start typing, then select" />
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div id="lprlqr"></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;">Item Description</td>
+            <td colspan="3">
+                <textarea id="txtItemName" name="txtItemName" rows="3" cols="80"></textarea>
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Quantity</td>
+            <td>
+                <input type="text" id="txtQty" />
+                <span class="error">Invalid!</span>
+            </td>
+            <td>Unit</td>
+            <td>
+                @Html.DropDownList("ddlUnit", ViewBag.UnitList as SelectList,
+                    new { disabled = "true" })
+                <input type="text" id="txtUnitName" />
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Rate</td>
+            <td>
+                <input type="text" id="txtRate" />
+                <span class="error">Invalid!</span>
+            </td>
+            <td>Level</td>
+            <td>
+                <input type="text" id="txtL1L2" />
+                <span class="error">Invalid!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Our Qty</td>
+            <td>
+                <input type="text" id="txtOurQty" />
+                <span class="error">Invalid!</span>
+            </td>
+            <td align="left">
+                <input type="button" class="btn btn-default" id="add" value="Add" />
+            </td>
+        </tr>
+
+    </table>
+
+    <span>List of Items:-</span>
+    <div id="orderItems" style="width:98%;overflow-x:scroll;">
+    </div>
+
+    <br />
+    <div>
+        @Html.CheckBox("IsReTender", false, new
+        {
+            @id = "chkIsReTender",
+           style = "width: 50px; height: 18px; padding: 0; text-align:center;"
+        })Re-Tender (for Existing Tender)
+        <br /><br />
+        @Html.ActionLink("Print Checksheet", "TenderChecksheetReport", new
+        {
+            tenderid = Model.TenderId,
+            tenderno = Model.TenderNo
+        }, new { @target = "_blank" })
+        <input id="submit" class="btn btn-default" type="button" value='@ViewData["AddEdit"]' />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        @Html.ActionLink("Create New", "CreateUpdate", new { id = 0 },
+              new { @style = "display:none;", @class = "btn btn-default", @id = "myLink" })
+        <br /><br />
+    </div>
+</div>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("txtRecDate").value = '@ViewBag.VDate';
+            document.getElementById("txtOpeningDate").value = '@ViewBag.VDate';
+            document.getElementById("txtOpeningTime").value = '@ViewBag.OpnTime';
+            document.getElementById("txtQuotationDate").value = '@ViewBag.VDate';
+        });
+        </script>
+
+        <script type="text/javascript">
+        $("#txtItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePOSaleItemList", "Item"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfItemId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                data: { "itemid": ui.item.Id },
+                success: function (data) {
+                    $('#txtRate').val(data.purchaserate);
+                    $('#ddlUnit').val(data.unit);
+                    $('#txtItemName').val(data.itemname);
+                    $('#txtUnitName').val(data.unitname);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+                });
+
+                //lpr-lqr
+                SetLprLqrInfo(ui.item.Id);
+
+                //detail-2
+                //fillUnitList(ui.item.Id);
+                //
+        }
+        });
+        </script>
+
+        <script>
+        function SetLprLqrInfo(itemid) {
+            if (itemid == 0) {
+                return;
+            }
+            $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getLprLqrDetail", "PurchaseOrder"))",
+                data: { "itemid": itemid },
+                success: function (data) {
+                    document.getElementById('lprlqr').innerHTML = data.lprlqr;
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+                });
+        }
+        </script>
+
+        <script type="text/javascript">
+        $("#txtRailwayName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteRailway", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfRailwayId').value = ui.item.Id;
+        }
+        });
+        </script>
+
+        <script>
+        function deleteTenderItem(itemid) {
+            //var a = confirm("Are you sure to delete this item?");
+            //if (a == false) {
+            //    return;
+            //}
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteTenderItem", "Tender")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    itemid: itemid,
+                    tenderid: parseInt($('#hfTenderId').val().trim())
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+        </script>
+
+        <script>
+        //Date Picker
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+
+        $(document).ready(function () {
+            var orderItems = [];
+
+            //Add button click function
+            $('#add').click(function () {
+
+                //alert($('#txtItemDesc').val().trim());
+                //Check validation of order item
+
+                var isValidItem = true;
+
+                if ($('#txtItemCode').val().trim() == '' || $('#hfItemId').val().trim() == 0) {
+                    $('#txtItemCode').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtItemCode').siblings('span.error').css('visibility', 'hidden');
+                }
+                if ($('#txtItemName').val().trim() == '' || $('#hfItemId').val().trim() == 0) {
+                    isValidItem = false;
+                    $('#txtItemName').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtItemName').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //chk duplicate item
+                $("#myTable tr").each(function (index, item) {
+                    if (index > -1) {
+                        var tds = $(this).find("td");
+                        if ($(this).closest('tr').find('td:eq(7)').text().trim() == $('#hfItemId').val().trim()) {
+                            alert('Duplicate item entry is not allowed!');
+                            document.getElementById("txtItemName").focus();
+                            isValidItem = false;
+                            return;
+                        }
+                    }
+                });
+
+                if (!($('#txtQty').val().trim() != '' && !isNaN($('#txtQty').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtQty').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtQty').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#txtRate').val().trim() != '' && !isNaN($('#txtRate').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtRate').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtRate').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#txtOurQty').val().trim() != '' && !isNaN($('#txtOurQty').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtOurQty').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtOurQty').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Add item to list if valid
+                if (isValidItem) {
+                    var liUnit = document.getElementById("ddlUnit");
+                    var unitIndex = liUnit.selectedIndex;
+                    var unitId = liUnit.options[unitIndex].value;
+                    var unitName = liUnit.options[unitIndex].text;
+
+                    //unit name validation
+                    var uname = unitName;
+                    if (unitName.includes('/') == true) {
+                        uname = $('#txtUnitName').val();
+                        var arr = unitName.split('/');
+                        if (arr.includes($('#txtUnitName').val()) == false) {
+                            alert('Invalid unit name entered!');
+                            document.getElementById("txtUnitName").focus();
+                            return;
+                        }
+                    }
+                    $('#txtUnitName').val(uname);//d
+                    //
+
+                    orderItems.push({
+                        ItemId: parseInt($('#hfItemId').val().trim()),
+                        ItemName: $('#txtItemName').val(),
+                        ItemCode: $('#txtItemCode').val(),
+                        Qty: parseFloat($('#txtQty').val().trim()),
+                        Unit: parseInt(unitId),
+                        UnitName: uname,
+                        OurQty: parseFloat($('#txtOurQty').val().trim()),
+                        L1L2: $('#txtL1L2').val(),
+                        Rate: parseFloat($('#txtRate').val().trim())
+                    })
+                    //Clear fields
+                    $('#txtQty,#txtRate,#txtOurQty').val('');
+                    $('#txtItemName,#txtItemCode').val('');
+
+                }
+                //populate order items
+                GeneratedItemsTable();
+
+            });
+
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if (orderItems.length == 0) {
+                    $('#orderItems').html('<span style="color:red;">Please add tender items</span>');
+                    isAllValid = false;
+                }
+
+                if ($('#txtTenderNo').val().trim() == '') {
+                    $('#txtTenderNo').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#txtTenderNo').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var ddlObj = document.getElementById("ddlTenderStatus");
+                    var ddlIndx = ddlObj.selectedIndex;
+                    var _tenderstatus = ddlObj.options[ddlIndx].value;
+                    //var _tenderstatusName = ddlObj.options[ddlIndx].text;
+
+                    var _isretender = document.getElementById("chkIsReTender");
+                    var data = {
+                        //order fields
+                        TenderId: parseInt($('#hfTenderId').val().trim()),
+                        TenderNo: $('#txtTenderNo').val(),
+                        SerialNo: $('#txtSerialNo').val().trim(),
+                        TenderType: $('#txtTenderType').val().trim(),
+                        RecDate: $('#txtRecDate').val().trim(),
+                        POType: $('#txtPOType').val().trim(),
+                        OpeningDate: $('#txtOpeningDate').val(),
+                        OpeningTime: $('#txtOpeningTime').val(),
+                        QuotationNo: $('#txtQuotationNo').val(),
+                        QuotationDate: $('#txtQuotationDate').val(),
+                        Remarks: $('#txtRemarks').val().trim(),
+                        RailwayId: parseInt($('#hfRailwayId').val().trim()),
+                        EstProduct: $('#txtEstProduct').val().trim(),
+                        ProductDesc: $('#txtProductDesc').val().trim(),
+                        DrgSpecChanged: $('#txtDrgSpecChanged').val().trim(),
+                        DelvSchedule: $('#txtDelvSchedule').val().trim(),
+                        ModeOfDisp: $('#txtModeOfDisp').val().trim(),
+                        InspAuthority: $('#txtInspAuthority').val().trim(),
+                        Clarification: $('#txtClarification').val().trim(),
+                        TenderStatus: _tenderstatus,
+                        TC1PmtTerms: $('#txtTC1PmtTerms').val().trim(),
+                        IsReTender: _isretender.checked,
+
+                        //ledger fields
+                        Ledgers: orderItems
+                    }
+
+                    $(this).val('Please wait...');
+
+                    $.ajax({
+                        url: '/Tender/CreateUpdate',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                orderItems = [];
+                                //$('#orderNo').val('');
+                                //$('#orderDate').val('');
+                                $('#orderItems').empty();
+                                //reload/refresh
+                                window.location.href = document.getElementById('myLink').href;
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submit').val(d.AddEdit);
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            //$('#submit').val('Save');
+                            $('#submit').val(d.AddEdit);
+                        }
+                    });
+                }
+
+            });
+
+            //edit mode
+            $(function () {
+                var mainObject = @Html.Raw(Json.Encode(Model))
+                orderItems = @Html.Raw(Json.Encode(Model.Ledgers))
+                //
+                hfTenderId.value = mainObject.TenderId;
+                txtTenderNo.value = mainObject.TenderNo;
+                txtSerialNo.value = mainObject.SerialNo;
+                txtTenderType.value = mainObject.TenderType;
+                txtRecDate.value = mainObject.RecDate.substring(0,10);
+                txtPOType.value = mainObject.POType;
+                txtOpeningDate.value = mainObject.OpeningDate.substring(0, 10);
+                txtOpeningTime.value = mainObject.OpeningTime;
+                txtQuotationNo.value = mainObject.QuotationNo;
+                txtQuotationDate.value = mainObject.QuotationDate.substring(0, 10);
+                txtRemarks.value = mainObject.Remarks;
+                hfRailwayId.value = mainObject.RailwayId;
+                txtRailwayName.value = mainObject.RailwayName;
+                txtEstProduct.value = mainObject.EstProduct;
+                txtProductDesc.value = mainObject.ProductDesc;
+                txtDrgSpecChanged.value = mainObject.DrgSpecChanged;
+                txtDelvSchedule.value = mainObject.DelvSchedule;
+                txtModeOfDisp.value = mainObject.ModeOfDisp;
+                txtInspAuthority.value = mainObject.InspAuthority;
+                txtClarification.value = mainObject.Clarification;
+                ddlTenderStatus.value = mainObject.TenderStatus;
+                txtTC1PmtTerms.value = mainObject.TC1PmtTerms;
+                chkIsReTender.value = mainObject.IsRetender;
+                GeneratedItemsTable();
+            });
+
+            //function for show added items in table
+            function GeneratedItemsTable() {
+                if (orderItems.length > 0) {
+                    var $table = $('<table class="tablecontainer" id="myTable" style="width:100%;"/>');
+                    $table.append('<th>Item&nbsp;Code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');//0//note spaces for width
+                    $table.append('<th>Item&nbsp;Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');//1//note spaces for width
+                    $table.append('<th>Quantity</th>');//2
+                    $table.append('<th>Unit&nbsp;Name</th>');//3
+                    $table.append('<th>Rate</th>');//4
+                    $table.append('<th>Level</th>');//5
+                    $table.append('<th>OurQty</th>');//6
+                    $table.append('<th colspan=2>Action</th>');//7=Remove
+                    //$table.append('<th>&nbsp;</th>');//8=Edit
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">ItemId</td>');//9
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">Unit</td>');//10
+                    $table.append('</tr></thead>');
+                    var $tbody = $('<tbody/>');
+                    $.each(orderItems, function (i, val) {
+                        var $row = $('<tr/>');
+                        //static for all rows---------------
+                        $row.append($('<td/>').html(val.ItemCode));//0
+                        $row.append($('<td/>').html(val.ItemName));//1
+                        $row.append($('<td/>').html(val.Qty));//2
+                        $row.append($('<td/>').html(val.UnitName));//3
+                        $row.append($('<td/>').html(val.Rate));//4
+                        $row.append($('<td/>').html(val.L1L2));//5
+                        $row.append($('<td/>').html(val.OurQty));//6
+                        //--------------------------------------------
+                        var $remove = $('<a href="#"><i class="fa fa-trash-o" style="font-size:15pt;"></a>');
+                        $remove.click(function (e) {
+                            var opt = confirm("Are you sure to delete this entry?");
+                            if (opt == true) {
+                                e.preventDefault();
+                                deleteTenderItem(val.LRecId);
+                                orderItems.splice(i, 1);
+                                GeneratedItemsTable();
+                            }
+                        });
+                        $row.append($('<td/>').html($remove));//7
+                        //--------------------------------------------
+                        var $edit = $('<a href="#"><i class="fa fa-pencil-square" style="font-size:25pt;"></a>');
+                        $edit.click(function (e) {
+                            e.preventDefault();
+                            txtItemCode.value = $(this).closest('tr').find('td:eq(0)').text();
+                            txtItemName.value = $(this).closest('tr').find('td:eq(1)').text();
+                            txtQty.value = $(this).closest('tr').find('td:eq(2)').text();
+                            txtUnitName.value = $(this).closest('tr').find('td:eq(3)').text();
+                            txtRate.value = $(this).closest('tr').find('td:eq(4)').text();
+                            txtL1L2.value = $(this).closest('tr').find('td:eq(5)').text();
+                            txtOurQty.value = $(this).closest('tr').find('td:eq(6)').text();
+                            //remove=7
+                            //edit=8
+                            hfItemId.value = $(this).closest('tr').find('td:eq(9)').text();//9=itemid
+                            SetLprLqrInfo(hfItemId.value);
+                            ddlUnit.value = $(this).closest('tr').find('td:eq(10)').text();//10=unit
+                            orderItems.splice(i, 1);
+                            GeneratedItemsTable();
+                        });
+                        //--------------------------------------------
+                        $row.append($('<td/>').html($edit));//8
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.ItemId));//9
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.Unit));//10
+                        $tbody.append($row);
+                    });
+                    console.log("current", orderItems);
+                    $table.append($tbody);
+                    $('#orderItems').html($table);
+                }
+                else {
+                    $('#orderItems').html('');
+                }
+            }
+        });
+
+        </script>
+
+    }
+

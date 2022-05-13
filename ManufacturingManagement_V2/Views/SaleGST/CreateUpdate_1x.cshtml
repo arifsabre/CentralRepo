@@ -1,0 +1,1441 @@
+﻿@model ManufacturingManagement_V2.Models.SaleMdl
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+    //Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+@{var lstTrpMode = new List<System.Web.UI.WebControls.ListItem>
+{
+          new System.Web.UI.WebControls.ListItem { Text = "N/A", Value="N/A" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Road", Value="By Road" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Rail", Value="By Rail" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Post", Value="By Post" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Hand", Value="By Hand" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Courier", Value="By Courier" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Speed Post", Value="By Speed Post" },
+          new System.Web.UI.WebControls.ListItem { Text = " ", Value=" " }
+    };
+}
+
+<table>
+    <tr>
+        <td><h4><b>Sale Entry</b></h4></td>
+        <td><h5><b>&nbsp;&nbsp;(By Purchase Order)</b></h5></td>
+    </tr>
+</table>
+<div class="form-group">
+    <h5><b>Sale Detail</b></h5>
+    <table class="table table-bordered">
+        @Html.Hidden("hfSaleRecId", null, new { @id = "hfSaleRecId" })
+        @Html.Hidden("hfPOrderId", null, new { @id = "hfPOrderId" })
+
+        <tr>
+            <td>Invoice&nbsp;No</td>
+            <td>
+                <input type="text" id="txtInvSeries" readonly="readonly" style="width:20px;" />
+                <input type="text" id="txtVNo" readonly="readonly" style="width:100px;" />
+                <span class="error">Invalid VNo!</span>
+            </td>
+            <td>Invoice&nbsp;Date</td>
+            <td>
+                <input type="text" id="txtVDate" class="datepicker" />
+                <span class="error">Invalid VDate!</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="vertical-align:top;">P.&nbsp;Order&nbsp;No</td>
+            <td>
+                <input type="text" id="txtPONumber" style="width:305px;"
+                       placeholder="start typing, then select" readonly="readonly" />
+                <span class="error">Invalid other charges!</span>
+            </td>
+            <td style="vertical-align:top;">MA No & Date</td>
+            <td>
+                <input type="text" id="txtMANo" style="width:305px;" />
+                <span class="error">Invalid other charges!</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Invoice Mode</td>
+            <td>
+                @Html.DropDownList("ddlInvoiceMode", ViewBag.InvoiceModeList as SelectList,
+                    new { @onchange = "performChangeForInvoiceMode()" })
+                <span class="error">Invalid VType!</span>
+            </td>
+            <td colspan="2">
+                <div id="dvExpOpt">
+                    <input id="ExpOpt1" name="ExpOpt" type="radio" style="width:17px;height:17px;"
+                           value="Against GST" checked="checked" />&nbsp;Against GST
+                    &nbsp;&nbsp;<input id="ExpOpt2" name="ExpOpt" type="radio" style="width:17px;height:17px;"
+                                       value="Against Bond" />&nbsp;Against Bond
+                </div>
+                <div id="dvRemarks">
+                    <table>
+                        <tr>
+                            <td style="vertical-align:top;">Remarks</td>
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <textarea id="txtSRemarks" rows="2" cols="40"></textarea>
+                                <span class="error">Indent(s) not entered!</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width:15%;vertical-align:top;">Consignee</td>
+            <td>
+                @Html.DropDownList("ddlConsignee", ViewBag.ConsigneeList as SelectList,
+                    new { @onchange = "SetConsigneeInfo()", @style = "width:310px;" })
+                <table>
+                    <tr>
+                        <td style="vertical-align:top;">Address</td>
+                        <td style="vertical-align:top;">&nbsp;:</td>
+                        <td style="text-align:left;">
+                            <div id="ConsgAdrDiv"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblConsgState" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>StateCode</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblConsgStateCode" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>GSTIN</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblConsgGSTIN" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:15%;vertical-align:top;">Paying Authority</td>
+            <td>
+                @Html.DropDownList("ddlPayingAuthority", ViewBag.PayingAuthList as SelectList,
+                    new { @onchange = "SetPayingAuthorityInfo()", @style = "width:310px;" })
+                <table>
+                    <tr>
+                        <td style="vertical-align:top;">Address</td>
+                        <td style="vertical-align:top;">&nbsp;:</td>
+                        <td style="text-align:left;">
+                            <div id="PAuthAdrDiv"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblPAuthState" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>StateCode</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblPAuthStateCode" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>GSTIN</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblPAuthGSTIN" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width:15%;vertical-align:top;">Party</td>
+            <td>
+                @Html.DropDownList("ddlParty", ViewBag.PartyList as SelectList,
+                    new { @onchange = "SetPartyInfo()", @style = "width:310px;", @disabled = "true" })
+                <table>
+                    <tr>
+                        <td style="vertical-align:top;">Address</td>
+                        <td style="vertical-align:top;">&nbsp;:</td>
+                        <td style="text-align:left;">
+                            <div id="PartyAdrDiv"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblPartyState" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>StateCode</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblPartyStateCode" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>GSTIN</td>
+                        <td>&nbsp;:</td>
+                        <td>
+                            <label id="lblPartyGSTIN" style="font-weight:normal;"></label>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            <td colspan="2">
+                <table>
+                    <tr>
+                        <td style="width:130px;vertical-align:top;">Electronic&nbsp;Ref.&nbsp;No</td>
+                        <td>
+                            <input type="text" id="txtElctRefNo" />
+                            <span class="error">Vendor not selected!</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Electronic&nbsp;Ref.&nbsp;Date</td>
+                        <td>
+                            <input type="text" id="txtElctRefDate" class="datepicker" />
+                            <span class="error">Vendor not selected!</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Inv. Reference No</td>
+            <td>
+                <input type="text" id="txtInvReferenceNo" />
+                <span class="error">Inv referencve No not entered!</span>
+            </td>
+            <td>Prec. Doc. No</td>
+            <td>
+                <input type="text" id="txtPrecDocNo" />
+                <span class="error">Inv referencve No not entered!</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Supply Type</td>
+            <td>
+                @Html.DropDownList("ddlSupTypeCode", ViewBag.SupplyTypeList as SelectList)
+            </td>
+            <td>Prec. Doc. Date</td>
+            <td>
+                <input type="text" id="txtPrecDocDate" readonly="readonly" />
+                <span class="error">Invalid Preceding Document Date!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Supply From</td>
+            <td>
+                @Html.DropDownList("ddlSupAddressId", ViewBag.CompAddress as SelectList)
+            </td>
+            <td>Distance KM</td>
+            <td>
+                <input type="text" id="txtDistanceKM" />
+            </td>
+        </tr>
+
+    </table>
+
+    <span>List of Items:-</span>
+
+    <div id="items" style="width: 98%; overflow-x: scroll;">
+        <table id="StepsTable" class="tablecontainer" style="width:100%;">
+            <tr>
+                <th style="width:30px;">
+                    POItemNo
+                </th>
+                <th style="width:30px;">
+                    ItemCode
+                </th>
+                <th style="width:50px;">
+                    Consignee
+                </th>
+                <th style="width:100px;">
+                    O.Qty
+                </th>
+                <th style="width:100px;">
+                    D.Qty
+                </th>
+                <th style="width:auto;">
+                    R.Qty
+                </th>
+                <th style="width:auto;">
+                    Rate
+                </th>
+                <th style="width:100px;">
+                    S.Qty
+                </th>
+                <th style="width:40px;">
+                    Discount/Unit
+                </th>
+                <th style="width:30px;">
+                    SGST%
+                </th>
+                <th style="width:30px;">
+                    CGST%
+                </th>
+                <th style="width:30px;">
+                    IGST%
+                </th>
+                <th style="width:30px;">
+                    GSTInclusive
+                </th>
+                <th style="width:30px;">
+                    UnitRate
+                </th>
+                <th style="width:30px;">
+                    FreightRate
+                </th>
+                <th style="width:30px;">
+                    NetAmount
+                </th>
+                <th style="width:30px;">
+                    Unit
+                </th>
+                <th style="width:30px;">
+                    Amount
+                </th>
+                <th style="width:30px;">
+                    TaxableAmount
+                </th>
+                <th style="width:30px;">
+                    SGSTAmount
+                </th>
+                <th style="width:30px;">
+                    CGSTAmount
+                </th>
+                <th style="width:30px;">
+                    IGSTAmount
+                </th>
+                <th style="width:30px;">
+                    FreightTAmount
+                </th>
+                <th style="width:30px;">
+                    DP
+                </th>
+                <th style="width:30px;">
+                    HSNCode
+                </th>
+                <th style="width:30px;">
+                    ItemRecId
+                </th>
+                <th style="width:auto;">
+                    ItemDesc______________________________________________________________________________
+                </th>
+                <th style="width:30px;">
+                    HsQty
+                </th>
+                <th style="width:30px;">
+                    LRecId
+                </th>
+                <th style="width:30px;">
+                    DelvQty
+                </th>
+            </tr>
+
+            @{int i = 1;}
+            @foreach (var item in Model.Ledgers)
+            {
+        <tr>
+            <td class="indexColumn">
+                @*@Html.HiddenFor(model => item.ItemRecId)*@
+                @Html.Label("lblItemSlNo" + i.ToString(), item.ItemSlNo.ToString(), new { @id = "lblItemSlNo" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblItemCode" + i.ToString(), item.ItemCode.ToString(), new { @id = "lblItemCode" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblConsigneeName" + i.ToString(), item.ConsigneeName, new { @id = "lblConsigneeName" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblOrdQty" + i.ToString(), item.OrdQty.ToString(), new { @id = "lblOrdQty" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblDspQty" + i.ToString(), item.DspQty.ToString(), new { @id = "lblDspQty" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblRemQty" + i.ToString(), item.RemQty.ToString(), new { @id = "lblRemQty" + (i - 1) })
+            </td>
+            <td>
+                @Html.TextBox("txtRate" + i.ToString(), item.Rate, new { @id = "txtRate" + (i - 1), style = "width: 100px;" })
+            </td>
+            <td>
+                @Html.TextBox("txtQty" + i.ToString(), item.Qty, new { @id = "txtQty" + (i - 1), style = "width: 100px;" })
+            </td>
+            <td>
+                @Html.TextBox("txtDiscount" + i.ToString(), item.Discount, new { @id = "txtDiscount" + (i - 1), style = "width: 100px;" })
+            </td>
+            <td>
+                @Html.TextBox("txtVATPer" + i.ToString(), item.VATPer, new { @id = "txtVATPer" + (i - 1), style = "width: 100px;" })
+            </td>
+            <td>
+                @Html.TextBox("txtSATPer" + i.ToString(), item.SATPer, new { @id = "txtSATPer" + (i - 1), style = "width: 100px;" })
+            </td>
+            <td>
+                @Html.TextBox("txtCSTPer" + i.ToString(), item.CSTPer, new { @id = "txtCSTPer" + (i - 1), style = "width: 100px;" })
+            </td>
+            <td>
+                @Html.CheckBox("chkIsInclGst" + i.ToString(), item.IsInclGst, new { @id = "chkIsInclGst" + (i - 1), style = "width: 80px; height: 18px; padding: 0; text-align:center;" })
+            </td>
+            <td>
+                @Html.TextBox("txtUnitRate" + i.ToString(), item.UnitRate, new { @id = "txtUnitRate" + (i - 1), style = "width: 100px;" })
+            </td>
+            <td>
+                @Html.TextBox("txtFreightRate" + i.ToString(), item.FreightRate, new { @id = "txtFreightRate" + (i - 1), style = "width: 100px;" })
+            </td>
+            <td>
+                @Html.Label("lblNetAmount" + i.ToString(), item.NetAmount.ToString(), new { @id = "lblNetAmount" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblUnitName" + i.ToString(), item.UnitName, new { @id = "lblUnitName" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblAmount" + i.ToString(), item.Amount.ToString(), new { @id = "lblAmount" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblTaxableAmount" + i.ToString(), item.TaxableAmount.ToString(), new { @id = "lblTaxableAmount" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblVATAmount" + i.ToString(), item.VATAmount.ToString(), new { @id = "lblVATAmount" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblSATAmount" + i.ToString(), item.SATAmount.ToString(), new { @id = "lblSATAmount" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblCSTAmount" + i.ToString(), item.CSTAmount.ToString(), new { @id = "lblCSTAmount" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblFreightAmount" + i.ToString(), item.FreightAmount.ToString(), new { @id = "lblFreightAmount" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblDelvDateStr" + i.ToString(), item.DelvDateStr, new { @id = "lblDelvDateStr" + (i - 1) })
+            </td>
+            <td>
+                @Html.TextBox("txtHSNCode" + i.ToString(), item.HSNCode, new { @id = "txtHSNCode" + (i - 1), style = "width: 100px;" })
+            </td>
+            <td>
+                @Html.Label("lblItemRecId" + i.ToString(), item.ItemRecId.ToString(), new { @id = "lblItemRecId" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblItemDesc" + i.ToString(), item.ItemDesc, new { @id = "lblItemDesc" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblHsQty" + i.ToString(), item.HsQty.ToString(), new { @id = "lblHsQty" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblLRecId" + i.ToString(), item.LRecId.ToString(), new { @id = "lblLRecId" + (i - 1) })
+            </td>
+            <td>
+                @Html.Label("lblDelvQty" + i.ToString(), item.DelvQty.ToString(), new { @id = "lblDelvQty" + (i - 1) })
+            </td>
+        </tr>
+                i++;
+            }
+
+        </table>
+    </div>
+
+    <table class="table table-bordered" style="width:50%;" align="right">
+        <tr>
+            <td>SubTotal</td>
+            <td>
+                <label id="lblSubTotal" class="numericfld"></label>
+                <span class="error">Invalid SpecialInst!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Discount</td>
+            <td>
+                <label id="lblDiscount" class="numericfld"></label>
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Taxable Amount</td>
+            <td>
+                <label id="lblTaxableAmount" class="numericfld"></label>
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>SGST</td>
+            <td>
+                <label id="lblVATAmount" class="numericfld"></label>
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>CGST</td>
+            <td>
+                <label id="lblSATAmount" class="numericfld"></label>
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>IGST</td>
+            <td>
+                <label id="lblCSTAmount" class="numericfld"></label>
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Grand Total</td>
+            <td>
+                <label id="lblGrandTotal" class="numericfld"></label>
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Freight Amount</td>
+            <td>
+                <label id="lblFreightAmount" class="numericfld"></label>
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DropDownList("ddlOtherChg", ViewBag.OtherChgAcctList as SelectList)
+                @@ <input type="text" id="txtOtherChgPer"
+                          style="width:50px;text-align:right;" onchange="CalculateAmount()" /> %
+            </td>
+            <td>
+                <label id="lblOtherCharges" class="numericfld"></label>
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Net Amount</td>
+            <td>
+                <label id="lblNetAmount" class="numericfld"></label>
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>(Less) Others/Adjusted Amount</td>
+            <td>
+                <input type="text" id="txtAdjAmount" class="numericfld" />
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Amount of Tax subject to Reverse Charges</td>
+            <td>
+                <input type="text" id="txtRevChgTaxAmount" class="numericfld" />
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+    </table>
+    <table class="table table-bordered">
+        <tr>
+            <td>Transport Mode</td>
+            <td>
+                @Html.DropDownList("ddlTrpMode", new SelectList(lstTrpMode, "Value", "Text"))
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+            <td>Transport Detail</td>
+            <td>
+                <input type="text" id="txtTrpDetail" />
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>GR No</td>
+            <td>
+                <input type="text" id="txtGRNo" />
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+            <td>GR Date</td>
+            <td>
+                <input type="text" id="txtGRDate" class="datepicker" />
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Invoice Note</td>
+            <td>
+                <input type="text" id="txtInvNote" />
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+            <td>Packing Detail</td>
+            <td>
+                <input type="text" id="txtPackingDetail" />
+                <span class="error">Invalid RefDetail!</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                @Html.CheckBox("DisableGST", false, new
+                    {
+                        @id = "chkDisableGST",
+                                    style = "width: 50px; height: 18px; padding: 0; text-align:center;"
+                    })Disable GST Validation
+            </td>
+        </tr>
+    </table>
+    <div style="padding:10px 0px; text-align:left;">
+        <input id="submit" class="btn btn-default" type="button" value='@ViewData["AddEdit"]'>
+        @Html.ActionLink("Back to List", "../SaleGSTOthers/Index", null, new { @class = "btn btn-default" })
+        @Html.ActionLink("Create New", "CreateUpdate", new { id = 0 },
+            new { @style = "display:none;", @class = "btn btn-default", @id = "myLink" })
+        <br /><br />
+    </div>
+</div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=dropdownlist]").first().focus();
+            document.getElementById('ddlSupAddressId').value = '0';
+            document.getElementById('txtInvSeries').value = 'D';
+            document.getElementById('txtVNo').value = 'New';
+            document.getElementById('txtOtherChgPer').value = '0.075';
+            performChangeForInvoiceMode();
+            SetPayingAuthorityInfo();
+            SetConsigneeInfo();
+            SetPartyInfo();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtPONumber").autocomplete({
+            source: function (request, response) {
+                //
+                document.getElementById('hfPOrderId').value = 0;
+                //document.getElementById("ConsgAdrDiv").innerHTML = '';
+                //
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePurchaseNumbers", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfPOrderId').value = ui.item.Id;
+                //
+                //SetPurchaseOrderInfo(ui.item.Id);
+                //
+            }
+        });
+    </script>
+
+    <script>
+        function SetConsigneeInfo() {
+            var liObj = document.getElementById("ddlConsignee");
+            var indexObj = liObj.selectedIndex;
+            var consigneeid = liObj.options[indexObj].value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getConsigneeDetail", "SaleGst"))",
+                data: { "consigneeid": consigneeid },
+                success: function (data) {
+                    var addr = '';
+                    if (data.Address2.length > 0) {
+                        addr = data.Address2;
+                    }
+                    if (data.Address3.length > 0) {
+                        addr += '<br/>'+data.Address3;
+                    }
+                    if (data.Address4.length > 0) {
+                        addr += '<br/>' + data.Address4;
+                    }
+                    document.getElementById("ConsgAdrDiv").innerHTML = addr;
+                    $('#lblConsgState').text(data.StateName);
+                    $('#lblConsgStateCode').text(data.StateCode);
+                    $('#lblConsgGSTIN').text(data.GSTinNo);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function SetPayingAuthorityInfo() {
+            var liObj = document.getElementById("ddlPayingAuthority");
+            var indexObj = liObj.selectedIndex;
+            var payingauthid = liObj.options[indexObj].value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getPayingAuthorityInfo", "HelpUtility"))",
+                data: { "payingauthid": payingauthid },
+                success: function (data) {
+                    var addr = '';
+                    if (data.Address2.length > 0) {
+                        addr = data.Address2;
+                    }
+                    if (data.Address3.length > 0) {
+                        addr += '<br/>'+data.Address3;
+                    }
+                    if (data.Address4.length > 0) {
+                        addr += '<br/>' + data.Address4;
+                    }
+                    document.getElementById("PAuthAdrDiv").innerHTML = addr;
+                    $('#lblPAuthState').text(data.StateName);
+                    $('#lblPAuthStateCode').text(data.StateCode);
+                    $('#lblPAuthGSTIN').text(data.GSTIN);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function SetPartyInfo() {
+            var liObj = document.getElementById("ddlParty");
+            var indexObj = liObj.selectedIndex;
+            var accode = liObj.options[indexObj].value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getPartyDetail", "PartyEntry"))",
+                data: { "accode": accode },
+                success: function (data) {
+                    var addr = '';
+                    if (data.Address2.length > 0) {
+                        addr = data.Address2;
+                    }
+                    if (data.Address3.length > 0) {
+                        addr += '<br/>'+data.Address3;
+                    }
+                    if (data.Address4.length > 0) {
+                        addr += '<br/>' + data.Address4;
+                    }
+                    document.getElementById("PartyAdrDiv").innerHTML = addr;
+                    $('#lblPartyState').text(data.StateName);
+                    $('#lblPartyStateCode').text(data.StateCode);
+                    $('#lblPartyGSTIN').text(data.GSTinNo);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function performChangeForInvoiceMode() {
+            var liObj = document.getElementById("ddlInvoiceMode");
+            var indexObj = liObj.selectedIndex;
+            var invMode = liObj.options[indexObj].value;
+
+            var dvExpOpt = document.getElementById("dvExpOpt");
+            var dvRemarks = document.getElementById("dvRemarks");
+
+            dvExpOpt.style.display = 'none';
+            dvRemarks.style.display = 'none';
+
+            if (invMode.toLowerCase() == 'sup') {
+                dvRemarks.style.display = 'block';
+                if ($('#txtSRemarks').val().trim() == '') {
+                    $('#txtSRemarks').val('Supplementary Invoice with reference to Original Invoice No: GST/INV/..., Dated: ...');
+                }
+            }
+            else if (invMode.toLowerCase() == 'exp') {
+                dvExpOpt.style.display = 'block';
+            }
+        }
+    </script>
+
+    <script>
+        function round(value, decimals) {
+            //example: round(1.005, 2); //returns 1.01
+            return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+        }
+
+        function setDefaultNumericValuesForLedger() {
+            
+            $("#StepsTable tr").each(function (indx, item) {
+                if (indx > 0) {
+                    var tds = $(this).find("td");
+                    var _rate = $('#txtRate' + (indx - 1)).val().trim();
+                    var _qty = $('#txtQty' + (indx - 1)).val().trim();
+                    var _discount = $('#txtDiscount' + (indx - 1)).val().trim();
+                    var _vatper = $('#txtVATPer' + (indx - 1)).val().trim();
+                    var _satper = $('#txtSATPer' + (indx - 1)).val().trim();
+                    var _cstper = $('#txtCSTPer' + (indx - 1)).val().trim();
+                    var _unitrate = $('#txtUnitRate' + (indx - 1)).val().trim();
+                    var _freightrate = $('#txtFreightRate' + (indx - 1)).val().trim();
+
+                    if (_rate == '' || isNaN(_rate)) {
+                        $('#txtRate' + (indx - 1)).val('0');
+                    }
+                    if (_qty == '' || isNaN(_qty)) {
+                        $('#txtQty' + (indx - 1)).val('0');
+                    }
+                    if (_discount == '' || isNaN(_discount)) {
+                        $('#txtDiscount' + (indx - 1)).val('0');
+                    }
+                    if (_vatper == '' || isNaN(_vatper)) {
+                        $('#txtVATPer' + (indx - 1)).val('0');
+                    }
+                    if (_satper == '' || isNaN(_satper)) {
+                        $('#txtSATPer' + (indx - 1)).val('0');
+                    }
+                    if (_cstper == '' || isNaN(_cstper)) {
+                        $('#txtCSTPer' + (indx - 1)).val('0');
+                    }
+                    if (_unitrate == '' || isNaN(_unitrate)) {
+                        $('#txtUnitRate' + (indx - 1)).val('0');
+                    }
+                    if (_freightrate == '' || isNaN(_freightrate)) {
+                        $('#txtFreightRate' + (indx - 1)).val('0');
+                    }
+                }
+            });
+            
+        }
+
+        function setDefaultNumericValuesForSale() {
+            if ($('#txtAdjAmount').val().trim() == '' || isNaN($('#txtAdjAmount').val().trim())) {
+                $('#txtAdjAmount').val('0');
+            }
+            if ($('#txtRevChgTaxAmount').val().trim() == '' || isNaN($('#txtRevChgTaxAmount').val().trim())) {
+                $('#txtRevChgTaxAmount').val('0');
+            }
+            if ($('#txtOtherChgPer').val().trim() == '' || isNaN($('#txtOtherChgPer').val().trim())) {
+                $('#txtOtherChgPer').val('0');
+            }
+            if (document.getElementById('lblGrandTotal').innerHTML.trim() == '' || isNaN(document.getElementById('lblGrandTotal').innerHTML.trim())) {
+                $('#lblGrandTotal').text('0');
+            }
+        }
+
+        function isValidLedgerEntry() {
+
+            var dsbgst = document.getElementById("chkDisableGST");
+            var statecode = document.getElementById('lblPAuthStateCode').innerText;
+            if (statecode.trim() == '') {
+                alert('Paying authority is not selected or state code is not entered for selected paying authority!');
+                return false;
+            }
+            var ourstcode = '09';//note--assumed for UP to all companies/get from master otherwise
+
+            $("#StepsTable tr").each(function (indx, item) {
+                if (indx > 0) {
+                    var tds = $(this).find("td");
+                    var _rate = $('#txtRate' + (indx - 1)).val().trim();
+                    var _qty = $('#txtQty' + (indx - 1)).val().trim();
+                    var _hsqty = document.getElementById('lblHsQty' + (indx - 1).toString()).innerHTML;
+                    var _remqty = document.getElementById('lblRemQty' + (indx - 1).toString()).innerHTML;
+                    var _discount = $('#txtDiscount' + (indx - 1)).val().trim();
+                    var _vatper = $('#txtVATPer' + (indx - 1)).val().trim();
+                    var _satper = $('#txtSATPer' + (indx - 1)).val().trim();
+                    var _cstper = $('#txtCSTPer' + (indx - 1)).val().trim();
+                    var _unitrate = $('#txtUnitRate' + (indx - 1)).val().trim();
+                    var _freightrate = $('#txtFreightRate' + (indx - 1)).val().trim();
+
+                    //var _isinclgst = $(tds).eq(11).find("input").is(':checked');//not working
+                    var _isinclgst = document.getElementById("chkIsInclGst" + (indx - 1)).checked;
+
+                    var _hsncode = $('#txtHSNCode' + (indx - 1)).val().trim();
+
+                    if (parseFloat(_qty) <= 0) {
+                        alert('Invalid quantity!');
+                        document.getElementById("txtQty"+ (indx - 1)).focus();
+                        document.getElementById("txtQty" + (indx - 1)).select();
+                        return false;
+                    }
+                    
+                    if (parseFloat(_rate) <= 0 && _isinclgst == false) {
+                        alert('Invalid rate!');
+                        document.getElementById("txtRate" + (indx - 1)).focus();
+                        document.getElementById("txtRate" + (indx - 1)).select();
+                        return false;
+                    }
+
+                    if (parseFloat(_unitrate) <= 0 && _isinclgst == true) {
+                        alert('Invalid unit rate!');
+                        document.getElementById("txtUnitRate" + (indx - 1)).focus();
+                        document.getElementById("txtUnitRate" + (indx - 1)).select();
+                        return false;
+                    }
+
+                    if (parseFloat(_qty) > parseFloat(_remqty) + parseFloat(_hsqty)) {
+                        alert('Dispatch qty is greater than remaining qty!');
+                        document.getElementById("txtQty" + (indx - 1)).focus();
+                        document.getElementById("txtQty" + (indx - 1)).select();
+                        return false;
+                    }
+
+                    if (parseFloat(_vatper) + parseFloat(_satper) > 0 && parseFloat(_cstper) > 0) {
+                        alert('Only one of SGST + CGST or IGST is applicable!');
+                        document.getElementById("txtVATPer" + (indx - 1)).focus();
+                        document.getElementById("txtVATPer" + (indx - 1)).select();
+                        return false;
+                    }
+
+                    if (_hsncode == '') {
+                        alert('HSN not entered!');
+                        document.getElementById("txtHSNCode" + (indx - 1)).focus();
+                        document.getElementById("txtHSNCode" + (indx - 1)).select();
+                        return false;
+                    }
+
+                    if (parseFloat(_discount) < 0) {
+                        alert('Invalid discount!');
+                        document.getElementById("txtDiscount" + (indx - 1)).focus();
+                        document.getElementById("txtDiscount" + (indx - 1)).select();
+                        return false;
+                    }
+
+                    if (parseFloat(_freightrate) < 0) {
+                        alert('Invalid freight rate!');
+                        document.getElementById("txtFreightRate" + (indx - 1)).focus();
+                        document.getElementById("txtFreightRate" + (indx - 1)).select();
+                        return false;
+                    }
+
+                    if (dsbgst.checked == false) {
+                        if (ourstcode == statecode)//intra-state/up-sale
+                        {
+                            if (_cstper > 0) {
+                                alert('IGST is invalid for sale within state!');
+                                document.getElementById("txtCSTPer" + (indx - 1)).focus();
+                                document.getElementById("txtCSTPer" + (indx - 1)).select();
+                                return false;
+                            }
+                        }
+                        else// if (ourstcode.ToLower() != statecode.ToLower())//inter-state/ex-up-sale
+                        {
+                            if (_vatper + _satper > 0) {
+                                alert('SGST/CGST is invalid for sale to other state!');
+                                document.getElementById("txtVATPer" + (indx - 1)).focus();
+                                document.getElementById("txtVATPer" + (indx - 1)).select();
+                                return false;
+                            }
+                        }
+                    }
+
+                }
+            });
+
+            return true;
+        }
+
+        function isValidSaleEntry() {
+
+            if (parseFloat($('#txtAdjAmount').val()) > 0) {
+                lblinfo.Text = "Adjustment amount must be in negative (-ve) value only!";
+                document.getElementById("txtAdjAmount").focus();
+                document.getElementById("txtAdjAmount").select();
+                return false;
+            }
+
+            return true;
+        }
+
+        function processCalculation() {
+            //
+            setDefaultNumericValuesForLedger();
+            //
+            $("#StepsTable tr").each(function (indx, item) {
+                if (indx > 0) {
+                    var tds = $(this).find("td");
+                    var _rate = parseFloat($('#txtRate' + (indx - 1)).val());
+                    var _qty = parseFloat($('#txtQty' + (indx - 1)).val());
+
+                    //note--discount is discountPerUnit
+                    var _discount = parseFloat($('#txtDiscount' + (indx - 1)).val());
+                    var _vatper = parseFloat($('#txtVATPer' + (indx - 1)).val());
+                    var _satper = parseFloat($('#txtSATPer' + (indx - 1)).val());
+                    var _cstper = parseFloat($('#txtCSTPer' + (indx - 1)).val());
+                    var _unitrate = parseFloat($('#txtUnitRate' + (indx - 1)).val());
+                    var _freightrate = parseFloat($('#txtFreightRate' + (indx - 1)).val());
+
+                    //var _isinclgst = $(tds).eq(11).find("input").is(':checked');//not working
+                    var _isinclgst = document.getElementById("chkIsInclGst" + (indx - 1)).checked;
+
+                    var vatamt = 0;
+                    var satamt = 0;
+                    var cstamt = 0;
+
+                    var disamtlgr = _discount * _qty;
+                    var gstamount = _qty * _rate;
+                    var gtaxableamt = 0;
+                    var frtamt = _freightrate * _qty;
+
+                    if (_isinclgst == false) {
+
+                        //exclusive-gst calculation
+                        gtaxableamt = gstamount - disamtlgr;
+                        vatamt = gtaxableamt * _vatper / 100;
+                        satamt = gtaxableamt * _satper / 100;
+                        cstamt = gtaxableamt * _cstper / 100;
+                        var urate = _rate + _rate * _vatper / 100 + _rate * _satper / 100 + _rate * _cstper / 100;
+
+                        //setting values
+                        $('#txtUnitRate' + (indx - 1)).val(round(urate, 2));
+                        $('#lblAmount' + (indx - 1)).text(round(gstamount, 2));
+                        $('#lblVATAmount' + (indx - 1)).text(round(vatamt, 2));
+                        $('#lblSATAmount' + (indx - 1)).text(round(satamt, 2));
+                        $('#lblCSTAmount' + (indx - 1)).text(round(cstamt, 2));
+                        $('#lblTaxableAmount' + (indx - 1)).text(round(gtaxableamt, 2));
+                        
+                        var k = parseFloat(gtaxableamt + vatamt + satamt + cstamt + frtamt);
+                        $('#lblNetAmount' + (indx - 1)).text(round(k, 2));
+
+                    }
+                    else {
+
+                        //inclusive-gst calculation
+                        //getting basic rate
+                        var brate = (_unitrate * 100) / (100 + _vatper + _satper + _cstper);
+                        $('#txtRate' + (indx - 1)).val(round(brate, 2));
+                        gstamount = brate * _qty;
+                        gtaxableamt = gstamount - disamtlgr;
+
+                        //calculating taxes
+                        vatamt = gtaxableamt * _vatper / 100;
+                        satamt = gtaxableamt * _satper / 100;
+                        cstper = gtaxableamt * _cstper / 100;
+
+                        //setting values
+                        $('#lblAmount' + (indx - 1)).text(round(gstamount, 2));
+                        $('#lblVATAmount' + (indx - 1)).text(round(vatamt, 2));
+                        $('#lblSATAmount' + (indx - 1)).text(round(satamt, 2));
+                        $('#lblCSTAmount' + (indx - 1)).text(round(cstamt, 2));
+                        $('#lblTaxableAmount' + (indx - 1)).text(round(gtaxableamt, 2));
+                        
+                        var k = parseFloat(gtaxableamt + vatamt + satamt + cstamt + frtamt);
+                        $('#lblNetAmount' + (indx - 1)).text(round(k, 2));
+                    }
+                    $('#lblFreightAmount' + (indx - 1)).text(round(frtamt, 2));
+
+                }
+            });
+            //
+            CalculateAmount();
+            //
+        }
+
+        function CalculateAmount() {
+
+            var st = 0;
+            var vatamt = 0;
+            var satamt = 0;
+            var cstamt = 0;
+            var discamt = 0;
+            var frtamt = 0;
+            var txblamt = 0;
+
+            $("#StepsTable tr").each(function (indx, item) {
+                if (indx > 0) {
+                    var tds = $(this).find("td");
+                    var _st = document.getElementById('lblAmount' + (indx - 1).toString()).innerHTML;
+                    var _vatamt = document.getElementById('lblVATAmount' + (indx - 1).toString()).innerHTML;
+                    var _satamt = document.getElementById('lblSATAmount' + (indx - 1).toString()).innerHTML;
+                    var _cstamt = document.getElementById('lblCSTAmount' + (indx - 1).toString()).innerHTML;
+                    var _discamt = $('#txtDiscount' + (indx - 1)).val();
+                    var _qty = $('#txtQty' + (indx - 1)).val();
+                    _discamt = _discamt * _qty;
+                    var _frtamt = document.getElementById('lblFreightAmount' + (indx - 1).toString()).innerHTML;
+                    var _txblamt = document.getElementById('lblTaxableAmount' + (indx - 1).toString()).innerHTML;
+
+                    st = parseFloat(st) + parseFloat(_st);
+                    vatamt = parseFloat(vatamt) + parseFloat(_vatamt);
+                    satamt = parseFloat(satamt) + parseFloat(_satamt);
+                    cstamt = parseFloat(cstamt) + parseFloat(_cstamt);
+                    discamt = parseFloat(discamt) + parseFloat(_discamt);
+                    frtamt = parseFloat(frtamt) + parseFloat(_frtamt);
+                    txblamt = parseFloat(txblamt) + parseFloat(_txblamt);
+                }
+            });
+
+            setDefaultNumericValuesForSale();
+
+            $('#lblSubTotal').text(round(st, 2));//Math.Round(igstamt, 0, MidpointRounding.AwayFromZero);
+            $('#lblVATAmount').text(round(vatamt, 0));//Math.Round(igstamt, 0, MidpointRounding.AwayFromZero);
+            $('#lblSATAmount').text(round(satamt, 0));//Math.Round(igstamt, 0, MidpointRounding.AwayFromZero);
+            $('#lblCSTAmount').text(round(cstamt, 0));//Math.Round(igstamt, 0, MidpointRounding.AwayFromZero);
+            $('#lblDiscount').text(round(discamt, 2));
+            $('#lblFreightAmount').text(round(frtamt, 2));
+            $('#lblTaxableAmount').text(round(txblamt, 2));
+            var k = parseFloat(st - discamt + round(vatamt, 0) + round(satamt, 0) + round(cstamt, 0));
+            $('#lblGrandTotal').text(round(k, 2));
+
+            //other charges calculation
+            var d = 0;
+            d = parseFloat(document.getElementById('lblGrandTotal').innerText) * parseFloat($('#txtOtherChgPer').val()) / 100;
+            //javascript functions: Math.floor, Math.ceil, ceiling value is to be used here
+            $('#lblOtherCharges').text(Math.ceil(d));
+            //
+
+            var netamt = parseFloat(document.getElementById('lblGrandTotal').innerText) + parseFloat(document.getElementById('lblFreightAmount').innerText) + parseFloat(document.getElementById('lblOtherCharges').innerText);
+            //removed for [StrC001] netamt = Math.Round(netamt, 0, MidpointRounding.AwayFromZero);
+            //var kx = string.Format("{0:#,###0.00}", netamt);//to set
+            var kx = netamt;
+            $('#lblNetAmount').text(round(kx, 2));
+        }
+
+        function SaveSaleData() {
+
+        }
+
+    </script>
+
+    <script>
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+    </script>
+
+    <script>
+$(document).ready(function () {
+var orderItems = [];
+
+    //Save button click function
+    $('#submit').click(function () {
+    var isAllValid = false;
+
+    //ledger-section
+    setDefaultNumericValuesForLedger();
+    if (isValidLedgerEntry() == false) {
+        return;
+    }
+    processCalculation();//with calculate amount
+
+    //sale-header
+    setDefaultNumericValuesForSale();
+    if (isValidSaleEntry() == false) { return; };
+    CalculateAmount();
+
+    isAllValid = true;
+    //Save if valid
+    if (isAllValid) {
+        
+        var vt = 'gi'
+
+        var liObj = document.getElementById("ddlInvoiceMode");
+        var indexObj = liObj.selectedIndex;
+        var invMode = liObj.options[indexObj].value;
+
+        var liOTC = document.getElementById("ddlOtherChg");
+        var otcIndex = liOTC.selectedIndex;
+        var otc = liOTC.options[otcIndex].value;
+
+        var liTrpMode = document.getElementById("ddlTrpMode");
+        var tpmIndex = liTrpMode.selectedIndex;
+        var trpmode = liTrpMode.options[tpmIndex].value;
+
+        var liSupType = document.getElementById("ddlSupTypeCode");
+        var supTypeIndex = liSupType.selectedIndex;
+        var suptypecode = liSupType.options[supTypeIndex].value;
+
+        var doctypecode = 'inv';
+
+        var liSupAddr = document.getElementById("ddlSupAddressId");
+        var supAddrIndex = liSupAddr.selectedIndex;
+        var supaddressid = liSupAddr.options[supAddrIndex].value;
+
+        var liParty = document.getElementById("ddlParty");
+        var partyIndex = liParty.selectedIndex;
+        var accode = liParty.options[partyIndex].value;
+
+        var liPayingAuth = document.getElementById("ddlPayingAuthority");
+        var payingAuthIndex = liPayingAuth.selectedIndex;
+        var payingauthid = liPayingAuth.options[payingAuthIndex].value;
+
+        var liConsg = document.getElementById("ddlConsignee");
+        var consgIndex = liConsg.selectedIndex;
+        var consigneeid = liConsg.options[consgIndex].value;
+
+        if (supaddressid == 0) {
+            alert('Supply address not selected!');
+            document.getElementById("ddlSupAddressId").focus();
+            return;
+        }
+
+        //st-ledger
+        $("#StepsTable tr").each(function (indx, item) {
+            if (indx > 0) {
+                var tds = $(this).find("td");
+
+                var _itemslno = document.getElementById('lblItemSlNo' + (indx - 1).toString()).innerHTML;
+                var _itemcode = document.getElementById('lblItemCode' + (indx - 1).toString()).innerHTML;
+                var _consgname = document.getElementById('lblConsigneeName' + (indx - 1).toString()).innerHTML;
+                var _ordqty = document.getElementById('lblOrdQty' + (indx - 1).toString()).innerHTML;
+                var _delvqty = document.getElementById('lblDelvQty' + (indx - 1).toString()).innerHTML;
+                var _dspqty = document.getElementById('lblDspQty' + (indx - 1).toString()).innerHTML;
+                var _remqty = document.getElementById('lblRemQty' + (indx - 1).toString()).innerHTML;
+                var _netamount = document.getElementById('lblNetAmount' + (indx - 1).toString()).innerHTML;
+                var _amount = document.getElementById('lblAmount' + (indx - 1).toString()).innerHTML;
+                var _taxableamount = document.getElementById('lblTaxableAmount' + (indx - 1).toString()).innerHTML;
+                var _vatamount = document.getElementById('lblVATAmount' + (indx - 1).toString()).innerHTML;
+                var _satamount = document.getElementById('lblSATAmount' + (indx - 1).toString()).innerHTML;
+                var _cstamount = document.getElementById('lblCSTAmount' + (indx - 1).toString()).innerHTML;
+                var _freightamount = document.getElementById('lblFreightAmount' + (indx - 1).toString()).innerHTML;
+                var _delvdatestr = document.getElementById('lblDelvDateStr' + (indx - 1).toString()).innerHTML;
+                var _itemrecid = document.getElementById('lblItemRecId' + (indx - 1).toString()).innerHTML;
+                var _itemdesc = document.getElementById('lblItemDesc' + (indx - 1).toString()).innerHTML;
+                var _hsqty = document.getElementById('lblHsQty' + (indx - 1).toString()).innerHTML;
+                var _lrecid = document.getElementById('lblLRecId' + (indx - 1).toString()).innerHTML;
+                var _unitname = document.getElementById('lblUnitName' + (indx - 1).toString()).innerHTML;
+
+                var _rate = $('#txtRate' + (indx - 1)).val();
+                var _qty = $('#txtQty' + (indx - 1)).val();
+                var _discount = $('#txtDiscount' + (indx - 1)).val();
+                var _vatper = $('#txtVATPer' + (indx - 1)).val();
+                var _satper = $('#txtSATPer' + (indx - 1)).val();
+                var _cstper = $('#txtCSTPer' + (indx - 1)).val();
+
+                //var _isinclgst = $(tds).eq(11).find("input").is(':checked');//not working
+                var _isinclgst = document.getElementById("chkIsInclGst" + (indx - 1)).checked;
+
+                var _unitrate = $('#txtUnitRate' + (indx - 1)).val();
+                var _freightrate = $('#txtFreightRate' + (indx - 1)).val();
+                var _hsncode = $('#txtHSNCode' + (indx - 1)).val();
+
+                orderItems.push({
+                    ItemRecId: 0,
+                    LgrItemId: 0,
+                    ItemCode: '0',
+                    ItemDesc: '',
+                    NoOfPckg: '',
+                    Qty: _qty,
+                    DelvQty: _delvqty,
+                    InspCertificate: '',
+                    DispatchMemo: '',
+                    ExciseDutyPer: 0,
+                    ExciseDutyAmount: 0,
+                    EntryTaxPer: 0,
+                    EntryTaxAmount: 0,
+                    FreightRate: _freightrate,
+                    FreightAmount: _freightamount,
+                    ExciseDutyInc: 0,
+                    SaleTaxInc: 0,
+                    Remarks: '',
+                    Rate: _rate,
+                    Amount: _amount,
+                    Discount: _discount,
+                    TaxableAmount: _taxableamount,
+                    VATPer: _vatper,
+                    VATAmount: _vatamount,
+                    SATPer: _satper,
+                    SATAmount: _satamount,
+                    CSTPer: _cstper,
+                    CSTAmount: _cstamount,
+                    IsInclGst: _isinclgst,
+                    UnitRate: _unitrate,
+                    Unit: 0,
+                    UnitName: _unitname,
+                    NetAmount: _netamount,
+                    LRecId: _lrecid,
+                    HSNCode: _hsncode
+                });
+
+            }
+        });
+        //cl-ledger
+
+        var data = {
+            //order fields
+            SaleRecId: parseInt($('#hfSaleRecId').val().trim()),
+            VType: vt,
+            VNo: parseFloat($('#txtVNo').val().trim()),
+            ChInv: 'i',
+            InvoiceMode: invMode,
+            VDate: $('#txtVDate').val().trim(),
+            CashCredit: 'r',
+            AcCode: parseInt(accode),
+            Form38No: '',
+            FormCNo: '',
+            SubTotal: parseFloat(document.getElementById('lblSubTotal').innerText),
+            BEDAdvPer: '0',
+            BEDAdvAmount: '0',
+            EduCessPer: '0',
+            EduCessAmount: '0',
+            SheCessPer: '0',
+            SheCessAmount: '0',
+            ExciseDutyAmount: '0',
+            VATAmount: parseFloat(document.getElementById('lblVATAmount').innerText),
+            SATAmount: parseFloat(document.getElementById('lblSATAmount').innerText),
+            CSTAmount: parseFloat(document.getElementById('lblCSTAmount').innerText),
+            EntryTaxAmount: '0',
+            FreightAmount: parseFloat(document.getElementById('lblFreightAmount').innerText),
+            AdjAmount: parseFloat($('#txtAdjAmount').val().trim()),
+            OtherCharges: parseFloat(document.getElementById('lblOtherCharges').innerText),
+            Discount: parseFloat(document.getElementById('lblDiscount').innerText),
+            TaxableAmount: parseFloat(document.getElementById('lblTaxableAmount').innerText),
+            NetAmount: parseFloat(document.getElementById('lblNetAmount').innerText),
+            GRNo: $('#txtGRNo').val().trim(),
+            GRDate: $('#txtGRDate').val().trim(),
+            TrpMode: trpmode,
+            TrpDetail: $('#txtTrpDetail').val().trim(),
+            POrderId: parseInt($('#hfPOrderId').val().trim()),
+            ConsigneeId: parseInt(consigneeid),
+            PayingAuthId: parseInt(payingauthid),
+            RemovalDateTime: '',
+            MADate: '',
+            MANo: $('#txtMANo').val().trim(),
+            TarrifHeading: '',
+            CertOption: '0',
+            B1LetterNo: '',
+            B1LetterDate: '',
+            B1Agent: '',
+            B2LetterNo: '',
+            B2LetterDate: '',
+            B2Agent: '',
+            IssueDateTime: '',
+            RemovalTimeInWords: '',
+            TrfCompCode: '0',//parseFloat($('#txtQty').val().trim()),
+            IntPONumber: '',
+            IntPODate: $('#txtVDate').val().trim(),
+            Remarks: '0',
+            BillPODesc: '0',
+            ElctRefNo: $('#txtElctRefNo').val().trim(),
+            ElctRefDate: $('#txtElctRefDate').val().trim(),
+            RevChgTaxAmount: parseFloat($('#txtRevChgTaxAmount').val().trim()),
+            PackingDetail: $('#txtPackingDetail').val().trim(),
+            TaxType: 'g',
+            InvNote: $('#txtInvNote').val().trim(),
+            Remarks: $('#txtSRemarks').val().trim(),
+            RNoteInfo: '',
+            OtherChgAcCode: otc,
+            InvReferenceNo: $('#txtInvReferenceNo').val().trim(),
+            PrecDocNo: $('#txtPrecDocNo').val().trim(),
+            PrecDocDate: $('#txtPrecDocDate').val().trim(),
+            SupTypeCode: suptypecode,
+            DocTypeCode: doctypecode,
+            SupAddressId: supaddressid,
+            DistanceKM: parseFloat($('#txtDistanceKM').val().trim()),
+            OtherChgPer: parseFloat($('#txtOtherChgPer').val().trim()),
+            //ledger fields
+            Ledgers: orderItems
+        }
+
+        $(this).val('Please wait...');
+
+        $.ajax({
+        url: '/SaleGST/CreateUpdate',
+        type: "POST",
+        data: JSON.stringify(data),
+        dataType: "JSON",
+        contentType: "application/json",
+        success: function (d) {
+        //check is successfully save to database
+        if (d.status == true) {
+            //will send status from server side
+            alert(d.message);
+            //clear form
+            orderItems = [];
+            //$('#orderNo').val('');
+            //$('#orderDate').val('');
+            $('#orderItems').empty();
+            //reload/refresh
+            //window.location.href = document.getElementById('myLink').href;//note
+        }
+        else {
+            alert(d.message);
+        }
+            $('#submit').val(d.AddEdit);
+        },
+        error: function () {
+            alert('Error. Please try again.');
+                //$('#submit').val('Save');
+                $('#submit').val(d.AddEdit);
+            }
+        });
+        }
+
+    });
+
+    //edit mode
+    $(function () {
+        var mainObject = @Html.Raw(Json.Encode(Model))
+        orderItems = @Html.Raw(Json.Encode(Model.Ledgers))
+        //
+        hfSaleRecId.value = mainObject.SaleRecId;
+        txtVNo.value = mainObject.VNo;
+        txtVDate.value = mainObject.VDate.substring(0, 10);
+        ddlParty.value = mainObject.AcCode;
+        txtInvSeries.value = mainObject.InvSeries;
+        document.getElementById('lblSubTotal').innerHTML = mainObject.SubTotal;
+        document.getElementById('lblVATAmount').innerHTML = mainObject.VATAmount;
+        document.getElementById('lblSATAmount').innerHTML = mainObject.SATAmount;
+        document.getElementById('lblCSTAmount').innerHTML = mainObject.CSTAmount;
+        document.getElementById('lblFreightAmount').innerHTML = mainObject.FreightAmount;
+        txtAdjAmount.value = mainObject.AdjAmount;
+        txtOtherChgPer.value = mainObject.OtherChgPer;
+        document.getElementById('lblOtherCharges').innerHTML = mainObject.OtherCharges;
+        document.getElementById('lblDiscount').innerHTML = mainObject.Discount;
+        document.getElementById('lblTaxableAmount').innerHTML = mainObject.TaxableAmount;
+        document.getElementById('lblNetAmount').innerHTML = mainObject.NetAmount;
+        txtGRNo.value = mainObject.GRNo;
+        txtGRDate.value = mainObject.GRDate.substring(0, 10);
+        ddlTrpMode.value = mainObject.TrpMode;
+        txtTrpDetail.value = mainObject.TrpDetail;
+        ddlPayingAuthority.value = mainObject.PayingAuthId;
+        ddlConsignee.value = mainObject.ConsigneeId;
+        hfPOrderId.value = mainObject.POrderId;
+        txtPONumber.value = mainObject.PONumber;
+        txtMANo.value = mainObject.MANo;
+        txtElctRefNo.value = mainObject.ElctRefNo;
+        txtElctRefDate.value = mainObject.ElctRefDate.substring(0,10);
+        txtRevChgTaxAmount.value = mainObject.RevChgTaxAmount;
+        txtPackingDetail.value = mainObject.PackingDetail;
+        txtInvNote.value = mainObject.InvNote;
+        txtSRemarks.value = mainObject.Remarks;
+        txtInvReferenceNo.value = mainObject.InvReferenceNo;
+        txtPrecDocNo.value = mainObject.PrecDocNo;
+        txtPrecDocDate.value = mainObject.PrecDocDate.substring(0, 10);
+        ddlSupTypeCode.value = mainObject.SupTypeCode;
+        ddlSupAddressId.value = mainObject.SupAddressId;
+        ddlOtherChg.value = mainObject.OtherChgAcCode;
+        //
+        performChangeForInvoiceMode();
+        SetPayingAuthorityInfo();
+        SetConsigneeInfo();
+        SetPartyInfo();
+        //
+    });
+
+    });
+
+    </script>
+}
+
+

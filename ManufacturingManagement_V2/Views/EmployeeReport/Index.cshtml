@@ -1,0 +1,256 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Employee Report</b></h4>
+@{var lstEmpType = new List<System.Web.UI.WebControls.ListItem>
+{
+          new System.Web.UI.WebControls.ListItem { Text = "ALL", Value="a" },
+          new System.Web.UI.WebControls.ListItem { Text = "Existing", Value="e" },
+          new System.Web.UI.WebControls.ListItem { Text = "Resigned", Value="r" },
+    };
+}
+@{var lstSortColumn = new List<System.Web.UI.WebControls.ListItem>
+{
+          //new System.Web.UI.WebControls.ListItem { Text = "New EMP Code", Value="newempid" },
+          new System.Web.UI.WebControls.ListItem { Text = "Default", Value="Default" },
+          new System.Web.UI.WebControls.ListItem { Text = "Gross Salary", Value="grosssalary" },
+          new System.Web.UI.WebControls.ListItem { Text = "Joining Date", Value="joiningdate" },
+          new System.Web.UI.WebControls.ListItem { Text = "Exp At Prag", Value="pragexp" },
+          new System.Web.UI.WebControls.ListItem { Text = "Age", Value="age" },
+          new System.Web.UI.WebControls.ListItem { Text = "EMP Code", Value="empid" }
+    };
+}
+@{var lstSortOrder = new List<System.Web.UI.WebControls.ListItem>
+{
+          new System.Web.UI.WebControls.ListItem { Text = "Ascending", Value="asc" },
+          new System.Web.UI.WebControls.ListItem { Text = "Descending", Value="desc" }
+    };
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div class="sidebyside">
+        <h5><b>Report Filters</b></h5>
+        <div style="width: 460px; height: 380px;overflow-y: scroll;border:ridge;border-width:1px;">
+            <table class="table table-bordered">
+                <tr>
+                    <td>Company</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList, "ALL",
+                   new { style = "width:320px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Employee Type</td>
+                    <td>@Html.DropDownListFor(model => model.EmpType, new SelectList(lstEmpType, "Value", "Text"))</td>
+                </tr>
+                <tr>
+                    <td>Grade</td>
+                    <td>@Html.DropDownListFor(model => model.Grade, ViewBag.GradeList as SelectList, "ALL")</td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.DepCode, ViewBag.DepartmentList as SelectList, "ALL",
+                   new { style = "width:320px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Category</td>
+                    <td>@Html.DropDownListFor(model => model.CategoryId, ViewBag.EmpCategoryList as SelectList)</td>
+                </tr>
+                <tr>
+                    <td>Caste</td>
+                    <td>@Html.DropDownListFor(model => model.ObjectId, ViewBag.CasteList as SelectList, "ALL")</td>
+                </tr>
+                <tr>
+                    <td>Qualification</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.ItemId, ViewBag.QualificationList as SelectList, "ALL",
+                   new { style = "width:320px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Agency</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.AgencyId, ViewBag.AgencyList as SelectList, "ALL",
+                   new { style = "width:320px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Location</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.LocationId, ViewBag.LocationList as SelectList, "ALL",
+                   new { style = "width:320px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sort On</td>
+                    <td>@Html.DropDownListFor(model => model.SortColumn, new SelectList(lstSortColumn, "Value", "Text"))</td>
+                </tr>
+                <tr>
+                    <td>Sort By</td>
+                    <td>@Html.DropDownListFor(model => model.SortOrder, new SelectList(lstSortOrder, "Value", "Text"))</td>
+                </tr>
+                <tr>
+                    <td>Report Format</td>
+                    <td>@Html.DropDownListFor(model => model.ReportFormat, ViewBag.ReportFormatList as SelectList)</td>
+                </tr>
+                <tr>
+                    <td>Joining From</td>
+                    <td>@Html.EditorFor(model => model.DateFrom)</td>
+                </tr>
+                <tr>
+                    <td>To</td>
+                    <td>@Html.EditorFor(model => model.DateTo)</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        @Html.EditorFor(model => model.Detailed)&nbsp;Apply&nbsp;Date&nbsp;Filter
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="sidebyside">
+        <h5><b>Select Columns(for Employee Register)</b></h5>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <label style="font-size:9pt;color:blue;"
+                           onclick="SelectAll('chk')"><u>Check</u></label>
+                </td>
+                <td>
+                    <label style="font-size:9pt;color:blue;"
+                           onclick="UnSelectAll('chk')"><u>Un-Check</u></label>
+                </td>
+                <td>
+                    <label style="font-size:9pt;color:blue;"
+                           onclick="ReverseCheck('chk')"><u>Reverse</u></label>
+                </td>
+            </tr>
+        </table>
+        @*<h4><span style="color:orange;"><label onclick="UnSelectAll('chk')">Uncheck</label></span></h4>*@
+        <div style="width: 300px; height: 320px;
+                overflow-y: scroll;border:ridge;border-width:1px;">
+            @foreach (var comp in Model.EmpColumns)
+            {
+                <ul>
+                    <input type="checkbox" name="SelectedEmpColumns"
+                           class="chk"
+                           value="@comp.EmpCol" id="@comp.EmpCol"
+                           style="width:45px;height:16px;"
+                           @{if (Model.SelectedEmpColumns.Contains(comp.EmpCol)) 
+                               { <text> checked='checked' </text>  } 
+                           } 
+                    />
+                    <span style="width:250px;text-align:left;">
+                           @comp.EmpColName
+                    </span>
+                </ul>
+            }
+        </div>
+    </div>
+    <br />
+    @*<div class="belowdiv" style="width:90%">*@
+<div class="belowdiv" style="width:90%">
+    <p>
+        <input type="submit" class="btn btn-default" value="Report" onclick="target='_blank';"
+               style="width:155px;" formaction="@Url.Action("EmployeeReport")" />
+        <br /><br />
+        @Html.EditorFor(model => model.Above58)Filter&nbsp;Incomplete
+        <br/>
+        <input type="submit" class="btn btn-default" value="Register" onclick="target = '_blank';"
+               style="width:155px;" formaction="@Url.Action("EmployeeRegisterHTML")" />
+        <br /><br />
+        <input type="submit" class="btn btn-default" value="Birthday Alert" onclick="target = '_blank';"
+               style="width:155px;" formaction="@Url.Action("BirthdayAlertView")" />
+        <br /><br />
+        <input type="submit" class="btn btn-default" value="Anniversary Alert" onclick="target = '_blank';"
+               style="width:155px;" formaction="@Url.Action("AnniversaryAlertView")" />
+        <br /><br />
+        <input type="submit" class="btn btn-default" value="Retirement Alert" onclick="target = '_blank';"
+               style="width:155px;" formaction="@Url.Action("RetirementAlertView")" />
+        <br /><br />
+        <input type="submit" class="btn btn-default" value="Strength Report" onclick="target = '_blank';"
+               style="width:155px;" formaction="@Url.Action("EmployeeStengthReport")" />
+    </p>
+</div>
+    <h5>@ViewBag.Message<br /></h5>
+}
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#Detailed").attr("style", "width:55px;height:25px;");
+            $("#Above58").attr("style", "width:30px;height:15px;");
+        });
+    </script>
+
+    <script type="text/javascript">
+        function SelectAll(opt) {
+            var items = document.getElementsByClassName(opt);
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type == 'checkbox')
+                    items[i].checked = true;
+            }
+        }
+
+        function UnSelectAll(opt) {
+            var items = document.getElementsByClassName(opt);
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type == 'checkbox')
+                    items[i].checked = false;
+            }
+        }
+
+        function ReverseCheck(opt) {
+            var items = document.getElementsByClassName(opt);
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type == 'checkbox')
+                    if (items[i].checked == false) {
+                        items[i].checked = true;
+                    }
+                    else {
+                        items[i].checked = false;
+                    }
+            }
+        }
+    </script>
+
+}
+
+<style>
+    .container {
+        overflow: auto;
+        /* http://www.tipue.com/blog/center-a-div */
+        margin: 0 auto;
+        max-width: 800px;
+    }
+
+    .sidebyside {
+        float: left;
+        /*width:450px;*/
+        /*height:520px;*/
+        /*border-style:solid;*/
+        margin: 5px;
+        vertical-align: middle;
+        border-color: blue;
+        border-radius: 4px;
+        border-width: 1px;
+    }
+
+    .belowdiv {
+        width: 650px;
+        height: 100px;
+        /*border-style:solid;*/
+        margin: 5px;
+    }
+</style>

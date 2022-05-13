@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.EventLogMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>View -Log Detail</b></h4>
+
+@if (Model.Any()) 
+{
+<h5>
+    <b>
+        File/Table: @Model.ElementAt(0).TblName [@Model.ElementAt(0).TblId],&nbsp;&nbsp;
+        Key Value: @Model.ElementAt(0).PKField = @Model.ElementAt(0).PKVal
+    </b>&nbsp;&nbsp;&nbsp;
+    <u>@Html.ActionLink("Close", null, null, 
+      new { @onclick = "window.close()", @style = "height:20px;font-weight:bold;color:blue;" })</u>
+</h5>
+}
+@*Model.Count() > 0) also works*@
+
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.EVDate)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.EVTime)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.LogDesc)
+        </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EVDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EVTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogDesc)
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+

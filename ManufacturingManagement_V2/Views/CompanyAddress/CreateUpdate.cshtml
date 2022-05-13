@@ -1,0 +1,106 @@
+﻿@model ManufacturingManagement_V2.Models.CompanyAddressMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+
+<h4><b>Company Address Entry</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        @Html.HiddenFor(model => model.RecId)
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:10%;">@Html.LabelFor(model => model.CompCode)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)
+                    @Html.ValidationMessageFor(model => model.CompCode)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Address&nbsp;Name</b></td>
+                <td>
+                    @Html.EditorFor(model => model.AddressName)
+                    @Html.ValidationMessageFor(model => model.AddressName)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Address1)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Address1, 0, 0,
+                    new { @style = "width:268px;height:60px;" })
+                    @Html.ValidationMessageFor(model => model.Address1)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Address2)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Address2, 0, 0,
+                    new { @style = "width:268px;height:60px;" })
+                    @Html.ValidationMessageFor(model => model.Address2)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Address3)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Address3, 0, 0,
+                    new { @style = "width:268px;height:60px;" })
+                    @Html.ValidationMessageFor(model => model.Address3)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.PinCode)</td>
+                <td>
+                    @Html.EditorFor(model => model.PinCode)
+                    @Html.ValidationMessageFor(model => model.PinCode)
+                </td>
+            </tr>
+            <tr>
+                <td><b>State&nbsp;Name</b></td>
+                <td>
+                    @Html.EditorFor(model => model.StateName)
+                    @Html.ValidationMessageFor(model => model.StateName)
+                </td>
+            </tr>
+            <tr>
+                <td><b>State&nbsp;Code</b></td>
+                <td>
+                    @Html.EditorFor(model => model.StateCode)
+                    @Html.ValidationMessageFor(model => model.StateCode)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+    </p>
+    <h5>@ViewBag.Message</h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById("CompCode").focus();
+            //
+            if (@ViewBag.Status == '1') {
+
+                    alert('@ViewBag.Message');
+                    window.parent.location.reload();
+            }
+            //
+        });
+
+    </script>
+
+}

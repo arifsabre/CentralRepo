@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.QualificationMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Qualification List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th>
+            S.No.
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Qualification)
+        </th>
+        <th>Edit</th>
+        <th>Details</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qualification)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.QualId })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.QualId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+

@@ -1,0 +1,515 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.PurchaseOrderMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <table>
+        <tr>
+            <td><h4><b>View Purchase Order</b></h4></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            @*<td>
+                @Html.ActionLink("Generate Invoice (By PO)", "../SaleGST/GenerateInvoice", null,
+                new { @style = "color:blue;text-decoration:underline;" })
+            </td>*@
+            @*<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>
+                    @Html.ActionLink("Sale Entry (Without PO)", "../SaleGSTOthers/CreateUpdate", null,
+                    new { @style = "color:blue;text-decoration:underline;" })
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>
+                    @Html.ActionLink("Convert Draft/Proforma To Main", "../SaleGSTOthers/IndexConvertToMain", null,
+                    new { @style = "color:blue;text-decoration:underline;" })
+                </td>*@
+        </tr>
+    </table>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndex", "PurchaseOrder", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+        <div class="form-group" onload="ShowHideDiv()">
+            @Html.ActionLink("Create New", "GeneratePO", null, 
+            new { @class = "btn btn-default", @target = "_blank" })
+
+            &nbsp;<b>PO&nbsp;Type</b>
+            @Html.DropDownList("ddlPOType", ViewBag.POTypeList as SelectList)
+
+            &nbsp;<b>Order&nbsp;Status</b>
+            @Html.DropDownList("ddlOrderStatus", ViewBag.OrderStatusList as SelectList)
+
+            &nbsp;<b>Verified</b>
+            @Html.DropDownList("ddlIsVerified", ViewBag.VerifiedList as SelectList)
+
+            &nbsp;<b>MA&nbsp;Required</b>
+            @Html.DropDownList("ddlMARequired", ViewBag.MaReqList as SelectList)
+
+            &nbsp;<button class="btn btn-default">Submit</button>
+            &nbsp;
+            <input type="checkbox" onchange="ShowHideDiv()" id="chkOptions"
+                   name="chkOptions" @if (ViewBag.Options) { <text> checked</text>}
+                   style="width: 30px; height: 20px; padding: 0; text-align:center;
+            vertical-align:middle;">Options
+
+            @*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label id="lblReport" onclick="DisplayRPGReport()"
+               style="font-weight:normal;color:blue;"><u>Report</u></label>*@
+
+            <div id="dvOptions" style="display:none;">
+                <table>
+                    <tr>
+                        <td><b>Railway</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td>
+                            @Html.TextBox("txtRailway", null,
+                               new
+                                    {
+                                        @placeholder = "start typing, then select",
+                                        @style = "width:300px;height:20px;"
+                                    })
+                            @Html.Hidden("hfRailwayId", null, new { @id = "hfRailwayId" })
+                        </td>
+
+                        <td>&nbsp;&nbsp;&nbsp;</td>
+
+                        <td style="padding:2px;"><b>MA&nbsp;Reason</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td>
+                            @Html.DropDownList("ddlMAReason", ViewBag.MAReasonList as SelectList, "ALL")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Item&nbsp;Group</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td>
+                            @Html.TextBox("txtGroup", null,
+                               new
+                                    {
+                                        @placeholder = "start typing, then select",
+                               @style = "width:300px;height:20px;"
+                                    })
+                            @Html.Hidden("hfGroupId", null, new { @id = "hfGroupId" })
+                        </td>
+
+                        <td>&nbsp;&nbsp;&nbsp;</td>
+
+                        <td><b>Item&nbsp;Name</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td>
+                            @Html.TextBox("txtItem", null,
+                                   new
+                                        {
+                                            @placeholder = "start typing, then select",
+                                   @style = "width:300px;height:20px;"
+                                        })
+                            @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;" id="tblsl">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th style="width:120px;">Links</th>
+            <th style="width:50px;">
+                Tender&nbsp;No/<br />PO&nbsp;Description
+            </th>
+            <th style="width:auto;">
+                Railway
+            </th>
+            <th style="width:50px;">
+                PO&nbsp;No/PO&nbsp;Date<br />Status/Verified
+            </th>
+            <th style="width:auto;">
+                Case&nbsp;FileNo<br />Party
+            </th>
+            <th style="width:auto;">
+                MA&nbsp;Information
+            </th>
+            <th style="width:auto;">
+                Items&nbsp;-&nbsp;Qty
+            </th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+    <tr>
+        <td>
+            @i
+        </td>
+        <td>
+
+            @*until po entry is not functional in v2*@
+            @*@Html.ActionLink("Edit", "CreateUpdate", new { porderid = item.POrderId }, new { @target = "_blank" })*@
+            @Html.ActionLink("Edit", "GoToEdit", new { porderid = item.POrderId }, new { @target = "_blank" })
+            <br />
+            @Html.ActionLink("Edit New*", "GeneratePO", new { porderid = item.POrderId }, new { @target = "_blank" })
+
+            @*until new links are not used for sale entry*@
+            @*@Html.ActionLink("GenerateInvoice", "../SaleGST/CreateUpdate", new { id= 0, porderid = item.POrderId }, new { @target = "_blank" })*@
+            @if (item.IsPOVerified == true)
+            {
+                <br />
+                @Html.ActionLink("Generate Invoice", "GenerateInvoiceV1", new { ponumber = item.PONumber }, new { @target = "_blank" })
+                <br/>
+                @Html.ActionLink("GenerateInvoiceNew*", "../SaleGST/CreateUpdate", new { id=0, porderid = item.POrderId }, new { @target = "_blank" })
+            }
+
+            <br />
+            @Html.ActionLink("View CaseFile", "../SaleGstOthers/DisplayCaseFile", new { porderid = item.POrderId }, new { @target = "_blank" })
+
+            <br />
+            @Html.ActionLink("Upload CaseFile", "UploadCaseFile", new { porderid = item.POrderId, casefileno = item.CaseFileNo }, new { @target = "_blank" })
+
+            <br />
+            @Html.ActionLink("PO Checklist", "../POChecklistReportV2/DisplayPOChecklistReportV2", new { porderid = item.POrderId }, new { @target = "_blank" })
+
+            <br />
+            @Html.ActionLink("Dispatch", "PODispatchReport", new { ponumber = item.PONumber }, new { @target = "_blank" })
+
+            <br />
+            @Html.ActionLink("Payment Status", "../ERP_V1_Report/OrderwisePaymentReportLink", new { porderid = item.POrderId }, new { @target = "_blank" })
+
+            <br />
+            @Html.ActionLink("Update BG", "../BankGuarantee/CreateUpdate", new { id = item.TenderId }, new { @target = "_blank" })
+
+            <br />
+            @Html.ActionLink("Closure Report", "../CaseFileClosureReport/ClosureReportLink", new { porderid = item.POrderId }, new { @target = "_blank" })
+
+            <br />
+            @Html.ActionLink("View Log", "../EventLogReport/getLogDetail",
+                new { tblid = 14, pkval = item.POrderId }, new { @target = "_blank" })
+
+            @*admin-only*@
+            @if (@ViewBag.lgtype == 0)
+            {
+                <br />
+                @Html.ActionLink("Delete", null, null, new { onclick = "deletePurchaseOrder('" + item.POrderId + "')" })
+            }
+
+        </td>
+        <td>
+            @if (item.TenderDesc.Length > 0)
+            {
+                @Html.ActionLink(item.TenderDesc, "DisplayTenderFile", new { tenderid = item.TenderId }, new { @target = "_blank" })
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RailwayName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PONumber)
+            <br />@Html.DisplayFor(modelItem => item.PODateStr)
+            <br />@Html.DisplayFor(modelItem => item.OrderStatusName)
+            <br />@Html.DisplayFor(modelItem => item.IsPOVerified)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CaseFileNo)
+            <br />@Html.DisplayFor(modelItem => item.AcDesc)
+        </td>
+        <td>
+            <table>
+                <tr>
+                    <td>MA&nbsp;Required</td>
+                    <td>
+                        @Html.CheckBox("chkCorrectionReqd" + i.ToString(), item.CorrectionRequired,
+                        new
+                         {
+                             @id = "chkCorrectionReqd" + (i - 1),
+                             style = "width: 50px; height: 18px; padding: 0; text-align:center;"
+                         })
+                    </td>
+                <tr>
+                <tr>
+                    <td colspan="2">
+                        MA&nbsp;Reason
+                        <br />@Html.DropDownList("ddlMA", new SelectList(ViewBag.MAReasonList, "Value", "Text", item.MAReason),
+               new
+                    {
+                   @id = "ddlMA" + (i - 1),
+                        style = "width: 150px;",
+                        value = item.MAReason
+               })
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        Remarks
+                        <br />@Html.TextArea("txtRemarks" + i.ToString(), item.Remarks,
+                     new
+                          {
+                       @id = "txtRemarks" + (i - 1),
+                              style = "width: 150px; height: 60px;"
+                   })
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        @Html.ActionLink("Update MA Info", null, null,
+                        new { onclick = "updateMAInfo('" + i + "', '" + item.POrderId + "')" })
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemsQty)
+        </td>
+    </tr>
+            i++;
+        }
+        @{i = i - 1;}
+        @i.ToString()&nbsp;&nbsp;Records found (for selected options).
+    </table>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            $("#txtRailway").attr("placeholder", "start typing, then select");
+            $("#txtGroup").attr("placeholder", "start typing, then select");
+            $("#txtItem").attr("placeholder", "start typing, then select");
+            document.getElementById("hfRailwayId").value = '@ViewBag.railwayid';
+            document.getElementById("txtRailway").value = '@ViewBag.railway';
+            document.getElementById("hfGroupId").value = '@ViewBag.groupid';
+            document.getElementById("txtGroup").value = '@ViewBag.group';
+            document.getElementById("hfItemId").value = '@ViewBag.itemid';
+            document.getElementById("txtItem").value = '@ViewBag.item';
+            ShowHideDiv();
+            SetLinks();
+        });
+        </script>
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script type="text/javascript">
+            function ShowHideDiv() {
+                var dv = document.getElementById("dvOptions");
+                if (document.getElementById("chkOptions").checked) {
+                    dv.style.display = "block";
+                }
+                else {
+                    dv.style.display = "none";
+                }
+            }
+        </script>
+
+        <script>
+            function SetLinks() {
+                $("#tblsl tr").each(function (index, item) {
+                    if (index > 0) {
+                        //var tds = $(this).find("td");
+
+                        var link1 = document.getElementById("linkChangeVNo" + (index - 1));
+                        var slid = link1.name;
+                        link1.href = '/Home/DisplayErpV1?url=../Entry/SaleEntryChangeVNo.aspx?salerecid=' + slid;
+
+                        var link2 = document.getElementById("linkMarkUnloading" + (index - 1));
+                        slid = link2.name;
+                        link2.href = '/Home/DisplayErpV1?url=../Entry/SaleEntryUnloading.aspx?salerecid=' + slid;
+
+                        var link3 = document.getElementById("linkUpdateRC" + (index - 1));
+                        slid = link3.name;
+                        link3.href = '/Home/DisplayErpV1?url=../Entry/SaleEntryRCReceiving.aspx?salerecid=' + slid;
+
+                        var link4 = document.getElementById("linkUpdateIcDm" + (index - 1));
+                        slid = link4.name;
+                        link4.href = '/Home/DisplayErpV1?url=../Entry/SaleEntryCertificates.aspx?salerecid=' + slid;
+
+                        var link5 = document.getElementById("linkReceipt" + (index - 1));
+                        slid = link5.name;
+                        link5.href = '/Home/DisplayErpV1?url=../Entry/ReceiptEntry.aspx?salerecid=' + slid;
+
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            function stringToDate(_date, _format, _delimiter) {
+                var formatLowerCase = _format.toLowerCase();
+                var formatItems = formatLowerCase.split(_delimiter);
+                var dateItems = _date.split(_delimiter);
+                var monthIndex = formatItems.indexOf("mm");
+                var dayIndex = formatItems.indexOf("dd");
+                var yearIndex = formatItems.indexOf("yyyy");
+                var month = parseInt(dateItems[monthIndex]);
+                month -= 1;
+                var formatedDate = new Date(dateItems[yearIndex], month, dateItems[dayIndex]);
+                return formatedDate;
+            }
+        </script>
+
+        <script>
+            function DisplayRPGReport() {
+                //date value is passing in wrong format
+                //var dtfrom = $('#txtDtFrom').val();
+                //var dtto = $('#txtDtTo').val();
+                //window.open('/ERP_V1_Report/SaleReportRPG?dtfrom=' + dtfrom + '&dtto=' + dtto);
+                window.open('/DetailedSaleReport/Index');
+            }
+        </script>
+
+        <script>
+            function deletePurchaseOrder(porderid) {
+                var a = confirm("Are you sure to delete this record?");
+                if (a == false) {
+                    return;
+                }
+                var data = {
+                    porderid: porderid
+                }
+                $.ajax({
+                    url: '/PurchaseOrder/Delete',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            function updateMAInfo(indx, porderid) {
+
+                var _mareqd = document.getElementById("chkCorrectionReqd" + (indx - 1)).checked;
+                
+                var liMAR = document.getElementById("ddlMA"+(indx - 1));
+                var marIndex = liMAR.selectedIndex;
+                if (marIndex == -1) {
+                    alert('MA Reason Not Selected!');
+                    return;
+                }
+                var _mareason = liMAR.options[marIndex].value;
+
+                var _remarks = $('#txtRemarks' + (indx - 1)).val();
+                if (_mareqd == true && _remarks == '') {
+                    alert('Empty Remarks!');
+                    return;
+                }
+
+                var data = {
+                    porderid: porderid,
+                    crequired: _mareqd,
+                    mareason: _mareason,
+                    remarks: _remarks
+                }
+                $.ajax({
+                    url: '/PurchaseOrder/UpdateCorrectionRequirementInfo',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <script type="text/javascript">
+                $("#txtRailway").autocomplete({
+                    source: function (request, response) {
+                        var customer = new Array();
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            type: "POST",
+                            url: "@(Url.Action("AutoCompleteRailway", "HelpUtility"))",
+                            data: { "term": request.term },
+                            success: function (data) {
+                                for (var i = 0; i < data.length ; i++) {
+                                    customer[i] = { label: data[i].Value, Id: data[i].Key };
+                                }
+                            }
+                        });
+                        response(customer);
+                    }, minLength: 2,
+                    select: function (event, ui) {
+                        document.getElementById('hfRailwayId').value = ui.item.Id;
+                    }
+                });
+        </script>
+
+        <script type="text/javascript">
+                $("#txtGroup").autocomplete({
+                    source: function (request, response) {
+                        var customer = new Array();
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            type: "POST",
+                            url: "@(Url.Action("AutoCompleteItemGroup", "HelpUtility"))",
+                            data: { "term": request.term },
+                            success: function (data) {
+                                for (var i = 0; i < data.length ; i++) {
+                                    customer[i] = { label: data[i].Value, Id: data[i].Key };
+                                }
+                            }
+                        });
+                        response(customer);
+                    }, minLength: 2,
+                    select: function (event, ui) {
+                        document.getElementById('hfGroupId').value = ui.item.Id;
+                    }
+                });
+        </script>
+
+        <script type="text/javascript">
+        $("#txtItem").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var groupId = '0';
+                if (document.getElementById('hfGroupId').value != "0") {
+                    groupId = document.getElementById('hfGroupId').value;
+                }
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAllItemListGroup", "HelpUtility"))",
+                    data: { "term": request.term, "groupid": groupId },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfItemId').value = ui.item.Id;
+            }
+        });
+        </script>
+
+    }
+
+

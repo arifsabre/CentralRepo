@@ -1,0 +1,171 @@
+﻿@model ManufacturingManagement_V2.Models.SalaryDetailMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Salary Detail Entry</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr><td colspan="3"><h5><b>Salary Details</b></h5></td></tr>
+                <tr>
+                    @Html.HiddenFor(model => model.RecId)
+                @Html.HiddenFor(model => model.EmpId)
+                @Html.HiddenFor(model => model.NewEmpId)
+                @Html.HiddenFor(model => model.EmpName)
+                @Html.HiddenFor(model => model.GrossSalary)
+                <td>@Html.LabelFor(model => model.EmpId)</td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.EmpId) /
+                @Html.DisplayFor(model => model.EmpName)
+                @Html.ValidationMessageFor(model => model.EmpId)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.IncDate)</td>
+                <td>
+                    @Html.EditorFor(model => model.IncDate)
+                @Html.ValidationMessageFor(model => model.IncDate)
+            </td>
+            <td>@Html.LabelFor(model => model.BasicRate)</td>
+            <td>
+                @Html.EditorFor(model => model.BasicRate)
+            @Html.ValidationMessageFor(model => model.BasicRate)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.DA)</td>
+                <td>
+                    @Html.EditorFor(model => model.DA)
+                @Html.ValidationMessageFor(model => model.DA)
+            </td>
+            <td>@Html.LabelFor(model => model.ConvAllowance)</td>
+            <td>
+                @Html.EditorFor(model => model.ConvAllowance)
+            @Html.ValidationMessageFor(model => model.ConvAllowance)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.HRA)</td>
+                <td>
+                    @Html.EditorFor(model => model.HRA)
+                @Html.ValidationMessageFor(model => model.HRA)
+            </td>
+            <td>@Html.LabelFor(model => model.MedicalAllowance)</td>
+            <td>
+                @Html.EditorFor(model => model.MedicalAllowance)
+            @Html.ValidationMessageFor(model => model.MedicalAllowance)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.CompAllowance)</td>
+                <td>
+                    @Html.EditorFor(model => model.CompAllowance)
+                @Html.ValidationMessageFor(model => model.CompAllowance)
+            </td>
+            <td>@Html.LabelFor(model => model.DWAllowance)</td>
+            <td>
+                @Html.EditorFor(model => model.DWAllowance)
+            @Html.ValidationMessageFor(model => model.DWAllowance)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.SpecialPay)</td>
+                <td>
+                    @Html.EditorFor(model => model.SpecialPay)
+                @Html.ValidationMessageFor(model => model.SpecialPay)
+            </td>
+            <td>@Html.LabelFor(model => model.Others)</td>
+            <td>
+                @Html.EditorFor(model => model.Others)
+            @Html.ValidationMessageFor(model => model.Others)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.IncAmount)</td>
+                <td>
+                    @Html.EditorFor(model => model.IncAmount)
+                @Html.ValidationMessageFor(model => model.IncAmount)
+            </td>
+            <td>@Html.LabelFor(model => model.TdsDeduction)</td>
+            <td>
+                @Html.EditorFor(model => model.TdsDeduction)
+            @Html.ValidationMessageFor(model => model.TdsDeduction)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.PFDeductable)</td>
+                <td>
+                    @Html.EditorFor(model => model.PFDeductable)
+                @Html.ValidationMessageFor(model => model.PFDeductable)
+            </td>
+            <td>@Html.LabelFor(model => model.EsiApplicable)</td>
+            <td>
+                @Html.EditorFor(model => model.EsiApplicable)
+            @Html.ValidationMessageFor(model => model.EsiApplicable)
+            </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.OldGross)</td>
+                <td>
+                    @Html.DisplayFor(model => model.OldGross)
+                @Html.ValidationMessageFor(model => model.OldGross)
+            </td>
+            <td>@Html.LabelFor(model => model.GrossSalary)</td>
+            <td>
+                @Html.DisplayFor(model => model.GrossSalary)
+            @Html.ValidationMessageFor(model => model.GrossSalary)
+            </td>
+            </tr>
+            @*<tr>
+       <td>@Html.LabelFor(model => model.dateChk)</td>
+       <td>@Html.EditorFor(model => model.dateChk)
+       @Html.ValidationMessageFor(model => model.dateChk)</td>
+         ok for display only  <td>@Html.LabelFor(model => model.dateChk)</td>
+        <td>
+            @Html.Partial("~/views/home/date.cshtml", Model.dateChk)
+        </td>
+    </tr>*@
+            </table>
+        </div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+            @Html.ActionLink("Back", null, null, new{@onclick="window.close()", @class="btn btn-default"})
+        </p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")*@
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#PFDeductable").attr("style", "width:55px;height:25px;");
+            $("#EsiApplicable").attr("style", "width:55px;height:25px;");
+        });
+
+        //Date Picker 
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+    </script>
+
+}
+
+
+

@@ -1,0 +1,70 @@
+﻿<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    <li class="active">
+        <a href="#">
+            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
+            <span>System Maintenance / <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Renovation </span>
+        </a>
+    </li>
+
+    <!--<li class="treeview" id="mnuManageComplaint">-->
+    @*<li>*@
+    <!--<a href="/Home/IndexlApprovalDashboard?deptt=Maintenance">
+        <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+        <span onclick="setOpt('mnuManageComplaint');">&nbsp;&nbsp;Manage Task</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+        <li><a href="/ContractorIndent/Index">Create New Task</a></li>
+        <li><a href="/ContractorIndent/IndexFinalApproval">Final Approval</a></li>-->
+    @*<li><a href="/ContractorIndentReport/index">Print Qutation Form </a></li>*@
+
+    <!--</ul>-->
+    @*</li>*@
+
+    <li class="treeview" id="mnuSystemMaintenance">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Maintenance">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuSystemMaintenance');">&nbsp;&nbsp;Machine Maintenance</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/MachineMaintenance/IndexMachineName"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Define Machine</a></li>
+            <li><a href="/MachineMaintenance/IndexMachineCheckpint"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Define Checkpoint</a></li>
+            <li><a href="/MachineMaintenance/index"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Add Maintenance Task</a></li>
+            <li><a href="/MachineMaintenance/IndexBreakDownList"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Add Breakdown</a></li>
+        </ul>
+        @*</li>*@
+
+    <li class="treeview" id="mnuPowerFactor">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Maintenance">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuPowerFactor');">&nbsp;&nbsp;Power Factor</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/PowerConsuption/index">Entry Power Reading</a></li>
+            @*<li><a href="/B_Update_OrgChart/index">Update Org</a></li>
+                <li><a href="/UserPermission/index">User Permission</a></li>*@
+        </ul>
+        @*</li>*@
+
+    @*main*@
+    <li class="active">
+        <a href="/Civil_Rate/Index">
+            <i class="fa fa-bars" aria-hidden="true"></i>
+            <span>Contractual Rates</span>
+        </a>
+    </li>
+
+</ul>
+@*ul-end*@

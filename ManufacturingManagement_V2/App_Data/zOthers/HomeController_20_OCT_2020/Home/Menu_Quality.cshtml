@@ -1,0 +1,62 @@
+﻿<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    <li>
+        <a href='@Url.Action("Quality_Dashboard", "DisplayDashboard")'>
+            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    @*Calibration Entries*@
+    <li class="treeview" id="mnuCalibrationEntries">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Quality">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuCalibrationEntries');">&nbsp;&nbsp;Calibration Entries</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Calibration/Index">Calibration Entry</a></li>
+            <li><a href="/Calibration/MarkDeletion">Deletion Mark Entry</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Master Entries*@
+    <li class="treeview" id="mnuMasterEntriesQuality">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Quality">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuMasterEntriesQuality');">&nbsp;&nbsp;Master Entries</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Imte/Index">IMTE Master</a></li>
+            <li><a href="/ImteType/Index">IMTE Type master</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Reports Menu*@
+    <li class="treeview" id="mnuReportsQuality">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Quality">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuReportsQuality');">&nbsp;&nbsp;Reports</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/CalibrationAlertReport/Index">Calibration Alert Report</a></li>
+            <li><a href="/CalibrationHistoryReport/Index">Calibration History Report</a></li>
+            <li><a href="/ImteMasterReport/Index">IMTE Master Report</a></li>
+            <li><a href="/CalibrationStatusReport/Index">Calibration Status Report</a></li>
+        </ul>
+        @*</li>*@
+
+</ul>
+@*ul-end*@

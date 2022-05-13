@@ -1,0 +1,173 @@
+﻿@model ManufacturingManagement_V2.Models.B_OR_SECURITY_EMP_MODEL
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+        <script>
+            $(function () {
+                $('#example1').DataTable();
+            })
+            function GetDetails(id) {
+                $.ajax({
+                    url: "/B_OR_EMP_SECURITY/Edit_OR_Security_Record/" + id,
+                    typr: "GET",
+                    contentType: "application/json;charset=UTF-8",
+                    dataType: "json",
+                    success: function (response) {
+                        $('#ECode').val(response.ECode);
+                        $('#EmpName').val(response.EmpName);
+                        $('#compcode').val(response.compcode);
+                        $('#IsActive').val(response.IsActive);
+                        $('#modal-Update').modal('show');
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+                return false;
+            }
+    </script>
+</head>
+    <body style="background-color:lightgray">
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4><b>Offrole Security Staff</b></h4>
+        <div class="box-body">
+         <table id="example1" class="table table-bordered table-hover "style="background-color:lightskyblue; width:1000px" ">
+                            <thead>
+                                <tr>
+                                    <th>Emp ID</th>
+                                    <th>Name</th>
+                                    <th>Company</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.EmpORList)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.ECode)</td>
+                                        <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                         <td>@Html.DisplayFor(model => item.compcode)</td>
+                                        <td>@Html.DisplayFor(model => item.IsActive)</td>
+                                         <td>
+                                            <a onclick="GetDetails(@item.ECode)">
+                                            <i class="fa fa-edit">
+                                             </i>
+                                            </a>
+                                           @* <a>
+                                                 @Html.ActionLink(" ", "Delete_OR_SEcurity_EMP", "B_OR_EMP_SECURITY", new { id = item.ECode }, new { onclick = "return confirm('Are  sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Update Employee</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html
+                            .BeginForm("Edit_OR_Security_EMP", "B_OR_EMP_SECURITY", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:170px;width:500px;background-color:lightgray">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                         <input type="number" class="form-control" id="ECode" name="ECode" >
+                                         <input type="text" class="form-control" id="EmpName" name="EmpName" >
+                                        <input type="text" class="form-control" id="compcode" name="compcode" >
+                                        <input type="text" class="form-control" id="IsActive" name="IsActive" >
+                                     </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ <button type="button" class="btn btn-success" " data-toggle="modal" data-target="#modal-Insert" style="margin-right:20px;font-size:medium;">
+ Add New Record
+    </button>
+    
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Add New Record</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Insert_OR_Security_EMP", "B_OR_EMP_SECURITY", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:150px;width:500px;background-color:lightgray">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                                                      
+                                       <label>Employee Name</label>
+                                       <input type="text" class="form-control" id="EmpName1" name="EmpName" placeholder=" Enter Name">
+                                            <select class="form-control" name="compcode" id="ddcompcode">
+                                            <option value="0">Select Company</option>
+                                            <option value="OR">OR</option>
+                                            <option value="EAGLE HUNTER">EAGLE HUNTER</option>
+                                            <option value="BIS">BIS</option>
+                                            <option value="BRIGADE">BRIGADE</option>
+                                        </select>
+                                       </div>
+                                </div>
+                                </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                             
+                           </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+          </div>
+
+
+        <div>
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success alert-dismissable">
+                @ViewBag.Message;
+                <a href="#" class="close" data-dissmiss="alert">x</a>
+            </div>
+        }
+    </div>
+
+      </body>
+    </html>

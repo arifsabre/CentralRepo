@@ -1,0 +1,264 @@
+﻿@model ManufacturingManagement_V2.Models.AAA_ITAssestCell_MDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+
+
+    <script>
+        //$(function () {
+        //     $('#example1').DataTable();
+        // })
+        function GetDetails(id) {
+            $.ajax({
+                url: "/Add_In_Stock_ITCELLLis/Edit_AddinstockItem_Record/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#Tran_Id').val(response.Tran_Id);
+                    $('#Serial_No').val(response.Serial_No);
+                    $('#Stock').val(response.Stock);
+                    $('#Comment').val(response.Comment);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+
+</head>
+<body>
+
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert" style="margin-top:3px;margin-bottom:3px">
+        Add New Record
+    </button>
+    <div id="printbar" class="pull-right" style="margin-top:3px;margin-bottom:3px">
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div class="box box-primary">
+                    @*<div class="box-header">
+                        </div>*@
+
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Tran_Id</th>
+                                    <th>Item Type</th>
+                                    <th>Item Name</th>
+                                    <th>Serial</th>
+                                    <th>Qty</th>
+                                    <th>Pur.Date</th>
+                                    <th>Warr. Date</th>
+                                    <th>Supplier</th>
+                                    <th>Location</th>
+                                    <th>Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="font-size:small">
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.Tran_Id)</td>
+                                        <td>@Html.DisplayFor(model => item.Item_Type)</td>
+                                        <td>@Html.DisplayFor(model => item.Item_Name)</td>
+                                        <td>@Html.DisplayFor(model => item.Serial_No)</td>
+                                        <td>@Html.DisplayFor(model => item.Stock)</td>
+                                        <td>@Html.DisplayFor(model => item.Purchaage_Date)</td>
+                                        <td>@Html.DisplayFor(model => item.Warranty_Date)</td>
+                                        <td>@Html.DisplayFor(model => item.Supplier_Name)</td>
+                                        <td>@Html.DisplayFor(model => item.cmpname)</td>
+                                        <td>
+                                            <a onclick="GetDetails(@item.Tran_Id)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "Delete_StockItemName", "Add_In_Stock_ITCELLLis", new { id = item.Item_Type_Id }, new { onclick = "return confirm('Are sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Update Item </h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_AddinstockItem", "Add_In_Stock_ITCELLLis", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:400px;width:400px;background-color:white">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Tran Id</label>
+                                        <input type="number" class="form-control" id="Tran_Id" name="Tran_Id">
+                                        <label>Serial No</label>
+                                        <input type="text" class="form-control" id="Serial_No" name="Serial_No">
+                                        <label>Stock In hand</label>
+                                        <input type="number" class="form-control" id="Stock" name="Stock">
+                                        <label>Remark</label>
+                                        <input type="text" class="form-control" id="Comment" name="Comment">
+                                        @Html.HiddenFor(model => model.Minus)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-Insert">
+
+
+        <div class="modal-dialog">
+            <div class="modal-content" style="height:500px;width:300px">
+                <div class="modal-body">
+
+                    @using (Html.BeginForm("Addinstock_Name", "Add_In_Stock_ITCELLLis", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <br />
+                                    <label>Item Type</label>
+                                    @Html.DropDownListFor(m => m.Item_Type_Id, Model.AAA_Item_Type, "Item Type ")
+                                    <br />
+                                    <label>Item Name</label>
+                                    @Html.DropDownListFor(m => m.Item_Id, Model.AAA_ItemMaster_ITCell, "Item Name")
+
+                                    <label>Item Discription</label>
+                                    @Html.EditorFor(model => model.Item_Name)
+
+                                    <label>Serial No</label>
+                                    @Html.EditorFor(model => model.Serial_No)
+                                    <label>Quantity</label>
+                                    @Html.EditorFor(model => model.Stock)
+                                    <label>Purchase Date</label>
+                                    @Html.EditorFor(model => model.Purchaage_Date)
+                                    <label>Warranty Date</label>
+                                    @Html.EditorFor(model => model.Warranty_Date)
+                                    <label>Select Supplier</label>
+                                    @Html.DropDownListFor(model => model.Supplier_Id, ViewBag.SupplierName as SelectList)
+                                    <label>Select Location</label>
+                                    @Html.DropDownListFor(model => model.compcode, ViewBag.LocationList as SelectList)
+                                    <label>Comment</label>
+                                    @Html.EditorFor(model => model.Comment)
+                                    @Html.HiddenFor(model => model.Plus)
+                                    @Html.HiddenFor(model => model.Minus)
+                                    @Html.HiddenFor(model => model.Scrap_Item)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="showtoast" class="btn btn-success">Save</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("select").each(function () {
+                if ($(this).find("option").length <= 1) {
+                    $(this).attr("disabled", "disabled");
+                }
+            });
+
+            $("select").change(function () {
+                var value = 0;
+                if ($(this).val() != "") {
+                    value = $(this).val();
+                }
+                var id = $(this).attr("id");
+                $.ajax({
+                    type: "POST",
+                    url: "/Add_In_Stock_ITCELLLis/AjaxMethod",
+                    data: '{type: "' + id + '", value: ' + value + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        var dropDownId;
+                        var list;
+                        switch (id) {
+                            case "Item_Type_Id":
+                                list = response.AAA_ItemMaster_ITCell;
+                                DisableDropDown("#Item_Id");
+                                //DisableDropDown("#Item_Id");
+                                PopulateDropDown("#Item_Id", list);
+                                break;
+                            //case "Item_Id":
+                            //    dropDownId = "#Item_Id";
+                            //    list = response.AAA_Item_StockITCell;
+                            //    DisableDropDown("#Item_Id");
+                            //    PopulateDropDown("#Item_Id", list);
+                            //    break;
+                        }
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+
+        function DisableDropDown(dropDownId) {
+            $(dropDownId).attr("disabled", "disabled");
+            $(dropDownId).empty().append('<option selected="selected" value="0">Please select</option>');
+        }
+
+        function PopulateDropDown(dropDownId, list) {
+            if (list != null && list.length > 0) {
+                $(dropDownId).removeAttr("disabled");
+                $.each(list, function () {
+                    $(dropDownId).append($("<option></option>").val(this['Value']).html(this['Text']));
+                });
+            }
+        }
+    </script>
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

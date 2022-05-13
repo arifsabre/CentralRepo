@@ -1,0 +1,90 @@
+﻿@model ManufacturingManagement_V2.Models.SaleMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Update IRN Detail</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <table class="table table-bordered">
+            @Html.HiddenFor(model => model.SaleRecId)
+            <tr>
+                <td style="width:15%;"><b>Invoice&nbsp;No</b></td>
+                <td>
+                    <b>@Html.DisplayFor(model => model.BillNo)</b>
+                    @Html.ValidationMessageFor(model => model.BillNo)
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;"><b>Invoice Reference No</b></td>
+                <td>
+                    @Html.TextAreaFor(model => model.InvReferenceNo, 0, 0,
+                    new { @style = "width:75%;height:50px;" })
+                    @Html.ValidationMessageFor(model => model.InvReferenceNo)
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;"><b>Acknowledgement Number</b></td>
+                <td>
+                    @Html.EditorFor(model => model.AckNo)
+                    @Html.ValidationMessageFor(model => model.AckNo)
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;"><b>Acknowledgement Date</b></td>
+                <td>
+                    @Html.EditorFor(model => model.AckDate)
+                    @Html.ValidationMessageFor(model => model.AckDate)
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;"><b>SEK Number</b></td>
+                <td>
+                    @Html.EditorFor(model => model.SekNo)
+                    @Html.ValidationMessageFor(model => model.SekNo)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value='Submit' />
+        @Html.ActionLink("Close", null, null, new { @onclick = "window.close();", @class = "btn btn-default" })
+        <h5><b>@ViewBag.Message</b></h5>
+    </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //$("#EmpId").attr("placeholder", "start typing, then select");
+        });
+
+        //Date Picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+
+    </script>
+
+}
+

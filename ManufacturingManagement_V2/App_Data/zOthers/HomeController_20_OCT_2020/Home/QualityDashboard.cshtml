@@ -1,0 +1,41 @@
+﻿@model ManufacturingManagement_V2.Models.AlertsMdl
+@{
+    ViewBag.Title = "QualityDashboard";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<h2>Quality Control</h2>
+<div style="width:100%;border:solid;border-width:1px;border-color:blue;border-radius:4px;padding-left:2px;">
+@Html.Partial("AlertPartialSummary",Model)
+<br/>
+@Html.Partial("AlertPartialQuality",Model)
+@*<table>
+    <tr>
+        <td style="width:50%">@Html.ActionLink("Compliance View", "../WorkList/Index")</td>
+        <td style="width:50%">@Html.ActionLink("Compliance Entry", "../WorkList/CreateUpdate")</td>
+    </tr>
+    
+    <tr>
+        <td>@Html.ActionLink("Compliance Report", "../WorkListReport/Index")</td>
+        <td>@Html.ActionLink("Back to Home", "../Home/Index")</td>
+    </tr>
+</table> *@
+</div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+}
+

@@ -1,0 +1,538 @@
+﻿@model ManufacturingManagement_V2.Models.MachineMaintenanceMDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Machine Maintenance</title>
+    <script>
+        function GetDetails(id) {
+            $.ajax({
+                url: "/MachineMaintenance/EditMaintenanceRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json", 
+                success: function (response) {
+                    $('#id').val(response.id);
+                    $('#detailofworkdone1').val(response.detailofworkdone);
+                    $('#responsibility1').val(response.EmpName);
+                    $('#FullName1').val(response.FullName);
+                    $('#condition1').val(response.condition);
+                    $('#schedulename1').val(response.schedulename);
+                    $('#duedate1').val(response.duedate);
+                    $('#UpdatedBy').val(response.UpdatedBy);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+
+        }
+
+        function GetSchedule(id) {
+            $.ajax({
+                url: "/MachineMaintenance/EditGetScgeduleRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#id1').val(response.id);
+                    $('#ShortName1').val(response.ShortName);
+                    $('#schedulename1').val(response.schedulename);
+                    $('#machinename1').val(response.machinename);
+                    $('#EmpName1').val(response.EmpName);
+
+                    $('#FullName1').val(response.FullName);
+                    $('#checkdetail1').val(response.checkdetail);
+                    $('#detailofworkdoned').val(response.detailofworkdone);
+                    $('#conditionn').val(response.condition);
+                   // $('#duedate1').val(response.duedate);
+
+                    $('#Assigneee').val(response.assignee);
+                    $('#UpdatedOn1').val(response.UpdatedOn);
+                    $('#CreatedOn1').val(response.CreatedOn);
+                    $('#UpdatedBy1').val(response.UpdatedBy);
+                  
+
+
+                    $('#modal-Schedule').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+
+        }
+
+       </Script>
+    </head>
+<body>
+    @* <br />*@
+    <div class="row" style="margin-top:5px;margin-bottom:5px">
+        <div class="col-md-pull-10">
+            <div class="col-md-6 pull-left">
+                <div class="panel panel-info">
+                    <div class="panel panel-heading">
+                        <h4 class="panel-title">&nbsp;&nbsp;&nbsp;Machine Schedule Dashboard</h4>
+                    </div>
+                    <div class="panel-body text-center">
+                        <div class="col-md-3">
+                            <a href='@Url.Action("DailyScheduleTask", "MachineMaintenance")'>
+
+                                <h4>Daily</h4>
+                                <h4>@ViewBag.Daily</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href='@Url.Action("WeeklyScheduleTask", "MachineMaintenance")'>
+
+                                <h4>Weekly</h4>
+                                <h4>@ViewBag.Weeky</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href='@Url.Action("MonthlyScheduleTask", "MachineMaintenance")'>
+
+                                <h4 style="text-align:right">Monthly</h4>
+                                <h4>@ViewBag.Month</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href='@Url.Action("QuaterlyScheduleTask", "MachineMaintenance")'>
+
+                                <h4>Quaterly</h4>
+                                <h4>@ViewBag.Quaterly</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href='@Url.Action("HalfYearlyScheduleTask", "MachineMaintenance")'>
+
+                                <h4>Half_Yearly</h4>
+                                <h4>@ViewBag.Halfyear</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href='@Url.Action("YearlyScheduleTask", "MachineMaintenance")'>
+                                <h4>Yearly</h4>
+                                <h4>@ViewBag.Yearly</h4>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-Insert1" style="margin-top:5px;margin-bottom:5px">
+        Assign Schedule List
+    </button>
+
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert" style="margin-top:5px;margin-bottom:5px">
+        Assign Schedule Task
+    </button>
+    @Html.ActionLink("Add New Machine", "IndexMachineName", "MachineMaintenance", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Add New CheckPoint", "Index", "MachineMaintenance", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Add BreakDown Machine","IndexBreakDownList","MachineMaintenance", null, new { @class = "btn btn-default" })
+    <div id="printbar" class="pull-right" style="margin-top:5px;margin-bottom:5px">
+    
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-Insert1" style="margin-top:5px;margin-bottom:5px">
+                            Schedule List
+                        </button>*@
+                    <div class="box-body">
+
+
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th> Action</th>
+                                    <th>
+                                        Id
+                                    </th>
+                                    <th>
+                                        Company
+                                    </th>
+                                    <th>
+                                        Machine
+                                    </th>
+
+                                    <th>
+                                        Schedule
+                                    </th>
+                                    @*<th>
+                                            Assignee
+                                        </th>*@
+                                    <th>
+                                        Responsibility
+                                    </th>
+                                    <th>
+                                        Checking_By
+                                    </th>
+                                    @*<th>
+                                            @Html.DisplayNameFor(model => model.checkdetail)
+                                        </th>*@
+                                    @*<th>
+                                            @Html.DisplayNameFor(model => model.detailofworkdone)
+                                        </th>*@
+                                    @*<th>
+                                            @Html.DisplayNameFor(model => model.condition)
+                                        </th>*@
+                                    @*<th>
+                                            Last Updated
+                                        </th>*@
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a onclick="GetSchedule(@item.id)">
+                                                <i class="fa fa-eye">
+                                                </i>
+                                            </a>
+
+                                            <a onclick="GetDetails(@item.id)">
+                                                <i class="fa fa-pencil-square">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "Delete_Task", "MachineMaintenance", new { id = item.id }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ShortName)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.machinename)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.schedulename)
+                                        </td>
+                                        @*<td>
+                                                @Html.DisplayFor(modelItem => item.assignee)
+                                            </td>*@
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmpName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FullName)
+                                        </td>
+                                        @*<td>
+                                                @Html.DisplayFor(modelItem => item.checkdetail)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.detailofworkdone)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.condition)
+                                            </td>*@
+                                        @*<td>
+                                                @Html.DisplayFor(modelItem => item.duedate)
+                                            </td>*@
+                                        @*<td>
+                                                @Html.DisplayFor(modelItem => item.duedate)
+                                            </td>*@
+
+                                    </tr>
+                                }
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("AddMaintenance", "MachineMaintenance", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    @*<label>Select Company</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.compcode, ViewBag.LocationList as SelectList)*@
+                                    @* <br />*@
+                                    <label>Select Machine</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.machineid, ViewBag.MachineList as SelectList)
+                                    <br />
+                                    <label>Select Check Point</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.checkpointid, ViewBag.Checkpoint as SelectList)
+                                    <br />
+                                    <label>Schedule</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.scheduleid, ViewBag.ScheduleList as SelectList)
+                                    <br />
+                                    <label>Responsibility</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.responsibility, ViewBag.ResponsibilityList as SelectList)
+                                    <br />
+                                    <label>Checking Responsibility</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.userid, ViewBag.CheckResponsibilityList as SelectList)
+                                    @*<br />
+                                         <label>Detail of Work Done</label>
+                                         <br />
+                                         @Html.TextAreaFor(model => model.detailofworkdone, 5, 5, new { @class = "Editor", @style = "width:400px;height:100px"})
+                                         @Html.EditorFor(model => model.detailofworkdone, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = @Html.DisplayNameFor(m => m.detailofworkdone) } })
+                                         <br />
+                                         <label>Condition</label>
+                                         <br />
+                                        @* @Html.TextAreaFor(model => model.condition, 5, 5, new { @class = "Editor", @style = "width:400px;height:100px;", @id = "condition1" })
+                                          @Html.EditorFor(model => model.condition, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = @Html.DisplayNameFor(m => m.condition) } })*@
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            @*<label>Start Date</label>
+                                                <br />*@
+                                            @*@Html.EditorFor(model => model.duedate)
+                                                @Html.ValidationMessageFor(model => model.duedate)*@
+                                            @*  <br />*@
+                                            @*@Html.TextBoxFor(m => m.duedate, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })*@
+                                            @* @Html.ValidationMessageFor(model => model.duedate)*@
+                                            @Html.HiddenFor(model => model.CreatedBy)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Update Maintenance Schedule </h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("EditMaintenance", "MachineMaintenance", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        @*<br />
+        <label>Id</label>
+        <br />*@
+                                        @Html.HiddenFor(model => model.id)
+
+
+                                        <br />
+                                        <label>Responsibility</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.EmpName, 5, 5, new { @class = "Editor", @style = "width:400px;height:25px;", @id = "responsibility1" })
+                                        <br />
+                                        <label>Checking Responsibility</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.FullName, 5, 5, new { @class = "Editor", @style = "width:400px;height:25px;", @id = "FullName1" })
+                                        @*<br />
+        <label>Check Point</label>
+        @Html.DropDownListFor(model => model.checkpointid, ViewBag.CheckPoint as SelectList)*@
+                                        <br />
+                                        <label>Detail of Work Done</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.detailofworkdone, 5, 5, new { @class = "Editor", @style = "width:400px;height:100px;", @id = "detailofworkdone1" })
+                                        @* @Html.EditorFor(model => model.detailofworkdone, new { htmlAttributes = new { @class = "form-control input-sm" } })*@
+                                        <br />
+                                        <label>Condition</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.condition, 5, 5, new { @class = "Editor", @style = "width:400px;height:50px;", @id = "condition1" })
+                                        @* @Html.EditorFor(model => model.condition, new { htmlAttributes = new { @class = "form-control input-sm" } })*@
+                                        <br />
+                                        @Html.TextAreaFor(model => model.schedulename, 5, 5, new { @class = "Editor", @style = "width:400px;height:25px;", @id = "schedulename1" })
+                                        <br />
+                                        @Html.HiddenFor(model => model.UpdatedBy)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*//Getdetails*@
+    <div class="modal fade" id="modal-Schedule">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:850px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Machine Schedule Detail</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_HODApproval", "ContractorIndent", FormMethod.Post))
+                        {
+                            <div>
+                                <table>
+
+                                    <tr>
+                                        <td style="padding:10px">Id </td>
+                                        <td><input type="number" class="form-control" id="id1" name="id" style="border:none"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Company</td>
+                                        <td> <input type="text" class="form-control" id="ShortName1" name="ShortName" style="border:none;width:350px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Machine Name
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="machinename1" name="machinename" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td style="padding:10px">
+                                            Check Point
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="checkdetail1" name="checkdetai" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Detail of Work Done
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="detailofworkdoned" name="detailofworkdone" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Machine Condition
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="conditionn" name="condition" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Schedule Type
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="schedulename1" name="schedulename" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Responsibility
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="EmpName1" name="EmpName" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Checking By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="FullName1" name="FullName" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Assignee
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Assigneee" name="Assignee" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    @*<tr>
+                                            <td style="padding:10px">
+                                                Next Due Date
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" id="duedate1" name="duedate" style="border:none;width:350px">
+                                            </td>
+                                        </tr>*@
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Last Updated By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="UpdatedBy1" name="UpdatedBy" style="border:none">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Last Updated On
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="UpdatedOn1" width="450" name="UpdatedOn" style="width:700px;height:30px;border:none">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Created On
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="CreatedOn1" width="450" name="CreatedOn" style="width:700px;height:30px;border:none">
+                                        </td>
+                                    </tr>
+
+
+
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+
+                                @*  @*<button type="submit" id="modal-hodApproval" class="btn btn-primary">Submit</button>*@
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>

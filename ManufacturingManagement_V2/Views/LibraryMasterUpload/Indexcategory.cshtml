@@ -1,0 +1,819 @@
+﻿@model ManufacturingManagement_V2.Models.LibFileUploadMDI
+@{
+    ViewBag.Title = "Indexcategory";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Master File Upload</title>
+    <script>
+        //$(function () {
+        //    $('#jdtabledesktop').DataTable();
+        //})
+        //$(document).ready(function () {
+        //    $('#Apply').prop('disabled', true);
+        //    $("#files").change(function () {
+        //        // Get uploaded file extension
+        //        var extension = $(this).val().split('.').pop().toLowerCase();
+        //        // Create array with the files extensions that we wish to upload
+        //        var validFileExtensions = ['doc', 'docx', 'pdf', 'ppt'];
+        //        //Check file extension in the array.if -1 that means the file extension is not in the list.
+        //        if ($.inArray(extension, validFileExtensions) == -1) {
+        //            alert("Sorry!! Upload only 'doc', 'docx', 'pdf' 'ppt' file")
+        //            // Clear fileuload control selected file
+        //            $(this).replaceWith($(this).val('').clone(true));
+        //            //Disable Submit Button
+        //            $('#Apply').prop('disabled', true);
+        //        } else {
+        //            // Check and restrict the file size to 128 KB.
+        //            if ($(this).get(0).files[0].size > (13107213)) {
+        //                alert("Sorry!! Max allowed file size is 2MB");
+        //                // Clear fileuload control selected file
+        //                $(this).replaceWith($(this).val('').clone(true));
+        //                //Disable Submit Button
+        //                $('#Apply').prop('disabled', true);
+        //            } else {
+        //                //Enable Submit Button
+        //                $('#Apply').prop('disabled', false);
+        //            }
+        //        }
+        //    });
+        //    $("#Apply").click(function () {
+        //        if ($("#Location").val() = null) {
+        //            alert("Please fill out required fields(*)");
+        //            return false;
+        //        }
+
+               // return true;
+          //  });
+      //  });
+        function GetDetails(id) {
+            $.ajax({
+                url: "/LibraryMasterUpload/Edit_LibraryMasterFileRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId').val(response.RecordId);
+                   // $('#ShortName').val(response.ShortName);
+                   // $('#DepCode').val(response.DepCode);
+                    $('#DoccumentName').val(response.DoccumentName);
+                    $('#Location').val(response.Location);
+                    //$('#OwnerName').val(response.OwnerName);
+                   // $('#Status').val(response.Status);
+                    $('#Keyss').val(response.Keyss);
+                   // $('#CreatedBy').val(response.CreatedBy);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        //GetAllDetatilsByRecordId
+        function GetRecordDetail(id) {
+            $.ajax({
+                url: "/LibraryMasterUpload/GetDetailsMasterRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId1').val(response.RecordId);
+                    $('#ShortName1').val(response.ShortName);
+                    $('#DepCode1').val(response.DepCode);
+                    $('#DoccumentName1').val(response.DoccumentName);
+                    $('#Location1').val(response.Location);
+                    $('#EmpName1').val(response.EmpName);
+                    $('#Status1').val(response.Status);
+                    $('#IssueTo1').val(response.IssueTo);
+                    $('#Keyss1').val(response.Keyss);
+                    $('#CreatedBy1').val(response.CreatedBy);
+                    $('#UpdatedBy1').val(response.UpdatedBy);
+                    $('#CreatedOn1').val(response.CreatedOn);
+                    $('#UpdatedOn1').val(response.UpdatedOn);
+                    $('#model-showdetails').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+            return false;
+        }
+
+        //IssueTo
+        function IssueTo(id) {
+            $.ajax({
+                url: "/LibraryMasterUpload/IssueTo_Record/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId2').val(response.RecordId);
+                    $('#DoccumentName2').val(response.DoccumentName);
+                    $('#Location2').val(response.Location);
+                    $('#Status2').val(response.Status);
+                    $('#modal-Issue').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+            return false;
+        }
+        //Company
+        function GetCompany(id) {
+            $.ajax({
+                url: "/LibraryMasterUpload/Edit_CompanyRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId3').val(response.RecordId);
+                    $('#modal-updateCompany').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+       
+        //Company
+        function GetOwner(id) {
+            $.ajax({
+                url: "/LibraryMasterUpload/Edit_OwnerRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId4').val(response.RecordId);
+                    $('#modal-updateOwner').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+       
+    </script>
+</head>
+<body>
+    <div style="font-family:Arial">
+        <script src="~/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+        <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+        <div class="pull-right">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-Insert" style="margin-right:3px;margin-bottom:3px;margin-top:3px;margin-left:2px">
+                Add New
+            </button>
+            <div id="printbar" class="pull-left" style="margin-right:5px;margin-bottom:3px;margin-top:3px">
+            </div>
+        </div>
+
+        &nbsp; &nbsp;  @Ajax.ActionLink("All Physical Files", "AllPhysical", new AjaxOptions {
+HttpMethod = "GET", // HttpMethod to use, GET or POST
+UpdateTargetId = "divFiles", // ID of the HTML element to update
+InsertionMode = InsertionMode.Replace // Replace the existing contents
+
+})
+        <div id="divFiles">
+        </div>
+    </div>
+    <span style="color:Blue;"></span>
+
+
+    @*<div class="row" style="margin-top:2px;margin-bottom:2px;margin-left:0px">
+
+
+        </div>*@
+    @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert" style="margin-top:2px;margin-bottom:2px">
+            Add New File
+        </button>
+        <div id="printbar" class="pull-right">
+        </div>*@
+    <section class="content">
+        <div class="col-md-pull-10">
+            <div class="col-md-6 pull-left">
+                <div class="panel panel-success">
+                    @*<div class="panel panel-heading">
+                            <h4 class="panel-title"> &nbsp; &nbsp; Doccument Control System</h4>
+                        </div>*@
+
+                    <div class="panel-body text-center">
+                        <div class="col-md-3">
+                            @Html.ActionLink("Total", "Indexcategory", "LibraryMasterUpload", null, new { @class = "btn btn-success" })
+                            @*<a href='@Url.Action("Indexcategory", "LibraryMasterUpload")'>*@
+                            @*<h4>Total</h4>*@
+                            <h4>@ViewBag.totalDoc</h4>
+
+                            @*</a>*@
+                        </div>
+
+                        <div class="col-md-3">
+                            @Html.ActionLink("Issued", "GetissuedListByUser", "LibraryMasterUpload", null, new { @class = "btn btn-success" })
+                            @*<a href='@Url.Action("GetissuedListByUser", "LibraryMasterUpload")'>
+                                <h4>Issued</h4>*@
+                            <h4>@ViewBag.TotalIssued</h4>
+                            @*</a>*@
+                        </div>
+
+                        <div class="col-md-3">
+                            @Html.ActionLink("Recieved", "GetRecievedListByUser", "LibraryMasterUpload", null, new { @class = "btn btn-success" })
+                            @*<a href='@Url.Action("GetRecievedListByUser", "LibraryMasterUpload")'>
+                                    <h4>Recieved</h4>
+                                    <h4>@ViewBag.totalRecieved</h4>
+                                </a>*@
+                            <h4>@ViewBag.totalRecieved</h4>
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ActionLink("Return", "GetReturnTOConfirmListByUser", "LibraryMasterUpload", null, new { @class = "btn btn-success" })
+                            @*<a href='@Url.Action("GetReturnTOConfirmListByUser", "LibraryMasterUpload")'>
+                                    <h4>Return</h4>
+                                    <h4>@ViewBag.totalReturn</h4>
+                                </a>*@
+                            <h4>@ViewBag.totalReturn</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Issue</th>
+                                    <th>File_NO</th>
+                                    <th>Company</th>
+                                    <th>File_Name</th>
+                                    <th>Location</th>
+                                    <th>Owner</th>
+                                    @*<th>File_Type</th>*@
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a onclick="GetRecordDetail(@item.RecordId)">
+                                                <i class="fa fa-eye">
+                                                </i>
+                                            </a>
+                                            <a onclick="GetDetails(@item.RecordId)">
+                                                <i class="fa fa-pencil-square">
+                                                </i>
+                                            </a>
+
+                                            <a>
+                                                @Html.ActionLink(" ", "LibraryMasterDeleteRecord", "LibraryMasterUpload", new { id = item.RecordId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a onclick="IssueTo(@item.RecordId)">
+                                                <i class="fa fa-pencil-square">
+                                                </i>
+                                            </a>
+                                        </td>
+
+                                        @*<td>
+                                                <a onclick="GetConfirmation(@item.RecordId)">
+                                                    <i class="fa fa-pencil-square">
+                                                    </i>
+                                                </a>
+                                            </td>*@
+
+                                        <td>@Html.DisplayFor(model => item.RecordId)</td>
+                                        <td>
+
+                                            @Html.DisplayFor(model => item.ShortName)
+                                            <a onclick="GetCompany(@item.RecordId)">
+                                                <i class="fa fa-pencil-square">
+                                                </i>
+                                            </a>
+                                        </td>
+                                        <td>@Html.DisplayFor(model => item.DoccumentName)</td>
+                                        <td>@Html.DisplayFor(model => item.Location)</td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.EmpName)
+                                            <a onclick="GetOwner(@item.RecordId)">
+                                                <i class="fa fa-pencil-square">
+                                                </i>
+                                            </a>
+                                        </td>
+                                        @*  <td>@Html.DisplayFor(model => item.Type1)</td>*@
+                                        <td>@Html.DisplayFor(model => item.Status)</td>
+                                        @*<td> @Html.DisplayFor(model => item.ReturnStatus) </td>*@
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Update Doccument</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_LibraryMasterFile", "LibraryMasterUpload", FormMethod.Post))
+                        {
+
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <div class="col-md-10">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        @Html.HiddenFor(model => model.RecordId)
+                                        @Html.HiddenFor(model => model.UpdatedBy)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <label>File Name/Reference Number</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.DoccumentName, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                                        @* @Html.EditorFor(model => model.DoccumentName)*@
+                                        <br />
+
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+                                        <div class="col-md-10">
+                                            <label>File Type</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.Type1, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+
+                                            <br />
+
+                                        </div>
+                                    </div>*@
+
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <label>Location</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.Location, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                                        @* @Html.EditorFor(model => model.Location)*@
+                                        <br />
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <label>Keywords</label>
+                                        <br />
+                                        @*<input type="text" class="form-control" id="Keyss2" name="Keyss" style="border:none;width:350px">*@
+
+                                        @Html.TextAreaFor(model => model.Keyss, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Physical File & Location </h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Indexcategory", "LibraryMasterUpload"))
+                        {
+                            <div class="modal-body">
+                                <div class="m-md-10">
+                                    <div class="form-group">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="m-md-10">
+                                            @Html.HiddenFor(model => model.CreatedBy)
+                                            @Html.HiddenFor(model => model.userid)
+                                            <label>Select Company</label><br />
+                                            @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)
+                                            <br />
+                                            <label>Select Department</label>
+                                            <br />
+                                            @Html.DropDownListFor(model => model.DepCode, ViewBag.Department as SelectList)
+                                            <br />
+                                            <label>File Name/Reference Number</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.DoccumentName, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                                            <br />
+                                            <label>Location</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.Location, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                                            @*  @Html.EditorFor(model => model.Location)*@
+                                            <br />
+                                            <label>Select  Type </label>
+                                            <br />
+                                            <select name="Type" id="Type">
+                                                <option value="Physical">Physical</option>
+                                                <option value="Soft">Soft</option>
+                                            </select>
+                                            <br />
+                                            <label>Status </label>
+                                            <br />
+                                            <select name="Status" id="Status">
+                                                <option value="Retainer">With Retainer</option>
+                                                <option value="With Owner">With Owner</option>
+                                                <option value="Issue To">Issued</option>
+                                            </select>
+                                            <br />
+                                            <label>Select Owner Name</label>
+                                            <br />
+                                            @Html.DropDownListFor(model => model.NewEmpId, ViewBag.OwnerList as SelectList)
+                                            <br />
+                                            <label>Keywords</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.Keyss, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                                            <br />
+                                            @*<br />
+                                                <label>Attached File</label>
+                                                <br />
+                                                @Html.TextBoxFor(model => model.files, "", new { @type = "file", @multiple = "multiple" })*@
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="submit" id="Apply" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//GetAllDetails*@
+    <div class="modal fade" id="model-showdetails">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:850px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Get Detail of Record</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("GetDetailsMasterRecord", "LibraryMasterUpload", FormMethod.Post))
+                        {
+                            <div>
+                                <br />
+                                <table>
+
+                                    @*<tr>
+                                            <td style="background-color:lightgray;">
+                                                Task Creater Information
+                                            </td>
+                                        </tr>*@
+                                    <tr>
+                                        <td style="padding:10px">SRNO </td>
+                                        <td><input type="number" class="form-control" id="RecordId1" name="RecordId" style="border:none"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Company</td>
+                                        <td> <input type="text" class="form-control" id="ShortName1" name="ShortName" style="border:none;width:350px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Department
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="DepCode1" name="DepCode" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td style="padding:10px">
+                                            Doccument Name
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="DoccumentName1" name="DoccumentName" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Location
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Location1" name="Location" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Owner
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="EmpName1" name="EmpName" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Status
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Status1" name="Status" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Issue To
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="IssueTo1" name="IssueTo" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Keywords
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Keyss1" name="Keyss" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Created By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="CreatedBy1" name="CreatedBy" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Created On
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="CreatedOn1" name="CreatedOn" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Updated By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="UpdatedBy1" name="UpdatedBy" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Updated On
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="UpdatedOn1" name="UpdatedOn" style="border:none">
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+
+                                @*  @*<button type="submit" id="modal-hodApproval" class="btn btn-primary">Submit</button>*@
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//Issuto*@
+
+    <div class="modal fade" id="modal-Issue">
+        <div class="modal-dialog model-sm">
+            <div class="modal-content">
+                @*<div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="box-title">File Issue Screen</h3>
+                    </div>*@
+                <div class="modal-body">
+                    @using (Html.BeginForm("IssueTo", "LibraryMasterUpload", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-10">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10">
+                                @Html.HiddenFor(model => model.CreatedBy)
+                                <input type="hidden" class="form-control" id="RecordId2" name="RecordId">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10">
+                                <label>Doccument Name</label>
+                                <br />
+                                <input type="text" class="form-control" id="DoccumentName2" name="DoccumentName" style="width:400px">
+                                @Html.ValidationMessageFor(model => model.DoccumentName, "", new { @class = "danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Location</label>
+                                <br />
+                                <input type="text" class="form-control" id="Location2" name="Location" style="width:400px">
+                                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "danger" })
+                            </div>
+                        </div>
+                        @*<div class="form-group">
+                                <div class="col-md-10">
+                                    <label>Status</label>
+                                    <br />
+                                    <select name="Status" id="Status">
+                                        <option value="Retainer">With Retainer</option>
+                                        <option value="With Owner">With Owner</option>
+                                        <option value="Issue To">Issued</option>
+                                    </select>
+                                </div>
+                            </div>*@
+                        <div class="form-group">
+                            <div class="col-lg-10">
+                                <label>Select Issue To</label>
+                                <br />
+                                @Html.DropDownListFor(model => model.userid, ViewBag.IssueTo as SelectList)
+                                @Html.ValidationMessageFor(model => model.userid, "", new { @class = "danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Issue Date</label>
+                                <br />
+                                <input type="date" class="form-control" id="IssueDate" name="IssueDate" style="width:215px">
+                                @Html.ValidationMessageFor(model => model.IssueDate, "", new { @class = "danger" })
+                            </div>
+                        </div>
+
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br /><br /><br /><br /><br /><br /><br /><br />
+                        <div class="modal-footer">
+                            <button type="button" id="modal-Issue" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="submit" id="modal-issue" class="btn btn-success">Submit</button>
+                        </div>
+
+
+                    }
+                    @*  *@ @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*//Company*@
+    <div class="modal fade" id="modal-updateCompany">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                @*<div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="box-title">Company Screen</h3>
+                    </div>*@
+                <div class="modal-body">
+                    @*<div class="box box-primary">*@
+                    @using (Html.BeginForm("Edit_Company", "LibraryMasterUpload", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-lg-10">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+
+                                @Html.HiddenFor(model => model.UpdatedBy)
+
+                                <input type="hidden" class="form-control" id="RecordId3" name="RecordId" style="color:white">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Select Company</label>
+                                @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)
+                                @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" id="modal-updateCompany" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="submit" id="modal-updateCompany" class="btn btn-success">Submit</button>
+                        </div>
+
+                    }
+                    @*  *@ @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//Owner*@
+    <div class="modal fade" id="modal-updateOwner">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                @*<div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="box-title">Company Screen</h3>
+                    </div>*@
+                <div class="modal-body">
+                    @*<div class="box box-primary">*@
+                    @using (Html.BeginForm("Edit_Owner", "LibraryMasterUpload", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-lg-10">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+
+                                @Html.HiddenFor(model => model.UpdatedBy)
+
+                                <input type="hidden" class="form-control" id="RecordId4" name="RecordId" style="color:white">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Select Owner of File</label>
+                                @Html.DropDownListFor(model => model.NewEmpId, ViewBag.OwnerList as SelectList)
+                                @Html.ValidationMessageFor(model => model.NewEmpId, "", new { @class = "danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" id="modal-updateCompany" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="submit" id="modal-updateCompany" class="btn btn-success">Submit</button>
+                        </div>
+
+                    }
+                    @*  *@ @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+

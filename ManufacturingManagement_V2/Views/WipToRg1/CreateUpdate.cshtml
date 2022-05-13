@@ -1,0 +1,364 @@
+﻿@model ManufacturingManagement_V2.Models.StockMdl
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>WIP to RG1 Entry</b></h4>
+
+<div class="form-group">
+    <table class="table table-bordered">
+        @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+        @Html.Hidden("hfVType", null, new { @id = "hfVType" })
+        @Html.Hidden("hfRecId", null, new { @id = "hfRecId" })
+        @Html.Hidden("hfItemDesc", null, new { @id = "hfItemDesc" })
+        <tr>
+            <td colspan="2"><input type="hidden" id="txtRecId" /></td>
+        </tr>
+        <tr>
+            <td style="width:10%;">@Html.DisplayNameFor(model => model.VNo)</td>
+            <td>
+                <input type="text" id="txtVNo" readonly="true" />
+                <span class="error">Invalid VNo!</span>
+            </td>
+            <td style="width:10%;">Date</td>
+            <td>
+                <input type="text" id="txtVDate" class="datepicker" />
+                <span class="error">Invalid VDate!</span>
+            </td>
+        </tr>
+        <tr>
+            
+            <td>@Html.DisplayNameFor(model => model.RecDesc)</td>
+            <td>
+                <input type="text" id="txtRecDesc" style="width:300px;" />
+                <span class="error">Invalid Description!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Item</td>
+            <td>
+                <input type="text" id="txtItemCode" style="width:300px;" />
+                <span class="error">Item not selected!</span>
+            </td>
+            <td>Quantity</td>
+            <td>
+                <input type="text" id="txtQty" />
+                <span class="error">Invalid Qty!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Unit</td>
+            <td>
+                @Html.DropDownList("ddlUnit", ViewBag.UnitList as SelectList, new { disabled = "true" })
+                <span class="error">Unit not selected!</span>
+            </td>
+            <td>
+                <input type="button" class="btn btn-default" id="add" value="Add" />
+            </td>
+        </tr>
+    </table>
+</div>
+List of Items:-
+<div id="orderItems"></div>
+<div style="padding:10px 0px; text-align:left;">
+    <input id="submit" class="btn btn-default" type="button" value=@ViewData["AddEdit"] />
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+</div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=dropdownlist]").first().focus();
+            document.getElementById("txtVDate").value = '@ViewBag.VDate';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteStockItemList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfItemId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                data: { "itemid": ui.item.Id },
+                success: function (data) {
+                    $('#ddlUnit').val(data.unit);
+                    document.getElementById('hfItemDesc').value = data.itemname;
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+                });
+                //detail-2
+                //fillUnitList(ui.item.Id);
+                //
+        }
+        });
+    </script>
+
+    @*<script>
+        function fillUnitList(itemid) {
+            //var itemId = $('#ddlItem').val();
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getTransactionUnitList", "HelpUtility"))",
+                data: { "itemid": itemid },
+                success: function (data) {
+                    //getting multiple records as (key,value) pair type list
+                    $("#ddlUnit").empty(); // clear before appending new list
+                    $.each(data, function (i, item) {
+                        $("#ddlUnit").append($('<option />', {
+                            value: item.Key,
+                            text: item.Value
+                        }));
+                    });
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>*@
+
+    <script>
+        //Date Picker
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+
+        $(document).ready(function () {
+            var orderItems = [];
+
+            //Add button click function
+            $('#add').click(function () {
+                //Check validation of order item
+                var isValidItem = true;
+
+                if ($('#txtItemCode').val().trim() == '') {
+                    isValidItem = false;
+                    $('#txtItemCode').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtItemCode').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#txtQty').val().trim() != '' && !isNaN($('#txtQty').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtQty').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtQty').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Add item to list if valid
+                if (isValidItem) {
+                    var liUnit = document.getElementById("ddlUnit");
+                    var unitIndex = liUnit.selectedIndex;
+                    var unitId = liUnit.options[unitIndex].value;
+                    var unitName = liUnit.options[unitIndex].text;
+                    orderItems.push({
+                        ItemId: $('#hfItemId').val(),
+                        ItemCode: $('#txtItemCode').val(),
+                        ItemDesc: $('#hfItemDesc').val(),
+                        Qty: parseFloat($('#txtQty').val().trim()),
+                        UnitId: unitId,
+                        UnitName: unitName,
+                        Rate: 0,
+                        Discount: 0,
+                        SgstPer: 0,
+                        CgstPer: 0,
+                        IgstPer: 0,
+                        FreightRate: 0,
+                        Remarks: ''
+                    });
+                    //Clear fields
+                    //$('#itemName').val('').focus();
+                    //$('#txtQty,#txtRate').val('');
+
+                }
+                //populate order items
+
+                GeneratedItemsTable();
+            });
+
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+
+                if (orderItems.length == 0) {
+                    $('#orderItems').html('<span style="color:red;">Please add items</span>');
+                    isAllValid = false;
+                }
+                //if ($('#orderNo').val().trim() == '') {
+                //    $('#orderNo').siblings('span.error').css('visibility', 'visible');
+                //    isAllValid = false;
+                //}
+                //else {
+                //    $('#orderNo').siblings('span.error').css('visibility', 'hidden');
+                //}
+
+                //showEmployeeName();
+
+                //Save if valid
+                if (isAllValid) {
+
+                    var data = {
+                        //stock fields
+                        RecId: parseInt($('#txtRecId').val().trim()),
+                        VType: 'wrg1',
+                        VNo: parseInt($('#txtVNo').val().trim()),
+                        VDate: $('#txtVDate').val().trim(),
+                        IndentId: '',
+                        RecDesc: $('#txtRecDesc').val().trim(),
+                        //ledger fields
+                        Ledgers: orderItems
+                    }
+
+                    $(this).val('Please wait...');
+
+                    $.ajax({
+                        url: '/WipToRg1/CreateUpdate',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                orderItems = [];
+                                //$('#orderNo').val('');
+                                //$('#orderDate').val('');
+                                $('#orderItems').empty();
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submit').val(d.AddEdit);
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            //$('#submit').val('Save');
+                            $('#submit').val(d.AddEdit);
+                        }
+                    });
+                }
+
+            });
+
+            //edit mode
+            $(function () {
+                var mainObject = @Html.Raw(Json.Encode(Model))
+                orderItems = @Html.Raw(Json.Encode(Model.Ledgers))
+                //
+                txtRecId.value = mainObject.RecId;
+                hfVType.value = mainObject.VType;
+                txtVNo.value = mainObject.VNo;
+                txtVDate.value = mainObject.VDate.substring(0, 10);
+                txtRecDesc.value = mainObject.RecDesc;
+                //
+                GeneratedItemsTable();
+            });
+
+            //function for show added items in table
+            function GeneratedItemsTable() {
+                if (orderItems.length > 0) {
+                    var $table = $('<table class="tablecontainer" id="myTable" style="width:100%;"/>');
+                    $table.append('<th>Item Code</th>');//0
+                    $table.append('<th>Item Description</th>');//1
+                    $table.append('<th>Quantity</th>');//2
+                    $table.append('<th>Unit Name</th>');//3
+                    $table.append('<th>Remove</th>');//4
+                    $table.append('<th>Edit</th>');//5
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">ItemId</td>');//6
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">UnitId</td>');//7
+                    $table.append('<td style="visibility:hidden;width:0px;border-color:transparent;">RecId</td>');//8
+                    $table.append('</tr></thead>');
+                    var $tbody = $('<tbody/>');
+                    $.each(orderItems, function (i, val) {
+                        var $row = $('<tr/>');
+                        //static for all rows---------------
+                        $row.append($('<td/>').html(val.ItemCode));//0
+                        $row.append($('<td/>').html(val.ItemDesc));//1
+                        $row.append($('<td/>').html(val.Qty));//2
+                        $row.append($('<td/>').html(val.UnitName));//3
+                        //--------------------------------------------
+                        var $remove = $('<a href="#"><i class="fa fa-trash-o" style="font-size:15pt;"></a>');
+                        $remove.click(function (e) {
+                            var opt = confirm("Are you sure to delete this entry?");
+                            if (opt == true) {
+                                e.preventDefault();
+                                orderItems.splice(i, 1);
+                                GeneratedItemsTable();
+                            }
+                        });
+                        $row.append($('<td/>').html($remove));//4
+                        //--------------------------------------------
+                        var $edit = $('<a href="#"><i class="fa fa-pencil-square" style="font-size:25pt;"></a>');
+                        $edit.click(function (e) {
+                            e.preventDefault();
+                            txtItemCode.value = $(this).closest('tr').find('td:eq(0)').text();
+                            hfItemDesc.value = $(this).closest('tr').find('td:eq(1)').text();
+                            txtQty.value = $(this).closest('tr').find('td:eq(2)').text();
+                            //remove=4
+                            //edit=5
+                            hfItemId.value = $(this).closest('tr').find('td:eq(6)').text();//itemid
+                            //fillUnitList($(this).closest('tr').find('td:eq(13)').text());//note: fill unitlist then set unit //cl
+                            ddlUnit.value = $(this).closest('tr').find('td:eq(7)').text();//unitid
+                            hfRecId.value = $(this).closest('tr').find('td:eq(8)').text();//recid
+                            orderItems.splice(i, 1);
+                            GeneratedItemsTable();
+                        });
+                        //--------------------------------------------
+                        $row.append($('<td/>').html($edit));//5
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.ItemId));//6
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.UnitId));//7
+                        $row.append($('<td style="visibility:hidden;width:0px;border-color:transparent;"/>').html(val.RecId));//8
+                        $tbody.append($row);
+                    });
+                    console.log("current", orderItems);
+                    $table.append($tbody);
+                    $('#orderItems').html($table);
+                }
+                else {
+                    $('#orderItems').html('');
+                }
+            }//
+        });
+
+    </script>
+}
+

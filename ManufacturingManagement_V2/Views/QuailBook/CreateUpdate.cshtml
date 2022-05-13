@@ -1,0 +1,465 @@
+﻿@model ManufacturingManagement_V2.Models.QuailBookMdl
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>QUAIL CARD</h2>
+<div style="border:solid;border-width:1px;padding-left:4px;">
+<div class="master" style="font-size:10pt;color:blue;">
+<table>
+        <tr>
+            <td><b><u>@ViewBag.Function</u></b></td>
+            <td style="text-align:right;"><b><u>@ViewBag.FctnDate</u></b></td>
+        </tr>
+    </table>
+</div>
+@ViewBag.PrvQM
+<div class="form-group">
+    <table>
+        <tr>
+            <td>
+                @Html.ActionLink("Add Meeting", "../QuailMeeting/CreateUpdate", null, new { target = "_blank" })
+                @Html.ActionLink("Back to Meeting", "../QuailMeeting/Index")
+                @Html.ActionLink("Set Attendance", "../QuailBook/QuailAttendance", new {qmid = @Model.QmId}, new { target = "_blank" })
+                @Html.ActionLink("Preview Card", "../QuailBookReport/QuailCardReport", new {qmid = @Model.QmId}, new { target = "_blank" })
+            </td>
+            <td style="text-align:right;">@ViewBag.NextInfo</td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td style="width:95px;">Hide Sub-Items</td>
+            <td style="width:60px;">
+                <input type="checkbox" id="chkSubItem" name="chkSubItem" 
+                @if (ViewBag.chkSubItem)
+                {<text>checked</text>} 
+                style = "width: 50px; height: 25px; padding: 0; text-align:center;" 
+                onchange="RefreshPage()">
+            </td>
+            <td style="width:25px;">Priority</td>
+            <td>
+                <input type="text" style="width:40px;height:5px;" maxlength="1" 
+                id="txtQlbPrt" value='@ViewBag.QlbPriority' onchange="RefreshPage()"/>
+            </td>
+            <td style="text-align:right;">
+                <h4>Note: Press 'Tab' Key after completion of each cell entry.</h4>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+@Html.HiddenFor(model => model.QmId)
+<table id="StepsTable" class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+           S.No.
+        </th>
+        <th style="width:auto;">
+           WHAT
+        </th>
+        <th style="width:60px;">
+           P
+        </th>
+        <th style="width:130px;">
+          WHO
+        </th>
+        <th style="width:130px;">
+          WHEN
+        </th>
+        <th style="width:140px;">
+          REMARKS
+        </th>
+        <th style="width:50px;">
+           ACTION
+        </th>
+    </tr>
+    @{int i = 1;}
+@foreach (var item in Model.Items)
+{
+    <tr>
+        <td>
+            @if (item.DispSNo.Contains("."))
+            {
+                <span style="color:black;">@Html.DisplayFor(model => item.DispSNo)</span>
+            }
+            else
+            {
+                <span style="color:blue;"><b>@Html.DisplayFor(model => item.DispSNo)</b></span>
+            }
+            @Html.Hidden("hfMainSno" + i.ToString(), item.MainSNo, new { @id = "hfMainSno" + (i - 1) })
+            @Html.Hidden("hfSubSNo" + i.ToString(), item.SubSNo, new { @id = "hfSubSNo" + (i - 1) })
+        </td>
+        <td>
+           @*@Html.DisplayFor(model => item.QlbItem)*@
+           @Html.TextArea("txtQlbItem" + i.ToString(), item.QlbItem, new
+      {
+          @id = "QlbItem" + (i - 1),
+          style = "width: 100%; height: 50px; padding: 0; text-align:left;",
+          onchange = "updateItem('" + @i + "', '" + item.ItemType + "','" + item.MainSNo + "','" + item.SubSNo + "','1',false)"
+      })
+        </td>
+        <td>
+           @*@Html.DisplayFor(model => item.QlbPriority)*@
+           @Html.TextBox("txtQlbPriority" + i.ToString(), item.QlbPriority.ToString(), new
+      {
+          @id = "QlbPriority" + (i - 1),
+          style = "width: 100%; height: 25px; padding: 0; text-align:center;",
+          onchange = "updateItem('" + @i + "', '" + item.ItemType + "','" + item.MainSNo + "','" + item.SubSNo + "','2',false)"
+      })
+        </td>
+        <td>
+            @*@Html.DisplayFor(model => item.QlbUserName)*@
+            @Html.Hidden("hfQlbUserId" + i.ToString(), item.QlbUserId, new { @id = "hfQlbUserId" + (i - 1) })
+            @Html.TextBox("txtQlbUserId" + i.ToString(), item.QlbUserName.ToString(), new
+       {
+           @id = "QlbUserId" + (i - 1),
+           style = "width: 100%; height: 25px; padding: 0; text-align:left;",
+           @class = "autoc",
+           onchange = "updateItem('" + @i + "', '" + item.ItemType + "','" + item.MainSNo + "','" + item.SubSNo + "','3',false)"
+       })
+        </td>
+        <td>
+            @*@Html.DisplayFor(model => item.QlbTime)*@
+            @Html.TextBox("txtCompTime" + i.ToString(), item.CompTime, new
+       {
+           @id = "CompTime" + (i - 1),
+           style = "width: 100%; height: 25px; padding: 0; text-align:center;",
+           onchange = "updateItem('" + @i + "', '" + item.ItemType + "','" + item.MainSNo + "','" + item.SubSNo + "','4',false)"
+       })
+        </td>
+        <td>
+            @*@Html.DisplayFor(model => item.Remarks)*@
+            @Html.TextBox("txtRemarks" + i.ToString(), item.Remarks, new
+       {
+           @id = "Remarks" + (i - 1),
+           style = "width: 100%; height: 25px; padding: 0; text-align:left;",
+           onchange = "updateItem('" + @i + "', '" + item.ItemType + "','" + item.MainSNo + "','" + item.SubSNo + "','5',false)"
+       })
+        </td>
+        <td>
+            @if (item.ItemType.ToLower() == "m")
+            {
+                @Html.ActionLink("Add_Main", null, null,
+                new { onclick = "updateItem('" + @i + "', 'm','" + item.MainSNo + "','" + item.SubSNo + "','1',true)" })
+                
+                if (@ViewBag.chkSubItem == false)
+                {
+                    <br/>@Html.ActionLink("Add_Sub", null,
+                    new { indx = @i, type = 's', mainsno = item.MainSNo, subsno = item.SubSNo, colindex = 1, addnew = 1 },
+                    new { onclick = "updateItem('" + @i + "', 's','" + item.MainSNo + "','" + item.SubSNo + "','1',true)" })
+                }
+            }
+            else if (item.ItemType.ToLower() == "s")
+            {
+                @Html.ActionLink("Add_Sub", null, null,
+                new { onclick = "updateItem('" + @i + "', 's','" + item.MainSNo + "','" + item.SubSNo + "','1',true)" })
+            }
+            <br/>@Html.ActionLink("Remove", null, null,
+            new { onclick = "removeItem('" + @i + "','" + item.MainSNo + "','" + item.SubSNo + "')" })
+        </td>
+    </tr>
+            i++;
+}
+    
+</table>
+<br/>
+@*<p> no need here
+    <input id="Save" type="button" value="Save Card" />
+</p>*@
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")*@
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("QlbItem" + '@ViewBag.indx').focus();
+            if('@ViewBag.colindex' == 1)
+            {
+                document.getElementById("QlbItem" + '@ViewBag.indx').select();
+            }
+            else if ('@ViewBag.colindex' == 2) {
+                document.getElementById("QlbPriority" + '@ViewBag.indx').select();
+            }
+            else if ('@ViewBag.colindex' == 3) {
+                document.getElementById("QlbUserId" + '@ViewBag.indx').select();
+            }
+            else if ('@ViewBag.colindex' == 4) {
+                document.getElementById("CompTime" + '@ViewBag.indx').select();
+            }
+            else if ('@ViewBag.colindex' == 5) {
+                document.getElementById("Remarks" + '@ViewBag.indx').select();
+            }
+            if ('@ViewBag.TP' == 1) {
+                //document.getElementById("StepsTable").scrollIntoView(true);
+                window.scroll(0,0);
+            }
+            else {
+                //document.getElementById("StepsTable").scrollIntoView(false);
+                var x = document.getElementById("StepsTable");
+                window.scroll(0, x.scrollHeight);
+            }
+        });
+    </script>
+
+    @* select qlb user *@
+    <script type="text/javascript">
+        $(".autoc").autocomplete({
+            source: function (request, response) {
+                //var x = document.getElementsByClassName(".autoc");
+                //alert(request.term);
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteUsersList", "HelpUtility"))",
+                        data: { "term": request.term },
+                        success: function (data) {
+                            for (var i = 0; i < data.length ; i++) {
+                                customer[i] = { label: data[i].Value, Id: data[i].Key };
+                            }
+                        }
+                    });
+                    response(customer);
+                }, minLength: 2,
+                select: function (event, ui) {
+                    //$(this).val(ui.item.Id);
+                    var x = $(this).attr("name");
+                    //getting index hidden field
+                    var lid = parseInt(x.substring(12));
+                    //setting userid value to hidden field
+                    document.getElementById('hfQlbUserId' + (lid-1)).value = ui.item.Id;
+                }
+            });
+</script>
+
+    @*update quail bok item*@
+    <script>
+        function updateItem(indx, type, mainsno, subsno, colindex, addnew) {
+            var qmid = '@Model.QmId';
+            
+            var rindex = indx - 1;
+            var nxtcindex = parseInt(colindex) + 1;
+            if (parseInt(colindex) == 5 || addnew == true)
+            {
+                rindex = indx;
+                nxtcindex = 1;
+            }
+            
+            var _QlbItem = $('#QlbItem' + (indx - 1)).val();
+            var _QlbPriority = $('#QlbPriority' + (indx - 1)).val();
+            var _QlbUserId = $('#hfQlbUserId' + (indx - 1)).val();
+            var _CompTime = $('#CompTime' + (indx - 1)).val();
+            var _Remarks = $('#Remarks' + (indx - 1)).val();
+
+            if (_QlbItem.trim() == '') {
+                alert('Item not entered!');
+                document.getElementById("QlbItem" + (indx - 1)).focus();
+                return;
+            }
+            if (_QlbPriority.trim() == '') {
+                alert('Priority not entered!');
+                document.getElementById("QlbPriority" + (indx - 1)).focus();
+                return;
+            }
+            if (_QlbUserId.trim() == '') {
+                alert('Member not entered!');
+                document.getElementById("QlbUserName" + (indx - 1)).value = '';
+                document.getElementById("QlbUserName" + (indx - 1)).focus();
+                return;
+            }
+            if (_CompTime.trim() == '') {
+                alert('Completion time not entered!');
+                document.getElementById("CompTime" + (indx - 1)).focus();
+                return;
+            }
+            if (_Remarks.trim() == '') {
+                _Remarks = ' ';//note blank entry
+            }
+            
+            var qlbitems = [];
+            qlbitems.push({
+                MainSNo: mainsno,
+                SubSNo: subsno,
+                QlbItem: _QlbItem,
+                ItemType: type,
+                QlbPriority: _QlbPriority,
+                QlbUserId: _QlbUserId,
+                CompTime: _CompTime,
+                Remarks: _Remarks
+            });
+
+            var data = {
+                QmId: qmid,
+                AddNew: addnew,
+                Items: qlbitems
+            }
+
+            $.ajax({
+                url: "/QuailBook/UpdateQuailBookItem",
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    if (d.status == true) {
+                        qlbitems = [];
+                        //window.location.reload(true);
+                        var x = $('#chkSubItem').is(':checked');
+                        var prt = parseInt($('#txtQlbPrt').val());
+                        window.location.href = "../QuailBook/CreateUpdate?qmid=" + d.qmid + "&indx=" + rindex + "&colindex=" + nxtcindex + "&chksubitem="+x+"&qlbpriority="+prt+"&tp=0";
+                    }
+                    else {
+                        alert(d.message);
+                    }
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                }
+            });
+        }
+ </script>
+
+@* remove *@
+    <script>
+        function removeItem(indx, mainsno, subsno) {
+            var qmid = '@Model.QmId';
+
+            var qlbitems = [];
+            qlbitems.push({
+                MainSNo: mainsno,
+                SubSNo: subsno
+            });
+
+            var data = {
+                QmId: qmid,
+                Items: qlbitems
+            }
+
+            $.ajax({
+                url: "/QuailBook/DeleteQlbItem",
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    if (d.status == true) {
+                        qlbitems = [];
+                        //window.location.reload(true);
+                        var x = $('#chkSubItem').is(':checked');
+                        var prt = parseInt($('#txtQlbPrt').val());
+                        window.location.href = "../QuailBook/CreateUpdate?&qmid=" + d.qmid + "&indx=" + indx + "&colindex=1&chksubitem="+x+"&qlbpriority="+prt+"tp=0";
+                    }
+                    else {
+                        alert(d.message);
+                    }
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                }
+            });
+        }
+ </script>
+
+    @* on chksubitem cahnged *@
+    <script>
+        function RefreshPage() {
+            var x = $('#chkSubItem').is(':checked');
+            var prt = parseInt($('#txtQlbPrt').val());
+            var qmid = '@Model.QmId';
+            window.location.href = "../QuailBook/CreateUpdate?&qmid=" + qmid + "&chksubitem=" + x + "&qlbpriority="+prt+"&tp=1";
+        }
+ </script>
+
+    @*<script>
+        $(document).on('mousemove', function (e) {
+            var y = e.clientY;
+            var h = $(StepsTable).height();
+            var n = h - y;
+            if (n < 60) {
+                var t = parseFloat($(StepsTable).scrollTop());
+                console.log(t);
+                $('html,body').animate({ scrollTop: t + 60 + 'px' }, 200);
+            } else {
+                $('html,body').stop();
+            }
+        });
+    </script>*@
+
+<script>
+    //s-save all --not in use
+    $("#Save").click(function () {
+        var qmid = $('#hfQmId').val();
+
+        var qlbitems = [];
+        $("#StepsTable tr").each(function (index, item) {
+                
+            if (index > 0) {
+                var tds = $(this).find("td");
+                //var textboxValue = $(tds).eq(4).find("input").val();//setUser
+                //var x = document.getElementById("AddPer"+(index-1).ToString()).value;
+                //var addper = $(tds).eq(3).find("input").is(':checked');
+                //var slno = $(tds).eq(0).text();
+                var _MainSNo = $('#hfMainSNo' + (index - 1)).val();
+                var _SubSNo = $('#hfSubSNo' + (index - 1)).val();
+                var _QlbItem = $('#QlbItem' + (index - 1)).val();
+                var _QlbPriority = $('#QlbPriority' + (index - 1)).val();
+                var _QlbUserId = $('#hfQlbUserId' + (indx - 1)).val();
+                var _CompTime = $('#CompTime' + (index - 1)).val();
+                var _Remarks = $('#Remarks' + (index - 1)).val();
+                    
+                qlbitems.push({
+                    MainSNo: _MainSNo,
+                    SubSNo: _MainSNo,
+                    QlbItem: _QlbItem,
+                    ItemType: 'x',//note
+                    QlbPriority: _QlbPriority,
+                    QlbUserId: _QlbUserId,
+                    CompTime: _CompTime,
+                    Remarks: _Remarks
+                });
+            }
+        });
+
+        $(this).val('Please wait...');
+        var data = {
+            QmId: qmid,
+            Items: qlbitems
+        }
+
+        $.ajax({
+            url: "/QuailBook/updateQuailBook",
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (d) {
+                if (d.status == true) {
+                    qlbitems = [];
+                    window.location.href = "../QuailBook/CreateUpdate?qmid=" + d.qmid + "&indx=" + indx + "&colindex=1";
+                }
+                else {
+                    alert(d.message);
+                }
+                $('#Save').val('Save Card');
+            },
+            error: function () {
+                alert('Error. Please try again.');
+            }
+        });
+
+    });
+    //e-save all
+
+</script>
+
+}
+

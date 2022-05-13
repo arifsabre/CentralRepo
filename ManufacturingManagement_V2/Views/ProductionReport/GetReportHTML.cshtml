@@ -1,0 +1,152 @@
+﻿@model ManufacturingManagement_V2.Models.ReportMdl
+@{
+    ViewBag.Title = "MaterialReqHTML";
+    Layout = "~/views/shared/_LayoutHtmlReport.cshtml";
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Material Requirement Report</title>
+    <style type="text/css">
+
+        table {
+            page-break-inside: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
+
+        .custom-footer-page-number:after {
+            content: counter(page);
+        }
+
+        footer {
+            font-size: 9pt;
+            font-family: Verdana;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            /*counter-increment: page;*/
+            /*content: counter(page) " of " counter(pages);*/
+        }
+
+        a[href]:after {
+            content: none !important;
+        }
+
+        /*#pageFooter {
+            display: table-footer-group;
+            counter-increment: page;
+        }
+
+        #pageFooter:after {
+            counter-increment: page;
+            content: "Page "counter(page);
+        }*/
+
+        /*.page-number {
+            content: counter(page)
+        }*/
+
+    </style>
+
+</head>
+<body style="background-color:lightcyan;">
+    <div style="page-break-inside: avoid; font-family:Verdana;font-size:10pt;">
+
+        @*print*@
+        <div id="dvBlank" style="text-align:center;">
+            <br />
+            <table align="center" style="width:820px;background-color:lightgray;">
+                <tr>
+                    <td align="left">
+                        <input type="button" id="btnPrint" value="Print"
+                               style="background-color: gray; width:100px; height: 25px; border: none; color: blue; font-weight:bold;" />
+                    </td>
+                    <td style="font-size:9pt;color:fuchsia;text-align:center;">
+                        * To be printed with page numbers by printing options
+                    </td>
+                    <td align="right">
+                        <input type="button" id="closeLink" value="Close" onclick="window.close()"
+                               style="background-color: gray; width:100px; height:25px; border:none; color:blue; font-weight:bold;" />
+                    </td>
+                </tr>
+            </table>
+            <br />
+        </div>
+
+        <div id="rptContainer" style="min-height:520px;">
+            @*rpt-matter*@
+            <table style="width:750px;" align="center">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.Raw(Model.ReportHeader)
+                        </th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>
+                        @Html.Raw(Model.ReportContent)
+                    </td>
+                </tr>
+
+                @*page-footer*@
+                <tfoot>
+                    <tr style="font-weight:normal;font-size:9pt;">
+                        <td align='left'>
+                            Run Date: @Html.DisplayFor(model => model.RunDate)
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            @*rpt-footer*@
+            <table align="center" style="width:750px;">
+                <tr>
+                    <td align="left">
+                        ---End of Report---
+                    </td>
+                    <td align="right">
+                        User Id/Name:&nbsp;@Html.DisplayFor(model => model.ReportUser)
+                    </td>
+                </tr>
+            </table>
+            <div id="dvBlank1" style="text-align:center;"><br /><br /><br /></div>
+        </div>
+
+    </div>
+</body>
+</html>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            document.getElementById("btnPrint").focus();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#btnPrint").click(function () {
+                document.getElementById("dvBlank").style.display = 'none';
+                document.getElementById("dvBlank1").style.display = 'none';
+                window.print();
+                document.getElementById("dvBlank").style.display = 'block';
+                document.getElementById("dvBlank1").style.display = 'block';
+            });
+        });
+    </script>
+
+}

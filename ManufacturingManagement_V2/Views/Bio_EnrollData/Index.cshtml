@@ -1,0 +1,143 @@
+﻿@model ManufacturingManagement_V2.Models.BioEnroll_DataMDI
+@{
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Enrolled Data</title>
+    <script>
+           function GetMapDetail(id) {
+            $.ajax({
+                url: "/Bio_EnrollData/BioEmpRolledMap/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#NewEmpId_u').val(response.NewEmpId);
+                    $('#EmpName_u').val(response.EmpName);
+                    $('#BioId_u').val(response.BioId);
+                    $('#modal-Update_Map').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-Insert1" style="margin-top:3px;margin-bottom:3px">
+            Biometric Enrolled Employee
+        </button>
+        <div id="printbar" class="pull-right" style="margin-top:3px;margin-bottom:3px">
+        </div>
+        (9999-Not Enrolled),(0,1-Finger),(11-Card),(10-Pin)
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.NewEmpId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EmpName)
+                                    </th>
+                                    <th>
+                                        @Html.Label("BioId")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Thump)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.UpdatedOn)
+                                    </th>
+                                    <th>Map BioId</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.NewEmpId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmpName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.BioId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Thump)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UpdatedOn)
+                                        </td>
+                                        <td>
+                                            <a onclick="GetMapDetail(@item.NewEmpId)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   <div class="modal fade" id="modal-Update_Map">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("BioEmpRolledMap", "Bio_EnrollData", FormMethod.Post))
+                    {
+                    <div class="modal-body">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Select Company</label>
+                                <br />
+                                @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)
+                            </div>
+                        </div>
+
+                        <input type="number" class="form-control" id="NewEmpId_u" name="NewEmpId" />
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                <br />
+                                <input type="text" class="form-control" id="EmpName_u" name="EmpName" />
+                            </div>
+                        </div>
+
+
+                    </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="modal-updateBio" class="btn btn-success">Submit</button>
+                            <button type="button" id="modal-updateshift" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

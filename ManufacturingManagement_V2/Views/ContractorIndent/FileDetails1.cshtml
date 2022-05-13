@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ContractorIndentMDI>
+
+<table class="table table-bordered table-hover  table-striped" style="text-align:Left">
+    <tr style="text-align:left">
+        <th class="col-md-2" style="text-align:left">
+            Task Number
+            @*   @Html.DisplayNameFor(model => model.RecordId)*@
+        </th>
+        <th class="col-md-2" style="text-align:left">
+          Company
+        </th>
+        <th class="col-md-2" style="text-align:left">
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th class="col-md-2" style="text-align:left">
+            @Html.DisplayNameFor(model => model.WorkCategory)
+        </th>
+        <th class="col-md-2" style="text-align:left">
+            @Html.DisplayNameFor(model => model.WorkDetail)
+        </th>
+
+        <th class="col-md-2" style="text-align:left">
+            @Html.DisplayNameFor(model => model.Contractor)
+        </th>
+
+        <th class="col-md-2" style="text-align:left">
+            @Html.DisplayNameFor(model => model.EstimateAmount)
+        </th>
+        <th class="col-md-2" style="text-align:left">
+            @Html.Label("Quotation FileName")
+        </th>
+       
+        <th class="col-md-2" style="text-align:left">
+            Quatation
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr style="text-align:left">
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.RecordId)
+        </td>
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.cmpname)
+        </td>
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.WorkCategory)
+        </td>
+
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.WorkDetail)
+        </td>
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.Contractor)
+        </td>
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.EstimateAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FileName)
+        </td>
+        @*<td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.InstructionGivenBy)
+        </td>*@
+        <td style="text-align:left">
+            @Html.ActionLink("Downlaod Quotation", "DownLoadFile1", new { id = item.Id })
+        </td>
+
+    </tr>
+    }
+</table>
+

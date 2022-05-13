@@ -1,0 +1,1053 @@
+﻿@model ManufacturingManagement_V2.Models.LetterMDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Letter</title>
+    <script>
+        $(document).ready(function () {
+            $('#Apply').prop('disabled', true);
+            $("#files").change(function () {
+                // Get uploaded file extension
+                var extension = $(this).val().split('.').pop().toLowerCase();
+                // Create array with the files extensions that we wish to upload
+                var validFileExtensions = ['doc', 'docx', 'pdf', 'ppt', 'xls', 'xlsx'];
+                // var validFileExtensions = ['pdf'];
+                //Check file extension in the array.if -1 that means the file extension is not in the list.
+                if ($.inArray(extension, validFileExtensions) == -1) {
+                    alert("Sorry!! Upload only 'doc', 'docx', 'pdf', 'ppt','xls' file")
+                    // alert("Sorry!! Upload only 'doc', 'docx', 'pdf' 'ppt' file")
+                    // Clear fileuload control selected file
+                    $(this).replaceWith($(this).val('').clone(true));
+                    //Disable Submit Button
+                    $('#Apply').prop('disabled', true);
+                } else {
+                    // Check and restrict the file size to 128 KB.
+                    if ($(this).get(0).files[0].size > (131072131)) {
+                        alert("Sorry!! Max allowed file size is 2MB");
+                        // Clear fileuload control selected file
+                        $(this).replaceWith($(this).val('').clone(true));
+                        //Disable Submit Button
+                        $('#Apply').prop('disabled', true);
+                    } else {
+                        //Enable Submit Button
+                        $('#Apply').prop('disabled', false);
+                    }
+                }
+            });
+           
+            $("#Apply").click(function () {
+                if ($("#Location").val() = null) {
+                    alert("Please fill out required fields(*)");
+                    return false;
+                }
+                return true;
+            });
+        });
+        function GetDetails(id) {
+            $.ajax({
+                url: "/Letter/Edit_LetterRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                  //  $('#UserId1').val(response.userId);
+                    $('#RecordId1').val(response.RecordId);
+
+                    $('#DepName1').val(response.DepName);
+                    $('#DepId1').val(response.DepId);
+                    $('#ShortName1').val(response.ShortName);
+                    $('#LetterNo1').val(response.LetterNo);
+                    $('#Subject1').val(response.Subject);
+                    $('#SendTo1').val(response.SendTo);
+                    $('#SendDate1').val(response.SendDate);
+                    // $('#FileName1').val(response.FileName);
+                    $('#Keywords1').val(response.Keywords);
+                    $('#SendVia1').val(response.SendVia);
+                    $('#TrackNo1').val(response.TrackNo);
+                    $('#TrackNoPost1').val(response.TrackNoPost);
+                    $('#TrackNoHand1').val(response.TrackNoHand);
+                    $('#CreatedBy1').val(response.CreatedBy);
+                    $("#Email1").prop("checked", response.Email);
+                    //$('#Email1').val(response.Email);
+                    $("#Post1").prop("checked", response.Post);
+                    //$('#Post1').val(response.Post);
+                    $("#Byhand1").prop("checked",response.ByHand);
+                    //$('#Byhand1').val(response.Byhand);
+                    $('#compcode1').val(response.compcode);
+                    $('#cmpname1').val(response.cmpname);
+                    $('#SendDate1s').val(response.SendDate1);
+                    $('#LetterDate11').val(response.LetterDate1);
+                    $('#Remark1').val(response.Remark);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        //RecordDetails
+        function GetRecord(id) {
+            $.ajax({
+                url: "/Letter/RecordDetail/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordIde').val(response.RecordId);
+                    $('#DepNamee').val(response.DepName);
+                    $('#FinYeare').val(response.FinYear);
+                    $('#SNOe').val(response.SNO);
+                    $('#ReferenceNoe').val(response.ReferenceNo);
+                    $('#ShortNamee').val(response.ShortName);
+                    $('#LetterNoe').val(response.LetterNo);
+                    $('#Subjecte').val(response.Subject);
+                    $('#SendToe').val(response.SendTo);
+                    $('#SendDatee').val(response.SendDate);
+                    // $('#FileName1').val(response.FileName);
+                    $('#Keywordse').val(response.Keywords);
+                    $('#SendViae').val(response.SendVia);
+                    $('#TrackNoe').val(response.TrackNo);
+                    $('#TrackNoPoste').val(response.TrackNoPost);
+                    $('#TrackNoHande').val(response.TrackNoHand);
+                    $('#CreatedBye').val(response.CreatedBy);
+                   // $('#Emaile').val(response.Email);
+                    $("#Emaile").prop("checked", response.Email);
+                   // $('#Poste').val(response.Post);
+                    $("#Poste").prop("checked", response.Post);
+                   // $('#ByHande').val(response.Byhand, true);
+                    $("#ByHande").prop("checked", response.ByHand);
+                    $('#LetterDatee').val(response.LetterDate);
+                    $('#Remarke').val(response.Remark);
+                    $('#modal-ViewDetail').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        //Company
+        function GetCompany(id) {
+            $.ajax({
+                url: "/Letter/Edit_CompanyRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId2').val(response.RecordId);
+                    $('#modal-updateCompany').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        //SentdateChange
+        function GetSendDate(id) {
+            $.ajax({
+                url: "/Letter/Edit_SenddateRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId3').val(response.RecordId);
+                    $('#modal-updateSentDate').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        function GetLetterDate(id) {
+            $.ajax({
+                url: "/Letter/Edit_LetterDateRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId4').val(response.RecordId);
+                    $('#modal-updateLetterDate').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+       function FiileList(recid) {
+                $('#modal-ShowFiles').modal('show');
+                var ifrm = document.getElementById("frmList");
+            //ifrm.setAttribute('src', "http://localhost:58521//Letter/Details?id=" + recid)
+           ifrm.setAttribute('src', "https://pragerp.com://Letter/Details?id=" + recid)
+        }
+        function UploadExtraFile(id) {
+            $.ajax({
+                url: "/Letter/Letter_UploadOtherRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId5').val(response.RecordId);
+
+                    $('#modal-UploadExtra').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+      </script>
+</head>
+<body>
+    <script src="~/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+    <div class="pull-left">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-Insert" style="margin-right:3px;margin-bottom:3px;margin-top:3px;margin-left:2px">
+            Add New
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-UpdateFileDiv" style="margin-right:3px;margin-bottom:3px;margin-top:3px;margin-left:2px">
+            Replace File
+        </button>
+        @Html.ActionLink("Archive(21-22)", "IndexGetAllCompany", "Letter", null, new { @class = "btn btn-Primary" })
+    </div>
+    <div id="printbar" class="pull-right" style="margin-right:3px;margin-bottom:3px;margin-top:3px">
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover table-responsive table-condensed " style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>SNO</th>
+                                    <th>Department</th>
+                                    <th>ReferenceNo</th>
+                                    <th>Subject</th>
+                                    <th>SendTo</th>
+                                    <th>SendOn</th>
+                                    <th>Keyword</th>
+                                    <th>Remark</th>
+                                    <th>CreatedBy</th>
+                                    <th>Files</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                <tr>
+                                    <td>
+                                        <a onclick="GetRecord(@item.RecordId)">
+                                            <i class="fa fa-eye">
+                                            </i>
+                                        </a>
+                                        <a onclick="GetDetails(@item.RecordId)">
+                                            <i class="fa fa-pencil-square">
+                                            </i>
+                                        </a>
+
+                                    </td>
+                                    @Html.HiddenFor(model => item.RecordId)
+                                    <td>
+
+                                        @Html.DisplayFor(model => item.SNO)
+
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.DepName)
+
+                                    </td>
+                                    <td>@Html.DisplayFor(model => item.ReferenceNo)</td>
+                                    <td>@Html.DisplayFor(model => item.Subject)</td>
+
+                                    <td>@Html.DisplayFor(model => item.SendTo)</td>
+
+                                    <td>
+                                        @Html.DisplayFor(model => item.SendDate)
+                                        <a onclick="GetSendDate(@item.RecordId)">
+                                            <i class="fa fa-pencil-square">
+                                            </i>
+                                        </a>
+                                    </td>
+                                    <td>@Html.DisplayFor(model => item.Keywords)</td>
+
+                                    <td>@Html.DisplayFor(model => item.Remark)</td>
+                                    <td>@Html.DisplayFor(model => item.CreatedBy)</td>
+                                    <td>
+                                        <a onclick="FiileList(@item.RecordId)">
+                                            <i class="fa fa-eye" style="font-size:12pt;"></i>
+                                        </a>
+                                        <a onclick="UploadExtraFile(@item.RecordId)">
+                                            <i class="fa fa-upload">
+                                            </i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @*//InsertRecord*@
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                   Add New Record
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Index", "Letter", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="horizontal">
+                                @*  <hr />*@
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    @* @Html.LabelFor(model => model.RecordId, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                    <div class="col-lg-12">
+                                        @Html.HiddenFor(model => model.RecordId, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.HiddenFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+
+                                        @*  @Html.ValidationMessageFor(model => model.RecordId, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    &nbsp;&nbsp; <label>Department</label>
+
+                                    <div class="col-lg-12">
+                                        @Html.DropDownListFor(model => model.DepId, ViewBag.Department as SelectList)
+
+                                        @Html.ValidationMessageFor(model => model.DepId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Subject</label>
+                                    <br />
+
+                                    <div class="col-lg-12">
+                                        @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @*&nbsp; <label style="font-weight:bolder;color:green">
+                                            Reference No:
+                                        </label>
+                                        @foreach (var item in Model.Item_ListRef)
+                                        {
+                                            @Html.DisplayFor(model => item.ReferenceNo)
+
+                                        }
+
+                                        <br />*@
+
+                                    &nbsp;&nbsp;<label>File Name(Max 10 Char)</label>
+                                    <br />
+                                    <div class="col-lg-12">
+
+                                        @Html.EditorFor(model => model.LetterNo, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.LetterNo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Send To</label>
+                                    <br />
+
+                                    <div class="col-lg-12">
+                                        @Html.EditorFor(model => model.SendTo, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.SendTo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Remark</label>
+                                    <div class="col-lg-12">
+                                        @Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control" } })
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Letter Date</label>
+                                    <br />
+                                    <div class="col-lg-12">
+                                        @*<input type="date" class="form-control" id="SendDate" name="SendDate" style="width:250px" />*@
+                                        @Html.EditorFor(m => m.LetterDate, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date", @id = "LetterDate" } })
+                                        @Html.ValidationMessageFor(model => model.LetterDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Send Date</label>
+                                    <br />
+                                    <div class="col-lg-12">
+                                        @*<input type="date" class="form-control" id="SendDate" name="SendDate" style="width:250px" />*@
+                                        @Html.EditorFor(m => m.SendDate, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date", @id = "SendDate" } })
+                                        @Html.ValidationMessageFor(model => model.SendDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Keyword</label>
+                                    <br />
+
+                                    <div class="col-lg-12">
+                                        @Html.EditorFor(model => model.Keywords, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Keywords, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @* <br />*@
+                                    <div class="col-lg-12">
+
+                                        <label>Status</label>
+                                        <br />
+                                        @Html.DropDownList("SendVia", new List<SelectListItem>
+                                                       {
+                                                       new SelectListItem { Text = "Sent"},
+                                                       //new SelectListItem { Text = "Pending"},
+                                                       new SelectListItem { Text = "Not-Sent"},
+                                                        //new SelectListItem { Text = "Email"},
+                                                        // new SelectListItem { Text = "Courier"}
+                                                       })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @* <br />*@
+                                    <div class="col-lg-12">
+                                        @*<br />*@
+
+                                        <label>ByPost</label>  @Html.CheckBoxFor(model => model.Post)
+                                        @Html.EditorFor(model => model.TrackNoPost, new { htmlAttributes = new { @class = "form-control", style = "color:red;width:200px" } })
+                                        @*<br />*@
+                                        <label>By Email</label> @Html.CheckBoxFor(model => model.Email)
+                                        @Html.EditorFor(model => model.TrackNo, new { htmlAttributes = new { @class = "form-control", style = "color:red;width:200px" } })
+
+                                        <label>By Hand</label> @Html.CheckBoxFor(model => model.ByHand)
+                                        @Html.EditorFor(model => model.TrackNoHand, new { htmlAttributes = new { @class = "form-control", style = "color:red;width:200px" } })
+                                    </div>
+                                </div>
+
+
+                                @*<div class="form-group">
+                                    &nbsp;&nbsp;<label>Attached File</label>
+                                  
+                                    <div class="col-lg-12">
+                                        @Html.TextBoxFor(model => model.files, "", new { @type = "file", @multiple = "multiple" })
+                                        @Html.ValidationMessageFor(model => model.files, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        @Html.HiddenFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                @* <button type="submit" id="Apply" class="btn btn-primary">Submit</button>*@
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//update*@
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Update Doccument</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_Letter", "Letter", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <div class="col-lg-12">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <label>RecordNo</label>
+                                        <input type="number" class="form-control" id="RecordId1" readonly="readonly" name="RecordId" style="width:200px" />
+                                        @Html.HiddenFor(model => model.UserId)
+                                        @Html.HiddenFor(model => model.UpdatedBy)
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    &nbsp;&nbsp; <label>Company</label>
+                                    @*<br />*@
+                                    @*  @Html.LabelFor(model => model.cmpname, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                    <div class="col-lg-12">
+                                        @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList, new { id = "compcode1" })
+                                        @*new { htmlAttributes = new { @class = "form-control", id = "Dose22" } }*@
+
+                                        @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    &nbsp;&nbsp; <label>Department</label>
+                                    @*<br />*@
+                                    @*  @Html.LabelFor(model => model.cmpname, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                    <div class="col-lg-12">
+                                        @Html.DropDownListFor(model => model.DepId, ViewBag.Department as SelectList, new { id = "DepId1" })
+                                        @*new { htmlAttributes = new { @class = "form-control", id = "Dose22" } }*@
+
+                                        @Html.ValidationMessageFor(model => model.DepId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <label>Subject</label>
+                                        <br />
+                                        <input type="text" class="form-control" id="Subject1" name="Subject" style="width:300px" />
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <label>File Name(Max 10 Letter)</label>
+                                        <br />
+                                        <input type="text" class="form-control" id="LetterNo1" name="LetterNo" style="width:300px">
+
+                                        <br />
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <label>Send To</label>
+                                        <br />
+                                        <input type="text" class="form-control" id="SendTo1" name="SendTo" style="width:300px" />
+
+                                        <br />
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <label>Remark</label>
+                                        <br />
+                                        <input type="text" class="form-control" id="Remark1" name="Remark" style="width:300px" />
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <label>Keywords</label>
+                                        <br />
+                                        <input type="text" class="form-control" id="Keywords1" name="Keywords" style="width:300px" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    &nbsp;&nbsp;&nbsp;<label>Status</label>
+                                    <br />
+                                    &nbsp;&nbsp;&nbsp; @Html.DropDownList("SendVia", new List<SelectListItem>
+{
+new SelectListItem { Text = "Sent"},
+new SelectListItem { Text = "Not-Sent"},
+}, new { id = "SendVia1" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-12">
+
+
+
+                                    &nbsp;&nbsp;@Html.CheckBoxFor(model => model.Post, new { id = "Post1" })  <label>ByPost</label>
+                                    <input type="text" class="form-control" id="TrackNoPost1" name="TrackNoPost" style="width:300px">
+                                    @*<input type="text" class="form-control" id="TrackNoPost1" name="TrackNoPost" style="width:300px">*@
+                                    @*@Html.EditorFor(model => model.TrackNoPost, new { htmlAttributes = new { @class = "form-control", style = "color:red;width:200px" } })*@
+
+
+                                    &nbsp;&nbsp; @Html.CheckBoxFor(model => model.Email, new { id = "Email1" })
+                                    <label>By Email</label>
+                                    @*@Html.EditorFor(model => model.TrackNo, new { htmlAttributes = new { @class = "form-control", style = "width:200px" } })*@
+                                    <input type="text" class="form-control" id="TrackNo1" name="TrackNo" style="width:300px">
+
+                                    &nbsp;&nbsp; @Html.CheckBoxFor(model => model.ByHand, new { Id = "Byhand1" })   <label>By Hand</label>
+                                    <input type="text" class="form-control" id="TrackNoHand1" name="TrackNoHand" style="width:300px">
+                                    @*@Html.EditorFor(model => model.TrackNoHand, new { htmlAttributes = new { @class = "form-control", style = "color:red;width:200px" } })*@
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*///*@
+    <div class="modal fade" id="modal-ViewDetail">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:850px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Record Detail</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_HODApproval12", "ContractorIndent", FormMethod.Post))
+                        {
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td style="padding:10px">Record No </td>
+                                        <td><input type="number" class="form-control" id="RecordIde" name="RecordId" style="border:none;width:100px"></td>
+                                        <td style="padding:10px;font-weight:bold">ReferenceNo </td>
+                                        <td><input type="text" class="form-control" id="ReferenceNoe" name="ReferenceNo" style="border: none; width: 260px; font-weight: bold"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Fin Year</td>
+                                        <td> <input type="text" class="form-control" id="FinYeare" name="FinYear" style="border:none;width:350px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Company</td>
+                                        <td> <input type="text" class="form-control" id="ShortNamee" name="ShortName" style="border:none;width:350px"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">Department</td>
+                                        <td> <input type="text" class="form-control" id="DepNamee" name="DepName" style="border:none;width:350px"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Subject
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Subjecte" name="Subject" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            File Name
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="LetterNoe" name="LetterNoe" style="border:none;width:350px" readonly="readonly">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Send To
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="SendToe" name="SendTo" style="border:none;width:350px">
+                                            @* <input type="text" class="form-control" id="WorkDetail2" name="WorkDetail" style="border:none;width:500px">*@
+                                        </td>
+
+                                        <td style="padding:10px">
+                                            Remark
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Remarke" name="Remark" style="border:none;width:200px">
+                                            @* <input type="text" class="form-control" id="WorkDetail2" name="WorkDetail" style="border:none;width:500px">*@
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Send Date
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="SendDatee" name="SendDate" style="border:none;width:200px">
+                                        </td>
+
+                                        <td style="padding:10px">
+                                            Letter Date
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="LetterDatee" name="LetterDate" style="border:none;width:200px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Keywords
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Keywordse" name="Keywords" style="border: none; width: 350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:green;color:white;padding:10px">
+                                             Status
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="SendViae" name="SendVia" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            By Post
+                                        </td>
+                                        <td>
+                                            @*@Html.DisplayFor(model => model.Post)*@
+                                            <input type="checkbox" id="Poste" name="Poste">
+                                            @*  <input type="text" class="form-control" id="SendViae" name="SendVia" value="model => model.Post" style="border:none;width:350px">*@
+                                        </td>
+                                        <td style="padding:10px">
+                                            TrackNo
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="TrackNoPoste" name="ByPost" style="border:none;width:200px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            By Email
+                                        </td>
+                                        <td>
+                                            @*@Html.CheckBoxFor(model => model.Email)*@
+                                            <input type="checkbox" id="Emaile" name="Emaile">
+                                        </td>
+                                        <td style="padding:10px">
+                                            Email To
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="TrackNoe" name="TrackNo" style="border:none;width:200px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            By Hand
+                                        </td>
+                                        <th>
+                                            @*@Html.CheckBoxFor(model => model.ByHand)*@
+                                            <input type="checkbox" id="ByHande" name="ByHande">
+                                        </th>
+                                        <td style="padding:10px">
+                                            ByHand To
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="TrackNoHande" name="TrackNoHand" style="border:none;width:200px">
+                                        </td>
+
+                                    </tr>
+
+                                </table>
+
+                            </div>
+                            <div class="modal-footer">
+
+                                @*  @*<button type="submit" id="modal-hodApproval" class="btn btn-primary">Submit</button>*@
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*</div>*@
+    @*//Company*@
+    <div class="modal fade" id="modal-updateCompany">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Doccument Control System</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+
+                        @using (Html.BeginForm("Edit_Company", "Letter", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="modal-content">
+                                    <div class="modal-sm">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="modal-sm">
+
+                                        @Html.HiddenFor(model => model.UpdatedBy)
+
+                                        <input type="hidden" class="form-control" id="RecordId2" name="RecordId" style="color:white">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="modal-sm">
+                                        <label>Select Company</label>
+                                        @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)
+                                        @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "danger" })
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="modal-footer">
+                                    <button type="button" id="modal-updateCompany" class="btn btn-success" data-dismiss="modal">Close</button>
+                                    <button type="submit" id="modal-updateCompany" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* </div>*@
+    @*//SendDateUpdate*@
+    <div class="modal fade" id="modal-updateSentDate">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Update Send On Date</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_SendDate", "Letter", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+
+                                    @Html.HiddenFor(model => model.UpdatedBy)
+
+
+                                    <input type="hidden" class="form-control" id="RecordId3" name="RecordId" style="color:white">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <label>Select Date</label>
+                                    @Html.EditorFor(model => model.SendDate1)
+                                    @Html.ValidationMessageFor(model => model.SendDate1, "", new { @class = "danger" })
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="modal-footer">
+                                <button type="button" id="modal-updateSentDate" class="btn btn-success" data-dismiss="modal">Close</button>
+                                <button type="submit" id="modal-updateSentDate" class="btn btn-success">Submit</button>
+                            </div>
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-updateLetterDate">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Change Letter Date</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_LetterDate", "Letter", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+
+                                    @Html.HiddenFor(model => model.UpdatedBy)
+
+
+                                    <input type="hidden" class="form-control" id="RecordId4" name="RecordId" style="color:white">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <label>Select Date</label>
+                                    @Html.EditorFor(model => model.LetterDate1)
+                                    @Html.ValidationMessageFor(model => model.LetterDate1, "",new { @class = "danger" })
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="modal-footer">
+                                <button type="button" id="modal-updateSentDate" class="btn btn-success" data-dismiss="modal">Close</button>
+                                <button type="submit" id="modal-updateSentDate" class="btn btn-success">Submit</button>
+                            </div>
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*///*@
+    <div class="modal fade" id="modal-ShowFiles">
+        <div class="modal-dialog">
+            <div class="modal-content modal-sm" style="width:600px;height:250px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">File List</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmList" runat="server" scrolling="no" frameborder="0"
+                                style="width:570px;height:150px;opacity:100">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-UploadExtra">
+        <div class="modal-dialog" style="width:400px;height:400px">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Upload Other File</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Letter_UploadOtherFile", "Letter", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    @* @Html.HiddenFor(model => model.HODApprovalBy)*@
+                                    <label>Record No</label>
+                                    <input type="number" class="form-control" id="RecordId5" readonly="readonly" name="RecordId">
+
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <br />
+                                    <input type="file" name="postedFile" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" id="btnUpload1" class="btn-success" value="Submit" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-UpdateFileDiv">
+        <div class="modal-dialog" style="width:400px;height:400px">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Replave File File</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Letter_UpdateFileName", "Letter", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    @* @Html.HiddenFor(model => model.HODApprovalBy)*@
+                                    <label>Select File Which You want To Replace</label>
+                                    @Html.DropDownListFor(model => model.Id, ViewBag.GetAllFileNameList as SelectList)
+
+
+                                    @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <br />
+                                    <input type="file" name="postedFile" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" id="btnUpload12" class="btn-success" value="Submit" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+

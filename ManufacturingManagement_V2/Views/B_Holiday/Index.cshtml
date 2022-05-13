@@ -1,0 +1,169 @@
+﻿@model ManufacturingManagement_V2.Models.AAA_HolidayMDI
+@{
+   ViewBag.Title = "Index";
+   Layout = "~/views/shared/_LayoutCommon.cshtml";
+    
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+
+    <script>
+        $(function () {
+            $('#example1').DataTable();
+        })
+        function GetDetails(id) {
+            $.ajax({
+                url: "/B_Holiday/EditHolidayRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#HolidayId').val(response.HolidayId);
+                    $('#HolidayName').val(response.HolidayName);
+                    $('#Description').val(response.Description);
+                    $('#HolidayDate').val(response.HolidayDate);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+</script>
+</head>
+    <body style="background-color:whitesmoke">
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+        <div class="box-body">
+       <table id="example1" class="table table-bordered table-hover "style="background-color:gray">
+                            <thead>
+                                <tr>
+                                    <th>Serial No.</th>
+                                    <th>Holiday Name</th>
+                                    <th>Holiday Date</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            @{int i = 1;}
+                            <tbody>
+                                @foreach (var item in Model.HolidayList)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>@Html.DisplayFor(model => item.HolidayName)</td>
+                                         <td>@Html.DisplayFor(model => item.HolidayDate)</td>
+                                        <td>@Html.DisplayFor(model => item.Description)</td>
+                                         <td>
+                                            <a onclick="GetDetails(@item.HolidayId)">
+                                            <i class="fa fa-edit">
+                                             </i>
+                                            </a>
+                                            </td>
+                                    </tr>
+                                    i++;
+                                    }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Update Holiday</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("UpdateHoliday", "B_Holiday", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:170px;width:500px;background-color:gray">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <input type="number" class="form-control" id="HolidayId" name="HolidayId" >
+                                      
+                                        <input type="text" class="form-control" id="HolidayName" name="HolidayName" placeholder="Holiday Name">
+                                        <input type="text" class="form-control" id="Description" name="Description" placeholder="Description">
+                                        <input type="Date" class="form-control" id="HolidayDate" name="HolidayDate"  >
+                                       
+                                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                               
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-success" " data-toggle="modal" data-target="#modal-Insert" style="margin-right:20px;font-size:medium;">
+Add Record
+    </button>
+    
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Create Holiday</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("InsertHoliday", "B_Holiday", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:150px;width:500px;background-color:gray">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                     
+                                        <input type="text" class="form-control" id="IHolidayName" name="HolidayName" placeholder="HolidayName">
+                                      
+                                        <input type="date" class="form-control" id="HDate" name="HolidayDate">
+                                        
+                                      
+                                        <input type="text" class="form-control" id="HDescription" name="Description" placeholder="Description">
+                                       
+                                    </div>
+                                </div>
+                                </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                             
+                           </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success alert-dismissable">
+                @ViewBag.Message;
+                <a href="#" class="close" data-dissmiss="alert">x</a>
+            </div>
+        }
+    </div>
+      </body>
+    </html>

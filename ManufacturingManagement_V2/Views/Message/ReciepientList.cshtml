@@ -1,0 +1,145 @@
+﻿@model ManufacturingManagement_V2.Models.MessageModel
+
+@{
+    ViewBag.Title = "Message";
+    // Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+    // Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+      
+    </script>
+    </head>
+<body>
+    <div>
+        @using (Html.BeginForm("ReciepientList", "Message", FormMethod.Get))
+        {
+            <div>
+                <table style="width:100%">
+
+                    @*<tr>
+            <td style="padding:10px;">Memo No: </td>
+            <td><input type="number" class="form-control" id="RecordId_V" name="RecordId" style="border:none;width:100px"></td>
+        </tr>
+        <tr>
+            <td style="padding:10px">Memo No: </td>
+            <td><input type="text" class="form-control" id="MemoNo_V" name="MemoNo" style="border:none;width:100px"></td>
+        </tr>
+        <tr>
+            <td style="padding:10px">
+                To:
+            </td>
+            <td>
+                <input type="text" class="form-control" id="SendTo_V" name="SendTo" style="border:none;width:500px">
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:10px">
+                From:
+            </td>
+            <td>
+                <input type="text" class="form-control" id="EmailFrom_V" name="EmailFrom" style="border:none;width:500px">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding: 10px">
+                Sender(Onbehalf of)
+            </td>
+            <td>
+                <input type="text" class="form-control" id="FullName_V" name="FullName" style="border:none;width:500px">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:10px">
+                Subject:
+            </td>
+            <td>
+                <input type="text" class="form-control" id="Subject_V" name="Subject" style="border:none;width:500px">
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:10px">
+                Date:
+            </td>
+            <td>
+                <input type="text" class="form-control" id="SendDate_V" name="SendDate" style="border:none;width:300px">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:10px">
+
+            </td>
+            <td>
+                @Html.TextAreaFor(model => model.Detail, 0, 0, new { @class = "Editor", @style = "width:600px;height:200px;border:none", id = "Detail_V" })
+            </td>
+        </tr>*@
+                    @Html.EditorFor(model => model.RecordId)
+                    @foreach (var item in Model.Item_List)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(model => item.MemoNo)
+                            </td>
+                            <td>
+                            <td>
+                                @Html.DisplayFor(model => item.SendTo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.EMailFrom)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.FullName)
+                            </td>
+                            <td>
+                                Date: @Html.DisplayFor(model => item.SendDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Detail)
+                            </td>
+
+
+                        </tr>
+                    }
+                </table>
+
+                <table class="table table-bordered" style="width:100%;border:solid">
+                    <thead>
+                        <tr>
+                            <th>Recipients</th>
+                            <th>Signature</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Item_List3)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(model => item.FullNameRec)
+                                </td>
+                                <td>
+                                    -----
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+    <script src="~/Script/Site.js"></script>
+    </body>
+</html>
+

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.IndentPurchaseSlipMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Generated Purchase Slip List</h2>
+
+<p>
+    @Html.ActionLink("Generate Purchase Slip", "../Indent/IndentPurchaseSlipGeneration")
+</p>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <thstyle ="width:70px;">
+            @Html.DisplayNameFor(model => model.SlipNo)
+            </th>
+            <th style="width:35px;">Preview</th>
+            <thstyle ="width:auto;">
+                @Html.DisplayNameFor(model => model.VendorName)
+                </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SlipNo)
+            </td>
+            <td>
+                @Html.ActionLink("Preview", "../IndentPurchaseSlipReport/IndentPurchaseSlip", new { slipno = item.SlipNo }, new { @target = "_new;" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorName)
+            </td>
+        </tr>
+        i++;
+    }
+    <br />
+    @{i = i - 1;}
+    @i.ToString()&nbsp;&nbsp;&nbsp;Slips found.
+</table>
+

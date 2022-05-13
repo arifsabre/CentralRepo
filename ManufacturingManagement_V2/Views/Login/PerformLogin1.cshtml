@@ -1,0 +1,189 @@
+﻿@model ManufacturingManagement_V2.Models.LoginMdl
+
+@{
+
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    @Styles.Render("~/Content/css")
+    @* @Styles.Render("~/Content/Site1.css")*@
+    @Scripts.Render("~/bundles/modernizr")
+    <style type="text/css">
+        #img1 {
+            height: 40px;
+            width: 120px;
+        }
+
+        #img2 {
+            width: 70px;
+            height: 70px;
+        }
+
+        #img3 {
+            width: 60px;
+            height: 60px;
+        }
+
+        #img4 {
+            height: 40px;
+            width: 120px;
+        }
+
+        #img5 {
+            height: 70px;
+            width: 70px;
+        }
+
+        #img6 {
+            height: 250px;
+            width: 250px;
+        }
+    </style>
+</head>
+<body>
+    @*<div>
+            <header>
+
+                <div>
+                    <table style="background-color:whitesmoke">
+                        <tr>
+                            <td>
+
+                                <img id="img1" alt="" src="http://192.168.0.20:80/Images/Praglogo.png" />
+                            </td>
+                            <td style="color:black; font-weight:bold;border-radius:20px">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              &nbsp;&nbsp;&nbsp;&nbsp; <a href="" style="width: 100px;background-color:lightgray;border-radius:20px; color:black;font-weight:bold;">Company </a>&nbsp;&nbsp; @ViewBag.FinYear&nbsp;&nbsp;&nbsp;&nbsp; <a href="" style="width: 100px; color:black;font-weight:bold;border-radius:20px;background-color:lightgray">Fin Year</a>
+
+                            </td>
+
+                            <td style="width:85px">
+                                <img id="img2" alt="" src="http://192.168.0.20:80/Images/LoginProfile.png" />
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </header>
+
+        </div>*@
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <div>
+            <br /><br />  <br /><br /> <br /><br /> <br />
+            <div>
+                <p style="text-align:center;font:medium;font-weight:bold">Kindly Select:Company and Fanacial Year To Proceed</p>
+            </div>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <table style=" text-align: left;width:400px;margin-left:400px;margin-top:70px;border-radius:15px;background-color:whitesmoke;border:none" )>
+
+                <tr>
+                    <td rowspan="5" style="width:150px;text-align:right">
+                        @* <img id="img6" alt="" src="http://192.168.0.20:80/Images/Perforloginlogo.png" />*@
+                    </td>
+
+                    <td style="width:70px;">
+                        <input type="submit" value='Company' style="background-color:whitesmoke;width:200px;height:40px;border-radius:15px;color:black" />
+                    </td>
+                    <td>
+                        @Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)
+
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value='Financial Report' style="background-color:whitesmoke;width:200px;height:40px;border-radius:15px;color:black" />
+                    </td>
+                    <td>
+                        @Html.DropDownList("ddlFinYear", ViewBag.FinYearList as SelectList)
+
+                    </td>
+
+                </tr>
+
+
+                <tr>
+                    <td></td>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value=' Proceed' style="background-color:whitesmoke;width:120px;height:40px;border-radius:15px;color:black" />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+
+
+                </tr>
+
+
+
+            </table>
+        </div>
+        <br /> <br /><br /><br /><br /><br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br />
+
+
+
+
+
+
+        @*<div>
+                <table style="width:1200px">
+                    <tr>
+                        <td style="font-weight: bold; font-size:medium;color:black;">
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Developed By - </span> <a href="http://www.praggroup.com" style="font-size: x-small;color:blue">PRAG MIS DEPTT</a>&nbsp;<span>Contact No : Extn.332/0522-2652033/(+91)8922008825</span>
+                        </td>
+
+                    </tr>
+
+                </table>
+            </div>*@
+        <footer style="height:40px">
+            @*@Html.action("../Home/pageFooter")*@
+            @Html.Partial("../Home/pageFooter")
+            @*<table style="width:1200px">
+                    <tr>
+                        <td style="font-weight: bold; font-size:medium;color:black;">
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Developed By - </span> <a href="http://www.praggroup.com" style="font-size: x-small;color:blue">PRAG MIS DEPTT</a>&nbsp;<span>Contact No : Extn.332/0522-2652033/(+91)8922008825</span>
+                        </td>
+
+                    </tr>
+
+                </table>*@
+        </footer>
+
+    }
+    @section Scripts{
+        <script type="text/javascript">
+            $(function () {
+                $("input[type=text]").first().focus();
+            });
+        </script>
+    }
+</body>
+</html>

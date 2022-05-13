@@ -1,0 +1,68 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.IndentLedgerMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>All Indent List</h2>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:25px;">Preview</th>
+        <th style="width:50px;">
+            Date
+        </th>
+        <th style="width:50px;">
+            IndentNo
+        </th>
+        <th style="width:30px;">
+            SlNo
+        </th>
+        <th style="width:auto;">
+            ItemCode
+        </th>
+        <th style="width:80px;">
+            Indent&nbsp;Status
+        </th>
+        <th style="width:80px;">
+            Issue&nbsp;Status
+        </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.ActionLink("Preview", "../IndentReport/IndentReportById", new { indentid = item.IndentId }, new { target = "_blank;" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemSlNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IndentStatusName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IssueStatus)
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+

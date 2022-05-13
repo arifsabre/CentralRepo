@@ -1,0 +1,240 @@
+﻿@model ManufacturingManagement_V2.Models.C_ComplaintMDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Complaint List  </title>
+    <link href="~/Contents/bootstrap.min.css" rel="stylesheet" />
+    <script>
+        function deleteComplaint(referenceno) {
+            var a = confirm("Are you sure to delete this Record?");
+            if (a == false) {
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteCompt", "C_CRM")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    referenceno: referenceno
+                }),
+                success: function () {
+                    alert("Record Deleted Successfully");
+                    location.reload();
+                }
+            });
+        }
+    </script>
+    <script>
+        function Assign(referenceno) {
+            $('#modal-UpdateNewComplaint').modal('show');
+            var ifrm = document.getElementById("frmUpdate");
+            //ifrm.setAttribute('src', "http://localhost:58521//C_CRM/CreateUpdate1?id=" + referenceno)
+            ifrm.setAttribute('src', "https://pragerp.com/C_CRM/CreateUpdate1?id=" + referenceno)
+        }
+    </script>
+    <script>
+        function SaveComplaint() {
+            $('#modal-InsertNewComplaint').modal('show');
+            var ifrm = document.getElementById("frmInsert");
+            ifrm.setAttribute('src', "http://localhost:58521//C_CRM/CreateUpdate")
+            // ifrm.setAttribute('src', "https://pragerp.com/C_CRM/CreateUpdate")
+        }
+    </script>
+
+    <script>
+        function DoneComplaint(referenceno) {
+            $('#modal-closedComplaint').modal('show');
+            var ifrm = document.getElementById("frmclosed");
+            //ifrm.setAttribute('src', "http://localhost:58521//C_CRM/ClosedComplaint?id=" + referenceno)
+            ifrm.setAttribute('src', "https://pragerp.com/C_CRM/ClosedComplaint?id=" + referenceno)
+        }
+    </script>
+
+    <script>
+        function CheckWaranty() {
+            $('#modal-CheckWaranty').modal('show');
+            var ifrm = document.getElementById("frmwaranty");
+            //ifrm.setAttribute('src', "http://localhost:58521//C_CRM/CheckWarantyIndex")
+            ifrm.setAttribute('src', "https://pragerp.com/C_CRM/CheckWarantyIndex")
+        }
+    </script>
+</head>
+<body>
+    <div style="margin-top:3px;margin-bottom:3px;">
+        @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-InsertNewComplaint" style="margin-top:3px;margin-bottom:3px">
+                Add New Complaint
+            </button>*@
+        <button type="button" class="btn btn-success"
+                data-toggle="modal" onclick="SaveComplaint()">
+            Add New Complaint
+        </button>
+
+        <button type="button" class="btn btn-success"
+                data-toggle="modal" onclick="CheckWaranty()">
+            Check Waranty of Item
+        </button>
+        <div id="printbar" class="pull-right">
+        </div>
+    </div>
+    Complaint List
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    @*<div class="box-header">
+                        </div>*@
+                    <div class="box-body">
+                        <table id="jdtabledesktop4" class="table-responsive table-condensed  table-hover" style="width:100%;text-align:left">
+                            <thead>
+                                <tr>
+                                    <th>Complaint_ID</th>
+                                    <th>Prag_SRNO</th>
+                                    @*<th>Company</th>*@
+                                    <th>Item</th>
+                                    <th>Problem_Detail</th>
+                                    <th>Complainer</th>
+                                    @*<th>Complaint_Date</th>*@
+                                    <th>Status</th>
+                                    <th style="text-align:left">Assign</th>
+                                    <th>Closed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        @*<td style="vertical-align:top;">@i</td>*@
+                                        <td>@Html.DisplayFor(model => item.referenceno)</td>
+                                        <td>@Html.DisplayFor(model => item.pragsrno)</td>
+                                        @*<td>@Html.DisplayFor(model => item.shortname)</td>*@
+                                        <td>@Html.DisplayFor(model => item.itemname)</td>
+
+                                        <td>@Html.DisplayFor(model => item.detail)</td>
+                                        <td>@Html.DisplayFor(model => item.customername)</td>
+                                        @* <td>@Html.DisplayFor(model => item.dateofcomplaintrecieved)</td>*@
+                                        <td>@Html.DisplayFor(model => item.status)</td>
+                                        @* <td>@Html.DisplayFor(model => item.recievedby)</td>*@
+                                        <td>
+                                            @Html.DisplayFor(model => item.EmpName)
+                                            <a onclick="Assign(@item.referenceno)">
+
+                                                <i class="fa fa-pencil-square"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a onclick="DoneComplaint(@item.referenceno)">
+                                                <i class="fa fa-pencil-square"></i>
+                                            </a>
+                                            @Html.ActionLink(" ", null, new { srno = item.referenceno },
+                                                new
+                                                   {
+                                                   onclick = "deleteComplaint('" + item.referenceno + "')",
+                                                    @class = "fa fa-trash-o"
+                                                   })
+                                        </td>
+                                    </tr>
+                                    //i++;
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-UpdateNewComplaint" style="margin-left:250px;margin-top:50px">
+        <div class="modal-dialog col-lg-12">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Assign Complaint</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmUpdate" runat="server" scrolling="no" frameborder="0"
+                                style="width:550px;height:750px;opacity:50;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-InsertNewComplaint" style="margin-left:250px">
+        <div class="modal-dialog col-lg-12">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Add New  Complaint</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmInsert" runat="server" scrolling="no" frameborder="0"
+                                style="width:550px;height:750px;opacity:50;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-closedComplaint" style="margin-left:250px">
+        <div class="modal-dialog col-lg-12">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Closed Complaint</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmclosed" runat="server" scrolling="no" frameborder="0"
+                                style="width:550px;height:1100px;opacity:50;"></iframe>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-CheckWaranty" style="margin-left:250px">
+        <div class="modal-dialog col-lg-12">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Check Waranty</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmwaranty" runat="server" scrolling="no" frameborder="0"
+                                style="width:550px;height:1000px;opacity:50;"></iframe>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Script/Site4.js"></script>
+</body>
+</html>
+
+
+
+

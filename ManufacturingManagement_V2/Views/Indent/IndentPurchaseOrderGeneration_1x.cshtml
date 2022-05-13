@@ -1,0 +1,241 @@
+﻿@model ManufacturingManagement_V2.Models.IndentPurchaseSlipMdl
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Indent Purchase Order Generation</h2>
+
+<p>
+    @*@Html.ActionLink("Create Attendance Detail", "../AttendanceDetail/CreateUpdate")*@
+</p>
+    
+<p>
+    <br/><b>Select Vendor&nbsp;&nbsp;</b>
+    <input type="text" id="txtVendorName" 
+    placeholder="start typing, then select" />
+    <input type="hidden" id="txtVendorId"/>
+</p>
+
+<table id="StepsTable" class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+           S.No.
+        </th>
+        <th style="display:none;">
+           RecId
+        </th>
+        <th style="width:50px;">
+           IndentId
+        </th>
+        <th style="width:100px;">
+           IndentNo
+        </th>
+        <th style="display:none;">
+           ItemId
+        </th>
+        <th style="width:auto;">
+           Item
+        </th>
+        <th style="width:auto;">
+           Item Description
+        </th>
+        <th style="width:100px;">
+           Qty
+        </th>
+        <th style="display:none;">
+           UnitId
+        </th>
+        <th style="width:40px;">
+           Unit
+        </th>
+        <th style="width:40px;">
+           Rate
+        </th>
+        <th style="width:30px;">
+           Select
+        </th>
+    </tr>
+    @{int i = 1;}
+@foreach (var item in Model.Ledgers)
+{
+    <tr>
+        <td>
+            <b>@i</b>
+        </td>
+        <td class="indexColumn" style="display:none;">
+            @*@Html.HiddenFor(model => item.RecId)*@
+            @Html.Label("lblRecId"+i.ToString(),item.RecId.ToString(),new { @id = "RecId" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblIndentId"+i.ToString(),item.IndentId.ToString(),new { @id = "IndentId" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblStrIndentNo"+i.ToString(),item.StrIndentNo,new { @id = "StrIndentNo" + (i-1)})
+        </td>
+        <td class="indexColumn" style="display:none;">
+            @Html.Label("lblItemId"+i.ToString(),item.ItemId.ToString(),new { @id = "ItemId" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblItemCode"+i.ToString(),item.ItemCode,new { @id = "ItemCode" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblItemDesc"+i.ToString(),item.ItemDesc,new { @id = "ItemDesc" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblPurchaseBalance"+i.ToString(),item.PurchaseBalance.ToString(),new { @id = "PurchaseBalance" + (i-1)})
+        </td>
+        <td class="indexColumn" style="display:none;">
+            @Html.Label("lblUnit"+i.ToString(),item.Unit.ToString(),new { @id = "Unit" + (i-1)})
+        </td>
+        <td>
+            @Html.Label("lblUnitName"+i.ToString(),item.UnitName,new { @id = "UnitName" + (i-1)})
+        </td>
+        <td>
+            @Html.TextBox("txtRate"+i.ToString(),item.Rate.ToString(),new { @id = "Rate" + (i-1),style = "width: 85px; height: 25px; padding: 0; text-align:center;" })
+        </td>
+        <td>
+            @Html.CheckBox("chkItem"+i.ToString(),item.chkItem,new { @id = "chkItem" + (i-1),style = "width: 80px; height: 18px; padding: 0; text-align:center;" })
+        </td>
+    </tr>
+    i++;
+}
+
+</table>
+
+<h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input id="submit" type="button" value="Generate Purchase Order" 
+            style="padding:10px 20px;width:240px;" />
+            @Html.ActionLink("Go to Purchase Order", "CreateUpdate", "Order", null, 
+            new { id = "mylink", @target = "_new;", @onclick="location.reload();" })
+        </p>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $("#txtVendorName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var opt = 'hod';
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteVendor", "HelpUtility"))",
+                    data: { "term": request.term, "opt": opt },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('txtVendorId').value = ui.item.Id;
+            }
+        });
+</script>
+
+    <script>
+        $(document).ready(function () {
+            //execute
+            $("#submit").click(function () {
+                var empatt = [];
+                //Collects the data from textboxes and adds it to the dictionary
+                $("#StepsTable tr").each(function (index, item) {
+                    if (index > 0)
+                    {
+                        var tds = $(this).find("td");
+                        var recid = $(tds).eq(1).text();
+                        var indentid = $(tds).eq(2).text();
+                        var itemid = $(tds).eq(4).text();
+                        var itemcode = $(tds).eq(5).text();
+                        var itemdesc = $(tds).eq(6).text();
+                        var purchasebalance = $(tds).eq(7).text();
+                        var unit = $(tds).eq(8).text();
+                        var unitname = $(tds).eq(9).text();
+                        var rate = $(tds).eq(10).find("input").val();
+                        var chkboxValue = $(tds).eq(11).find("input").is(':checked');//chkItem
+                        if (chkboxValue == true) {
+                            empatt.push({
+                                RecId: recid,
+                                IndentId: indentid,
+                                ItemId: itemid,
+                                ItemCode: itemcode,
+                                ItemDesc: itemdesc,
+                                PurchaseBalance: purchasebalance,
+                                Unit: unit,
+                                UnitName: unitname,
+                                Rate: rate,
+                                chkItem: chkboxValue
+                            });
+                        }
+                    }
+                });
+                
+                if ($('#txtVendorId').val().trim() == '') {
+                    alert('Vendor not selected!');
+                    return;
+                }
+
+                if (empatt.length == 0) {
+                    alert('No item(s) selected to generate purchase order!');
+                    return;
+                }
+                
+                $(this).val('Please wait...');
+
+                var data = {
+                    VendorId: parseInt($('#txtVendorId').val().trim()),
+                    VendorName: $('#txtVendorName').val().trim(),
+                    Ledgers: empatt
+                }
+                //Makes ajax call to controller 
+                $.ajax({
+                    url: "/Indent/generatePurchaseOrder",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database 
+                        if (d.status == true) {
+                            //will send status from server side
+                            //alert(d.message);
+                            //clear form
+                            //empatt = [];
+                            //$('#orderNo').val('');
+                            //$('#orderDate').val('');
+                            //$('#orderItems').empty();
+                            var url = $('#mylink').attr('href');//purchase slip
+                            //$('#mylink').attr('href', url + '?mdl=' + d.model);
+                            $('#mylink').attr('href', url + '?lgr=' + JSON.stringify(data));
+                            window.location.href = $('#mylink').attr('href');
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#submit').val('Generate Purchase Order');
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        //$('#submit').val(d.AddEdit);//not applicable here
+                    }
+                });
+            });
+            //end-execute
+        });
+    </script>
+
+}
+
+
+

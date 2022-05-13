@@ -1,0 +1,348 @@
+﻿@model ManufacturingManagement_V2.Models.CiviRateMDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+
+    <script>
+        function UpdateRate(id) {
+            $.ajax({
+                url: "/Civil_Rate/Edit/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId_e').val(response.RecordId);
+                    $('#Category_e').val(response.CategoryId);
+                    $('#SubCategory_e').val(response.SubCategoryId);
+                    $('#Description_e').val(response.Description);
+                    $('#Rate_e').val(response.Rate);
+                    $('#Unit_e').val(response.UnitId);
+                    $('#UpdatedBy_e').val(response.UpdatedBy);
+                    $('#Remark_e').val(response.Remark);
+                    $('#modal-Civil_Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function GetCompany() {
+            $.ajax({
+                // url: "/LibraryMasterUpload/Edit_CompanyRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    // $('#RecordId3').val(response.RecordId);
+                    $('#modal-ChangeCompany8').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+   </head>
+<body>
+    Contractual Rate List
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-Insert" style="margin-top:3px;margin-bottom:3px">
+        Add Rate
+    </button>
+
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-CategoryInsert" style="margin-top:3px;margin-bottom:3px">
+        Add Chapter No
+    </button>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-SubCategoryInsert" style="margin-top:3px;margin-bottom:3px">
+        Add Chapter Name
+    </button>
+    @Html.ActionLink("IndexPage", "IndexPage", "Civil_Rate", null, new { @class = "btn btn-success" })
+    @*@Html.ActionLink("Index Page", "ChapterDetailIndex", "Civil_Rate", null, new { @class = "btn btn-Primary" })*@
+    <div id="printbar" class="pull-right" style="margin-top:3px;margin-bottom:3px">
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                </div>
+                <div class="box-body">
+                    <table id="jdtabledesktop" class="display overlay-wrapper" style="width:100%;">
+                        @*table-condensed table-bordered table-hover*@
+                        <thead>
+                            <tr>
+                                <th>SNo</th>
+                                <th>Chapter No</th>
+                                <th>Chapter Name</th>
+                                <th>Work Description</th>
+                                <th>Unit</th>
+                                <th>Rate</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Item_List)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(model => item.RecordId)</td>
+                                    <td>@Html.DisplayFor(model => item.Category)</td>
+                                    <td>@Html.DisplayFor(model => item.SubCategory)</td>
+                                    <td>@Html.DisplayFor(model => item.Description)</td>
+                                    <td>@Html.DisplayFor(model => item.Unit)</td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.Rate)
+                                    </td>
+                                    <td>
+                                        <a onclick="UpdateRate(@item.RecordId)">
+                                            <i class="fa fa-edit">
+                                            </i>
+                                        </a>
+                                        <a>
+                                            @Html.ActionLink(" ", "Delete", "Civil_Rate", new { id = item.RecordId }, new { onclick = "return confirm('Are sure wants to delete?');", @class = "fa fa-trash-o" })
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:900px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">New Record</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Add", "Civil_Rate", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <label>Select Chapter No.</label>
+                                <br />
+                                @Html.DropDownListFor(model => model.CategoryId, ViewBag.CategoryList as SelectList)
+                                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                            </div>
+                            <br />
+                            <div class="col-lg-12">
+                                <label>Select Chapter Name</label>
+                                <br />
+                                @Html.DropDownListFor(model => model.SubCategoryId, ViewBag.SubCategoryList as SelectList)
+                                @Html.ValidationMessageFor(model => model.SubCategoryId, "", new { @class = "text-danger" })
+                            </div>
+                            <br />
+                            <div class="col-lg-12">
+                                <label>Enter Work Description</label>
+                                <br />
+                                @Html.TextAreaFor(model => model.Description, 0, 0, new { @class = "Editor", @style = "width:800px;height:200px;" })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                            <br />
+                            <div class="col-lg-12">
+                                <label>Enter Rate</label>
+                                <br />
+                                @Html.TextBoxFor(model => model.Rate)
+                            </div>
+                            <br />
+                            <div class="col-lg-12">
+                                <label>Select Unit</label>
+                                <br />
+                                @Html.DropDownListFor(model => model.UnitId, ViewBag.UnitList as SelectList)
+                                @Html.ValidationMessageFor(model => model.UnitId, "", new { @class = "text-danger" })
+                            </div>
+                            @*<br />
+
+                                <label>Enter Remark</label>
+                                <br />
+                                @Html.TextAreaFor(model => model.Remark, 0, 0, new { @class = "Editor", @style = "width:350px;height:30px;" })*@
+
+                            @Html.HiddenFor(model => model.UserId)
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal-Civil_Update">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:900px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Update Record</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit", "Civil_Rate", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.RecordId, new { id = "RecordId_e" })
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <label>Select Chapter No</label>
+                                <br />
+                                @Html.DropDownListFor(model => model.CategoryId, ViewBag.CategoryList as SelectList, new { id = "Category_e" })
+                                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                            </div>
+                            <br />
+                            <div class="col-lg-12">
+                                <label>Select Chapter Name</label>
+                                <br />
+                                @Html.DropDownListFor(model => model.SubCategoryId, ViewBag.SubCategoryList as SelectList, new { id = "SubCategory_e" })
+                                @Html.ValidationMessageFor(model => model.SubCategoryId, "", new { @class = "text-danger" })
+                            </div>
+                            <br />
+                            <div class="col-lg-12">
+                                <label>Work Description</label>
+                                <br />
+                                @Html.TextAreaFor(model => model.Description, 0, 0, new { @class = "Editor", @style = "width:800px;height:200px;", id = "Description_e" })
+                                @Html.ValidationMessageFor(model => model.Description)
+                            </div>
+                            <br />
+                            <div class="col-lg-12">
+                                <label>Enter Rate</label>
+                                <br />
+                                @Html.TextBoxFor(model => model.Rate, new { id = "Rate_e" })
+                            </div>
+                            <br />
+                            <div class="col-lg-12">
+                                <label>Select Unit</label>
+                                <br />
+                                @Html.DropDownListFor(model => model.UnitId, ViewBag.UnitList as SelectList, new { id = "Unit_e" })
+                                @Html.ValidationMessageFor(model => model.UnitId, "", new { @class = "text-danger" })
+                            </div>
+                            <br />
+                            <div class="col-lg-12">
+                                <label>Enter Remark</label>
+                                <br />
+                                @Html.TextBoxFor(model => model.Remark, new { id = "Remark_e" })
+                            </div>
+                            @Html.HiddenFor(model => model.UpdatedBy)
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-CategoryInsert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="box-header">
+                    <h3>Add Chapter</h3>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("AddCategory", "Civil_Rate", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            @Html.HiddenFor(model => model.UserId)
+                            @* @Html.HiddenFor(model => model.RecordId, new { @id = "RecordId3" })*@
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <div class="modal-footer">
+                            <button type="submit" id="modal-UpdateTrainner1" class="btn btn-success">Submit</button>
+                            <button type="button" id="modal-UpdateTrainner1" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-SubCategoryInsert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="box-header">
+                    <h3> Sub Category</h3>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("AddSubCategory", "Civil_Rate", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            @Html.HiddenFor(model => model.UserId)
+                            @* @Html.HiddenFor(model => model.RecordId, new { @id = "RecordId3" })*@
+
+                            <div class="form-group">
+                                @*@Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                <div class="col-lg-12">
+                                    <lable style="font-weight:bold">Select Chapter No</lable>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.CategoryId, ViewBag.CategoryList as SelectList, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                @*@Html.LabelFor(model => model.SubCategory, htmlAttributes: new { @class = "control-label col-md-2" })*@
+
+                                <div class="col-lg-12">
+                                    <lable style="font-weight:bold">Enter Chapter Name</lable>
+                                    <br />
+                                    @Html.TextAreaFor(model => model.SubCategory, 0, 0, new { @class = "Editor", @style = "width:400px;height:25px;" })
+                                    @Html.ValidationMessageFor(model => model.SubCategory, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Script/Site.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Arrival Departure of  Security Guard and Casual Employees</b></h4>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:10%;">Company</td>
+                <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)</td>
+
+            </tr>
+            <tr>
+                <td>Select From</td>
+                <td>@Html.EditorFor(model => model.DateFrom)</td>
+            </tr>
+
+            <tr>
+                <td>Select To</td>
+                <td>@Html.EditorFor(model => model.DateTo)</td>
+            </tr>
+            <tr>
+                <td>Select Employee Name</td>
+                <td>@Html.DropDownListFor(model => model.ECode, ViewBag.EmpList as SelectList, "Select Name")</td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="table table-bordered">
+        <tr>
+            <td style="column-gap:normal">
+                <input type="submit" class="btn btn-success" value="By Company" onclick="target = '_blank';"
+                       formaction="@Url.Action("B_Offline_EmpMachine")" />
+                <input type="submit" class="btn btn-success" value="By Name" onclick="target = '_blank';"
+                       formaction="@Url.Action("B_Offline_EmpMachineByName")" />
+            </td>
+
+
+        </tr>
+        <tr>
+            <td style="column-gap:normal">
+            </td>
+        </tr>
+    </table>
+
+}
+<h5><b>@ViewBag.Message</b></h5>

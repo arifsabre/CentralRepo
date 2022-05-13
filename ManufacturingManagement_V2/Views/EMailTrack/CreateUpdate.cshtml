@@ -1,0 +1,124 @@
+﻿@model ManufacturingManagement_V2.Models.EmailTrackMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Email Ttack Entry</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    @Html.HiddenFor(model => model.RecId)
+    @Html.HiddenFor(model => model.UserId)
+    <table class="table table-bordered">
+        <tr>
+            <td style="width:10%;">@Html.LabelFor(model => model.EmDate)</td>
+            <td>
+                @Html.EditorFor(model => model.EmDate)
+                @Html.ValidationMessageFor(model => model.EmDate)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.EmFrom)</td>
+            <td>
+                @Html.EditorFor(model => model.EmFrom)
+                @Html.ValidationMessageFor(model => model.EmFrom)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.Railway)</td>
+            <td>
+                @Html.EditorFor(model => model.Railway)
+                @Html.ValidationMessageFor(model => model.Railway)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.EmSubject)</td>
+            <td>
+                @Html.EditorFor(model => model.EmSubject)
+                @Html.ValidationMessageFor(model => model.EmSubject)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.UserName)</td>
+            <td>
+                @Html.EditorFor(model => model.UserName)
+                @Html.ValidationMessageFor(model => model.UserName)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.Remarks)</td>
+            <td>
+                @Html.TextAreaFor(model => model.Remarks, 0, 0,
+                    new { @style = "width:268px;height:40px;" })
+                @Html.ValidationMessageFor(model => model.Remarks)
+            </td>
+        </tr>
+    </table>
+
+</div>
+    <h5><b>@ViewBag.Message</b></h5>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //$("#EmpId").attr("placeholder", "start typing, then select");
+            //$("#TaskName").attr("placeholder", "Max Length: 100 Chars");
+            //$("#TaskName").attr("maxlength", "100");
+            $("#UserName").attr("placeholder", "Start typing, then select");
+            document.getElementById("EmDate").focus();
+        });
+
+        //Date Picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#UserName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteUsersList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('UserId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

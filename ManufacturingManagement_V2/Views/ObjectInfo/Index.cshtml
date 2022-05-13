@@ -1,0 +1,205 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ObjectInfoMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Object List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+<!--<p>
+    <div id="dialog" style="display: none;"></div>
+    <input id="createNew" class = "btn btn-default" type="button" value="Create New" />
+    <label id="lblAdminQuery"></label>-->
+    @*<a class="details" href="javascript:;">View</a>*@
+<!--</p>-->
+
+@{var lstSortOn = new List<System.Web.UI.WebControls.ListItem>
+{
+          new System.Web.UI.WebControls.ListItem { Text = "Object Id", Value = "obj" },
+          new System.Web.UI.WebControls.ListItem { Text = "Group + Object Id", Value = "grpobj" },
+          new System.Web.UI.WebControls.ListItem { Text = "Group + RPT SlNo", Value = "grpslno" },
+          new System.Web.UI.WebControls.ListItem { Text = "Group + RPT Name", Value = "grprpt" }
+    };
+}
+
+<fieldset>
+    @using (Ajax.BeginForm("FilterIndex", "ObjectInfo", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td><b>Group</b></td>
+                    <td>
+                        @Html.DropDownList("ddlGroup", ViewBag.ObjGroupList as SelectList, "---Select---")
+                    </td>
+                    <td><b>Sort On</b></td>
+                    <td>
+                        @Html.DropDownList("ddlSortOn", new SelectList(lstSortOn, "Value", "Text"))
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Report</b></td>
+                    <td>
+                        @Html.TextBox("txtRptName")
+                    </td>
+                    <td colspan="2">
+                        <button class="btn btn-default">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:35px;">
+            S.No.
+        </th>
+        <th style="width:220px;word-wrap:break-word;">
+            ObjectID/Group<br/>Permission<br/>ST_Procedure_Name
+        </th>
+        <th style="width:auto;">
+            Report_Name/RptNo<br />Location_Menu<br />Remarks
+        </th>
+        <th style="width:50px;">Links</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @i
+    </td>
+    <td>
+        <div><b>[@Html.DisplayFor(modelItem => item.ObjectId)]</b></div>
+        <div>
+            <b>[@Html.DisplayFor(modelItem => item.EntryName)]</b>
+            [@Html.DisplayFor(modelItem => item.EntryId)]
+        </div>
+        <div><b>@Html.DisplayFor(modelItem => item.SPName)</b></div>
+    </td>
+    <td>
+        <div>
+            <b>[@Html.DisplayFor(modelItem => item.RptName)]</b>
+               [@Html.DisplayFor(modelItem => item.SlNo)]
+        </div>
+        <b>-></b>@Html.DisplayFor(modelItem => item.LocationMenu)
+        <br /><b>-></b>@Html.DisplayFor(modelItem => item.Remarks)
+    </td>
+    <td>
+        @Html.Raw(item.RptLink)
+        <br />@Html.ActionLink("Edit", "CreateUpdate", new { id = item.ObjectId })
+        <br />@Html.ActionLink("Details", "Details", new { id = item.ObjectId })
+        @*<br />@Html.ActionLink("EditPopup", null, null,
+            new { @class = "details", @objid = item.ObjectId })*@
+        @*@onclick = "setId('"+ item.ObjectId + "')*@
+    </td>
+</tr>
+        i++;
+    }
+    @{i = i - 1;}
+    <b>@i.ToString()</b>&nbsp;&nbsp;&nbsp;Report(s) found.
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txt").focus();
+            document.getElementById("txtRptName").value = '@ViewBag.RptName';
+            document.getElementById("ddlSortOn").value = '@ViewBag.SortOn';
+        });
+    </script>
+
+    <script type="text/javascript">
+        //main function 1--------------------------------------------
+
+        var jq2 = jQuery.noConflict(true);
+        (function ($) {
+
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 850,
+                draggable: false,
+                title: "Create New Object",
+                beforeClose: function (event, ui) {
+                    //just to implement forced close
+                    //if (!$("#terms").prop("checked")) {
+                    //    event.preventDefault();
+                    //    $("[for = terms]").addClass("invalid");
+                    //    $('#lblAdminQuery').text('Not OK');
+                    //}
+                    //else {
+                    //    $('#lblAdminQuery').text('OK');
+                    //}
+                }
+            });
+            //action
+            $(".details").click(function () { //"#objDet .details"
+                //* to resolve -disappers after page load
+                var objId = $(this).attr("objid");
+                //$(this).closest("tr").find("td").eq(0).html();
+                $.ajax({
+                    type: "GET",
+                    //url: "/ObjectInfo/TestNew",
+                    url: "@(Url.Action("TestNew", "ObjectInfo"))",
+                    data: { "id": objId },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#dialog').html(response);
+                        $('#dialog').dialog('open');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+            //cl-action
+
+
+            $("#createNew").click(function () {
+                //ok- working
+                $.ajax({
+                    type: "GET",
+                    //url: "/ObjectInfo/TestNew",
+                    url: "@(Url.Action("TestNew", "ObjectInfo"))",
+                    @*url: "@(Url.Action("Index", "UserPermissionReport"))",*@
+                    data: { "id": 0 },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#dialog').html(response);
+                        $('#dialog').dialog('open');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+        });
+        //---------------------------------------------------------
+        }(jq2));
+
+    </script>
+
+}
+

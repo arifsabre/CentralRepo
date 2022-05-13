@@ -1,0 +1,809 @@
+﻿@model ManufacturingManagement_V2.Models.Trainning_Insert
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Letter</title>
+    <script>
+        $(document).ready(function () {
+            $('#Apply').prop('disabled', true);
+            $("#files").change(function () {
+                // Get uploaded file extension
+                var extension = $(this).val().split('.').pop().toLowerCase();
+                // Create array with the files extensions that we wish to upload
+                var validFileExtensions = ['pdf'];
+                // var validFileExtensions = ['pdf'];
+                //Check file extension in the array.if -1 that means the file extension is not in the list.
+                if ($.inArray(extension, validFileExtensions) == -1) {
+                    alert("Sorry!! Upload only 'pdf' file")
+                    // alert("Sorry!! Upload only 'doc', 'docx', 'pdf' 'ppt' file")
+                    // Clear fileuload control selected file
+                    $(this).replaceWith($(this).val('').clone(true));
+                    //Disable Submit Button
+                    $('#Apply').prop('disabled', true);
+                } else {
+                    // Check and restrict the file size to 128 KB.
+                    if ($(this).get(0).files[0].size > (131072131)) {
+                        alert("Sorry!! Max allowed file size is 2MB");
+                        // Clear fileuload control selected file
+                        $(this).replaceWith($(this).val('').clone(true));
+                        //Disable Submit Button
+                        $('#Apply').prop('disabled', true);
+                    } else {
+                        //Enable Submit Button
+                        $('#Apply').prop('disabled', false);
+                    }
+                }
+            });
+            $("#Apply").click(function () {
+                if ($("#Location").val() = null) {
+                    alert("Please fill out required fields(*)");
+                    return false;
+                }
+
+                return true;
+            });
+        });
+
+        function updateTrainningDate(id) {
+            $.ajax({
+                url: "/Trainning/Edit_TrainningDateRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId1').val(response.RecordId);
+                    //$('#Trainner1').val(response.Trainner);
+                    $('#TrainningDate1').val(response.TrainningDate1);
+                    $('#modal-UpdateDate').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function updateTrainningTopic(id) {
+            $.ajax({
+                url: "/Trainning/Edit_TrainningTopicRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId2').val(response.RecordId);
+                    $('#Trainning_Topic2').val(response.Trainning_Topic);
+                    $('#modal-UpdateTopic').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function updateTrainner(id) {
+            $.ajax({
+                url: "/Trainning/Edit_TrainnerRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId3').val(response.RecordId);
+                    $('#Trainner3').val(response.Trainner);
+                    $('#modal-UpdateTrainner').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function updateTrainnee(id) {
+            $.ajax({
+                url: "/Trainning/Edit_TrainneeRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId4').val(response.RecordId);
+                    $('#Trainner4').val(response.Trainner);
+                    $('#modal-UpdateTrainee').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function CreateTrainningTopic(id) {
+            $.ajax({
+                // url: "/Trainning/Edit_TrainneeRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    // $('#RecordId5').val(response.RecordId);
+                    // $('#TrainningTopic5').val(response.Trainning_Topic);
+                    $('#modal-CreateTrainnee').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function TrainningTopicList(id) {
+            $.ajax({
+                // url: "/Trainning/Edit_TrainneeRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    // $('#RecordId5').val(response.RecordId);
+                    // $('#TrainningTopic5').val(response.Trainning_Topic);
+                    $('#modal-TrainningTopicList').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function UpdateTopicMaster(id) {
+            $.ajax({
+                url: "/Trainning/Edit_TopicMasterRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#TopicId6').val(response.TopicId);
+                    $('#Trainning_Topic6').val(response.Trainning_Topic);
+                    $('#modal-UpdateTopicMaster').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function GetCompany() {
+            $.ajax({
+                // url: "/LibraryMasterUpload/Edit_CompanyRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    // $('#RecordId3').val(response.RecordId);
+                    $('#modal-ChangeCompany8').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <div class="pull-left">
+
+
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-Insert" style="margin-right:3px;margin-bottom:3px;margin-top:3px;margin-left:2px">
+            Add New
+        </button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-CreateTrainningTopic">
+            Add Training Topic
+        </button>
+
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-TopicList">
+            Topic List
+        </button>
+        &nbsp; &nbsp; <div id="printbar" class="pull-right" style="margin-right:5px;margin-bottom:3px;margin-top:3px">
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover table-responsive table-condensed " style="width:100%;">
+                            <thead>
+                                <tr>
+
+                                    <th>Id</th>
+                                    <th>Topic_Id</th>
+                                    <th>Company</th>
+                                    <th>Topic</th>
+                                    <th>Category</th>
+                                    <th>Sub-Category</th>
+                                    <th>Trainner</th>
+                                    <th>Trainning_Date</th>
+                                    <th>Total_Person</th>
+                                    <th>View</th>
+                                    <th>Details</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List2)
+                                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(model => item.RecordId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.TopicId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.ShortName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.Trainning_Topic)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.LibCategory)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.LibSubCategory)
+                                    </td>
+                                    <td> @Html.DisplayFor(model => item.Trainner)</td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.TrainningDate)
+                                    </td>
+
+                                    <td>@Html.DisplayFor(model => item.TotalPerson)</td>
+                                    <td>
+                                        @Html.ActionLink("View", "GetQutation", new { id = item.RecordId })
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Details", "Details", new { id = item.TopicId })
+                                    </td>
+                                    <td>
+                                        @*Topic*@
+                                        @*<a onclick="updateTrainningTopic(@item.RecordId)">
+                <i class="fa fa-pencil">
+                </i>
+            </a>*@
+                                        @*Trainner*@
+                                        @*<a onclick="updateTrainner(@item.RecordId)">
+                <i class="fa fa-pencil">
+                </i>
+            </a>*@
+                                        @*Trainee*@
+                                        @*<a onclick="updateTrainnee(@item.RecordId)">
+                <i class="fa fa-pencil">
+                </i>
+            </a>*@
+                                        @*Date*@
+                                        @*<a onclick="updateTrainningDate(@item.RecordId)">
+                <i class="fa fa-pencil">
+                </i>
+            </a>*@
+                                        <a>
+                                            @Html.ActionLink(" ", "Trainning_Group_Delete", "Trainning", new { id = item.RecordId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                        </a>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Trainig</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("IndexTrainningGroup1", "Trainning", FormMethod.Post, new { enctype = "multipart/form-data", id = "demoForm", name = "demoForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                @*  <hr />*@
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    @* @Html.LabelFor(model => model.RecordId, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                    <div class="col-md-10">
+                                        @* <input type="hidden" class="form-control" id="RecordId" name="RecordId" style="width:350px" />*@
+
+
+                                        @Html.HiddenFor(model => model.RecordId, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.HiddenFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.HiddenFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
+                                        @*  @Html.ValidationMessageFor(model => model.RecordId, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Select Company</label>
+                                    <br />
+                                    @*  @Html.LabelFor(model => model.cmpname, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)
+                                        @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Select Category</label>
+                                    <br />
+                                    @*  @Html.LabelFor(model => model.cmpname, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(m => m.LibCategoryId, Model.LibraryCategory, "Select Category")
+                                        @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Select Sub-Category</label>
+                                    <br />
+                                    @*  @Html.LabelFor(model => model.cmpname, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(m => m.LibSubCategoryId, Model.LibrarySubCategory, "Select SubCategory")
+                                        @Html.ValidationMessageFor(model => model.LibSubCategoryId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Select Trainning Topic</label>
+                                    <br />
+                                    @*  @Html.LabelFor(model => model.cmpname, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.TopicId, ViewBag.Topic as SelectList)
+                                        @Html.ValidationMessageFor(model => model.TopicId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Enter Trainer Name</label>
+                                    <br />
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Trainner, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Trainner, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Training Date</label>
+                                    <br />
+
+                                    <div class="col-md-10">
+                                        <input type="date" class="form-control" id="TrainningDate1" name="TrainningDate" style="width:350px" />
+                                        @* @Html.EditorFor(model => model.TrainningDate, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @Html.ValidationMessageFor(model => model.TrainningDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Total Person</label>
+                                    <br />
+                                    <div class="col-md-10">
+                                        <input type="number" class="form-control" id="TotalPerson1" name="TotalPerson" min="1" max="999" />
+                                        @* @Html.EditorFor(model => model.TrainningDate, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @Html.ValidationMessageFor(model => model.TotalPerson, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    &nbsp;&nbsp;<label>Select File</label>
+                                    <br />
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(model => model.files, "", new { @type = "file", @multiple = "multiple" })
+                                        @Html.ValidationMessageFor(model => model.files, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="Apply" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal-UpdateDate">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("Edit_TrainningDate", "Trainning", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            @Html.HiddenFor(model => model.UpdatedBy)
+                            @Html.HiddenFor(model => model.RecordId, new { @id = "RecordId1" })
+
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Select Date</label>
+                                    <br />
+                                    <input type="date" class="form-control" id="TrainningDate1" name="TrainningDate" />
+                                    @*@Html.EditorFor(model => model.TrainningDate)*@
+                                    @Html.ValidationMessageFor(model => model.TrainningDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            @*<div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Trainner</label>
+                                        <br />
+                                        @Html.TextBoxFor(model => model.Trainner, new { @id = "Trainner1" })
+                                        @Html.ValidationMessageFor(model => model.Trainner, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="modal-UpdateDate" class="btn btn-success">Submit</button>
+                            <button type="button" id="modal-UpdateDate" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal-UpdateTopic">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("Edit_TrainningTopic", "Trainning", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            @Html.HiddenFor(model => model.UpdatedBy)
+                            <input type="hidden" class="form-control" id="RecordId2" name="RecordId" />
+                            @* @Html.HiddenFor(model => model.RecordId, new { @id = "RecordId2" })*@
+
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Select Topic</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.TopicId, ViewBag.Topic as SelectList)
+                                    @*  @Html.EditorFor(model => model.TrainningDate, new { @id = "TrainningDate1" })*@
+                                    @Html.ValidationMessageFor(model => model.TrainningDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="modal-UpdateTopic" class="btn btn-success">Submit</button>
+                            <button type="button" id="modal-UpdateTopic" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal-UpdateTrainner">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("Edit_Trainner", "Trainning", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            @Html.HiddenFor(model => model.UpdatedBy)
+                            @Html.HiddenFor(model => model.RecordId, new { @id = "RecordId3" })
+
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Trainner</label>
+                                    <br />
+                                    <input type="text" class="form-control" id="Trainner3" name="Trainner" />
+                                    @* @Html.EditorFor(model => model.Trainner, new { @id = "Trainner3" })*@
+                                    @Html.ValidationMessageFor(model => model.Trainner, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="modal-UpdateTrainner" class="btn btn-success">Submit</button>
+                            <button type="button" id="modal-UpdateTrainner" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal-UpdateTrainee">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("Edit_Trainneee", "Trainning", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            @Html.HiddenFor(model => model.UpdatedBy)
+                            <input type="hidden" class="form-control" id="RecordId4" name="RecordId" />
+                            @* @Html.HiddenFor(model => model.RecordId, new { @id = "RecordId2" })*@
+
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Select Trainee</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.NewEmpId, ViewBag.EMPName as SelectList)
+                                    @*  @Html.EditorFor(model => model.TrainningDate, new { @id = "TrainningDate1" })*@
+                                    @Html.ValidationMessageFor(model => model.NewEmpId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="modal-UpdateTopic" class="btn btn-success">Submit</button>
+                            <button type="button" id="modal-UpdateTopic" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal-CreateTrainningTopic">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("InsertTrainningTopic", "Trainning", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            @Html.HiddenFor(model => model.CreatedBy)
+                            @* @Html.HiddenFor(model => model.RecordId, new { @id = "RecordId3" })*@
+
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Enter Trainning Topic</label>
+                                    <br />
+                                    @*<input type="text" class="form-control" id="TrainningTopic5" name="Trainner" />*@
+                                    @Html.EditorFor(model => model.Trainning_Topic)
+                                    @Html.ValidationMessageFor(model => model.Trainning_Topic, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="modal-UpdateTrainner" class="btn btn-success">Submit</button>
+                            <button type="button" id="modal-UpdateTrainner" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal-TopicList">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("Edit_TopicMaster", "Trainning", FormMethod.Post))
+                    {
+                        @*<div class="modal-body">
+                            @Html.HiddenFor(model => model.UpdatedBy)
+                            @*<input type="hidden" class="form-control" id="RecordId2" name="RecordId" />*@
+                        @* @Html.HiddenFor(model => model.RecordId, new { @id = "RecordId2" })*@
+                        @*<div class="col-md-8">
+                            @*<div class="form-group">*@
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:50%;color:black">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Id</th>
+                                    <th>Topic</th>
+                                    @* <th>Created_By</th>*@
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List4)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a onclick="UpdateTopicMaster(@item.TopicId)">
+                                                <i class="fa fa-pencil">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "TrainningDeleteTopic", "Trainning", new { id = item.TopicId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.TopicId)
+
+                                        </td>
+                                        <td>
+
+                                            @Html.DisplayFor(model => item.Trainning_Topic)
+
+
+                                        </td>
+                                        @*<td>
+                                                @Html.DisplayFor(model => item.CreatedBy)
+                                            </td>*@
+
+
+
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+
+                        @*</div>*@
+                        <div class="modal-footer">
+                            <button type="submit" id="modal-TopicList" class="btn btn-success">Submit</button>
+                            <button type="button" id="modal-TopicList" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-UpdateTopicMaster">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("Edit_TopicMaster", "Trainning", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            @Html.HiddenFor(model => model.UpdatedBy)
+                            @Html.HiddenFor(model => model.TopicId, new { @id = "TopicId6" })
+
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Enter Topic</label>
+                                    <br />
+                                    <input type="text" class="form-control" id="Trainning_Topic6" name="Trainning_Topic" />
+                                    @Html.ValidationMessageFor(model => model.Trainning_Topic, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="modal-UpdateTopicMaster" class="btn btn-success">Submit</button>
+                            <button type="button" id="modal-UpdateTopicMaster" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @* ChangeCompany*@
+    <div class="modal fade" id="modal-ChangeCompany8">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                @*<div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="box-title">Company Screen</h3>
+                    </div>*@
+                <div class="modal-body">
+                    @*<div class="box box-primary">*@
+                    @using (Html.BeginForm("ChangeCompany", "Trainning", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-lg-10">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+
+                                @Html.HiddenFor(model => model.UpdatedBy)
+
+                                <input type="hidden" class="form-control" id="RecordId3" name="RecordId" style="color:white">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Select Company</label>
+                                @Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)
+                                @*@Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)*@
+                                @* @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "danger" })*@
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" id="modal-updateCompany" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="submit" id="modal-updateCompany" class="btn btn-success">Submit</button>
+                        </div>
+
+                    }
+                    @*  *@ @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+        $(function () {
+            $("select").each(function () {
+                if ($(this).find("option").length <= 1) {
+                    $(this).attr("disabled", "disabled");
+                }
+            });
+
+            $("select").change(function () {
+                var value = 0;
+                if ($(this).val() != "") {
+                    value = $(this).val();
+                }
+                var id = $(this).attr("id");
+                $.ajax({
+                    type: "POST",
+                    url: "/Library/AjaxMethod",
+                    data: '{type: "' + id + '", value: ' + value + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        var dropDownId;
+                        var list;
+                        switch (id) {
+                            case "LibCategoryId":
+                                list = response.LibrarySubCategory;
+                                DisableDropDown("#LibSubCategoryId");
+                                PopulateDropDown("#LibSubCategoryId", list);
+                                break;
+
+                        }
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+
+        function DisableDropDown(dropDownId) {
+            $(dropDownId).attr("disabled", "disabled");
+            $(dropDownId).empty().append('<option selected="selected" value="0">Please select   SubCategory</option>');
+        }
+
+        function PopulateDropDown(dropDownId, list) {
+            if (list != null && list.length > 0) {
+                $(dropDownId).removeAttr("disabled");
+                $.each(list, function () {
+                    $(dropDownId).append($("<option></option>").val(this['Value']).html(this['Text']));
+                });
+            }
+        }
+    </script>
+
+    <script src="~/Script/Site.js"></script>
+
+</body>
+</html>
+
+

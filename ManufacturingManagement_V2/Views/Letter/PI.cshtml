@@ -1,0 +1,153 @@
+﻿@model ManufacturingManagement_V2.Models.LetterMDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Letter</title>
+    <script>
+ </script>
+</head>
+<body>
+    <div class="row" style="margin-top:3px;margin-bottom:3px;margin-left:0px">
+        <div class="col-md-12 pull-left">
+            <div class="col-md-6 pull-left">
+                <div class="panel panel-success">
+                    <div class="panel panel-heading">
+                        <h4 class="panel-title"> &nbsp; &nbsp; Outward Correspondence System</h4>
+                    </div>
+
+                    <div class="panel-body text-center">
+                        <div class="col-md-4">
+                            <a href='@Url.Action("Index", "Letter")'>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;Total</h4>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ViewBag.TotalLetter</h4>
+                            </a>
+                        </div>
+
+                        <div class="col-md-4">
+                            <a href='@Url.Action("PI", "Letter")'>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PI</h4>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ViewBag.PI</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href='@Url.Action("PI2", "Letter")'>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PI2</h4>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ViewBag.PI2</h4>
+                            </a>
+                        </div>
+
+                        <div class="col-md-4">
+                            <a href='@Url.Action("PP", "Letter")'>
+
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PP</h4>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ViewBag.PP</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href='@Url.Action("PP2", "Letter")'>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PP-2</h4>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ViewBag.PP2</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href='@Url.Action("PR", "Letter")'>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PR</h4>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ViewBag.PR</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href='@Url.Action("GS", "Letter")'>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GS</h4>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ViewBag.GS</h4>
+                            </a>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert" style="margin-right:3px;margin-bottom:3px;margin-top:3px;margin-left:2px">
+            PI Sent Doccument List
+        </button>
+        <div id="printbar" class="pull-right" style="margin-right:5px;margin-bottom:3px;margin-top:3px">
+        </div>
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>File_No</th>
+                                    <th>Company</th>
+                                    <th>Letter_No</th>
+                                    <th>Subject</th>
+                                    <th>Send_To</th>
+                                    <th>Send_On</th>
+                                    <th>File_Name</th>
+                                    <th>Download</th>
+                                    <th>Send_By</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+
+                                    <tr>
+
+                                        @*  <td>@Html.DisplayFor(model => item.RecordId)</td>*@
+                                        <td>@Html.DisplayFor(model => item.Id)</td>
+
+                                        <td>
+                                            @Html.DisplayFor(model => item.ShortName)
+
+                                        </td>
+                                        <td>@Html.DisplayFor(model => item.LetterNo)</td>
+                                        <td>@Html.DisplayFor(model => item.Subject)</td>
+                                        <td>@Html.DisplayFor(model => item.SendTo)</td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.SendDate)
+
+
+                                        </td>
+                                        @*  <td>@Html.DisplayFor(model => item.Keywords)</td>*@
+                                        <td>@Html.DisplayFor(model => item.FileName)</td>
+                                        @*<td>
+                                                @Html.ActionLink("View", "GetFileView", new { id = item.Id })
+                                            </td>*@
+                                        <td>
+                                            @Html.ActionLink("Downlaod", "DownLoadFile", new { id = item.Id })
+
+                                        </td>
+                                        <td>@Html.DisplayFor(model => item.CreatedBy)</td>
+                                        <td>T</td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>

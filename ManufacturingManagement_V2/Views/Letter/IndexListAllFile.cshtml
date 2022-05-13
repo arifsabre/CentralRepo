@@ -1,0 +1,216 @@
+﻿@model ManufacturingManagement_V2.Models.LetterMDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Letter</title>
+    <script>
+        </script>
+    </head>
+<body>
+    <div>
+
+        <div id="printbar" class="pull-right" style="margin-right:5px;margin-bottom:3px;margin-top:3px">
+        </div>
+        &nbsp;&nbsp;&nbsp; All File List
+    </div>
+    <section class="content">
+        @*<div class="row">*@
+        <div class="col-lg-12">
+            <div class="box box-success">
+                <div class="box-header">
+                </div>
+                <div class="box-body">
+
+                    <table id="SelectSearch" class="table-bordered table-striped table-hover" style="width:100%;">
+                        <thead>
+                            <tr>
+                                @*<th>Action</th>*@
+                                <th>RecordId</th>
+                                @*<th>ShowFile</th>*@
+                                <th>Company</th>
+                                <th>Letter_No</th>
+                                <th>Subject</th>
+                                <th>Send_To</th>
+                                <th>Send_On</th>
+                                <th>Keyword</th>
+                                <th>Created_By</th>
+                                <th>Show_File</th>
+                                @*<th>PDF_File</th>
+        <th>View</th>
+        <th>Other_File</th>
+        <th>Download</th>*@
+                                @*<th>Created_By</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Item_List2)
+                            {
+
+                            <tr>
+                                @*<td>
+            <a onclick="GetDetails(@item.RecordId)">
+                    <i class="fa fa-pencil">
+                    </i>
+                </a>
+            <a>
+                @Html.ActionLink(" ", "LetterDeleteRecord", "Letter", new { id = item.RecordId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+            </a>
+        </td>*@
+                                <td>
+
+                                    @Html.DisplayFor(model => item.RecordId)
+                                    @*<a onclick="GetFile(@item.RecordId)">
+                <i class="fa fa-pencil-square">
+                </i>
+            </a>*@
+                                    @* @Html.ActionLink("Files ", "Details", new { id = item.RecordId })*@
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.ShortName)
+                                    @*<a onclick="GetCompany(@item.RecordId)">
+                <i class="fa fa-pencil-square">
+                </i>
+            </a>*@
+                                </td>
+                                <td>@Html.DisplayFor(model => item.LetterNo)</td>
+                                <td>@Html.DisplayFor(model => item.Subject)</td>
+                                <td>@Html.DisplayFor(model => item.SendTo)</td>
+                                <td>
+                                    @Html.DisplayFor(model => item.SendDate)
+                                    @*<a onclick="GetSendDate(@item.RecordId)">
+                <i class="fa fa-pencil-square">
+                </i>
+            </a>*@
+                                </td>
+                                <td>@Html.DisplayFor(model => item.Keywords)</td>
+                                <td>@Html.DisplayFor(model => item.CreatedBy)</td>
+                                <td>
+                                    <a>
+                                        @Html.ActionLink("Files ", "Details", new { id = item.RecordId })
+
+                                    </a>
+                                    @* <a href="javascript:void(0);" class="anchorDetail" data-id="@item.RecordId">GetFileDetails</a>*@
+                                </td>
+
+                            </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>RecordId</th>
+                                <th>Company</th>
+                                <th>Letter_No</th>
+                                <th>Subject</th>
+                                <th>Send_To</th>
+                                <th>Send_On</th>
+                                <th>Keyword</th>
+                                <th>Created_By</th>
+                              @*  <th>Show_File</th>*@
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @*<div class="modal fade" id="modal-AllFileFile">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header with-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="box-title">File</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box box-primary">
+                            @using (Html.BeginForm("IndexListAllFile", "Letter", FormMethod.Post))
+                            {
+
+                                <div class="modal-body">
+                                    <table id="letter" class="table table-bordered table-hover " style="width:60%">
+                                        <thead>
+                                            <tr>
+
+                                                <th>RecordId</th>
+                                                <th>Company</th>
+                                                <th>Letter_No</th>
+                                                <th>Subject</th>
+                                                <th>Send_To</th>
+                                                <th>Send_On</th>
+                                                <th>Keyword</th>
+
+                                                <th>Created_By</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.Item_List2)
+                                            {
+                                                <tr>
+                                                    <td>
+
+                                                        @Html.DisplayFor(model => item.RecordId)
+
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(model => item.ShortName)
+
+                                                    </td>
+                                                    <td>@Html.DisplayFor(model => item.LetterNo)</td>
+                                                    <td>@Html.DisplayFor(model => item.Subject)</td>
+                                                    <td>@Html.DisplayFor(model => item.SendTo)</td>
+                                                    <td>
+                                                        @Html.DisplayFor(model => item.SendDate)
+
+                                                    </td>
+                                                    <td>@Html.DisplayFor(model => item.Keywords)</td>
+                                                    <td>
+                                                        <a>
+                                                            @Html.ActionLink("Files ", "Details", new { id = item.RecordId })
+
+                                                        </a>
+
+                                                    </td>
+                                                    <td>@Html.DisplayFor(model => item.CreatedBy)</td>
+                                                </tr>
+                                            }
+                                            }
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <script src="~/Script/Site5AllRecord.js"></script>
+    @*<script src="~/Script/Site.js"></script>*@
+</body>
+
+</html>

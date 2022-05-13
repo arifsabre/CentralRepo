@@ -1,0 +1,169 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ProductionEntryMdl>
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <h4><b>Daily Production View</b></h4>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndex", "ProductionEntry", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+        <div class="form-group">
+            @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+            From
+            @Html.TextBox("txtDtFrom", null, new { @class = "datepicker", @style = "width:90px;" })
+
+            &nbsp;&nbsp;To
+            @Html.TextBox("txtDtTo", null, new { @class = "datepicker", @style = "width:90px;" })
+
+            &nbsp;&nbsp;Item
+            @Html.TextBox("txtItem", null, new { @placeholder = "start typing then select", @style = "width:300px;" })
+
+            &nbsp; &nbsp;
+            <button class="btn btn-default">Submit</button>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+        </div>
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th style="width:100px;">
+                Month/Year
+            </th>
+            <th style="width:90px;">
+                @Html.DisplayNameFor(model => model.EntryDate)
+            </th>
+            <th style="width:auto;">
+                @Html.DisplayNameFor(model => model.ItemCode)
+            </th>
+            <th style="width:auto;">
+                @Html.DisplayNameFor(model => model.ShortName)
+            </th>
+            <th style="width:100px;">
+                @Html.DisplayNameFor(model => model.PrdQty)
+            </th>
+            <th style="width:auto;">
+                @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th style="width:50px;">Action</th>
+
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.MonthYear)
+                </td>
+                <td>
+                    @item.EntryDate.ToString(string.Format("dd/MM/yyyy"))
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ItemCode)
+                    <div>[@Html.DisplayFor(model => item.ItemId)]</div>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ShortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.PrdQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Remarks)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+                    <br />@Html.ActionLink("Delete", null, null,
+              new { onclick = "deleteEntry('" + item.RecId + "')", style = "color:black;" })
+                </td>
+            </tr>
+            i++;
+        }
+
+    </table><br/>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        @*@Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/jqueryui")
+            @Styles.Render("~/Content/themes/base/css")*@
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+            document.getElementById("hfItemId").value = '@ViewBag.itemid';
+            document.getElementById("txtItem").value = '@ViewBag.itemcode';
+        });
+        </script>
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script>
+            function deleteEntry(recid) {
+            var a = confirm("Are you sure to delete this entry?");
+            if (a == false) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "ProductionEntry")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    recid: recid
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+        </script>
+
+        <script type="text/javascript">
+        $("#txtItem").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteFinishedItemList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+            response(customer);
+        }, minLength: 2,
+        select: function (event, ui) {
+            document.getElementById('hfItemId').value = ui.item.Id;
+         }
+    });
+        </script>
+
+    }
+

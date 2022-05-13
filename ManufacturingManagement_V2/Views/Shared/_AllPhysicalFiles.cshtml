@@ -1,0 +1,82 @@
+﻿@model ManufacturingManagement_V2.Models.LibFileUploadMDI
+
+<table id="jdtabledesktop" class="display nowrap" style="width:100%">
+    <thead>
+        <tr>
+            @*<th>Action</th>*@
+            @*<th>Id</th>
+                <th>Issue</th>*@
+            <th>File_NO</th>
+            <th>Company</th>
+            <th>File_Name</th>
+            <th>Location</th>
+            <th>Owner</th>
+            <th>Created_By</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Item_List1)
+        {
+            <tr>
+                @*<td>
+                        <a onclick="GetRecordDetail(@item.RecordId)">
+                            <i class="fa fa-eye">
+                            </i>
+                        </a>
+                        <a onclick="GetDetails(@item.RecordId)">
+                            <i class="fa fa-pencil-square">
+                            </i>
+                        </a>
+
+                        <a>
+                            @Html.ActionLink(" ", "LibraryMasterDeleteRecord", "LibraryMasterUpload", new { id = item.RecordId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                        </a>
+                    </td>*@
+                @*<td>
+                        <a onclick="IssueTo(@item.RecordId)">
+                           <i class="fa fa-pencil-square">
+                            </i>
+                        </a>
+                    </td>*@
+
+                @*<td>
+                        <a onclick="GetConfirmation(@item.RecordId)">
+                            <i class="fa fa-pencil-square">
+                            </i>
+                        </a>
+                    </td>*@
+
+                <td>@Html.DisplayFor(model => item.RecordId)</td>
+                <td>
+
+                    @Html.DisplayFor(model => item.ShortName)
+                    @*<a onclick="GetCompany(@item.RecordId)">
+                            <i class="fa fa-pencil-square">
+                            </i>
+                        </a>*@
+                </td>
+                <td>@Html.DisplayFor(model => item.DoccumentName)</td>
+                <td>@Html.DisplayFor(model => item.Location)</td>
+                <td>
+                    @Html.DisplayFor(model => item.EmpName)
+                    @*<a onclick="GetOwner(@item.RecordId)">
+                            <i class="fa fa-pencil-square">
+                            </i>
+                        </a>*@
+                </td>
+                 <td>@Html.DisplayFor(model => item.CreatedBy)</td>
+                <td>@Html.DisplayFor(model => item.Status)</td>
+                @*<td> @Html.DisplayFor(model => item.ReturnStatus) </td>*@
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr></tr>
+    </tfoot>
+</table>
+<div class="pull-right" style="margin-bottom:3px">
+        <input type="button" value="Hide" class="btn btn-success"
+               onClick="window.location.href=window.location.href">
+    </div>
+

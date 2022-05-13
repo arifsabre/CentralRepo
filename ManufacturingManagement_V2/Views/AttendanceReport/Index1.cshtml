@@ -1,0 +1,73 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Absent Employee Report Company Wise</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="container" style="max-width:600px;">
+        <div class="form-group">
+            <h3></h3>
+            <table>
+                <tr><td colspan="4"><h5><b>Report Options</b></h5></td></tr>
+                <tr>
+                   <td style="width:10%;">Company</td>
+                   <td>@Html.DropDownListFor(model => model.JoiningUnit, ViewBag.CompanyList as SelectList)</td>   
+                </tr>
+                <tr>
+                   <td>Grade</td>
+                   <td>@Html.DropDownListFor(model => model.Grade, ViewBag.GradeList as SelectList)</td>   
+                </tr>
+                <tr>
+                   <td>Year</td>
+                   <td>@Html.EditorFor(model => model.AttYear)</td>   
+                </tr>
+                <tr>
+                   <td>Month</td>
+                   <td>@Html.DropDownListFor(model => model.AttMonth, ViewBag.MonthList as SelectList)</td>
+                   </tr>
+                <tr>
+                   <td>Day</td>
+                   <td>@Html.EditorFor(model => model.AttDay)</td>  
+                </tr>  
+                          
+                <tr>
+                   <td>Shift</td>
+                   <td>@Html.DropDownListFor(model => model.AttShift, ViewBag.ShiftList as SelectList)</td> 
+                </tr>
+                @*<td>Report Format</td>
+                <td>@Html.DropDownListFor(model => model.ReportFormat, ViewBag.ReportFormatList as SelectList)</td>     *@
+            </table>
+        </div>
+    </div>
+    <table>
+     <tr> 
+         <td style="column-gap:normal">
+     <input type="submit" value="Daily Absent" style="width:180px;" onclick="target = '_blank';" 
+         formaction="@Url.Action("DailyAttendanceReport")" />
+     
+       @*<input type="submit" class="btn btn-default" style="width:150px;" value="Submit" onclick="target = '_blank';" 
+           formaction="@Url.Action("Get_B_FirstIn_LastOut")" />*@
+ 
+    @Html.ActionLink("Back to Home", "../Dashboard/Index") 
+     </td>
+       </tr>
+          </table>
+        
+}
+<h5><b>@ViewBag.Message</b></h5>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+        });
+    </script>
+}

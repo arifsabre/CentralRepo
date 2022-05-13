@@ -1,0 +1,160 @@
+﻿@model ManufacturingManagement_V2.Models.AAA_ITAssestCell_MDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+ }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Scrap Item</title>
+   
+    <script>
+        //$(function () {
+        //    $('#example1').DataTable();
+        //})
+        function GetDetails(id) {
+            $.ajax({
+                url: "/B_Scrap_Item/Edit_ScrapItem_Record/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#Tran_Id').val(response.Tran_Id);
+                   $('#Item_Name').val(response.Item_Name);
+                    $('#Serial_No').val(response.Serial_No);
+                   // $('#Stock').val(response.Stock);
+                    $('#Issue_Qty').val(response.Issue_Qty);
+                    $('#Scrap_Qty').val(response.Scrap_Qty);
+                    $('#cmpname').val(response.Cmpname);
+                    $('#Scrap_Item').val(response.Scrap_Item);
+                    $('#Scrap_Comment').val(response.Scrap_Comment);
+                    $('#Scrap1').val(response.Scrap1);
+                   $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert" style="margin-top:5px;margin-bottom:5px">
+        Scrap Item List
+    </button>
+    <div id="printbar" class="pull-right" style="margin-top:5px;margin-bottom:5px">
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div class="box box-primary">
+
+                    <div class="box-body">
+
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Tran Id</th>
+                                    <th>Item Name</th>
+                                    <th>Serial No</th>
+                                    @*<th>Stock</th>*@
+                                    <th>Issue Qty</th>
+                                    <th>Scrap Qty</th>
+                                    <th>Location</th>
+                                    <th>Scrap Status</th>
+                                    <th>Scrap Remark</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.Tran_Id)</td>
+                                        <td>@Html.DisplayFor(model => item.Item_Name)</td>
+                                        <td>@Html.DisplayFor(model => item.Serial_No)</td>
+                                        @*<td>@Html.DisplayFor(model => item.Stock)</td>*@
+                                        <td>@Html.DisplayFor(model => item.Issue_Qty)</td>
+                                        <td>@Html.DisplayFor(model => item.Scrap_Qty)
+                                        <td>@Html.DisplayFor(model => item.cmpname)
+                                        <td>@Html.DisplayFor(model => item.Scrap_Item)</td>
+                                        <td>@Html.DisplayFor(model => item.Scrap_Comment)</td>
+                                        <td>
+                                            <a onclick="GetDetails(@item.Tran_Id)">
+                                                <i class="fa fa-edit">
+                                                </i>
+                                            </a>
+                                            @* <a>
+                                                     @Html.ActionLink(" ", "Delete_OR_SEcurity_EMP", "B_OR_EMP_SECURITY", new { id = item.ECode }, new { onclick = "return confirm('Are  sure wants to delete?');", @class = "fa fa-trash-o" })
+                                                </a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Scrap Item </h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_ScrapItem", "B_Scrap_Item", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:400px;width:400px">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Tran Id</label>
+                                        <input type="number" class="form-control" id="Tran_Id" name="Tran_Id" readonly="readonly">
+                                        @* <label>Item Name</label>
+                                            <input type="text" class="form-control" id="Item_Name" name="Item_Name" >*@
+                                        @* <label>Serial No</label>
+                                            <input type="text" class="form-control" id="Serial_No" name="Serial_No" readonly="True" >*@
+                                        <label>Issue Qty</label>
+                                        <input type="number" class="form-control" id="Issue_Qty" name="Issue_Qty" readonly="readonly">
+                                        <label>Scrap Qty</label>
+                                        <input type="number" class="form-control" id="Scrap_Qty" name="Scrap_Qty">
+                                        @*<label>Location Installed</label>
+                                            <input type="text" class="form-control" id="Location" name="Location" readonly="True" >*@
+                                        <label>Scrap Y/N</label>
+                                        <select class="form-control" id="Scrap_Item" name="Scrap_Item">
+                                            <option>NO</option>
+                                            <option>YES</option>
+                                        </select>
+                                        <label>Scrap Remark</label>
+                                        <input type="text" class="form-control" id="Scrap_Comment" name="Scrap_Comment">
+
+                                        @Html.HiddenFor(model => model.Scrap1)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+    </html>

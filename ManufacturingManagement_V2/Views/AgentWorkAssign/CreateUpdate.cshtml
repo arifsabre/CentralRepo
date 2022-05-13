@@ -1,0 +1,260 @@
+﻿@model ManufacturingManagement_V2.Models.AgentWorkAssignMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+
+@{var lstAltMode = new List<System.Web.UI.WebControls.ListItem>
+{
+          new System.Web.UI.WebControls.ListItem { Text = "Email", Value="Email" },
+          new System.Web.UI.WebControls.ListItem { Text = "Speedpost", Value="Speedpost" },
+          new System.Web.UI.WebControls.ListItem { Text = "SMS", Value="SMS" },
+          new System.Web.UI.WebControls.ListItem { Text = "Verbal", Value="Verbal" }
+    };
+}
+
+@{var lstAckStatus = new List<System.Web.UI.WebControls.ListItem>
+{
+          new System.Web.UI.WebControls.ListItem { Text = "Pending", Value="Pending" },
+          new System.Web.UI.WebControls.ListItem { Text = "Received", Value="Received" }
+    };
+}
+
+@{var lstWorkStatus = new List<System.Web.UI.WebControls.ListItem>
+{
+          new System.Web.UI.WebControls.ListItem { Text = "On Time", Value="On Time" },
+          new System.Web.UI.WebControls.ListItem { Text = "Delayed in Limit", Value="Delayed in Limit" },
+          new System.Web.UI.WebControls.ListItem { Text = "Delayed Beyond Limit", Value="Delayed Beyond Limit" },
+          new System.Web.UI.WebControls.ListItem { Text = "Not Completed", Value="Not Completed" },
+    };
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        @Html.HiddenFor(model => model.RecId)
+        @Html.HiddenFor(model => model.AgentId)
+        @Html.HiddenFor(model => model.AllottedBy)
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:15%;">@Html.LabelFor(model => model.AgentName)</td>
+                <td>
+                    @Html.EditorFor(model => model.AgentName)
+                    @Html.ValidationMessageFor(model => model.AgentName)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.WorkId)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.WorkId, ViewBag.WorkList as SelectList)
+                    @Html.ValidationMessageFor(model => model.WorkId)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.WorkDetail)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.WorkDetail, 0, 0,
+                        new { @style = "width:268px;height:60px;" })
+                    @Html.ValidationMessageFor(model => model.WorkDetail)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.DocumentNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.DocumentNo)
+                    @Html.ValidationMessageFor(model => model.DocumentNo)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.DocumentDate)</td>
+                <td>
+                    @Html.EditorFor(model => model.DocumentDate)
+                    @Html.ValidationMessageFor(model => model.DocumentDate)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.AllotmentMode)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.AllotmentMode,
+                        new SelectList(lstAltMode, "Value", "Text"))
+                    @Html.ValidationMessageFor(model => model.AllotmentMode)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.AssignmentDate)</td>
+                <td>
+                    @Html.EditorFor(model => model.AssignmentDate)
+                    @Html.ValidationMessageFor(model => model.AssignmentDate)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.ReqCompDate)</td>
+                <td>
+                    @Html.EditorFor(model => model.ReqCompDate)
+                    @Html.ValidationMessageFor(model => model.ReqCompDate)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.AllottedBy)</td>
+                <td>
+                    @Html.EditorFor(model => model.AllottedByName,
+                        new { placeholder = "Start typing, then select..." })
+                    @Html.ValidationMessageFor(model => model.AllottedBy)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.UniqueIdNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.UniqueIdNo)
+                    @Html.ValidationMessageFor(model => model.UniqueIdNo)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.AckStatus)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.AckStatus,
+                        new SelectList(lstAckStatus, "Value", "Text"))
+                    @Html.ValidationMessageFor(model => model.AckStatus)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.AckDate)</td>
+                <td>
+                    @Html.EditorFor(model => model.AckDate)
+                    @Html.ValidationMessageFor(model => model.AckDate)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.CompDate)</td>
+                <td>
+                    @Html.EditorFor(model => model.CompDate)
+                    @Html.ValidationMessageFor(model => model.CompDate)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.CompMessage)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.CompMessage, 0, 0,
+                        new { @style = "width:268px;height:60px;" })
+                    @Html.ValidationMessageFor(model => model.CompMessage)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.WorkStatus)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.WorkStatus,
+                        new SelectList(lstWorkStatus, "Value", "Text"))
+                    @Html.ValidationMessageFor(model => model.WorkStatus)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.BillStatus)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.BillStatus, 0, 0,
+                        new { @style = "width:268px;height:60px;" })
+                    @Html.ValidationMessageFor(model => model.BillStatus)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+                </td>
+                <td>
+                    <h5>@ViewBag.Message</h5>
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            $("#WorkDetail").attr("placeholder", "Max Length: 500 Chars");
+            $("#WorkDetail").attr("maxlength", "500");
+            $("#CompMessage").attr("placeholder", "Max Length: 500 Chars");
+            $("#CompMessage").attr("maxlength", "500");
+            $("#BillStatus").attr("placeholder", "Max Length: 100 Chars");
+            $("#BillStatus").attr("maxlength", "100");
+            $("#AgentName").attr("placeholder", "start typing, then select");
+            $("#AllottedByName").attr("placeholder", "start typing, then select");
+            document.getElementById("AgentName").focus();
+            //
+            if ('@ViewBag.Status' == '1') {
+                alert('@ViewBag.Message');
+                window.parent.location.reload();
+            }
+            //
+        });
+
+        //Date Picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#AgentName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAgent", "Agent"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('AgentId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#AllottedByName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteUsersList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('AllottedBy').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

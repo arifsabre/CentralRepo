@@ -1,0 +1,201 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.PaymentReceiptMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <table>
+        <tr>
+            <td><h4><b>View Receipt</b></h4></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            @*<td>
+                    @Html.ActionLink("Generate Invoice (By PO)", "../SaleGST/GenerateInvoice", null,
+                    new { @style = "color:blue;text-decoration:underline;" })
+                </td>*@
+            @*<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>
+                    @Html.ActionLink("Sale Entry (Without PO)", "../SaleGSTOthers/CreateUpdate", null,
+                    new { @style = "color:blue;text-decoration:underline;" })
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>
+                    @Html.ActionLink("Convert Draft/Proforma To Main", "../SaleGSTOthers/IndexConvertToMain", null,
+                    new { @style = "color:blue;text-decoration:underline;" })
+                </td>*@
+        </tr>
+    </table>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndex", "PaymentReceipt", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+        <div class="form-group">
+            <b>Date&nbsp;From</b>
+            @Html.TextBox("txtDtFrom", null, new { @class = "datepicker", @style = "width:90px;" })
+
+            &nbsp;<b>To</b>
+            @Html.TextBox("txtDtTo", null, new { @class = "datepicker", @style = "width:90px;" })
+
+            &nbsp;<b>Paying&nbsp;Authority</b>
+            @Html.TextBox("txtPayingAuthority", null, new
+            {
+                @placeholder = "start typing, then select", @style = "width:250px;"
+            })
+            @Html.Hidden("hfPayingAuthId", null, new { @id = "hfPayingAuthId" })
+
+            &nbsp;<b>Payment&nbsp;Status</b>
+            @Html.DropDownList("ddlPmtStatus", ViewBag.PmtStatusList as SelectList)
+
+            &nbsp;<button class="btn btn-default">Submit</button>
+        </div>
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;" id="tblsl">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th style="width:12px;">Links</th>
+            <th style="width:110px;">
+                Bill&nbsp;No<br/>Bill&nbsp;Date
+            </th>
+            <th style="width:Auto;">
+                PO&nbsp;Number<br />Paying&nbsp;Authority
+            </th>
+            <th style="width:100px;">
+                Bill&nbsp;Amount
+            </th>
+            <th style="width:100px;">
+                Bill&nbsp;Amt&nbsp;P1<br />Bill&nbsp;Amt&nbsp;P2
+            </th>
+            <th style="width:100px;">
+                Rec.&nbsp;Amt&nbsp;P1<br />Rec.&nbsp;Amt&nbsp;P2
+            </th>
+            <th style="width:100px;">
+                Bal.&nbsp;Amt&nbsp;P1<br />Bal.&nbsp;Amt&nbsp;P2
+            </th>
+            <th style="width:auto;">
+                Remarks
+            </th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+    <tr>
+        <td>
+            @i
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "CreateUpdate", new { salerecid = item.SaleRecId }, new { @target = "_blank" })
+            <br />@Html.ActionLink("Delete", null, null, new { onclick = "deleteReceipt('" + item.SaleRecId + "')" })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BillNo)
+            <br />@Html.ValueFor(model => item.BillDate, "{0:dd/MM/yyyy}")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PONumber)
+            <br />@Html.DisplayFor(modelItem => item.PayingAuthName)
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.BillAmount, "{0:##,##,##,##,##0.00}")
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.BillAmountP1, "{0:##,##,##,##,##0.00}")
+            <br/>@Html.ValueFor(modelItem => item.BillAmountP2, "{0:##,##,##,##,##0.00}")
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.RecAmountP1, "{0:##,##,##,##,##0.00}")
+            <br />@Html.ValueFor(modelItem => item.RecAmountP2, "{0:##,##,##,##,##0.00}")
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.RecoverableAmtP1, "{0:##,##,##,##,##0.00}")
+            <br />@Html.ValueFor(modelItem => item.RecoverableAmtP2, "{0:##,##,##,##,##0.00}")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remarks)
+        </td>
+    </tr>
+            i++;
+        }
+        @{i = i - 1;}
+        @i.ToString()&nbsp;&nbsp;Records found (for selected options).
+    </table>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById("hfPayingAuthId").value = '@ViewBag.payingauthid';
+            document.getElementById("txtPayingAuthority").value = '@ViewBag.payingauthname';
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+        });
+        </script>
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script>
+            function deleteReceipt(salerecid) {
+                var a = confirm("Are you sure to delete this record?");
+                if (a == false) {
+                    return;
+                }
+                var data = {
+                    salerecid: salerecid
+                }
+                $.ajax({
+                    url: '/PaymentReceipt/DeleteReceipt',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <script type="text/javascript">
+                $("#txtPayingAuthority").autocomplete({
+                    source: function (request, response) {
+                        var customer = new Array();
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            type: "POST",
+                            url: "@(Url.Action("AutoCompletePayingAuthority", "HelpUtility"))",
+                            data: { "term": request.term },
+                            success: function (data) {
+                                for (var i = 0; i < data.length ; i++) {
+                                    customer[i] = { label: data[i].Value, Id: data[i].Key };
+                                }
+                            }
+                        });
+                        response(customer);
+                    }, minLength: 2,
+                    select: function (event, ui) {
+                        document.getElementById('hfPayingAuthId').value = ui.item.Id;
+                    }
+                });
+        </script>
+
+}
+
+

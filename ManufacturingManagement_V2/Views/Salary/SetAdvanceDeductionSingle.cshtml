@@ -1,0 +1,124 @@
+﻿@model ManufacturingManagement_V2.Models.AdvanceMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Advance Deduction Entry</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    <h5><b>Advance Deduction Details</b></h5>
+    <table class="table table-bordered">
+        <tr>
+            @Html.HiddenFor(model => model.NewEmpId)
+            <td style="width:12%;"><b>Salary Month</b></td>
+            <td>
+                @Html.EditorFor(model => model.AdvDate)
+                @Html.ValidationMessageFor(model => model.AdvDate)
+            </td>
+        </tr>
+        <tr>
+            <td><b>Employee</b></td>
+            <td>
+                @Html.EditorFor(model => model.EmpId)
+                @Html.ValidationMessageFor(model => model.EmpId)
+            </td>
+        </tr>
+        <tr>
+            <td><b>Deduction Amt</b></td>
+            <td>
+                @Html.EditorFor(model => model.InstAmount)
+                @Html.ValidationMessageFor(model => model.RecAmount)
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;"><b>Note</b></td>
+            <td><label id="lblAdvanceInfo"></label></td>
+        </tr>
+    </table>
+</div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class="btn btn-default" value="Submit" />
+            @Html.ActionLink("Advance Reports", "Index", "AdvanceReport", null, 
+           new { id = "mylink", @target = "_new;", @class="btn btn-default" })
+        </p>
+}
+
+<br/>
+<p>
+   <img id="img1" alt="" src="" width="150px" height="150px" />
+</p>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#EmpId").attr("placeholder", "start typing, then select");
+            $('#img1').attr('src', '/Employee/ShowEmpImage' + '?newempid='+@Model.NewEmpId);
+        });
+
+        //Date Picker 
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+
+    </script>
+
+    <script type="text/javascript">
+        $("#EmpId").autocomplete({
+            source: function (request, response) {
+                $('#lblAdvanceInfo').text('');
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('NewEmpId').value = ui.item.Id;
+                $('#img1').attr('src', '/Employee/ShowEmpImage' + '?newempid=' + ui.item.Id);
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getAdvanceDeductionInfo", "Advance"))",
+                    data: { "newempid": ui.item.Id },
+                    success: function (data) {
+                        $('#lblAdvanceInfo').text(data.advanceinfo);
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            }
+        });
+</script>
+
+}

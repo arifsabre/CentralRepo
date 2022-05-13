@@ -1,0 +1,354 @@
+﻿@model ManufacturingManagement_V2.Models.MachineMaintenanceMDI
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Machine Maintenance</title>
+    <script>
+        function GetDetails(id) {
+            $.ajax({
+                url: "/MachineMaintenance/EditMaintenanceRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#id').val(response.id);
+                    $('#ShortName').val(response.ShortName);
+                    $('#machineid').val(response.machineid);
+                    $('#scheduleId').val(response.scheduleId);
+                    $('#NewEmpId').val(response.NewEmpId);
+                    $('#userid').val(response.userid);
+                    $('#checkdetail').val(response.checkdetail);
+                    $('#detailofworkdone').val(response.detailofworkdone);
+                    $('#condition').val(response.condition);
+                    $('#duedate').val(response.duedate);
+                    $('#UpdatedBy').val(response.UpdatedBy);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+
+        }
+
+
+
+    </script>
+</head>
+<body>
+    &nbsp;&nbsp;&nbsp;&nbsp; Maintenance Task List
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert">
+        Add New Maintenance Task
+    </button>
+    <div id="printbar" class="pull-right">
+    </div>
+
+    <section class="content" style="margin-top:5px;margin-bottom:5px">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+
+
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Task Id
+                                    </th>
+                                    <th>
+                                        Company
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.machinename)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.schedulename)
+                                    </th>
+                                    <th>
+                                        Assignee
+                                    </th>
+                                    <th>
+                                        Responsibility
+                                    </th>
+                                    <th>
+                                        Checking Responsibility
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.checkdetail)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.detailofworkdone)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.condition)
+                                    </th>
+                                    <th>
+                                        StartDate
+                                    </th>
+
+                                    <th> Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ShortName)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.machinename)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.schedulename)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.assignee)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EmpName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FullName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.checkdetail)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.detailofworkdone)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.condition)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.duedate)
+                                        </td>
+
+                                        <td>
+                                            <a onclick="GetDetails(@item.id)">
+                                                <i class="fa fa-pencil-square">
+                                                </i>
+                                            </a>
+                                            <a>
+                                                @Html.ActionLink(" ", "Delete_Task", "MachineMaintenance", new { id = item.id }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("AddMaintenance", "MachineMaintenance", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Company</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.compcode, ViewBag.LocationList as SelectList)
+                                    <br />
+                                    <label>Machine</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.machineid, ViewBag.MachineList as SelectList)
+                                    <br />
+                                    <label>Check Point</label>
+                                    <br />
+                                    @*@Html.DropDownListFor(model => model.checkpointid, ViewBag.CheckPoint as SelectList)*@
+                                    @Html.DropDownListFor(model => model.checkpointid, Model.MachineCheckPoint1, "Select Check Point")
+                                    <br />
+                                    <label>Schedule</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.scheduleid, ViewBag.ScheduleList as SelectList)
+                                    <br />
+                                    <label>Responsibility</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.responsibility, ViewBag.ResponsibilityList as SelectList)
+                                    <br />
+                                    <label>Checking Responsibility</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.userid, ViewBag.CheckResponsibilityList as SelectList)
+                                    <br />
+                                    <label>Detail of Work Done</label>
+                                    <br />
+                                    @Html.EditorFor(model => model.detailofworkdone, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = @Html.DisplayNameFor(m => m.detailofworkdone) } })
+                                    <br />
+                                    <label>Condition</label>
+                                    <br />
+                                    @Html.EditorFor(model => model.condition, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = @Html.DisplayNameFor(m => m.condition) } })
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>StartDate</label>
+                                            <br />
+                                            @Html.EditorFor(model => model.duedate)
+                                            @Html.ValidationMessageFor(model => model.duedate)
+                                            @*@Html.TextBoxFor(m => m.duedate, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })*@
+                                            @* @Html.ValidationMessageFor(model => model.duedate)*@
+                                            @Html.HiddenFor(model => model.CreatedBy)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Update Maintenance </h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("EditMaintenance", "MachineMaintenance", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <br />
+                                        <label>Id</label>
+                                        <br />
+                                        @Html.EditorFor(model => model.id)
+                                        <br />
+                                        <label>Company</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.compcode, ViewBag.LocationList as SelectList)
+                                        <br />
+                                        <label>Instrument</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.machineid, ViewBag.MachineList as SelectList)
+                                        <br />
+                                        <label>Check Point</label>
+                                        @Html.DropDownListFor(model => model.checkpointid, Model.MachineCheckPoint1, "Select Check Point")
+                                        @*@Html.DropDownListFor(model => model.checkpointid, ViewBag.CheckPoint as SelectList)*@
+                                        <br />
+
+                                        <label>Schedule</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.scheduleid, ViewBag.ScheduleList as SelectList)
+                                        <br />
+                                        <label>Responsibility</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.responsibility, ViewBag.ResponsibilityList as SelectList)
+                                        <br />
+                                        <label>Checking Responsibility</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.userid, ViewBag.CheckResponsibilityList as SelectList)
+                                        <br />
+
+                                        <label>Detail of Work Done</label>
+                                        @Html.EditorFor(model => model.detailofworkdone, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        <label>Condition of Machine</label>
+                                        @Html.EditorFor(model => model.condition, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        <label>Start Date</label>
+                                        @Html.EditorFor(model => model.duedate, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.HiddenFor(model => model.UpdatedBy)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("select").each(function () {
+                if ($(this).find("option").length <= 1) {
+                    $(this).attr("disabled", "disabled");
+                }
+            });
+
+            $("select").change(function () {
+                var value = 0;
+                if ($(this).val() != "") {
+                    value = $(this).val();
+                }
+                var id = $(this).attr("id");
+                $.ajax({
+                    type: "POST",
+                    url: "/MachineMaintenance/AjaxMethod",
+                    data: '{type: "' + id + '", value: ' + value + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        var dropDownId;
+                        var list;
+                        switch (id) {
+                            case "machineid":
+                                list = response.checkdetail;
+                                DisableDropDown("#checkpoiontid");
+                                PopulateDropDown("#checkpoiontid", list);
+                                break;
+
+                        }
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+
+        function DisableDropDown(dropDownId) {
+            $(dropDownId).attr("disabled", "disabled");
+            $(dropDownId).empty().append('<option selected="selected" value="0">Please select CheckPoint</option>');
+        }
+
+        function PopulateDropDown(dropDownId, list) {
+            if (list != null && list.length > 0) {
+                $(dropDownId).removeAttr("disabled");
+                $.each(list, function () {
+                    $(dropDownId).append($("<option></option>").val(this['Value']).html(this['Text']));
+                });
+            }
+        }
+    </script>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+

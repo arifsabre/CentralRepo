@@ -1,0 +1,122 @@
+﻿@model ManufacturingManagement_V2.Models.NotificationMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Send Notification</b></h4>
+
+@Html.Partial("NotificationLinks")
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div class="form-group">
+        @Html.HiddenFor(model => model.NoticeId)
+        @Html.HiddenFor(model => model.ToUser)
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:10%;">@Html.LabelFor(model => model.NoticeDT)</td>
+                <td>
+                    @Html.EditorFor(model => model.NoticeDT)
+                    @Html.ValidationMessageFor(model => model.NoticeDT)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.NoticeMsg)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.NoticeMsg, 0, 0,
+                     new { @style = "width:320px;height:40px;" })
+                    @Html.ValidationMessageFor(model => model.NoticeMsg)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.MsgType)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.MsgType, ViewBag.MsgTypeList as SelectList, new { onchange = "setText()" })
+                    @Html.ValidationMessageFor(model => model.MsgType)
+                </td>
+            </tr>
+            <tr>
+                <td> <div id="sp1"> @Html.LabelFor(model => model.ToUser) </div></td>
+                <td>
+                    <div id="sp2">
+                        @Html.EditorFor(model => model.ToUserName, new { placeholder = "Username" })
+                        @Html.ValidationMessageFor(model => model.ToUserName)
+                    </div>
+                </td>
+            </tr>
+        </table>
+        @*@Html.LabelFor(model => model.NoticeNo)
+            @Html.EditorFor(model => model.NoticeNo)
+            @Html.ValidationMessageFor(model => model.NoticeNo)*@
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" id="cmd" value='@ViewBag.AddEdit' />
+    </p>
+    <h4><b>@ViewBag.Message</b></h4>
+    @*<h6><b>[ERP Notification sent on SMS and EMail also on registered contact number and email respectively]</b></h6>*@
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=textarea]").first().focus();
+            document.getElementById("NoticeMsg").focus();
+            $("#ToUserName").attr("placeholder", "start typing, then select");
+            $("#NoticeMsg").attr("maxlength", "1000");
+            $("#NoticeMsg").attr("placeholder", "Max Length: 1000 Chars");
+        });
+    </script>
+
+    <script type="text/javascript">
+        function setText() {
+            //var stateId = $('MsgType').val();//for non model inputs
+            var e = document.getElementById("MsgType");
+            var v = e.options[e.selectedIndex].value;
+            $('#cmd').val('Send');
+            document.getElementById("sp1").style.display = "none";
+            document.getElementById("sp2").style.display = "none";
+            if (v == 's') {
+                document.getElementById("sp1").style.display = "block";
+                document.getElementById("sp2").style.display = "block";
+            }
+            else if (v == 'm') {
+                $('#cmd').val('Add Recipients');
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        $("#ToUserName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteUsersList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('ToUser').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

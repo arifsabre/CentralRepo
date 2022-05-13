@@ -1,0 +1,373 @@
+﻿@model ManufacturingManagement_V2.Models.IndentLedgerMdl
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Indent Item Updation</h2>
+
+<p>
+    @*@Html.ActionLink("Create Attendance Detail", "../AttendanceDetail/CreateUpdate")*@
+</p>
+    @Html.HiddenFor(model => model.IndentId)
+<p style="font-size:16px;font-weight:bold;">
+    Indent No: @Html.DisplayFor(model => model.StrIndentNo), Prepared By: @Html.DisplayFor(model => model.IndentByName), Date: @Html.DisplayFor(model => model.VDate)
+</p>
+@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+<div class="container" style="max-width:640px">
+        <div class="form-group">
+<table border="1">
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Item No</td>
+        <td>
+            @Html.Hidden("RecId", Model.RecId.ToString(), new { @id = "hfRecId" })
+            @Html.Hidden("ItemId", Model.ItemId.ToString(), new { @id = "hfItemId" })
+            @Html.Label("lblItemSlNo",Model.ItemSlNo.ToString(),new { @id = "ItemSlNo"})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Item</td>
+        <td>
+            @Html.TextBox("txtItemCode",Model.ItemCode.ToString(),new { @id = "ItemCode", @placeholder="start typing, then select" })
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Item Description</td>
+        <td>
+            @Html.TextArea("txtItemDesc",Model.ItemDesc.ToString(),new { @id = "ItemDesc", style="width:270px;height:50px;" })
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Quantity</td>
+        <td>
+            @Html.TextBox("txtIndQty",Model.IndQty.ToString(),new { @id = "IndQty" })  @* style = "width: 100px; height: 25px; padding: 0; text-align:left;"*@
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Unit</td>
+        <td>
+            @Html.DropDownList("ddlUnit", ViewBag.UnitList as SelectList, new { disabled = "true" })
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Approx Rate</td>
+        <td>
+            @Html.TextBox("txtApproxRate",Model.ApproxRate.ToString(),new { @id = "ApproxRate" })  @* style = "width: 100px; height: 25px; padding: 0; text-align:left;"*@
+        </td>
+    </tr>
+    <tr style="vertical-align:top;font-weight:bold;">
+        <td>Reason</td>
+        <td>
+            @Html.TextBox("txtRemarks",Model.Remarks.ToString(),new { @id = "Remarks" })  @* style = "width: 100px; height: 25px; padding: 0; text-align:left;"*@
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Remarks(By HOD):</td>
+        <td>@Html.Label("lblHODRemarks",Model.HODRemarks.ToString(),new { @id = "HODRemarks"})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;font-weight:bold;">Reply(To HOD):</td>
+        <td>@Html.TextBox("txtIndentorReply",Model.IndentorReply.ToString(),new { @id = "IndentorReply" })  @* style = "width: 100px; height: 25px; padding: 0; text-align:left;"*@
+        </td>
+    </tr>
+</table>
+</div>
+</div>
+
+<h5><b>@ViewBag.Message</b></h5>
+        <p>
+            @*<input type="submit" class="btn btn-default" value="Submit" />*@
+            <input id="submit" type="button" value="Update" style="padding:10px 20px" />
+            <input id="delete" type="button" value="Delete" style="padding:10px 20px" />
+            <input id="addnew" type="button" value="Add New" style="padding:10px 20px" />
+            @Html.ActionLink("Back To List", "Index", "Indent", null, new { id = "mylink" })
+            @*@Html.ActionLink("Reset", null, null, null, new { onclick="reSet()" })*@
+        </p>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script>
+        function reSet() {
+            $('#txtItemCode,#txtIndQty,#txtApproxRate,#hfItemId').val('');
+            $('#txtItemCode').focus();
+    }
+</script>
+
+    <script type="text/javascript">
+        $("#ItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteStockItemList", "HelpUtility"))",
+                data: { "term": request.term },
+                success: function (data) {
+                    for (var i = 0; i < data.length ; i++) {
+                        customer[i] = { label: data[i].Value, Id: data[i].Key };
+                    }
+                }
+            });
+            response(customer);
+        }, minLength: 2,
+        select: function (event, ui) {
+            document.getElementById('hfItemId').value = ui.item.Id;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                data: { "itemid": ui.item.Id },
+                success: function (data) {
+                    $('#ApproxRate').val(data.purchaserate);
+                    $('#ddlUnit').val(data.unit);
+                    $('#ItemDesc').val(data.itemname);
+                    $('#ItemDesc').focus();
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+            //detail-2
+            fillUnitList(ui.item.Id);
+            //
+        }
+    });
+</script>
+
+    <script>
+        function fillUnitList(itemid) {
+            //var itemId = $('#ddlItem').val();
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getTransactionUnitList", "HelpUtility"))",
+                data: { "itemid": itemid },
+                success: function (data) {
+                    //getting multiple records as (key,value) pair type list
+                    $("#ddlUnit").empty(); // clear before appending new list 
+                    $.each(data, function (i, item) {
+                        $("#ddlUnit").append($('<option />', {
+                            value: item.Key,
+                            text: item.Value
+                        }));
+                    });
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+</script>
+
+    <script>
+        $(document).ready(function () {
+            //updation
+            //Save button click function
+            $('#submit').click(function () {
+                
+                var isAllValid = true;
+                //validation of order
+                if (!($('#IndQty').val().trim() != '' && !isNaN($('#IndQty').val().trim()))) {
+                    isValidItem = false;
+                    alert('Invalid Indent Qty!');
+                    return;
+                }
+                //Save if valid
+                var liUnit = document.getElementById("ddlUnit");
+                var unitIndex = liUnit.selectedIndex;
+                var unitId = liUnit.options[unitIndex].value;
+                var unitName = liUnit.options[unitIndex].text;
+                if (isAllValid) {
+                    var data = {
+                        //order fields
+                        RecId: '@Model.RecId',
+                        ItemId: parseFloat($('#hfItemId').val().trim()),
+                        ItemDesc: $('#ItemDesc').val().trim(),
+                        IndQty: parseFloat($('#IndQty').val().trim()),
+                        UnitId: unitId,
+                        ApproxRate: parseFloat($('#ApproxRate').val().trim()),
+                        Remarks: $('#Remarks').val().trim(),
+                        IndentorReply: $('#IndentorReply').val().trim()
+                    }
+                    $(this).val('Please wait...');
+                    $.ajax({
+                        url: '/Indent/UpdateLedgerItem',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                //$('#orderDate').val('');
+                                window.location.href = $('#mylink').attr('href');
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submit').val('Update');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            $('#submit').val('Update');
+                        }
+                    });
+                }
+            });
+            //end-updation
+
+            //add new
+            //Save button click function
+            $('#addnew').click(function () {
+
+                var isAllValid = true;
+                //validation of order
+                
+                if (!($('#hfItemId').val().trim() != '')) {
+                    isValidItem = false;
+                    alert('Item not selected!');
+                    return;
+                }
+
+                if (!($('#ItemDesc').val().trim() != '')) {
+                    isValidItem = false;
+                    alert('Item desciption not entered!');
+                    return;
+                }
+
+                if (!($('#IndQty').val().trim() != '' && !isNaN($('#IndQty').val().trim()))) {
+                    isValidItem = false;
+                    alert('Invalid Indent Qty!');
+                    return;
+                }
+
+                if (!($('#ApproxRate').val().trim() != '' && !isNaN($('#ApproxRate').val().trim()))) {
+                    isValidItem = false;
+                    alert('Invalid approx rate entered!');
+                    return;
+                }
+
+                if (parseFloat($('#ApproxRate').val().trim()) <= 0) {
+                    alert('Invalid rate entered! Please enter approx rate or confirm it from stores.');
+                    return;
+                }
+
+                if (!($('#Remarks').val().trim() != '')) {
+                    isValidItem = false;
+                    alert('Reason not entered!');
+                    return;
+                }
+                
+                //Save if valid
+                var liUnit = document.getElementById("ddlUnit");
+                var unitIndex = liUnit.selectedIndex;
+                var unitId = liUnit.options[unitIndex].value;
+                var unitName = liUnit.options[unitIndex].text;
+                if (isAllValid) {
+                    var data = {
+                        //order fields
+                        IndentId: '@Model.IndentId',
+                        ItemId: parseFloat($('#hfItemId').val().trim()),
+                        ItemDesc: $('#ItemDesc').val().trim(),
+                        IndQty: parseFloat($('#IndQty').val().trim()),
+                        UnitId: unitId,
+                        ApproxRate: parseFloat($('#ApproxRate').val().trim()),
+                        Remarks: $('#Remarks').val().trim()
+                    }
+                    $(this).val('Please wait...');
+                    $.ajax({
+                        url: '/Indent/AddLedgerItem',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                //$('#orderDate').val('');
+                                window.location.href = $('#mylink').attr('href');
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#addnew').val('Add New');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            $('#addnew').val('Add New');
+                        }
+                    });
+                }
+            });
+            //end-add new
+
+            //deletion
+            $("#delete").click(function () {
+                $(this).val('Please wait...');
+                var data = {
+                    RecId: '@Model.RecId'
+                }
+                //Makes ajax call to controller 
+                $.ajax({
+                    url: "/Indent/DeleteLedgerItem",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database 
+                        if (d.status == true) {
+                            //will send status from server side
+                            alert(d.message);
+                            //clear form
+                            empatt = [];
+                            //$('#orderNo').val('');
+                            //$('#orderDate').val('');
+                            //$('#orderItems').empty();
+                            window.location.href = $('#mylink').attr('href')
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#delete').val('Delete');
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        $('#delete').val('Delete');
+                    }
+                });
+            });
+            //end-deletion
+
+        });
+    </script>
+
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display:block;
+        visibility:hidden;
+        color:red;
+        font-size:90%;
+    }
+</style>

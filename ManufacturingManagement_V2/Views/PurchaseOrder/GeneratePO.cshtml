@@ -1,0 +1,675 @@
+﻿@model ManufacturingManagement_V2.Models.PurchaseOrderMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Purchase Order -PO Detail</b></h4>
+@if (@Model.POrderId != 0)
+{
+<p>
+    @Html.ActionLink("PO Detail", "GeneratePO",
+    new { porderid = Model.POrderId }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("Item Detail", "../PurchaseOrderItem/CreateUpdate",
+    new { porderid = Model.POrderId, itemrecid = 0 }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("MA Detail", "../ModifyAdvice/CreateUpdate",
+    new { porderid = Model.POrderId, recslno = 0 }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("PO Checksheet", "POChecksheet",
+    new { porderid = Model.POrderId }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("BG Detail", "../BankGuarantee/CreateUpdate",
+    new { id = Model.TenderId }, new { target = "_blank", style = "color:blue;text-decoration:underline;font-weight:bold;" })
+</p>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+
+        @Html.HiddenFor(model => model.RailwayId)
+        @Html.HiddenFor(model => model.POrderId)
+        @Html.HiddenFor(model => model.WForPOrderId)
+        @Html.HiddenFor(model => model.AcCode)
+        @Html.HiddenFor(model => model.TenderId)
+        @Html.HiddenFor(model => model.PayingAuthId)
+        @Html.HiddenFor(model => model.HdnOrderStatus)
+
+        <table class="table table-bordered">
+
+            <tr>
+                <td colspan="4">
+                    <b>@Html.DisplayFor(model => model.POInfo)</b>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td>@Html.LabelFor(model => model.POType)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.POType, ViewBag.POTypeListE as SelectList)
+                    @Html.ValidationMessageFor(model => model.POType)
+                </td>
+                <td>@Html.LabelFor(model => model.RailwayName)</td>
+                <td>
+                    @Html.EditorFor(model => model.RailwayName)
+                    @Html.ValidationMessageFor(model => model.RailwayName)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.TenderNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.TenderNo)
+                    @Html.ValidationMessageFor(model => model.TenderNo)
+                </td>
+                <td>@Html.LabelFor(model => model.OrderStatus)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.OrderStatus, ViewBag.OrderStatusListE as SelectList)
+                    @Html.ValidationMessageFor(model => model.OrderStatus)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.QuotationNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.QuotationNo)
+                    @Html.ValidationMessageFor(model => model.QuotationNo)
+                </td>
+                <td>@Html.LabelFor(model => model.IsIncOrder)</td>
+                <td>
+                    @Html.EditorFor(model => model.IsIncOrder)
+                    @Html.ValidationMessageFor(model => model.IsIncOrder)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.TenderDesc)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.TenderDesc, 0, 0,
+                     new { @style = "width:280px;height:50px;" })
+                    @Html.ValidationMessageFor(model => model.TenderDesc)
+                </td>
+                <td>@Html.LabelFor(model => model.EntryType)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.EntryType, ViewBag.EntryTypeListE as SelectList)
+                    @Html.ValidationMessageFor(model => model.EntryType)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.PONumber)</td>
+                <td>
+                    @Html.EditorFor(model => model.PONumber)
+                    @Html.ValidationMessageFor(model => model.PONumber)
+                </td>
+                <td>@Html.LabelFor(model => model.CaseFileNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.CaseFileNo)
+                    @Html.ValidationMessageFor(model => model.CaseFileNo)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.PODate)</td>
+                <td>
+                    @Html.EditorFor(model => model.PODate)
+                    @Html.ValidationMessageFor(model => model.PODate)
+                </td>
+                <td>@Html.LabelFor(model => model.WForPONumber)</td>
+                <td>
+                    @Html.EditorFor(model => model.WForPONumber)
+                    @Html.ValidationMessageFor(model => model.WForPONumber)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.IsCaseClosed)</td>
+                <td>
+                    @Html.EditorFor(model => model.IsCaseClosed)
+                    @Html.ValidationMessageFor(model => model.IsCaseClosed)
+                </td>
+                <td>@Html.LabelFor(model => model.ClosureDate)</td>
+                <td>
+                    @Html.EditorFor(model => model.ClosureDate)
+                    @Html.ValidationMessageFor(model => model.ClosureDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.CompAddId)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.CompAddId, ViewBag.CompAddressList as SelectList)
+                    @Html.ValidationMessageFor(model => model.CompAddId)
+                </td>
+                <td>@Html.LabelFor(model => model.PaymentMode)</td>
+                <td>
+                    @Html.EditorFor(model => model.PaymentMode)
+                    @Html.ValidationMessageFor(model => model.PaymentMode)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.ActionLink("Order Placing Authority", "../PartyEntry/CreateUpdate", null, 
+                     new { id = "vendorLink", @target = "_new;", style="color:black;text-decoration:underline;font-weight:bold;" })
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.AcDesc)
+                    @Html.ValidationMessageFor(model => model.AcCode)
+                    <table>
+                        <tr>
+                            <td style="vertical-align:top;">Address</td>
+                            <td style="vertical-align:top;">&nbsp;:</td>
+                            <td style="text-align:left;">
+                                <div id="PartyAdrDiv"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>State</td>
+                            <td>&nbsp;:</td>
+                            <td>
+                                <label id="lblPartyState" style="font-weight:normal;"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>StateCode</td>
+                            <td>&nbsp;:</td>
+                            <td>
+                                <label id="lblPartyStateCode" style="font-weight:normal;"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>GSTIN</td>
+                            <td>&nbsp;:</td>
+                            <td>
+                                <label id="lblPartyGSTIN" style="font-weight:normal;"></label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <a target="_blank" style="color:black;text-decoration:underline;font-weight:bold;"
+                       href="/Home/DisplayErpV1?url=../Entry/PayingAuthority.aspx">Paying Authority</a>
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.PayingAuthName)
+                    @Html.ValidationMessageFor(model => model.PayingAuthName)
+                    <table>
+                        <tr>
+                            <td style="vertical-align:top;">Address</td>
+                            <td style="vertical-align:top;">&nbsp;:</td>
+                            <td style="text-align:left;">
+                                <div id="PAuthAdrDiv"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>State</td>
+                            <td>&nbsp;:</td>
+                            <td>
+                                <label id="lblPAuthState" style="font-weight:normal;"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>StateCode</td>
+                            <td>&nbsp;:</td>
+                            <td>
+                                <label id="lblPAuthStateCode" style="font-weight:normal;"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>GSTIN</td>
+                            <td>&nbsp;:</td>
+                            <td>
+                                <label id="lblPAuthGSTIN" style="font-weight:normal;"></label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.FreeAtStation)</td>
+                <td>
+                    @Html.EditorFor(model => model.FreeAtStation)
+                    @Html.ValidationMessageFor(model => model.FreeAtStation)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.TermsCondition)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.TermsCondition, 0, 0,
+                     new { @style = "width:650px;height:50px;" })
+                    @Html.ValidationMessageFor(model => model.TermsCondition)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.MAReason)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.MAReason, ViewBag.MAReasonListE as SelectList)
+                    @Html.ValidationMessageFor(model => model.MAReason)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.Remarks)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Remarks, 0, 0,
+                     new { @style = "width:650px;height:50px;" })
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.CorrectionRequired)</td>
+                <td>
+                    @Html.EditorFor(model => model.CorrectionRequired)
+                    @Html.ValidationMessageFor(model => model.CorrectionRequired)
+                </td>
+                <td>@Html.LabelFor(model => model.IsPOVerified)</td>
+                <td>
+                    @Html.EditorFor(model => model.IsPOVerified)
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+    <table>
+        <tr>
+            <td>
+                <input type="submit" id="caseclosure" class="btn btn-default"
+                       value="Update Case Closure" formaction="@Url.Action("UpdateCaseClosure")" />
+            </td>
+            <td>
+                <input type="submit" id="resetcah" class="btn btn-default"
+                       value="Reset Order Status" formaction="@Url.Action("ResetOrderStatus")" />
+            </td>
+            <td>
+                <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+            </td>
+            <td>
+                <input type="submit" id="verifypo" class="btn btn-default"
+                       value="Verify PO" formaction="@Url.Action("VerifyPurchaseOrder")" />
+            </td>
+            <td>
+                @Html.ActionLink("Close", null, null, new { @onclick = "window.close();", @class = "btn btn-default" })
+            </td>
+        </tr>
+    </table>
+
+    <h5><b>@ViewBag.Message</b></h5>
+    <br />
+    <br />
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#IsIncOrder").attr("style", "width:55px;height:25px;");
+            $("#IsCaseClosed").attr("style", "width:55px;height:25px;");
+            $("#IsPOVerified").attr("style", "width:55px;height:25px;");
+            $("#IsPOVerified").attr("disabled", "disabled");
+            $("#CorrectionRequired").attr("style", "width:55px;height:25px;");
+            $("#RailwayName").attr("placeholder", "start typing, then select...");
+            $("#RailwayName").attr("style", "width:280px;");
+            $("#CaseFileNo").attr("style", "width:280px;");
+            $("#TenderNo").attr("placeholder", "start typing, then select...");
+            $("#WForPONumber").attr("placeholder", "if required, start typing, then select...");
+            $("#WForPONumber").attr("style", "width:280px;");
+            $("#AcDesc").attr("placeholder", "start typing, then select...");
+            $("#AcDesc").attr("style", "width:280px;");
+            $("#PaymentMode").attr("style", "width:280px;");
+            $("#CompAddId").attr("style", "width:280px;");
+            $("#PayingAuthName").attr("placeholder", "start typing, then select...");
+            $("#PayingAuthName").attr("style", "width:280px;");
+            $("#FreeAtStation").attr("style", "width:280px;");
+            $("#PONumber").attr("style", "width:280px;");
+            $("#QuotationNo").attr("style", "width:280px;");
+
+            document.getElementById('caseclosure').style.display = 'none';
+            document.getElementById('resetcah').style.display = 'none';
+            document.getElementById('verifypo').style.display = 'none';
+
+            if ('@Model.POrderId' != 0)//edit mode
+            {
+                SetPayingAuthorityInfo('@Model.PayingAuthId');
+                SetPartyInfo('@Model.AcCode');
+                if ('@ViewBag.IsAdmin' == 1)//is admin
+                {
+                    document.getElementById('caseclosure').style.display = 'block';
+                    document.getElementById('resetcah').style.display = 'block';
+                }
+                if ('@Model.IsPOVerified' != 'True') {
+                    document.getElementById('verifypo').style.display = 'block';
+                }
+            }
+            if ('@ViewBag.IsAdmin' != 1)//is not admin
+            {
+                var x = document.getElementById('OrderStatus');
+                x.setAttribute("disabled", "true");
+            }
+        });
+
+        //Date Picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+
+    </script>
+
+    <script type="text/javascript">
+        $("#TenderNo").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteTenderNo", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('TenderId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getTenderDetailJSon", "Tender"))",
+                    data: { "tenderid": ui.item.Id },
+                    success: function (data) {
+                        var qno = data.quotationno;
+                        if (data.quotationdate.length > 0) {
+                            qno = data.quotationno + ' Date ' + data.quotationdate;
+                        }
+                        $('#QuotationNo').val(qno);
+                        document.getElementById('RailwayId').value = data.railwayid;
+                        document.getElementById('RailwayName').value = data.railwayname;
+                        if (document.getElementById('CaseFileNo').value == '') {
+                            document.getElementById('CaseFileNo').value = data.tcfileno;
+                        }
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#WForPONumber").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePurchaseNumbers", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('WForPOrderId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#RailwayName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteRailway", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('RailwayId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+    @* st: to be copied to items detail entry *@
+    <script type="text/javascript">
+        $("#ConsigneeName").autocomplete({
+            source: function (request, response) {
+                var railwayid = document.getElementById('RailwayId').value;
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteConsignee", "HelpUtility"))",
+                    data: { "term": request.term, "railwyid": railwayid },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('ConsigneeId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+    <script>
+        function SetConsigneeInfo() {
+            var liObj = document.getElementById("ddlConsignee");
+            var indexObj = liObj.selectedIndex;
+            var consigneeid = liObj.options[indexObj].value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getConsigneeDetail", "SaleGst"))",
+                data: { "consigneeid": consigneeid },
+                success: function (data) {
+                    var addr = '';
+                    if (data.Address2.length > 0) {
+                        addr = data.Address2;
+                    }
+                    if (data.Address3.length > 0) {
+                        addr += '<br/>'+data.Address3;
+                    }
+                    if (data.Address4.length > 0) {
+                        addr += '<br/>' + data.Address4;
+                    }
+                    document.getElementById("ConsgAdrDiv").innerHTML = addr;
+                    $('#lblConsgState').text(data.StateName);
+                    $('#lblConsgStateCode').text(data.StateCode);
+                    $('#lblConsgGSTIN').text(data.GSTinNo);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+    @* cl: to be copied to items detail entry *@
+
+    <script type="text/javascript">
+        $("#PayingAuthName").autocomplete({
+            source: function (request, response) {
+                //
+                var railwayid = document.getElementById('RailwayId').value;
+                document.getElementById('PayingAuthId').value = 0;
+                document.getElementById("PAuthAdrDiv").innerHTML = '';
+                $('#lblPAuthState').text('');
+                $('#lblPAuthStateCode').text('');
+                $('#lblPAuthGSTIN').text('');
+                //
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePayingAuthority", "HelpUtility"))",
+                    data: { "term": request.term, "railwayid": railwayid },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('PayingAuthId').value = ui.item.Id;
+                //
+                SetPayingAuthorityInfo(ui.item.Id);
+                //
+            }
+        });
+    </script>
+
+    <script>
+        function SetPayingAuthorityInfo(payingauthid) {
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getPayingAuthorityInfo", "HelpUtility"))",
+                data: { "payingauthid": payingauthid },
+                success: function (data) {
+                    var addr = '';
+                    if (data.Address2.length > 0) {
+                        addr = data.Address2;
+                    }
+                    if (data.Address3.length > 0) {
+                        addr += '<br/>'+data.Address3;
+                    }
+                    if (data.Address4.length > 0) {
+                        addr += '<br/>' + data.Address4;
+                    }
+                    document.getElementById("PAuthAdrDiv").innerHTML = addr;
+                    $('#lblPAuthState').text(data.StateName);
+                    $('#lblPAuthStateCode').text(data.StateCode);
+                    $('#lblPAuthGSTIN').text(data.GSTIN);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        $("#AcDesc").autocomplete({
+            source: function (request, response) {
+                //
+                var railwayid = document.getElementById('RailwayId').value;
+                document.getElementById('AcCode').value = 0;
+                document.getElementById("PartyAdrDiv").innerHTML = '';
+                $('#lblPartyState').text('');
+                $('#lblPartyStateCode').text('');
+                $('#lblPartyGSTIN').text('');
+                //
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteParty", "PartyEntry"))",
+                    data: { "term": request.term, "railwayid": railwayid },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('AcCode').value = ui.item.Id;
+                //
+                SetPartyInfo(ui.item.Id);
+                //
+            }
+        });
+    </script>
+
+    <script>
+        function SetPartyInfo(accode) {
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getPartyDetail", "PartyEntry"))",
+                data: { "accode": accode },
+                success: function (data) {
+                    var addr = '';
+                    if (data.Address2.length > 0) {
+                        addr = data.Address2;
+                    }
+                    if (data.Address3.length > 0) {
+                        addr += '<br/>'+data.Address3;
+                    }
+                    if (data.Address4.length > 0) {
+                        addr += '<br/>' + data.Address4;
+                    }
+                    document.getElementById("PartyAdrDiv").innerHTML = addr;
+                    $('#lblPartyState').text(data.StateName);
+                    $('#lblPartyStateCode').text(data.StateCode);
+                    $('#lblPartyGSTIN').text(data.GSTinNo);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+
+}
+

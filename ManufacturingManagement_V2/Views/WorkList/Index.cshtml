@@ -1,0 +1,276 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.WorkListMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Compliance List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+
+</p>
+@{var lstStatus = new List<System.Web.UI.WebControls.ListItem>
+    {
+          new System.Web.UI.WebControls.ListItem { Text = "Pending", Value="p" },
+          new System.Web.UI.WebControls.ListItem { Text = "Completed", Value="c" }
+    };
+ }
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "WorkList", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.CompName)</td>
+                            <td>@Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)</td>
+                            <td>@Html.DisplayNameFor(model => model.DepId)</td>
+                            <td>@Html.DropDownList("ddlDepartment", ViewBag.DepartmentList as SelectList)</td>
+                        </tr>
+                        <tr>
+                            <td>Date From</td>
+                            <td>@Html.TextBox("txtDtFrom", null, new { @class = "datepicker" })</td>
+                            <td>Date To</td>
+                            <td>@Html.TextBox("txtDtTo", null, new { @class = "datepicker" })</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.IsCompleted)</td>
+                            <td>@Html.DropDownList("ddlStatus", new SelectList(lstStatus, "Value", "Text"))</td>
+                            <td>Compliance Of</td>
+                            <td>@Html.DropDownList("ddlTOpt", ViewBag.TaskOptList as SelectList)</td>
+                        </tr>
+                    </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:30px;">
+            Status
+        </th>
+
+        @if (Model.Any())
+        {
+            if (!(@Model.ElementAt(0).TaskOpt == 2401 || @Model.ElementAt(0).TaskOpt == 2415))
+            {
+                <th style="width:50px;">
+                    @Html.DisplayNameFor(model => model.ShortName)
+                </th>
+                <th style="width:50px;">
+                    @Html.DisplayNameFor(model => model.DepName)
+                </th>
+            }
+        }
+
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.RecDT)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.TaskName)/
+            @Html.DisplayNameFor(model => model.WorkDesc)
+        </th>
+        <th>Action</th>
+        <th>File</th>
+        <th>Delete</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @*@disabled = "disabled", @onclick = "return false" also works*@
+                @Html.CheckBox("chkSt" + i.ToString(), item.IsCompleted,
+                new
+                {
+                    @id = "ckkSt" + (i - 1),
+                    style = "width: 50px; height: 30px; padding: 0; text-align:center;",
+                    @onclick = "performAction(this,'" + item.RecId + "')"
+                })
+            </td>
+
+            @if (!(@Model.ElementAt(0).TaskOpt == 2401 || @Model.ElementAt(0).TaskOpt == 2415))
+            {
+                <td>
+                    @Html.DisplayFor(model => item.ShortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.DepName)
+                </td>
+            }
+
+            <td>
+                @Html.ValueFor(model => item.RecDT, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.TaskName)
+                <br /><i>@Html.DisplayFor(model => item.WorkDesc)</i>
+                @if (item.CompDTStr.Length > 0)
+                {
+                    <div><b>[</b>Completed On: @Html.DisplayFor(model => item.CompDTStr)<b>]</b></div>
+                }
+            </td>
+
+            <td>
+                @Html.ActionLink("Compliance", "CreateCompliance", new { id = item.RecId })
+                <br />@Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+            </td>
+
+            <td>
+                @Html.ActionLink("Upload", "UploadFile", new { recid = item.RecId },
+                new { @target = "_blank;" })
+                @if (item.Doc == true)
+                {
+                    <br />@Html.ActionLink("Display", "ShowDocument",
+               new { recid = item.RecId }, new { @target = "_blank;" })
+                }
+            </td>
+            <td>
+                @Html.ActionLink("View_Log", "../EventLogReport/getLogDetail",
+                    new { tblid = 66, pkval = item.RecId }, new { @target = "_blank" })
+                <br />@Html.ActionLink("Delete", null, new { recid = item.RecId },
+               new { onclick = "deleteWork('" + item.RecId + "')", style = "color:black;" })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("ddlStatus").value = '@ViewBag.status';
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+        });
+    </script>
+
+        <script type="text/javascript">
+            function performAction(id,recid) {
+                if (id.checked == true) {
+                    var a = confirm("Are you sure to set completed this work?");
+                    if (a == false) {
+                        id.checked = false;
+                        return;
+                    }
+                    setCompleted(recid);
+                }
+                else {
+                    var a = confirm("Are you sure to set pending this work?");
+                    if (a == false) {
+                        id.checked = true;
+                        return;
+                    }
+                    setPending(recid);
+                }
+            }
+    </script>
+
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtEmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployee", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+    <script>
+        function setCompleted(recid) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("updateCompleted", "WorkList")',
+            dataType: 'html',
+            data: ({
+                //insert your parameters to pass to controller
+                recid: recid
+            }),
+            success: function () {
+                //alert("Marked Completed Successfully");
+                location.reload();
+            }
+        });
+    }
+   </script>
+
+    <script>
+        function setPending(recid) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("updatePending", "WorkList")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    recid: recid
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+</script>
+
+    <script>
+        function deleteWork(recid) {
+            var a = confirm("Are you sure to delete this work?");
+            if (a == false) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "WorkList")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    recid: recid
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+</script>
+
+}
+

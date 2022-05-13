@@ -1,0 +1,702 @@
+﻿@model ManufacturingManagement_V2.Models.ContractorIndentMDI
+@{
+    ViewBag.Title = "Index_ComplaintInsert";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create Task</title>
+    <script>
+       function GetDetails(id) {
+            $.ajax({
+                url: "/ContractorIndent/Update_User_ComplaintRecord1/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId1').val(response.RecordId); 
+                    $('#Location1').val(response.Location);
+                    $('#WorkDetail1').val(response.WorkDetail);
+                    $('#Remark1').val(response.Remark);
+                    $('#modal-UpdatetFirstStep').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        function StatusUpDate(id) {
+            $.ajax({
+                url: "/ContractorIndent/Update_User_ComplaintStatus/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordIdStatus').val(response.RecordId);
+                    //$('#Location1').val(response.Location);
+                    //$('#WorkDetail1').val(response.WorkDetail);
+                    //$('#Remark1').val(response.Remark);
+                    $('#modal-StatusUpdate').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+       function viewdetailrecord(id) {
+            $.ajax({
+                url: "/ContractorIndent/Update_User_ComplaintRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId2').val(response.RecordId);
+                    $('#cmpname2').val(response.cmpname);
+                    $('#Location2').val(response.Location);
+                    $('#Category2').val(response.Category);
+                    $('#Status2').val(response.Status);
+                    $('#Priority2').val(response.Priority);
+                    $('#WorkDetail2').val(response.WorkDetail);
+                    $('#EstimateAmount2').val(response.EstimateAmount);
+                    $('#Contractor2').val(response.Contractor);
+                    $('#CompletionDate2').val(response.CompletionDate);
+                    $('#WorkStartDate2').val(response.WorkStartDate);
+                    $('#CreatedBy2').val(response.CreatedBy);
+                    $('#CreatedOn2').val(response.CreatedOn);
+                    $('#UpdatedOn2').val(response.UpdatedOn);
+                    $('#UpdatedBy2').val(response.UpdatedBy);
+                    $('#Remark2').val(response.Remark);
+                    $('#hodname2').val(response.hodname);
+                    $('#HODApproval2').val(response.HODApproval);
+                    $('#HODApprovedBy2').val(response.HODApprovalBy);
+                    $('#HODApprovalDate2').val(response.HODApprovalDate);
+                    $('#HODRemark2').val(response.HODRemark);
+                    $('#FinalApproval2').val(response.FinalApproval);
+                    $('#FinalApprovalBy2').val(response.FinalApprovalBY);
+                    $('#FinalApprovalDate2').val(response.FinalApprovalDate);
+                    $('#FinalRemark2').val(response.FinalRemark);
+                    $('#WorkRating2').val(response.WorkRating);
+                    $('#AssignTo2').val(response.AssignTo);
+                    $('#FullName2').val(response.FullName);
+                    $('#modal-Complaintview').modal('show');
+
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        function GetCompany() {
+            $.ajax({
+                // url: "/LibraryMasterUpload/Edit_CompanyRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    // $('#RecordId3').val(response.RecordId);
+                    $('#modal-ChangeCompany8').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</Head>
+<body>
+    <div class="row" style="margin-top:3px;margin-bottom:3px">
+        <div class="col-md-pull-10">
+            <div class="col-md-6 pull-left">
+                <div class="panel panel-success">
+                    @*<div class="panel panel-heading">
+                        <h4 class="panel-title">&nbsp;&nbsp;&nbsp;Task Approval Dashboard</h4>
+                    </div>*@
+                    <div class="panel-body text-center">
+                        <div class="col-md-4">
+                            @Html.ActionLink("Complaints List", "Index_ComplaintInsert", "ContractorIndent", null, new { @class = "btn btn-success" })
+
+                            @ViewBag.UserSec
+
+                        </div>
+                        <div class="col-md-4">
+                            @Html.ActionLink("HOD", "Index_ComplaintApprovalHOD_Sec", "ContractorIndent", null, new { @class = "btn btn-success" })
+
+                            @ViewBag.HODApproval
+
+
+                        </div>
+                        <div class="col-md-4">
+                            @Html.ActionLink("Store", "Index_ComplaintStore_Sec", "ContractorIndent", null, new { @class = "btn btn-success" })
+
+                            @ViewBag.FinalApproval
+
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.ActionLink("Civil", "Index_ComplaintCivil_Sec", "ContractorIndent", null, new { @class = "btn btn-success" })
+
+                            @ViewBag.CivilSec
+
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.ActionLink("Electrical", "Index_ComplaintElectrical_Sec", "ContractorIndent", null, new { @class = "btn btn-success" })
+                            @*  @Html.ActionLink("Electrical", "Index_ComplaintElectrical_Sec", "ContractorIndent", null, new { @class = "btn btn-success" })*@
+                            @ViewBag.Electrical
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <div class="pull-right" style="margin-top:3px;margin-bottom:3px">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-InsertNewTask">
+                Add New Task
+            </button>
+        </div>
+    </div>
+    Complaint List
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                </div>
+                <div class="box-body">
+
+                    <table id="jdtabledesktop" class="table-condensed" style="width:100%;border:thick">
+                        <thead>
+                            <tr>
+                                <th>Task No</th>
+                                <th>Company</th>
+                                <th>Status</th>
+                                <th>HOD</th>
+                                <th>Category</th>
+                                @*<th>Work Detail</th>*@
+                                <th>HOD Approval</th>
+                                <th>Management Approval</th>
+                                @*<th>Remark</th>*@
+                                <th>CreatedBy</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Item_List)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(model => item.RecordId)</td>
+                                    <td>@Html.DisplayFor(model => item.cmpname)</td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.Status)
+                                        @*<a onclick="StatusUpDate(@item.RecordId)">
+                                            <i class="fa fa-pencil">
+                                            </i>
+                                        </a>*@
+                                    </td>
+                                    <td>@Html.DisplayFor(model => item.hodname)</td>
+                                    <td>@Html.DisplayFor(model => item.Category)</td>
+                                    @*<td>@Html.DisplayFor(model => item.WorkDetail)</td>*@
+                                    <td>@Html.DisplayFor(model => item.HODApproval)</td>
+                                    <td>@Html.DisplayFor(model => item.FinalApproval)</td>
+                                    @* <td>@Html.DisplayFor(model => item.Remark)</td>*@
+                                    <td>@Html.DisplayFor(model => item.CreatedBy)</td>
+                                    <td>
+                                        <a onclick="viewdetailrecord(@item.RecordId)">
+                                            <i class="fa fa-eye">
+                                            </i>
+                                        </a>
+                                        <a onclick="GetDetails(@item.RecordId)">
+                                            <i class="fa fa-pencil">
+                                            </i>
+                                        </a>
+
+                                        @*<a>
+                                            @Html.ActionLink(" ", "IndentDeleteRecord", "ContractorIndent", new { id = item.RecordId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                        </a>*@
+
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            @*<tr>
+                                    <th>HOD_Approval</th>
+                                    <th>Final_Approval</th>
+                                    <th>TaskNo</th>
+                                    <th>Company</th>
+                                    <th>HOD_Status</th>
+                                    <th>Final_Status</th>
+                                    <th>Category</th>
+
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                   <th>Quotation</th>
+                                </tr>*@
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*insert*@
+    <div class="modal fade" id="modal-InsertNewTask">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Create New Task</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Index_ComplaintInsert", "ContractorIndent", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <label>Select Company</label>
+                            <br />
+                            @Html.DropDownListFor(model => model.compcode, ViewBag.LocationList as SelectList)
+                            @Html.ValidationMessageFor(model => model.compcode, "", new { @class = "text-danger" })
+                            <br />
+                            <label>Enter Location</label>
+                            <br />
+                            @Html.TextAreaFor(model => model.Location, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;" })
+                            <br />
+                            <label>Select HOD </label>
+                            <br />
+                            @Html.DropDownListFor(model => model.hodid, ViewBag.HodList as SelectList)
+                            @Html.ValidationMessageFor(model => model.hodid)
+                            <br />
+                            <label>Select  Work Category</label>
+                            <br />
+                            <select name="Category" id="Category">
+                                <option value="Civil">Civil</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="Plumbing">Plumbing</option>
+                                <option value="Any Other">Any Other</option>
+                            </select>
+                            <br />
+                            <label>Enter  Work Detail</label>
+                            <br />
+                            @Html.TextAreaFor(model => model.WorkDetail, 0, 0, new { @class = "Editor", @style = "width:450px;height:50px;" })
+                            @Html.ValidationMessageFor(model => model.WorkDetail)
+                            <br />
+                            <label>Enter Remark</label>
+                            <br />
+                            @Html.TextAreaFor(model => model.Remark, 0, 0, new { @class = "Editor", @style = "width:350px;height:30px;" })
+                            @Html.HiddenFor(model => model.CreatedBy)
+                            @Html.HiddenFor(model => model.UserId)
+                            <div class="modal-footer">
+                                <button type="submit" id="Apply" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*insert*@
+    <div class="modal fade" id="modal-UpdatetFirstStep">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Update Task</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_FirstStep", "ContractorIndent", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <label>Enter Location</label>
+                            <br />
+                            @Html.TextAreaFor(model => model.Location, 0, 0, new { @class = "Editor", @style = "width:350px;height:25px;", @id = "Location1" })
+                            <br />
+                            <label>Enter  Work Detail</label>
+                            <br />
+                            @Html.TextAreaFor(model => model.WorkDetail, 0, 0, new { @class = "Editor", @style = "width:450px;height:50px;", @id = "WorkDetail1" })
+                            @Html.ValidationMessageFor(model => model.WorkDetail)
+                            <br />
+                            <label>Enter Remark</label>
+                            <br />
+                            @Html.TextAreaFor(model => model.Remark, 0, 0, new { @class = "Editor", @style = "width:350px;height:30px;", @id = "Remark1" })
+                            @Html.HiddenFor(model => model.UpdatedBy)
+                            @Html.HiddenFor(model => model.RecordId, new{ @id = "RecordId1" })
+                            <div class="modal-footer">
+                            <button type="submit" id="Apply" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*ViewFirstRecord*@
+    <div class="modal fade" id="modal-Complaintview">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:850px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Task Detail</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_HODApproval1", "ContractorIndent", FormMethod.Post))
+                        {
+                            <div>
+                                <br />
+                                <table>
+                                    <tr>
+                                        <td style="background-color:green;color:white">
+                                            Task Section
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Task Number </td>
+                                        <td><input type="number" class="form-control" id="RecordId2" name="RecordId" style="border:none;width:100px"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Company</td>
+                                        <td> <input type="text" class="form-control" id="cmpname2" name="cmpname" style="border:none;width:350px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Location
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Location2" name="Location" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td style="padding:10px">
+                                            Category
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Category2" name="Category" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+
+                                        <td style="padding:10px">
+                                            Work Detail
+                                        </td>
+                                        <td>
+                                            @Html.TextAreaFor(model => model.WorkDetail, 0, 0, new { @class = "Editor", @style = "width:600px;height:50px;", @id = "WorkDetail2" })
+                                            @* <input type="text" class="form-control" id="WorkDetail2" name="WorkDetail" style="border:none;width:500px">*@
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Work Status
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Status2" name="Status" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Priority
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Priority2" name="Priority" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Task Created By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="CreatedBy2" name="CreatedBy" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Task Created On
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="CreatedOn2" name="CreatedOn" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Updated By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="UpdatedBy2" name="UpdatedBy" style="border:none">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Updated On
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="UpdatedOn2" name="UpdatedOn" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Remark
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Remark2" width="450" name="Remark" style="width:700px;height:30px;border:none">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:green;color:white">
+                                            HOD Section
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            HOD Name
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="hodname2" name="hodname" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Approval/Rejected                                         </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="HODApproval2" name="HODApproval" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Task Assign To
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="FullName2" name="AssignTo" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Approved/Rejected By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="HODApprovedBy2" name="HODApprovedBy2" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Approved/Reject On
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="HODApprovalDate2" name="HODApprovalDate" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Remark
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="HODRemark2" name="HODRemark" style="width:700px;height:30px;border:none">
+                                        </td>
+
+
+                                    <tr>
+                                        <td style="background-color:green;color:white">
+                                            Management Section
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Approval/Rejected
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="FinalApproval2" name="FinalApproval" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Estimated Amount
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="EstimateAmount2"  name="EstimateAmount" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Updated By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="FinalApprovalBy2" name="FinalApprovalBY" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Approval/Rejected On
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="FinalApprovalDate2" name="FinalApprovalDate" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                             Start Date
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="WorkStartDate2" name="WorkStartDate" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                             completed Date
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="CompletionDate2" name="CompletionDate" style="border:none;width:400px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Work Satisfaction
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="WorkRating2" name="WorkRating" style="width:700px;height:30px;border:none">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Remark
+                                        </td>
+                                        <td>
+
+                                            <input type="text" class="form-control" id="FinalRemark2" name="FinalRemark" style="width:700px;height:30px;border:none">
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                            <div class="modal-footer">
+
+                                @*  @*<button type="submit" id="modal-hodApproval" class="btn btn-primary">Submit</button>*@
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*//StatusUpdate*@
+    <div class="modal fade" id="modal-StatusUpdate">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:300px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Status Screen</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Update_User_ComplaintStatus", "ContractorIndent", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+
+                                    @Html.HiddenFor(model => model.UpdatedBy)
+                                    @*<label>Task Number</label>*@
+                                    <input type="hidden" class="form-control" id="RecordIdStatus" name="RecordId" style="color:white">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <label>Select Status</label>
+                                    <select name="Status" id="Status">
+                                        @*<option value="Closed">Closed</option>*@
+                                        <option value="Completed">Completed</option>
+                                        <option value="In-Completed">In-Completed</option>
+                                        <option value="Not-Started">Not-Started</option>
+                                        <option value="Cancel">Cancel</option>
+
+                                    </select>
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "danger" })
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="modal-StatusUpdate" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" id="modal-StatusUpdate" class="btn btn-success">Submit</button>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-ChangeCompany8">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <div class="modal-body">
+
+                    @using (Html.BeginForm("ChangeCompany", "ContractorIndent", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-lg-10">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Select Company</label>
+                                @Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" id="modal-updateCompany" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="submit" id="modal-updateCompany" class="btn btn-success">Submit</button>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>

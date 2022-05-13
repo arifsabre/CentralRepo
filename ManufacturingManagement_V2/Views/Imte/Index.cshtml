@@ -1,0 +1,159 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ImteMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>IMTE Master List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+    @*<legend>LegendText</legend>*@
+    @using (Ajax.BeginForm("FilterIndex", "Imte", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <b>IMTE Type</b>
+                        @Html.DropDownList("ddlImteType", ViewBag.ImteTypeList as SelectList, "--Select--",
+                        new { @onclick = "fillLocation()" })
+                        <b>Location</b>
+                    <td>
+                        @Html.DropDownList("ddlLocation", ViewBag.LocationList as SelectList, "--Select--")
+                        <button class="btn btn-default">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:60px;">
+            IMTE&nbsp;Type
+        </th>
+        <th style="width:60px;">
+            Id&nbsp;No
+        </th>
+        <th style="width:60px;">
+            Range
+        </th>
+        <th style="width:60px;">
+            Location
+        </th>
+        <th style="width:60px;">
+            Purchase&nbsp;Year
+        </th>
+        <th style="width:60px;">
+            Least&nbsp;Count
+        </th>
+        <th style="width:60px;">
+            Status
+        </th>
+        <th style="width:60px;">Action Links</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ImteTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IdNo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ImteRange)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PurchaseYear)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.LeastCount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.InUseStatus)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.ImteId })
+                <br />@Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+              new { tblid = 83, pkval = item.ImteId }, new { @target = "_blank" })
+                <br />@Html.ActionLink("Details", "Details", new { id = item.ImteId })
+            </td>
+        </tr>
+        i++;
+    }
+    @{i = i - 1;}
+    @i.ToString()&nbsp;&nbsp;&nbsp;Record(s) found.
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            //document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            //document.getElementById("ddlSeries").value = '@ViewBag.Series';
+        });
+    </script>
+
+    <script>
+        function fillLocation() {
+            var liObj = document.getElementById("ddlImteType");
+            var sIndex = liObj.selectedIndex;
+            var ccode = liObj.options[sIndex].value;
+            if (ccode.length == 0) {
+                ccode = 0;
+            }
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getImteLocationList", "HelpUtility"))",
+                data: { "imtetypeid": ccode },
+                success: function (data) {
+                    //getting multiple records as (key,value) pair type list
+                    $("#ddlLocation").empty(); // clear before appending new list
+
+                    $("#ddlLocation").append($('<option />', {
+                        value: "",
+                        text: "--Select--"
+                    }));
+
+                    $.each(data, function (i, item) {
+                        $("#ddlLocation").append($('<option />', {
+                            value: item.Key,
+                            text: item.Value
+                        }));
+                    });
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+}

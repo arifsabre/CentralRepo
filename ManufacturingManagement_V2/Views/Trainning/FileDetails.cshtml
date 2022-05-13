@@ -1,0 +1,28 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.Trainning_Insert>
+
+@*{
+        Layout = "~/views/shared/_LayoutCommon1.cshtml";
+    }*@
+<table class="table table-bordered" style="text-align:Left">
+    <tr style="text-align:left">
+        <th class="col-md-2" style="text-align:left">
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr style="text-align:left">
+        <td style="text-align:left">
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td style="text-align:left">
+            @Html.ActionLink("Downlaod", "DownLoadFile", new { id = item.Id })
+        <td style="text-align:left">
+            @Html.ActionLink("View", "File", new { id = item.Id })
+        </td>
+        </td>
+    </tr>
+    }
+</table>

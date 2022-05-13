@@ -1,0 +1,37 @@
+﻿@model ManufacturingManagement_V2.Models.DocSubCategoryMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Document Sub Category Detail</b></h4>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id=Model.SubCategoryId }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+    @*<legend>VendorMdl</legend>*@
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.SubCategoryId)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SubCategoryId)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.SubCategoryName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SubCategoryName)</td>
+                </tr>
+
+            </table>
+        </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

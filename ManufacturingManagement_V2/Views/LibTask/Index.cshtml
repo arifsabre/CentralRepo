@@ -1,0 +1,480 @@
+﻿@model ManufacturingManagement_V2.Models.LibTask
+@{
+    ViewBag.Title = "InsertNewTask";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script>
+        //$(function () {
+        //     $('#example1').DataTable();
+        // })
+        function GetDetails(id) {
+            $.ajax({
+                url: "/LibTask/Edit_TaskListRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#TaskId').val(response.TaskId);
+                    $('#Task').val(response.Task);
+                    $('#TaskDate').val(response.TaskDate);
+                    $('#SId').val(response.SId);
+                    $('#PId').val(response.PId);
+                    $('#UserId').val(response.UserId);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        //Detail
+        function GetDetail(id) {
+            $.ajax({
+                url: "/LibTask/Edit_TaskListRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#TaskId1').val(response.TaskId);
+                    $('#Task2').val(response.Task);
+                    $('#modal-updatedetail').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        //Status
+        function GetStatus(id) {
+            $.ajax({
+                url: "/LibTask/Edit_TaskStatusRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#TaskId2').val(response.TaskId);
+                    $('#Status2').val(response.Status);
+                    $('#modal-UpdateStatus').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        
+        function GetPriority(id) {
+            $.ajax({
+                url: "/LibTask/Edit_TaskPriorityRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#TaskId3').val(response.TaskId);
+                    $('#Priority3').val(response.Priority);
+                    $('#modal-UpdatePriority').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function GetTaskdate(id) {
+            $.ajax({
+                url: "/LibTask/Edit_TaskDateRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#TaskId4').val(response.TaskId);
+                    $('#TaskDate4').val(response.TaskDate);
+                    $('#modal-UpdateTaskDate').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+    </script>
+
+</head>
+<body>
+    <br />
+    <div class="col-md-4 pull-Left">
+        <div class="panel panel-success">
+            <div class="panel panel-heading">
+                <h3 class="panel-title">To Do</h3>
+            </div>
+            <div class="panel-body text-center">
+                <div class="col-md-3">
+                    <a href='@Url.Action("GetTaskListNotStarted", "LibTask")'>
+                        @* <i class="fa fa-calendar-o fa-lg"></i>*@
+                        <h4>Not Started</h4>
+                        <h4>@ViewBag.nstarted  </h4>
+
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href='@Url.Action("GetTaskListInProgress", "LibTask")'>
+                        @*  <i class="fa fa-calendar-o fa-lg"></i>*@
+                        <h4>In Progress</h4>
+                        <h4>@ViewBag.inp </h4>
+
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href='@Url.Action("GetTotalTaskCompleted", "LibTask")'>
+                        @*  <i class="fa fa-calendar-o fa-lg"></i>*@
+                        <h4>Completed</h4>
+                        <h4>@ViewBag.totalcomp</h4>
+
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert">
+            Add New Task
+        </button>
+        <div id="printbar" class="pull-right">
+        </div>
+    </div>
+
+    <section class="content" style="margin-left:14px">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+
+                    @*<div class="box-header">
+                        </div>*@
+                    <div class="box-body">
+
+                        <table id="jdtabledesktop" class="table table-bordered table-hover table table-striped " style="width:100%">
+                            <thead>
+                                <tr>
+
+                                    <th>Id</th>
+                                    <th>Task_Detail</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Due_Date</th>
+                                    <th>Created_By</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.TaskList)
+                                {
+                                    <tr>
+
+                                        <td>@Html.DisplayFor(model => item.TaskId)</td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.Task)
+                                            <a onclick="GetDetail(@item.TaskId)">
+                                                <i class="fa fa-pencil-square">
+                                                </i>
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(model => item.Status)
+                                            <a onclick="GetStatus(@item.TaskId)">
+                                                <i class="fa fa-pencil-square">
+                                                </i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.Priority)
+                                            <a onclick="GetPriority(@item.TaskId)">
+                                                <i class="fa fa-pencil-square">
+                                                </i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.TaskDate)
+                                            <a onclick="GetTaskdate(@item.TaskId)">
+                                                <i class="fa fa-pencil-square">
+                                                </i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.CreatedBy)
+                                        </td>
+                                        <td>
+                                            <a>
+                                                @Html.ActionLink(" ", "DeleteTask", "LibTask", new { id = item.TaskId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @*//Company*@
+    <div class="modal fade" id="modal-updatedetail">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @*<div class="box box-primary">*@
+                    @using (Html.BeginForm("Edit_TasklList", "LibTask", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-lg-10">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+
+                                @Html.HiddenFor(model => model.UpdatedBy)
+
+
+                                <input type="hidden" class="form-control" id="TaskId1" name="TaskId" style="color:white">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Task Detail</label>
+                                <br />
+                                @Html.TextAreaFor(model => model.Task, 0, 0, new { @class = "Editor", @style = "width:300px;height:100px;", @id = "Task2" })
+                                @Html.ValidationMessageFor(model => model.Task, "", new { @class = "danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" id="modal-updateCompany" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="submit" id="modal-updateCompany" class="btn btn-success">Submit</button>
+                        </div>
+
+                    }
+                    @*  *@ @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//Status*@
+    <div class="modal fade" id="modal-UpdateStatus">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @*<div class="box box-primary">*@
+                    @using (Html.BeginForm("Edit_TaskStatus", "LibTask", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-lg-10">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+
+                                @Html.HiddenFor(model => model.UpdatedBy)
+                                <input type="hidden" class="form-control" id="TaskId2" name="TaskId" style="color:white" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Select Status</label>
+                                <br />
+                                @Html.DropDownListFor(model => model.SId, ViewBag.TaskStatus as SelectList, new { @Id = "SId" })
+                                @Html.ValidationMessageFor(model => model.SId, "", new { @class = "danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        @*<br />
+                            <br />
+                            <br />*@
+                        <div class="modal-footer">
+                            <button type="button" id="modal-UpdateStatus" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="submit" id="modal-UpdateStatus" class="btn btn-success">Submit</button>
+                        </div>
+
+                    }
+                    @*  *@ @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//Priority*@
+    <div class="modal fade" id="modal-UpdatePriority">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @*<div class="box box-primary">*@
+                    @using (Html.BeginForm("Edit_TaskPriority", "LibTask", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-lg-10">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+
+                                @Html.HiddenFor(model => model.UpdatedBy)
+                                <input type="hidden" class="form-control" id="TaskId3" name="TaskId" style="color:white" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Select Priority</label>
+                                <br />
+                                @Html.DropDownListFor(model => model.PId, ViewBag.TaskPriority as SelectList, new { @Id = "PId" })
+                                @Html.ValidationMessageFor(model => model.PId, "", new { @class = "danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        @*<br />
+                            <br />
+                            <br />*@
+                        <div class="modal-footer">
+                            <button type="button" id="modal-UpdatePriority" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="submit" id="modal-UpdatePriority" class="btn btn-success">Submit</button>
+                        </div>
+
+                    }
+                    @*  *@ @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    @*//TaskDatey*@
+    <div class="modal fade" id="modal-UpdateTaskDate">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @*<div class="box box-primary">*@
+                    @using (Html.BeginForm("Edit_TaskDate", "LibTask", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-lg-10">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+
+                                @Html.HiddenFor(model => model.UpdatedBy)
+                                <input type="hidden" class="form-control" id="TaskId4" name="TaskId" style="color:white" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>Select Due Date</label>
+                                <br />
+                                @Html.EditorFor(model => model.TaskDate)
+                                @Html.ValidationMessageFor(model => model.TaskDate, "", new { @class = "danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        @*<br />
+                            <br />
+                            <br />*@
+                        <div class="modal-footer">
+                            <button type="button" id="modal-UpdateTaskDate" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="submit" id="modal-UpdateTaskDate" class="btn btn-success">Submit</button>
+                        </div>
+
+                    }
+                    @*  *@ @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Add New Task</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("InsertNewTask", "LibTask", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <label>Task Detail</label><br />
+                                        @Html.TextAreaFor(model => model.Task, 0, 0, new { @class = "Editor", @style = "width:300px;height:100px;", @id = "TaskId" })
+                                        @* @Html.EditorFor(model => model.Task)*@
+                                        <br />
+                                        <label>Due_Date</label>
+                                        <br />
+                                        @Html.EditorFor(model => model.TaskDate)
+                                        <br />
+                                        <label>Status</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.SId, ViewBag.TaskStatus as SelectList)
+                                        @Html.ValidationMessageFor(model => model.SId)
+                                        <br />
+                                        <label>Priority</label>
+                                        <br />
+                                        @Html.DropDownListFor(model => model.PId, ViewBag.TaskPriority as SelectList)
+                                        @Html.ValidationMessageFor(model => model.PId)
+                                        <br />
+                                        @Html.HiddenFor(model => model.UserId)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>

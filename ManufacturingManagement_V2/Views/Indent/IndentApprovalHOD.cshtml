@@ -1,0 +1,129 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.IndentLedgerMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Indent Approval (HOD)</h2>
+
+@*<fieldset>
+        <legend>Indent</legend>
+            @using (Ajax.BeginForm("FilterIndex", "Indent", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                        <table>
+                            <tr>
+                                <td>From</td>
+                                <td>@Html.TextBox("txtDtFrom",null,new { @class = "datepicker" })</td>
+                                <td>To</td>
+                                <td>@Html.TextBox("txtDtTo",null,new { @class = "datepicker" })</td>
+                            </tr>
+                        </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>*@
+
+<p>
+    @Html.ActionLink("View Replied Indents", "IndentsRepliedByHOD")
+</p>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:100px;">
+            Indent&nbsp;No<br />[Date]
+        </th>
+        <th style="width:auto;">
+            Indent&nbsp;By
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.ItemCode)
+        </th>
+        <th style="width:auto;">
+            Approx&nbsp;Rate<br />[Approx&nbsp;Value]
+        </th>
+        <th style="width:100px;word-wrap:break-word;">
+            Query By Admin
+        </th>
+        <th style="width:100px;word-wrap:break-word;">
+            Reply To Admin
+        </th>
+        <th style="width:100px;word-wrap:break-word;">
+            Remarks For Indentor
+        </th>
+        <th style="width:100px;word-wrap:break-word;">
+            Reply From Indentor
+        </th>
+        <th style="width:25px;">Proceed</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td class="indexColumn" style="width:95px;word-break:keep-all;">
+                @Html.DisplayFor(modelItem => item.StrIndentNo)
+                <br />[@Html.ValueFor(modelItem => item.VDate, "{0:dd/MM/yyyy}")]
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IndentByName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemCode)
+            </td>
+            <td>
+                @Html.ValueFor(modelItem => item.ApproxRate, "{0:##,##,##,##,##0.00}")
+                <br />[@Html.ValueFor(modelItem => item.ApproxValue, "{0:##,##,##,##,##0.00}")]
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdminQuery)
+                @if (item.AdminQuery.Trim().Length > 0)
+                {
+                    <div><b>[</b>@Html.DisplayFor(model => item.AdminUserName)<b>]</b></div>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HODReply)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HODRemarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IndentorReply)
+            </td>
+            <td>
+                @Html.ActionLink("Proceed", "ApproveIndentByHOD", new { recid = item.RecId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+}

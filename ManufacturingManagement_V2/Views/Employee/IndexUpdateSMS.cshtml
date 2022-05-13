@@ -1,0 +1,123 @@
+﻿@model ManufacturingManagement_V2.Models.EmployeeMdl
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script>
+        $(function () {
+            $('#example1').DataTable();
+        })
+        function GetDetails(id) {
+            $.ajax({
+                url: "/Employee/EditStatusSMSRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#NewEmpId').val(response.NewEmpId);
+                    $('#EmpName').val(response.EmpName);
+                    $('#SendSMS').val(response.SendSMS);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+</script>
+</head>
+    <body style="background-color:lightgray">
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4><b>Update SMS Status</b></h4>
+                    </div>
+        <div class="box-body">
+            
+       <table id="example1" class="table table-bordered table-hover "style="background-color:lightgray">
+                            <thead>
+                                <tr>
+                                    <th>NewEmpId.</th>
+                                    <th>Emp Name</th>
+                                    <th>Emp Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.GetempList)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.NewEmpId)</td>
+                                        <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                         <td>@Html.DisplayFor(model => item.SendSMS)</td>
+                                          <td>
+                                            <a onclick="GetDetails(@item.NewEmpId)">
+                                            <i class="fa fa-edit">
+                                             </i>
+                                            </a>
+                                            <a>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Update Status</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html
+                            .BeginForm("Update_SMSStatus", "Employee", FormMethod.Post))
+                        {
+                            <div class="modal-body" style="height:170px;width:500px;background-color:lightgray">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                         <input type="number" class="form-control" id="NewEmpId" name="NewEmpId" >
+                                         <input type="text" class="form-control" id="EmpName" name="EmpName" placeholder="EmpName">
+                                        <input type="text" class="form-control" id="SendSMS" name="SendSMS" placeholder="SendSMS">
+                                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div>
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success alert-dismissable">
+                @ViewBag.Message;
+                <a href="#" class="close" data-dissmiss="alert">x</a>
+            </div>
+        }
+    </div>
+      </body>
+    </html>

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.IndentLedgerMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Indent List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+</p>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:50px;">
+            IndentDate<br />IndentNo
+        </th>
+        <th style="width:50px;">
+            ItemCode
+        </th>
+        <th style="width:80px;">
+            Indent&nbsp;Status
+        </th>
+        <th style="width:80px;">
+            Issue&nbsp;Status
+        </th>
+        <th style="width:auto;word-wrap:break-word;">
+            HOD&nbsp;Remarks<br />[Reply To HOD]
+        </th>
+        <th style="width:25px;">Action&nbsp;Link</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.ValueFor(modelItem => item.VDate, "{0:dd/MM/yyyy}")
+                <br />@Html.DisplayFor(modelItem => item.VNo)-[@Html.DisplayFor(modelItem => item.ItemSlNo)]
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IndentStatusName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IssueStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HODRemarks)
+                @if (item.IndentorReply.Length > 0)
+                {
+                    <div>[@Html.DisplayFor(modelItem => item.IndentorReply)]</div>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Edit_Indent", "UpdateIndent", new { id = item.IndentId })
+                <br />@Html.ActionLink("Edit_Item", "LedgerItemUpdation", new { recid = item.RecId })
+                <br />@Html.ActionLink("Preview", "../IndentReport/IndentReportById", new { indentid = item.IndentId }, new { target = "_blank;" })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+

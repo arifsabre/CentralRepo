@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Admin";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Admin Utilities</b></h4>
+
+<br/>
+<div style="font-size:13pt;font-family:Verdana;">
+    <div class="sidebyside">
+        @Html.ActionLink("Object Information", "../ObjectInfo/Index")
+        <br /><br />
+        @Html.ActionLink("Get Object File(s)", "../Admin/getObjectFile")
+        <br /><br />
+        @Html.ActionLink("Create Single File", "../Admin/createSingleFile")
+        <br /><br />
+        @Html.ActionLink("Create DBP List", "../Admin/CreateDBPList")
+        <br /><br />
+        @Html.ActionLink("Execute Action", "../Admin/ExecuteOneAction", new { opt = 0 })
+        <br /><br />
+        @Html.ActionLink("Upload File", "../Admin/UploadFile")
+        <br /><br />
+        @Html.ActionLink("Download File", "../Admin/DownLoads")
+        <br /><br />
+    </div> 
+    @*<div class="sidebyside">
+        @Html.ActionLink("Get Object File(s)", "../Admin/getObjectFile",new {objname=""})
+        <br/><br/><br/>
+        @Html.ActionLink("Download File", "../Admin/DownLoads")
+    </div>*@
+</div>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    @*<script type="text/javascript">
+        $(function () {
+            var a = confirm('@ViewBag.Msg');
+            if (a == false) {
+                location.reload();
+            }
+        });
+    </script>*@
+}
+
+<style>
+    .container {
+        overflow:auto;
+        /* http://www.tipue.com/blog/center-a-div */
+        margin: 0 auto;
+        max-width: 800px;
+    }
+    .sidebyside {
+        float:left;
+        width:350px; 
+        height:80px; 
+        /*border-style:solid;*/
+        margin:5px;
+        vertical-align: middle;
+        /*border-color:blue;*/
+        border-radius:4px; 
+        border-width:1px; 
+    }
+    .belowdiv {
+        width:300px; 
+        height:100px; 
+        border-style:solid; 
+        margin:5px;
+    }
+</style>
+

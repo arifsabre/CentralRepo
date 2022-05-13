@@ -1,0 +1,253 @@
+﻿
+@*<span style="margin-left:10px;font-size:8pt;font-family:Verdana;color:blue;">
+    To display any message [<u>Underlined</u> Links are External]
+</span>*@
+
+<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    @*<li><a href="/Home/DisplayErpV1?url=../Dashboard/ManagementDsb.aspx">
+            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
+                <span>ERP_V1 Home</span>
+            </a>
+        </li>*@
+
+    @*Master Dashboard*@
+    <li class="treeview" id="mnuDashboardMarketing">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Marketing">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuDashboardMarketing');">&nbsp;&nbsp;Dashboard</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Home/DisplayErpV1?url=../Dashboard/MarketingHodDsb.aspx">Reports Dashboard</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Dashboard/ManagementDsb.aspx">Tender Alerts</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Dashboard/MarketingAlertsDsb.aspx">Alerts View</a></li>
+            <li><a href="/MACorrectionReport/Index">MA Correction Report</a></li>
+            <li><a target="_new" href="/ERP_V1_Report/sendMaterialReceiptAlertReport?strvalue=0">Dispatch Unloading Alert</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/PurchaseOrderDsbRpt.aspx?toprint=0">Pending POs</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/DispatchPlanDsbRpt.aspx?toprint=0">DPs in Next 30 Days</a></li>
+            <li><a href="/SalesAnalysisReport/Index">Sales Analysis</a></li>
+            <li><a href="/DispatchReviewReport/Index">Dispatch Review</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Dashboard/AgentwiseMarketingDsb.aspx">Agent Reports</a></li>
+            <li><a href="/AgentReport/Index">Agent Master Report</a></li>
+            <li><a href="/ItemMasterReport/Index">Item Master Report</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Master Entries*@
+    <li class="treeview" id="mnuMasterEntriesMarketing">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Marketing">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuMasterEntriesMarketing');">&nbsp;&nbsp;Master Entries</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Agent/Index">Agent Master</a></li>
+            <li><a href="/AgentReport/Index">Agent Report</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/RailwayMaster.aspx">Railway Master</a></li>
+            <li><a href="/PartyEntry/Index">Party Master</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/PayingAuthority.aspx">Paying Authority</a></li>
+            <li><a href="/Item/Index">Item Master</a></li>
+            <li><a href="/ItemGroup/Index">Item Group</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/ConsigneeMaster.aspx">Consignee Master</a></li>
+            <li><a href="/City/Index">City Master</a></li>
+            @*<li><a href="/Home/DisplayErpV1?url=../Entry/CompanyAddress.aspx">Company Address</a></li>*@
+            <li><a href="/CompanyAddress/Index">Company Address</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/RegistrationMaster.aspx">Registration Master</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Agent*@
+    <li class="treeview" id="mnuAgentSection">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Marketing">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuAgentSection');">&nbsp;&nbsp;Agent</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Agent/Index">Agent Master</a></li>
+            <li><a href="/AgentReport/Index">Agent Report</a></li>
+            <li><a href="/AgentWorkAssign/Index">Agent Work Assignment</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Tender*@
+    <li class="treeview" id="mnuTenderMarketing">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Marketing">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuTenderMarketing');">&nbsp;&nbsp;Tender</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            @*<li><a href="/Home/DisplayErpV1?url=../Entry/NITListUpdation.aspx">NIT List Updation</a></li>*@
+            <li><a href="/NitList/Index">NIT List Updation</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/NITListProcessing.aspx">Process NIT List</a></li>
+            <li><a href="/NitList/NitProcessingIndex">Process NIT List *V2</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/NITListView.aspx">View NIT List</a></li>
+            <li><a href="/NitList/NitViewIndex">View NIT List *</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/TenderEntry.aspx">Tender Entry</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Edit/TenderEntryEdt.aspx">View Tenders</a></li>
+            <li><a href="/Tender/Index">View Tenders *V2</a></li>
+            <li><a href="/TenderReportV2/Index">Tender Report V.2</a></li>
+            <li><a href="/RfqTender/Index">RFQ Tender</a></li>
+            <li><a href="/RfqTender/Index">RFQ Tender Report</a></li>
+            <li><a href="/LOAUpdation/Index">Update AAL/CO</a></li>
+            <li><a href="/BankGuarantee/Index">Bank Guarantee Entry</a></li>
+            <li><a href="/BankGuaranteeReport/Index">Bank Guarantee Report</a></li>
+            <li><a href="/BankGuaranteeReport/BGAlertView">Bank Guarantee Alert</a></li>
+            <li><a href="/BankGuaranteeReport/LedgerIndex">Bank Guarantee Ledger</a></li>
+            <li><a href="/SalesAnalysisReport/Index">AAL/CO Report (SA-COL[E])</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/ETenderEntry.aspx">E-Tender Entry</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/ETenderItemEntry.aspx">E-Tender Item Entry</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/ETenderConsigneeEntry.aspx">E-Tender Consignee Entry</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/TenderChecksheetRpt.aspx">Tender Checksheet</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/ETenderReportRpt.aspx">E-Tender Report</a></li>
+            <li><a href="/EMailTrack/Index">Email Track</a></li>
+            <li><a href="/EMailTrack/IndexReply">Email Reply</a></li>
+        </ul>
+        @*</li>*@
+
+        @*PO*@
+    <li class="treeview" id="mnuPOMarketing">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Marketing">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuPOMarketing');">&nbsp;&nbsp;Purchase Order</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Home/DisplayErpV1?url=../Entry/PurchaseOrderEntry.aspx">Purchase Order Entry</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Edit/PurchaseOrderEdt.aspx">View Purchase Order</a></li>
+            <li><a href="/PurchaseOrder/Index">View Purchase Order *V2</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/LapsedDPUpdation.aspx">Lapsed DP Updation</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/DispatchPlanRpt.aspx">Order Position & Supply Detail</a></li>
+            <li><a href="/MarketingPurchaseOrderReport/Index">Purchase Order Report V2</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/POCheckSheetRpt.aspx">PO Checksheet Report</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/OrderExecutionRpt.aspx">Order Execution Report</a></li>
+            @*<li><a href="/Home/DisplayErpV1?url=../Report/PurchaseOrderRpt.aspx">Purchase Order Report</a></li>*@
+            <li><a href="/Home/DisplayErpV1?url=../Report/POWisePaymentStatusRpt.aspx">PO Wise Payment Status</a></li>
+            <li><a href="/PreviousPendingOrdersReport/Index">Previous Pending Orders Report</a></li>
+            <li><a href="/CaseFileClosureReport/Index">Case File Closure Report</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Sales*@
+    <li class="treeview" id="mnuSalesMarketing">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Marketing">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuSalesMarketing');">&nbsp;&nbsp;Sales</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            @*st-to replace by new*@
+            <li><a href="/Home/DisplayErpV1?url=../Entry/SaleEntryGST.aspx">Sale Entry</a></li>
+            <li><a href="/SaleGST/GenerateInvoice">Sale Entry (By PO) *V2</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Edit/SaleEntryEdt.aspx">View Sale</a></li>
+            <li><a href="/SaleGSTOthers/Index">View Sale *V2</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Edit/SaleEntryConvertToMain.aspx">Draft To Main</a></li>
+            <li><a href="/SaleGSTOthers/IndexConvertToMain">Draft To Main *V2</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/SaleEntryGSTOthers.aspx">Sale Entry (Without PO)</a></li>
+            <li><a href="/SaleGstOthers/CreateUpdate">Sale Entry (Without PO) *V2</a></li>
+            @*cl-to replace by new*@
+            <li><a href="/SaleGSTReturn/Index">Sale Return Entry</a></li>
+            <li><a href="/InvoiceControl/Index">Invoice Control Entry</a></li>
+            <li><a href="/InvoiceControlReport/Index">Invoice Control Report</a></li>
+            <li><a href="/SaleGSTReport/Index">Sale GST Report</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/SaleReportDsbRptMonthly.aspx">Sales Report -1</a></li>
+            <li><a href="/DetailedSaleReport/Index">Sales Report -2</a></li>
+            <li><a href="/SaleInvoiceReport/Index">Sale Invoice Report</a></li>
+            <li><a href="/TaxReport/Index">Tax By HSN Report</a></li>
+            <li><a href="/DelayedSupplyReport/Index">Delayed Supply Report</a></li>
+            <li><a href="/ItemQtySoldReport/Index">Item Qty Sold Report</a></li>
+            <li><a href="/SalesOfPrevOrdersReport/Index">Sales Of Previous Orders<br />Report</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Receipt*@
+    <li class="treeview" id="mnuReceiptMarketing">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Marketing">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuReceiptMarketing');">&nbsp;&nbsp;Receipt</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Home/DisplayErpV1?url=../Entry/ReceiptEntry.aspx">Receipt Entry</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Edit/ReceiptEdt.aspx">View Receipt</a></li>
+            <li><a href="/PaymentReceipt/Index">View Receipt *V2</a></li>
+            <li><a href="/PendingPaymentReport/Index">Pending Payment Report</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Edit/ReceiptEdt.aspx">Payment Register Report</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/PendingSecurityDepositRpt.aspx">Pending Security Deposit<br />Report</a></li>
+            <li><a href="/PaymentReceivingReport/Index">Payment Receipt Report</a></li>
+            <li><a href="/DelayedPaymentReport/Index">Delayed Payment Report</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/ChargesDeductionDsbRpt.aspx">Charges Deduction Report</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/SalesPaymentBalanceSummary.aspx">Payment Balance Summary</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/SalesPaymentReceiptSummary.aspx">Payment Receipt Summary</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Doc Files*@
+    <li class="treeview" id="mnuDocFilesMarketing">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Marketing">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuDocFilesMarketing');">&nbsp;&nbsp;Document Files</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Home/DisplayErpV1?url=../Report/DispatchDocumentRpt.aspx">Generate Dispatch Documents</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/UploadDocCaseFile.aspx">Upload Case File</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../entry/ViewDocCaseFile.aspx">View Case File</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Entry/UploadDocTenderFile.aspx">Upload Tender File</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Reports*@
+    <li class="treeview" id="mnuReportsMarketing">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Marketing">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuReportsMarketing');">&nbsp;&nbsp;Reports</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/POSummaryPendingReport/Index">Pending PO Summary</a></li>
+            <li><a href="/POSummaryReceivedReport/Index">Received PO Summary</a></li>
+            <li><a href="/POReceivingReport/Index">PO Receipt Report</a></li>
+            <li><a href="/WarrantyRedressalReport/Index">Warranty Redressal Report</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Dashboard/AgentwiseMarketingDsb.aspx">Agent Reports</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/ItemMasterRpt.aspx">Item Master Report 1</a></li>
+            <li><a href="/ItemMasterReport/Index">Item Master Report 2</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/ConsigneeMasterRpt.aspx">Consignee Master Report</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/PayingAuthorityRpt.aspx">Paying Authority Report</a></li>
+            <li><a href="/Home/DisplayErpV1?url=../Report/PartyMasterRpt.aspx">Party Master Reoprt</a></li>
+            <li><a href="/ItemPerformanceReport/Index">Item Performance Report</a></li>
+        </ul>
+        @*</li>*@
+
+</ul>
+    @*ul-end*@

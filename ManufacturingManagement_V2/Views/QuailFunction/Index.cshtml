@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.QuailFunctionMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>QUAIL Function List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:25px;">
+            S.No.
+        </th>
+        <th style="width:100px;">
+            @Html.DisplayNameFor(model => model.FctnId)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.FctnName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.FnLeader)
+        </th>
+        <th style="width:50px;">Edit</th>
+        <th style="width:50px;">Details</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FctnId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FctnName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FnLeader)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.FctnId })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.FctnId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+

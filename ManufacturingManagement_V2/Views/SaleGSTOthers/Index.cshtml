@@ -1,0 +1,440 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.SaleMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <table>
+        <tr>
+            <td><h4><b>View Sale Entry</b></h4></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>
+                @Html.ActionLink("Generate Invoice (By PO)", "../SaleGST/GenerateInvoice", null,
+                new { @style = "color:blue;text-decoration:underline;" })
+            </td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>
+                @Html.ActionLink("Sale Entry (Without PO)", "../SaleGSTOthers/CreateUpdate", null,
+                new { @style = "color:blue;text-decoration:underline;" })
+            </td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>
+                @Html.ActionLink("Convert Draft/Proforma To Main", "../SaleGSTOthers/IndexConvertToMain", null,
+                new { @style = "color:blue;text-decoration:underline;" })
+            </td>
+        </tr>
+    </table>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndex", "SaleGSTOthers", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+        <div class="form-group" onload="ShowHideDiv()">
+            <b>Date&nbsp;From</b>
+            @Html.TextBox("txtDtFrom", null, new { @class = "datepicker", @style = "width:90px;" })
+
+            &nbsp;<b>To</b>
+            @Html.TextBox("txtDtTo", null, new { @class = "datepicker", @style = "width:90px;" })
+
+            &nbsp;<b>Invoice&nbsp;Type</b>
+            @Html.DropDownList("ddlInvoiceMode", ViewBag.InvoiceModeList as SelectList)
+
+            &nbsp;<button class="btn btn-default">Submit</button>
+            &nbsp;
+            <input type="checkbox" onchange="ShowHideDiv()" id="chkOptions"
+                   name="chkOptions" @if (ViewBag.Options) { <text> checked</text>}
+                   style="width: 30px; height: 20px; padding: 0; text-align:center;
+            vertical-align:middle;">Options
+
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label id="lblReport" onclick="DisplayRPGReport()"
+                   style="font-weight:normal;color:blue;"><u>Report</u></label>
+
+            <div id="dvOptions" style="display:none;">
+                <table>
+                    <tr>
+                        <td style="padding:2px;"><b>PO&nbsp;Type&nbsp;</b></td>
+                        <td>@Html.DropDownList("ddlPOType", ViewBag.POTypeList as SelectList)</td>
+                        <td><b>&nbsp;Railway&nbsp;</b></td>
+                        <td colspan="3">
+                            @Html.TextBox("txtRailway", null,
+                               new
+                                    {
+                                        @placeholder = "start typing, then select",
+                               @style = "width:346px;height:20px;"
+                                    })
+                            @Html.Hidden("hfRailwayId", null, new { @id = "hfRailwayId" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:2px;"><b>Unloading&nbsp;Status&nbsp;</b></td>
+                        <td>
+                            @Html.DropDownList("ddlUnloading", ViewBag.optListUnloading as SelectList)
+                        </td>
+                        <td><b>&nbsp;R.&nbsp;Challan&nbsp;</b></td>
+                        <td>@Html.DropDownList("ddlRC", ViewBag.optListRC as SelectList)</td>
+                        <td><b>Bill&nbsp;Status</b></td>
+                        <td>@Html.DropDownList("ddlBillSt", ViewBag.optListBillSt as SelectList)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:2px;"><b>Payment&nbsp;Status&nbsp;</b></td>
+                        <td>@Html.DropDownList("ddlPayment", ViewBag.optListPmtSt as SelectList)</td>
+                        <td><b>&nbsp;R.&nbsp;Note&nbsp;</b></td>
+                        <td>@Html.DropDownList("ddlRNote", ViewBag.optListRNote as SelectList)</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;" id="tblsl">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th>Links</th>
+            <th style="width:50px;">
+                InvoiceNo/Date<br />[SaleRecId]
+            </th>
+            <th style="width:auto;">
+                PO&nbsp;Number/Paying&nbsp;Auth./Consignee
+            </th>
+            <th style="width:50px;">
+                UnloadingDt<br />BillDateP1<br />BillDateP2
+            </th>
+            <th style="width:auto;">
+                RC&nbsp;Info
+            </th>
+            <th style="width:auto;">
+                RNote&nbsp;Info
+            </th>
+            <th style="width:auto;">
+                Items&nbsp;-&nbsp;Qty
+            </th>
+        </tr>
+        @{int i = 1; double st = 0; double nt = 0;}
+        @foreach (var item in Model)
+        {
+            st += item.TaxableAmount;
+            nt += item.NetReceivable;
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.ActionLink("DownloadExcel", "../SaleInvoiceReport/DownloadEInvoiceExcel",
+                        new { salerecid = item.SaleRecId }, new { @target = "_blank" })
+
+                    <br />
+                    @Html.ActionLink("EInvoiceFormat", "../SaleInvoiceReport/DisplayInvoiceForV1",
+                        new { salerecid = item.SaleRecId }, new { @target = "_blank" })
+
+                    <br />
+                    @*@Html.ActionLink("Invoice[OLD]", "../SaleInvoiceReport/DisplaySaleInvoice",
+        new {       salerecid = item.SaleRecId, chinv = 'i' }, new { @target = "_blank" })*@
+                    @Html.ActionLink("Invoice[OLD]", "InvoiceReportV1",
+                       new { salerecid = item.SaleRecId, chinv = 'i' }, new { @target = "_blank" })
+
+                    <br />
+                    @*@Html.ActionLink("Challan", "../SaleInvoiceReport/DisplaySaleInvoice",
+        new {       salerecid = item.SaleRecId, chinv = 'c' }, new { @target = "_blank" })*@
+                    @Html.ActionLink("Challan", "InvoiceReportV1",
+                       new { salerecid = item.SaleRecId, chinv = 'c' }, new { @target = "_blank" })
+
+                    <br />
+                    @Html.ActionLink("Edit", "GoToEdit",
+                        new { salerecid = item.SaleRecId, taxtype = item.TaxType, vtype = item.VType })
+
+                    @if (item.IsBillSubmitted == true)
+                    {
+                        <br />
+                        @Html.ActionLink("Receipt", null, null, null,
+                        new { id = "linkReceipt" + (i - 1), @target = "_new;", name = item.SaleRecId })
+                    }
+
+                    @if (ViewBag.lgtype == 0)
+                    {
+                        <br />
+                        @Html.ActionLink("Delete", null, null,
+                        new { onclick = "deleteSale('" + item.SaleRecId + "')" })
+
+                        <br />
+                        @Html.ActionLink("ChangeVNo", null, null, null,
+                            new { id = "linkChangeVNo" + (i - 1), @target = "_new;", name = item.SaleRecId })
+                    }
+
+                    @if (item.VType.ToString().ToLower() == "si" || item.VType.ToString().ToLower() == "gi")
+                    {
+                        <br />
+                        @Html.ActionLink("MarkUnloading", null, null, null,
+                            new { id = "linkMarkUnloading" + (i - 1), @target = "_new;", name = item.SaleRecId })
+
+                        <br />
+                        @Html.ActionLink("UpdateRC", null, null, null,
+                            new { id = "linkUpdateRC" + (i - 1), @target = "_new;", name = item.SaleRecId })
+
+                        <br />
+                        @Html.ActionLink("UpdateIC/DM", null, null, null,
+                            new { id = "linkUpdateIcDm" + (i - 1), @target = "_new;", name = item.SaleRecId })
+                    }
+
+                    <br />
+                    @Html.ActionLink("InvoiceControl", "../InvoiceControl/CreateUpdate",
+                        new { id = item.SaleRecId }, new { @target = "_blank" })
+
+                    <br />
+                    @Html.ActionLink("CaseFile", "DisplayCaseFile",
+                        new { porderid = item.POrderId }, new { @target = "_blank" })
+
+                    <br />
+                    @Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+                        new { tblid = 15, pkval = item.SaleRecId }, new { @target = "_blank" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BillNo)
+                    <br /> @Html.ValueFor(model => item.VDate, "{0:dd/MM/yyyy}")
+                    <br />[@Html.DisplayFor(modelItem => item.SaleRecId)]
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PONumber)
+                    <br />@Html.DisplayFor(modelItem => item.PayingAuthName)
+                    <br />@Html.DisplayFor(modelItem => item.ConsigneeName)
+                </td>
+                <td>
+                    @Html.ValueFor(model => item.UnloadingDate, "{0:dd/MM/yyyy}")
+                    <br /> @Html.ValueFor(model => item.BillSubmitDate, "{0:dd/MM/yyyy}")
+                    <br /> @Html.ValueFor(model => item.BillSubmitDateP2, "{0:dd/MM/yyyy}")
+                </td>
+                <td>
+                    @Html.TextArea("txtRCInfo" + i.ToString(), item.RCInfo, new
+                    {
+                        @id = "txtRCInfo" + (i - 1),
+                        style = "width: 150px; height: 60px;"
+                    })
+                    @Html.ActionLink("UpdateRCInfo", null, null,
+                               new { onclick = "updateRCInfo('" + i + "', '" + item.SaleRecId + "')" })
+                </td>
+                <td>
+                    @Html.TextArea("txtRNoteInfo" + i.ToString(), item.RNoteInfo, new
+                    {
+                        @id = "txtRNoteInfo" + (i - 1),
+                        style = "width: 150px; height: 60px;"
+                    })
+                    @Html.ActionLink("UpdateRNoteInfo", null, null,
+                               new { onclick = "updateRNoteInfo('" + i + "', '" + item.SaleRecId + "')" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemQty)
+                </td>
+            </tr>
+            i++;
+        }
+        @{i = i - 1;}
+        @i.ToString()&nbsp;&nbsp;Records found (for selected options).
+        Taxable Amount: @st, Net Receivable: @nt
+    </table>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+            document.getElementById("txtRailway").value = '@ViewBag.railway';
+            document.getElementById("hfRailwayId").value = '@ViewBag.railwayid';
+            ShowHideDiv();
+            SetLinks();
+        });
+        </script>
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script type="text/javascript">
+            function ShowHideDiv() {
+                var dv = document.getElementById("dvOptions");
+                if (document.getElementById("chkOptions").checked) {
+                    dv.style.display = "block";
+                }
+                else {
+                    dv.style.display = "none";
+                }
+            }
+        </script>
+
+        <script>
+            function SetLinks() {
+                $("#tblsl tr").each(function (index, item) {
+                    if (index > 0) {
+                        //var tds = $(this).find("td");
+
+                        var link1 = document.getElementById("linkChangeVNo" + (index - 1));
+                        var slid = link1.name;
+                        link1.href = '/Home/DisplayErpV1?url=../Entry/SaleEntryChangeVNo.aspx?salerecid=' + slid;
+
+                        var link2 = document.getElementById("linkMarkUnloading" + (index - 1));
+                        slid = link2.name;
+                        link2.href = '/Home/DisplayErpV1?url=../Entry/SaleEntryUnloading.aspx?salerecid=' + slid;
+
+                        var link3 = document.getElementById("linkUpdateRC" + (index - 1));
+                        slid = link3.name;
+                        link3.href = '/Home/DisplayErpV1?url=../Entry/SaleEntryRCReceiving.aspx?salerecid=' + slid;
+
+                        var link4 = document.getElementById("linkUpdateIcDm" + (index - 1));
+                        slid = link4.name;
+                        link4.href = '/Home/DisplayErpV1?url=../Entry/SaleEntryCertificates.aspx?salerecid=' + slid;
+
+                        var link5 = document.getElementById("linkReceipt" + (index - 1));
+                        slid = link5.name;
+                        link5.href = '/Home/DisplayErpV1?url=../Entry/ReceiptEntry.aspx?salerecid=' + slid;
+
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            function stringToDate(_date, _format, _delimiter) {
+                var formatLowerCase = _format.toLowerCase();
+                var formatItems = formatLowerCase.split(_delimiter);
+                var dateItems = _date.split(_delimiter);
+                var monthIndex = formatItems.indexOf("mm");
+                var dayIndex = formatItems.indexOf("dd");
+                var yearIndex = formatItems.indexOf("yyyy");
+                var month = parseInt(dateItems[monthIndex]);
+                month -= 1;
+                var formatedDate = new Date(dateItems[yearIndex], month, dateItems[dayIndex]);
+                return formatedDate;
+            }
+        </script>
+
+        <script>
+            function DisplayRPGReport() {
+                //date value is passing in wrong format
+                //var dtfrom = $('#txtDtFrom').val();
+                //var dtto = $('#txtDtTo').val();
+                //window.open('/ERP_V1_Report/SaleReportRPG?dtfrom=' + dtfrom + '&dtto=' + dtto);
+                window.open('/DetailedSaleReport/Index');
+            }
+        </script>
+
+        <script>
+            function deleteSale(salerecid) {
+                var a = confirm("Are you sure to delete this record?");
+                if (a == false) {
+                    return;
+                }
+                var data = {
+                    salerecid: salerecid
+                }
+                $.ajax({
+                    url: '/SaleGSTOthers/Delete',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            function updateRCInfo(indx, salerecid) {
+                var _rcinfo = $('#txtRCInfo' + (indx - 1)).val();
+                if (_rcinfo == '') {
+                    alert('Empty RC Info!');
+                    //$('#txtRCInfo' + (indx - 1)).focus();
+                    return;
+                }
+                var data = {
+                    salerecid: salerecid,
+                    rcinfo: _rcinfo
+                }
+                $.ajax({
+                    url: '/SaleGSTOthers/UpdateSaleForReceiptedChallan',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            function updateRNoteInfo(indx, salerecid) {
+                var _rnoteinfo = $('#txtRNoteInfo' + (indx - 1)).val();
+                if (_rnoteinfo == '') {
+                    alert('Empty RNote Info!');
+                    //$('#txtRNoteInfo' + (indx - 1)).focus();
+                    return;
+                }
+                var data = {
+                    salerecid: salerecid,
+                    rnoteinfo: _rnoteinfo
+                }
+                $.ajax({
+                    url: '/SaleGSTOthers/UpdateSaleForRNoteInfo',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <script type="text/javascript">
+                $("#txtRailway").autocomplete({
+                    source: function (request, response) {
+                        var customer = new Array();
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            type: "POST",
+                            url: "@(Url.Action("AutoCompleteRailway", "HelpUtility"))",
+                            data: { "term": request.term },
+                            success: function (data) {
+                                for (var i = 0; i < data.length ; i++) {
+                                    customer[i] = { label: data[i].Value, Id: data[i].Key };
+                                }
+                            }
+                        });
+                        response(customer);
+                    }, minLength: 2,
+                    select: function (event, ui) {
+                        document.getElementById('hfRailwayId').value = ui.item.Id;
+                    }
+                });
+        </script>
+
+    }
+
+

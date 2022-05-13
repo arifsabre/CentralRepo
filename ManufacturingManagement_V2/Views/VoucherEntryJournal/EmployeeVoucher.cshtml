@@ -1,0 +1,303 @@
+﻿@model ManufacturingManagement_V2.Models.VoucherMdl
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "EmployeeVoucher";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Employee Journal Voucher Entry</b></h4>
+<div class="form-group">
+    <table class="table tale-bordered">
+        @Html.Hidden("hfVoucherId", null, new { @id = "hfVoucherId" })
+        @Html.Hidden("hfAcCode", null, new { @id = "hfAcCode" })
+        @Html.Hidden("hfAcContra", null, new { @id = "hfAcContra" })
+        <tr>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.VNo)</td>
+            <td>
+                <input type="text" id="txtVNo" readonly="true" />
+                <span class="error">Invalid VNo!</span>
+            </td>
+            <td>@Html.DisplayNameFor(model => model.VDate)</td>
+            <td>
+                <input type="text" id="txtVDate" class="datepicker" />   @*input type="date"*@
+                <span class="error">Invalid VDate!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Debit Account</td>
+            <td>
+                <input type="text" id="txtAcDesc" placeholder="start typing, then select" />
+                <span class="error">Account not selected!</span>
+            </td>
+            <td>Credit Account</td>
+            <td>
+                <input type="text" id="txtAcContra" placeholder="start typing, then select" />
+                <span class="error">Account not selected!</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Amount</td>
+            <td>
+                <input type="text" id="txtAmount" onchange="setFocus()" />
+                <span class="error">Invalid DrAmount!</span>
+            </td>
+            <td>Narration</td>
+            <td>
+                <input type="text" id="txtNarration" />
+                <span class="error">Invalid narration!</span>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+<div style="padding:10px 0px; text-align:left;">
+    <input id="submit" class="btn btn-default" type="button" value='@ViewData["AddEdit"]' />
+    @Html.ActionLink("Back to List", "IndexEmployeeJV", null, new { @class = "btn btn-default" })
+</div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("txtVNo").value = '@Model.VDate';
+            document.getElementById("txtVNo").focus();
+            $("#txtAcDesc").attr("style", "width:300px;");
+            $("#txtAcContra").attr("style", "width:300px;");
+            $("#txtNarration").attr("style", "width:300px;");
+            $('#mylink').attr('href', '#');
+            document.getElementById("txtAmount").value = '0';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtAcDesc").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAccountWithGroup", "HelpUtility"))",
+                    data: { "term": request.term, "rectype": 'a' },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfAcCode').value = ui.item.Id;
+                document.getElementById("txtAcContra").focus();
+                document.getElementById("txtAcContra").select();
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtAcContra").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAccountWithGroup", "HelpUtility"))",
+                    data: { "term": request.term, "rectype": 'a' },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfAcContra').value = ui.item.Id;
+                document.getElementById("txtAmount").focus();
+                document.getElementById("txtAmount").select();
+            }
+        });
+    </script>
+
+    <script>
+        //Date Picker
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+
+        function setFocus() {
+            document.getElementById("txtNarration").focus();
+            document.getElementById("txtNarration").select();
+        }
+
+        jQuery.noConflict()(function ($) { //no-conflict block
+            $(document).ready(function () {
+            var orderItems = [];
+
+            //Save button click function
+            $('#submit').click(function () {
+
+                var isValidItem = true;
+                orderItems = [];
+
+                if (!($('#hfAcCode').val().trim() != '' && !isNaN($('#hfAcCode').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtAcDesc').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtAcDesc').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#hfAcContra').val().trim() != '' && !isNaN($('#hfAcContra').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtAcContra').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtAcContra').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#txtAmount').val().trim() != '' && !isNaN($('#txtAmount').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtAmount').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtAmount').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Add item to list if valid
+                if (isValidItem) {
+                    //as dr
+                    orderItems.push({
+                        AcCode: $('#hfAcCode').val().trim(),
+                        DrAmount: parseFloat($('#txtAmount').val().trim()),
+                        CrAmount: 0,
+                        DrCr: 'd',
+                        Narration: $('#txtNarration').val().trim()
+                    });
+                    //as cr
+                    orderItems.push({
+                        AcCode: $('#hfAcContra').val().trim(),
+                        DrAmount: 0,
+                        CrAmount: parseFloat($('#txtAmount').val().trim()),
+                        DrCr: 'c',
+                        Narration: $('#txtNarration').val().trim()
+                    });
+                    //Clear fields
+                    $('#txtAmount').val('0');
+                    $('#hfAcCode').val('0');
+                    $('#hfAcContra').val('0');
+                    $('#txtAcDesc,#txtAcContra,#txtNarration').val('');
+                }
+
+            //validation of order
+            var isAllValid = true;
+            if (orderItems.length == 0) {
+                $('#orderItems').html('<span style="color:red;">Please add voucher detail</span>');
+                isAllValid = false;
+            }
+
+            if ($('#txtVNo').val().trim() == '') {
+                $('#txtVNo').siblings('span.error').css('visibility', 'visible');
+                isAllValid = false;
+            }
+            else {
+                $('#txtVNo').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#txtVDate').val().trim() == '') {
+                $('#txtVDate').siblings('span.error').css('visibility', 'visible');
+                isAllValid = false;
+            }
+            else {
+                $('#txtVDate').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            //Save if valid
+            if (isAllValid) {
+                var data = {
+                    VNo: $('#txtVNo').val().trim(),
+                    VDate: $('#txtVDate').val().trim(),
+                    Info: orderItems
+                }
+
+                $(this).val('Please wait...');
+
+                $.ajax({
+                    url: '/VoucherEntryJournal/CreateUpdate',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database
+                        if (d.status == true) {
+                            //will send status from server side
+                            alert(d.message);
+                            //clear form
+                            orderItems = [];
+                            //$('#orderNo').val('');
+                            //$('#orderDate').val('');
+                            $('#orderItems').empty();
+                            $('#mylink').attr('href', '/OrderReport/OrderReportDirect' + '?vno=' + d.vno);
+                            window.location.href = "../../VoucherEntryJournal/EmployeeVoucher";
+                        }
+                        else {
+                            alert(d.message);
+                        }
+                        $('#submit').val(d.AddEdit);
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        //$('#submit').val('Save');
+                        $('#submit').val(d.AddEdit);
+                    }
+                });
+            }
+
+            });
+
+            //edit mode
+            $(function () {
+                var mainObject = @Html.Raw(Json.Encode(Model))
+                orderItems = @Html.Raw(Json.Encode(Model.Info))
+                txtVNo.value = mainObject.VNo;
+                txtVDate.value = mainObject.VDate.substring(0, 10);
+                txtNarration.value = orderItems[0].Narration;
+                txtAmount.value = orderItems[0].CrAmount + orderItems[0].DrAmount;
+
+                if (orderItems[0].DrCr == 'd') {
+                    hfAcCode.value = orderItems[0].AcCode;
+                    txtAcDesc.value = orderItems[0].AcDesc;
+                    hfAcContra.value = orderItems[1].AcCode;
+                    txtAcContra.value = orderItems[1].AcDesc;
+                }
+                else { //if (orderItems[0].AcDesc == 'c')
+                    hfAcCode.value = orderItems[1].AcCode;
+                    txtAcDesc.value = orderItems[1].AcDesc;
+                    hfAcContra.value = orderItems[0].AcCode;
+                    txtAcContra.value = orderItems[0].AcDesc;
+                }
+                
+                $('#mylink').attr('href', '/OrderReport/OrderReportDirect' + '?orderno=' + mainObject.OrderNo);
+            });
+
+        });
+
+       });//for no-conflict block
+    </script>
+}
+
+
+

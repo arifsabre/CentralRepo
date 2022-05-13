@@ -1,0 +1,184 @@
+﻿@model ManufacturingManagement_V2.Models.C_Fitting_ItemMDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Fitting Item List  </title>
+    <script>
+        function deleteFittingItem(srno) {
+            var a = confirm("Are you sure to delete this Record?");
+            if (a == false) {
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "C_Fitting")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    srno: srno
+                }),
+                success: function () {
+                    alert("Record Deleted Successfully");
+                    location.reload();
+                }
+            });
+        }
+    </script>
+        <script>
+        function callUpdate(recid) {
+            $('#modal-Update').modal('show');
+            var ifrm = document.getElementById("frmUpdate");
+           // ifrm.setAttribute('src', "http://localhost:58521//C_Fitting/CreateUpdate1?id=" + recid)
+          ifrm.setAttribute('src', "https://pragerp.com/C_Fitting/CreateUpdate1?id=" + recid)
+        }
+    </script>
+
+    <script>
+        function callInsert() {
+            $('#modal-Insert').modal('show');
+            var ifrm = document.getElementById("frmInsert");
+            //ifrm.setAttribute('src', "http://localhost:58521//C_Fitting/CreateUpdate")
+            ifrm.setAttribute('src', "https://pragerp.com/C_Fitting/CreateUpdate")
+        }
+    </script>
+    <script>
+        function GetCompany() {
+            $.ajax({
+                // url: "/LibraryMasterUpload/Edit_CompanyRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    // $('#RecordId3').val(response.RecordId);
+                    $('#modal-ChangeCompany8').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <div style="margin-top:3px;margin-bottom:3px">
+
+        <button type="button" class="btn btn-success"
+                data-toggle="modal" onclick="callInsert()">
+            Create New Record
+        </button>
+        <div id="printbar" class="pull-right">
+        </div>
+    </div>
+    Fitting Item List
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop4" class="table-condensed table-bordered table-hover table-responsive" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Sr.No</th>
+                                    <th>Prag Sr.No</th>
+                                    <th>Company</th>
+                                    <th>Item</th>
+                                    <th>Invoice No</th>
+                                    <th>Invoice Date</th>
+                                    @*<th>Sold_Date</th>*@
+                                    <th>Consignee</th>
+                                    <th>Set-Waranty</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        @*<td style="vertical-align:top;">@i</td>*@
+                                        <td>@Html.DisplayFor(model => item.srno)</td>
+                                        <td>@Html.DisplayFor(model => item.pragno)</td>
+                                        <td>@Html.DisplayFor(model => item.cmpname)</td>
+                                        <td>@Html.DisplayFor(model => item.itemname)</td>
+                                        <td>@Html.DisplayFor(model => item.invoiceno)</td>
+                                        <td>@Html.DisplayFor(model => item.invoicedate)</td>
+                                        @*<td>@Html.DisplayFor(model => item.solddate)</td>*@
+                                        <td>@Html.DisplayFor(model => item.consigneename)</td>
+
+                                        <td>
+
+                                            <a onclick="callUpdate(@item.srno)">
+                                                <i class="fa fa-pencil-square" style="font-size:12pt;"></i>
+                                            </a>
+
+                                            @Html.ActionLink(" ", null, new { srno = item.srno },
+                                                new
+                                                   {
+                                                         onclick = "deleteFittingItem('" + item.srno + "')",
+                                                    @class = "fa fa-trash-o",
+                                                         @style = "font-size:12pt;"
+                                                     })
+                                        </td>
+                                    </tr>
+                                    //i++;
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Update" style="margin-left:250px;margin-top:50px">
+        <div class="modal-dialog col-lg-12">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Update  Fitting Item </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmUpdate" runat="server" scrolling="no" frameborder="0"
+                                style="width:550px;height:700px;opacity:50;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-Insert" style="margin-left:250px">
+        <div class="modal-dialog col-lg-12">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Add Fitting Item Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmInsert" runat="server" scrolling="no" frameborder="0"
+                                style="width:550px;height:700px;opacity:50;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site4.js"></script>
+</body>
+</html>
+
+
+

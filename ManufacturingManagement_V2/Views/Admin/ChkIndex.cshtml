@@ -1,0 +1,235 @@
+﻿
+@{
+    ViewBag.Title = null;//"ChkIndex";
+    Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Invoice</title>
+    <style type="text/css">
+
+        table {
+            page-break-inside: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
+
+        .custom-footer-page-number:after {
+            content: counter(page);
+        }
+
+        footer {
+            font-size: 9pt;
+            font-family: Verdana;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            /*counter-increment: page;*/
+            /*content: counter(page) " of " counter(pages);*/
+        }
+
+        /*#pageFooter {
+            display: table-footer-group;
+            counter-increment: page;
+        }*/
+
+            /*#pageFooter:after {*/
+                /*counter-increment: page;*/
+                /*content: "Page "counter(page);
+            }*/
+
+        /*.page-number {
+            content: counter(page)
+        }*/
+
+    </style>
+</head>
+<body>
+    <div style="page-break-inside: avoid; font-family:Verdana;font-size:10pt;">
+
+        @*main div*@
+        <table style='width:100%;'>
+            @*main table*@
+            <thead>
+                @*main header*@
+                <tr style="background-color:lightgray;">
+                    @*page header*@
+                    <th align='left' colspan="7">
+                        <div style="text-align:center;">
+                            header header header header header header header header header header <br />
+                            header header header header header header header header header header <br />
+                            header header header header header header header header header header <br />
+                            header header header header header header header header header header <br />
+                        </div>
+                    </th>
+                </tr>
+
+                <tr style='background-color:lightgray;'>
+                    @*column headers*@
+                    <th align='left'>SlNo</th>
+                    <th align='left'>Date</th>
+                    <th align='left'>Time</th>
+                    <th align='left'>EmployeeId</th>
+                    <th align='left'>EmployeeName</th>
+                    <th align='left'>Subject</th>
+                    <th align='left'>Status</th>
+                </tr>
+            </thead> @*cl main header*@
+
+            @*table content*@
+            <tr><td>01</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_M003</td><td>Mr. HARJINDER SINGH BAKSHI</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>02</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_S007</td><td>Mr. PEEYUSH SHANKER</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>03</td><td>03/07/2019</td><td>03:00 PM</td><td>PP3_S015</td><td>Miss NEHA YADAV</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>04</td><td>03/07/2019</td><td>03:00 PM</td><td>PP3_S016</td><td>Miss SHIPRA GUPTA</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>05</td><td>03/07/2019</td><td>03:00 PM</td><td>PR_S016</td><td>Mr. AYUSH SHUKLA</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>06</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_S018</td><td>Mr. VIJAY KANT</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>07</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_S026</td><td>Mr. BHUPENDRA SINGH BISHT</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>08</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_S030</td><td>Mrs. NEHA SAHU</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>09</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_S035</td><td>Mr. AMIT KUMAR SONKAR</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>10</td><td>24/07/2019</td><td>03:00 PM</td><td>PI_S005</td><td>Mr. SANJAY KUMAR BHANDARY</td><td>General + HR</td><td>Completed</td></tr>
+            <tr><td>11</td><td>24/07/2019</td><td>03:00 PM</td><td>PF_S010</td><td>Mr. AKASH ANAND SRIVASTAVA</td><td>General + HR</td><td>Completed</td></tr>
+            <tr><td>12</td><td>24/07/2019</td><td>03:00 PM</td><td>PP3_S014</td><td>Miss SONALI SRIVASTAVA</td><td>General + HR</td><td>Completed</td></tr>
+            <tr><td>13</td><td>24/07/2019</td><td>03:00 PM</td><td>PI_S015</td><td>Mr. PRABHANSHU KUMAR SRIVASTAVA</td><td>General + HR</td><td>Completed</td></tr>
+            <tr><td>14</td><td>24/07/2019</td><td>03:00 PM</td><td>PI_S016</td><td>Mr. KUMAR SAURABH GUPTA</td><td>General + HR</td><td>Completed</td></tr>
+            <tr><td>15</td><td>13/08/2019</td><td>03:00 PM</td><td>PR_M001</td><td>Mr. GULSHAN KUMAR BHUTANI</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>16</td><td>13/08/2019</td><td>03:00 PM</td><td>PP2_M002</td><td>Mr. RANJEET SINGH VIRDI</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>17</td><td>13/08/2019</td><td>03:00 PM</td><td>PR_S002</td><td>Mr. PUSHPENDRA SRIVASTAVA</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>18</td><td>13/08/2019</td><td>03:00 PM</td><td>PP2_S015</td><td>Mr. VIVEK KUMAR SRIVASTAVA</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>19</td><td>13/08/2019</td><td>03:00 PM</td><td>PI_S029</td><td>Mr. SACHIN AWASTHI</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>20</td><td>13/08/2019</td><td>03:00 PM</td><td>PF_S041</td><td>Mr. MANISH DUBEY</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>21</td><td>03/09/2019</td><td>03:30 PM</td><td>PF_M001</td><td>Mr. SUSHIL KUMAR KHULLAR</td><td>General + Management</td><td>Completed</td></tr>
+            <tr><td>22</td><td>03/09/2019</td><td>03:30 PM</td><td>PF_M002</td><td>Mr. ANIL NANDA</td><td>General + Management</td><td>Completed</td></tr>
+            <tr><td>23</td><td>03/09/2019</td><td>03:30 PM</td><td>PP3_S021</td><td>Mr. PRABHAT KUMAR SHARMA</td><td>General + Management</td><td>Completed</td></tr>
+            <tr><td>24</td><td>10/09/2019</td><td>03:30 PM</td><td>PI2_M001</td><td>Mr. DEVANAND KUMAR SRIVASTAVA</td><td>General + Management</td><td>Completed</td></tr>
+            <tr><td>25</td><td>10/09/2019</td><td>03:30 PM</td><td>PI_D001</td><td>Mrs. SHASWATI BANERJEE</td><td>General + Management</td><td>Completed</td></tr>
+            <tr><td>26</td><td>10/09/2019</td><td>03:30 PM</td><td>PR_D002</td><td>Mr. S.C.AGARWAL</td><td>General + Management</td><td>Completed</td></tr>
+            <tr><td>27</td><td>10/09/2019</td><td>03:30 PM</td><td>PR_M003</td><td>Mr. HARE NATH AGARWAL</td><td>General + Management</td><td>Completed</td></tr>
+            <tr><td>28</td><td>16/09/2019</td><td>03:30 PM</td><td>PI_S001</td><td>Mr. NAVEEN KUMAR SRIVASTAVA</td><td>General + Quality Module</td><td>Completed</td></tr>
+            <tr><td>29</td><td>16/09/2019</td><td>03:30 PM</td><td>PP2_S011</td><td>Mr. SUNIL KUMAR</td><td>General + Quality Module</td><td>Completed</td></tr>
+            <tr><td>30</td><td>16/09/2019</td><td>03:30 PM</td><td>PI_S021</td><td>Mr. RAKESH KUMAR VERMA</td><td>General + Quality Module</td><td>Completed</td></tr>
+            <tr><td>31</td><td>16/09/2019</td><td>03:30 PM</td><td>PI_S031</td><td>Mr. VAIBHAV SRIVASTAVA</td><td>General + Quality Module</td><td>Completed</td></tr>
+            <tr><td>32</td><td>21/09/2019</td><td>03:00 PM</td><td>PF_S001</td><td>Mr. GAJANAN VERMA</td><td>General + Compliance -HO</td><td>Completed</td></tr>
+            <tr><td>33</td><td>21/09/2019</td><td>03:00 PM</td><td>PI_M004</td><td>Mr. SAMEER SHARMA</td><td>General + Compliance -HO</td><td>Completed</td></tr>
+            <tr><td>34</td><td>21/09/2019</td><td>03:00 PM</td><td>PF_S005</td><td>Mr. ANURAG SHRIVASTAVA</td><td>General + Compliance -HO</td><td>Completed</td></tr>
+            <tr><td>35</td><td>21/09/2019</td><td>03:00 PM</td><td>PI2_S012</td><td>Mr. AJAI KUMAR MISHRA</td><td>General + Compliance -HO</td><td>Completed</td></tr>
+            <tr><td>36</td><td>21/09/2019</td><td>03:00 PM</td><td>PI2_S013</td><td>Mr. P.J. MATHU KUTTY</td><td>General + Compliance -HO</td><td>Completed</td></tr>
+            <tr><td>37</td><td>21/09/2019</td><td>03:00 PM</td><td>PI_S019</td><td>Mr. ABHISHEK SRIVASTAVA</td><td>General + Compliance -HO</td><td>Completed</td></tr>
+            <tr><td>38</td><td>24/09/2019</td><td>03:30 PM</td><td>PI2_S005</td><td>Mr. NEERAJ KUMAR SRIVASTAVA</td><td>General + Quality</td><td>Completed</td></tr>
+            <tr><td>39</td><td>24/09/2019</td><td>03:30 PM</td><td>PP2_S007</td><td>Mr. VAIBHAV DHIMAN</td><td>General + Quality</td><td>Completed</td></tr>
+            <tr><td>40</td><td>24/09/2019</td><td>03:30 PM</td><td>PF_S015</td><td>Mr. VIVEK SINGH TOMAR</td><td>General + Quality</td><td>Completed</td></tr>
+            <tr><td>41</td><td>24/09/2019</td><td>03:30 PM</td><td>PP2_S016</td><td>Mr. RAHUL GUPTA</td><td>General + Quality</td><td>Completed</td></tr>
+            <tr><td>42</td><td>24/09/2019</td><td>03:30 PM</td><td>PP2_S021</td><td>Mr. MOHAMMAD AFZAL ALAM</td><td>General + Quality</td><td>Completed</td></tr>
+            <tr><td>43</td><td>24/09/2019</td><td>03:30 PM</td><td>PP2_S022</td><td>Mr. ROOPANSHU DWIVEDI</td><td>General + Quality</td><td>Completed</td></tr>
+            <tr><td>44</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_M003</td><td>Mr. HARJINDER SINGH BAKSHI</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>45</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_S007</td><td>Mr. PEEYUSH SHANKER</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>46</td><td>03/07/2019</td><td>03:00 PM</td><td>PP3_S015</td><td>Miss NEHA YADAV</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>47</td><td>03/07/2019</td><td>03:00 PM</td><td>PP3_S016</td><td>Miss SHIPRA GUPTA</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>48</td><td>03/07/2019</td><td>03:00 PM</td><td>PR_S016</td><td>Mr. AYUSH SHUKLA</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>49</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_S018</td><td>Mr. VIJAY KANT</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>50</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_S026</td><td>Mr. BHUPENDRA SINGH BISHT</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>51</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_S030</td><td>Mrs. NEHA SAHU</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>52</td><td>03/07/2019</td><td>03:00 PM</td><td>PI_S035</td><td>Mr. AMIT KUMAR SONKAR</td><td>General + Marketing</td><td>Completed</td></tr>
+            <tr><td>53</td><td>24/07/2019</td><td>03:00 PM</td><td>PI_S005</td><td>Mr. SANJAY KUMAR BHANDARY</td><td>General + HR</td><td>Completed</td></tr>
+            <tr><td>54</td><td>24/07/2019</td><td>03:00 PM</td><td>PF_S010</td><td>Mr. AKASH ANAND SRIVASTAVA</td><td>General + HR</td><td>Completed</td></tr>
+            <tr><td>55</td><td>24/07/2019</td><td>03:00 PM</td><td>PP3_S014</td><td>Miss SONALI SRIVASTAVA</td><td>General + HR</td><td>Completed</td></tr>
+            <tr><td>56</td><td>24/07/2019</td><td>03:00 PM</td><td>PI_S015</td><td>Mr. PRABHANSHU KUMAR SRIVASTAVA</td><td>General + HR</td><td>Completed</td></tr>
+            <tr><td>57</td><td>24/07/2019</td><td>03:00 PM</td><td>PI_S016</td><td>Mr. KUMAR SAURABH GUPTA</td><td>General + HR</td><td>Completed</td></tr>
+            <tr><td>58</td><td>13/08/2019</td><td>03:00 PM</td><td>PR_M001</td><td>Mr. GULSHAN KUMAR BHUTANI</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>59</td><td>13/08/2019</td><td>03:00 PM</td><td>PP2_M002</td><td>Mr. RANJEET SINGH VIRDI</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>60</td><td>13/08/2019</td><td>03:00 PM</td><td>PR_S002</td><td>Mr. PUSHPENDRA SRIVASTAVA</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>61</td><td>13/08/2019</td><td>03:00 PM</td><td>PP2_S015</td><td>Mr. VIVEK KUMAR SRIVASTAVA</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>62</td><td>13/08/2019</td><td>03:00 PM</td><td>PI_S029</td><td>Mr. SACHIN AWASTHI</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>63</td><td>13/08/2019</td><td>03:00 PM</td><td>PF_S041</td><td>Mr. MANISH DUBEY</td><td>General + Calibration</td><td>Completed</td></tr>
+            <tr><td>64</td><td>03/09/2019</td><td>03:30 PM</td><td>PF_M001</td><td>Mr. SUSHIL KUMAR KHULLAR</td><td>General + Management</td><td>Completed</td></tr>
+            <tr><td>65</td><td>03/09/2019</td><td>03:30 PM</td><td>PF_M002</td><td>Mr. ANIL NANDA</td><td>General + Management</td><td>Completed</td></tr>
+            <tr><td>66</td><td>03/09/2019</td><td>03:30 PM</td><td>PP3_S021</td><td>Mr. PRABHAT KUMAR SHARMA</td><td>General + Management</td><td>Completed</td></tr>
+            <tr><td>67</td><td>10/09/2019</td><td>03:30 PM</td><td>PI2_M001</td><td>Mr. DEVANAND KUMAR SRIVASTAVA</td><td>General + Management</td><td>Completed</td></tr>
+            <tr><td>68</td><td>10/09/2019</td><td>03:30 PM</td><td>PI_D001</td><td>Mrs. SHASWATI BANERJEE</td><td>General + Management</td><td>Completed</td></tr>
+            @*cl table content*@
+
+            <!--is printed instead of page foter when layout css is applied -->
+            <tfoot>
+                @*page/report footer*@
+                <tr style="background-color:lightgray;font-weight:normal;font-size:9pt;">
+                    <td colspan="7" align='left'>
+                        Run Date: @ViewBag.RptDate
+                    </td>
+                </tr>
+            </tfoot> @*cl page/report footer*@
+
+        </table> @*cl main table*@
+
+    </div> @*cl main div*@
+
+<div style="text-align:center;font-family:Verdana;font-size:10pt;">
+    <div style="color:fuchsia;" id="dvMsg">
+    *To be printed with page numbers by- More settings >> Headers and footers >> 'Checked On'
+    </div>
+    ---End of Report---[Number]
+    &nbsp;&nbsp;<input type="button" id="btnPrint" value="Print" onclick="printpage()"
+                       style="height:25px;border:none;color:blue;" />
+    &nbsp;&nbsp;@Html.ActionLink("Close", null, null, new
+    { id = "closeLink", @style = "height:25px;", @onclick = "window.close()" })
+    <div id="dvBlank">
+        <br /><br /><br /><br /><br />
+    </div>
+</div>
+
+    @*   not to be used when layout css is applied
+        <div style="font-family:Verdana;font-size:9pt;">
+        <footer>
+            <table style="width:100%;">
+                <tr>
+                    <td align="left">
+                        [Page Footer] @ViewBag.RptDate
+                    </td>
+                    <td align="right">
+                        <div id="pageFooter" style="text-align:right;">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </footer>
+    </div>*@
+
+</body>
+</html>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        //$(function () {
+        //    //working, but not in use
+        //    $("#btnPrint").click(function () {
+        //        document.getElementById("closeLink").style.display = 'none';
+        //        document.getElementById("btnPrint").style.display = 'none';
+        //        document.getElementById("dvMsg").style.display = 'none';
+        //        document.getElementById("dvBlank").style.display = 'none';
+        //        window.print();
+        //    });
+        //});
+
+        function printpage() {
+            document.getElementById("closeLink").style.display = 'none';
+            document.getElementById("btnPrint").style.display = 'none';
+            document.getElementById("dvMsg").style.display = 'none';
+            document.getElementById("dvBlank").style.display = 'none';
+            window.print()
+        }
+
+    </script>
+
+}

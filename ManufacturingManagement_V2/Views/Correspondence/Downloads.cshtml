@@ -1,0 +1,96 @@
+﻿@model List<string>
+
+@{
+    ViewBag.Title = "DownloadFile";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Attachment(s) View</b></h4>
+@*<div style="font-size:14pt;color:black;background-color:yellow;text-align:center;">
+    <b>Attachment(s) View</b>
+</div>*@
+
+@*@Html.ActionLink("Upload", "UploadFile")*@
+<br />
+@*<fieldset>
+            <legend>Documents</legend>
+                @using (Ajax.BeginForm("FilterDownload", "Correspondence", new AjaxOptions { UpdateTargetId = "divFilter" }))
+                {
+                    <div class="form-group">
+                            <table>
+                                <tr>@Html.Hidden("hfNewEmpId", null, new { @id = "hfNewEmpId" })
+                                  <td><b>Select Employee</b>
+                                  @Html.TextBox("txtLetterNo", null, new { @placeholder = "start typing, then select"})
+                                  <button style="height:35px;">Submit</button></td>
+                                </tr>
+                            </table>
+                          </div>
+                }
+    </fieldset>*@
+<b>Letter No: @ViewBag.letterno</b>&nbsp;&nbsp;&nbsp;<span style="color:red;font-weight:bold;">@ViewBag.Message</span>
+&nbsp;&nbsp;&nbsp;@Html.ActionLink("Close", null, null, new { @onclick = "window.close()", @class="btn btn-default" })
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="text-align:left;width:50px;">S.No.</th>
+        <th style="text-align:left;width:auto;">File Name</th>
+        <th style="text-align:left; width:100px;">Links</th>
+    </tr>
+    @{int x = 1;}
+    @for (var i = 0; i <= Model.Count - 1; i++)
+    {
+        <tr>
+            <td>
+                @x
+            </td>
+            <td>
+                @Model[i].ToString()
+            </td>
+            <td>
+                @Html.ActionLink("Display", "../Correspondence/ShowDocument", new { fileName = @Model[i].ToString(), recid = @ViewBag.recid }, new { target = "_blank" })
+                <br />@Html.ActionLink("Download", "../Correspondence/Download", new { fileName = @Model[i].ToString(), recid = @ViewBag.recid }, new { target = "_blank" })
+                <br />@Html.ActionLink("Remove", "../Correspondence/RemoveDocument", new { fileName = @Model[i].ToString(), recid = @ViewBag.recid, letterno = @ViewBag.letterno })
+            </td>
+        </tr>
+        x++;
+    }
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            document.getElementById("hfRecId").value = '@ViewBag.recid';
+            document.getElementById("txtLetterNo").value = '@ViewBag.letterno';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtEmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfNewEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

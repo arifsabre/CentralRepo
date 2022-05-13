@@ -1,0 +1,164 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.EmployeeMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Employee List</b></h4>
+
+<div>
+    @Html.ActionLink("SearchEmpRecord", "Details", "Employee", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("AddNew", "CreateUpdate", "Employee", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Qualification Detail", "Index", "QualificationDetail", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Family Detail", "Index", "FamilyDetail", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Nominee Detail", "Index", "PFNominee", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Expirinece Detail", "Index", "ExperienceDetail", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("UploadFile", "UploadFile", "Employee", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("DownloadFile", "Downloads", "Employee", null, new { @class = "btn btn-default" })
+</div>
+
+<fieldset>
+    @*<legend>Employee</legend>*@
+    @using (Ajax.BeginForm("FilterIndex", "Employee", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            @Html.DisplayNameFor(model => model.JoiningUnit)
+            @Html.DropDownList("ddlJoiningUnit", ViewBag.CompanyList as SelectList, "ALL")
+
+            &nbsp;&nbsp;
+            @Html.DisplayNameFor(model => model.Grade)
+            @Html.DropDownList("ddlGrade", ViewBag.GradeList as SelectList, "ALL")
+
+            &nbsp;&nbsp;Is Active
+            <input type="checkbox" name="chkIsActive" @if (ViewBag.IsActive) { <text> checked</text>}
+                   style="width: 30px; height: 20px; padding: 0; text-align:center;">
+
+            &nbsp;&nbsp;Display Image
+            <input type="checkbox" name="chkImage" @if (ViewBag.IncImage) { <text> checked</text>}
+                   style="width: 30px; height: 20px; padding: 0; text-align:center;">
+
+            &nbsp;&nbsp;
+            <button class="btn btn-default">Submit</button>
+        </div>
+    }
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th>
+            S.No.
+        </th>
+
+        @if (@ViewBag.IncImage == true)
+        {
+            <th style="width:120px;">
+                Image
+            </th>
+        }
+
+        <th>Details</th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FatherName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GradeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Designation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JoiningDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GrossSalary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        @*<th>Edit</th>*@
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+
+            @if (@ViewBag.IncImage == true)
+            {
+                <td>
+                    <img alt="" src="@Url.Action("ShowEmpImage", "Employee",
+                         new { newempid = item.NewEmpId })"
+                         width="150px" height="150px" />
+                </td>
+            }
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.NewEmpId })
+                @if (item.Doc == true)
+                {
+                    <div style="color:black;"><b>[Doc]</b></div>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EmpId)
+                <div style="color:black;font-weight:bold;">[@Html.DisplayFor(model => item.NewEmpId)]</div>
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EmpName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FatherName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.GradeName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Designation)
+            </td>
+            <td>
+                @Html.ValueFor(model => item.BirthDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.ValueFor(model => item.JoiningDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.GrossSalary)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ContactNo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsActive)
+            </td>
+            @*<td>
+                    @Html.ActionLink("Edit", "CreateUpdate", new { id=item.EmpId })
+                </td>*@
+        </tr>
+        i++;
+    }
+
+</table>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+        });
+    </script>
+}

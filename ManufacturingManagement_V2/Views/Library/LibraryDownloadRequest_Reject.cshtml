@@ -1,0 +1,66 @@
+﻿@model ManufacturingManagement_V2.Models.LibFileUploadMDI
+@{
+    ViewBag.Title = "LibraryDownloadRequest_Approved";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<h2>Download Request Rejected List</h2>
+<body>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <div>
+                            Rejected Request List
+                            <div id="printbar" class="pull-right">
+                            </div>
+
+                        </div>
+                        <table id="jdtabledesktop" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ReqId</th>
+                                    <th>Download Reason</th>
+                                    <th>Requested By</th>
+                                    <th>RequestedOn</th>
+                                    <th>Download Status</th>
+                                    <th>Rejected By</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => item.ReqId)</td>
+                                        <td>@Html.DisplayFor(model => item.DownloadReason)</td>
+                                        <td>@Html.DisplayFor(model => item.username)</td>
+                                        <td>@Html.DisplayFor(model => item.RequestOn)</td>
+                                        <td>@Html.DisplayFor(model => item.Approved)</td>
+                                        <td>@Html.DisplayFor(model => item.Approvedby)</td>
+
+
+                                        <td>
+                                            @*<a onclick="GetDetails(@item.ReqId)">
+                                                    <i class="fa fa-reply">
+                                                    </i>
+                                                </a>*@
+                                            <a>
+                                                @Html.ActionLink(" ", "LibraryDownloadDeleteRecord", "Library", new { id = item.ReqId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="~/Script/Site.js"></script>
+</body>

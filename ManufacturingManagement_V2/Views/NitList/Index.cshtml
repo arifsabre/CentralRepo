@@ -1,0 +1,199 @@
+﻿@model ManufacturingManagement_V2.Models.NitListMdl
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Update NIT List</b></h4>
+
+<fieldset>
+    @using (Ajax.BeginForm("Index", "NitList", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            Paste Page Source of Tender Advance Search  from IREPS
+            <br />
+            @Html.TextAreaFor(model => model.PageContent, 0, 0,
+                            new { @style = "width:650px;height:200px;" })
+            @Html.ValidationMessageFor(model => model.PageContent)
+            <br />
+            <button class="btn btn-default">Submit</button>
+
+        </div>
+    }
+</fieldset>
+
+<table>
+    <tr>
+        <td>
+            <b>List of Tenders retrieved from search page:-&nbsp;&nbsp;</b>
+        </td>
+        <td>
+            <a href="/Home/DisplayErpV1?url=../Entry/NITListView.aspx">
+                View NIT List
+            </a>
+            &nbsp;&nbsp;
+            <a href="/NitList/NitViewIndex">
+                View NIT List *
+            </a>
+            &nbsp;&nbsp;&nbsp;
+            <b>View Exclusion List:</b>&nbsp;
+            <label style="font-weight:normal;color:blue;"
+                   id="lblExclGen" onclick="getDeptRailwayExclListGeneric()">
+                <u>Dept. Generic</u>
+            </label>
+            &nbsp;
+            <label style="font-weight:normal;color:blue;"
+                   id="lblExclNIT" onclick="getDeptRailwaysExclusionListForNIT()">
+                <u>Dept. Specific</u>
+            </label>
+            &nbsp;
+            <label style="font-weight:normal;color:blue;"
+                   id="lblExclTT" onclick="getTenderTitlesExclusionListForNIT()">
+                <u>Tender Title</u>
+            </label>
+        </td>
+        <td>
+            &nbsp;&nbsp;@ViewBag.Message
+        </td>
+    </tr>
+</table>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:30px;">
+            Railway
+        </th>
+        <th style="width:50px;">
+            TenderNo
+        </th>
+        <th style="width:auto;">
+            TenderTitle
+        </th>
+        <th style="width:50px;">
+            TenderStatus
+        </th>
+        <th style="width:90px;">
+            UploadingDate
+        </th>
+        <th style="width:90px;">
+            ClosingDate
+        </th>
+        <th style="width:50px;">
+            DueDays
+        </th>
+    </tr>
+    @{int i = 1;}
+    @if (Model.TenderList != null)
+    {
+        foreach (var item in Model.TenderList)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.DeptRailway)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.TenderNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.TenderTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.TenderStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.UploadingDT)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ClosingDT)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.DueDays)
+                </td>
+            </tr>
+            i++;
+        }
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById("PageContent").focus();
+            document.getElementById("PageContent").value = '';
+        });
+    </script>
+
+    <script>
+        function getDeptRailwayExclListGeneric() {
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getDeptRailwayExclListGeneric", "NitList"))",
+                data: { },
+                success: function (data) {
+                    $('#PageContent').val(data.list);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function getDeptRailwaysExclusionListForNIT() {
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getDeptRailwaysExclusionListForNIT", "NitList"))",
+                data: { },
+                success: function (data) {
+                    $('#PageContent').val(data.list);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function getTenderTitlesExclusionListForNIT() {
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getTenderTitlesExclusionListForNIT", "NitList"))",
+                data: { },
+                success: function (data) {
+                    $('#PageContent').val(data.list);
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+}
+
+

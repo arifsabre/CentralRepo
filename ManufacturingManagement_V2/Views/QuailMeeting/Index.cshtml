@@ -1,0 +1,143 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.QuailMeetingMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>QUAIL Meeting List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+    @*@Html.ActionLink("Calendar View", "CalendarView", null, new { @class = "btn btn-default" })*@
+</p>
+
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "QuailMeeting", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                        <table class="table table-bordered">
+                            <tr>@Html.Hidden("hfEmpId", null, new { @id = "hfEmpId" })
+                                <td>From</td>
+                                <td>@Html.TextBox("txtDtFrom",null,new { @class = "datepicker" })</td>
+                                <td>To</td>
+                                <td>@Html.TextBox("txtDtTo",null,new { @class = "datepicker" })</td>
+                            </tr>
+                            <tr>
+                                <td>Employee</td>
+                                <td>@Html.TextBox("txtEmpName", null, new { @placeholder = "start typing, then select"})</td>
+                            </tr>
+                        </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:120px;">
+            @Html.DisplayNameFor(model => model.FctnName)
+        </th>
+        <th style="width:90px;">
+            @Html.DisplayNameFor(model => model.QlbDate)
+        </th>
+        <th style="width:90px;">
+            @Html.DisplayNameFor(model => model.QlbTime)
+        </th>
+        <th style="width:170px;">
+            @Html.DisplayNameFor(model => model.FnLeader)
+        </th>
+        <th style="width:50px;">Action</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FctnName)
+            </td>
+            <td>
+                @Html.ValueFor(model => item.QlbDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.QlbTime)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FnLeader)
+            </td>
+            <td>
+                @if (item.QmStatus == 0)
+                {
+                    @Html.ActionLink("AddCard", "../QuailBook/CreateUpdate",
+                    new { qmid = item.QmId })
+                }
+                else
+                {
+                    @Html.ActionLink("EditCard", "../QuailBook/CreateUpdate",
+                    new { qmid = item.QmId })
+                }
+                @Html.ActionLink("EditMeeting", "CreateUpdate", new { id = item.QmId })
+                <br />@Html.ActionLink("Preview Card", "../QuailBookReport/QuailCardReport", new { qmid = item.QmId }, new { target = "_blank" })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("hfEmpId").value = '@ViewBag.empid';
+            document.getElementById("txtEmpName").value = '@ViewBag.empname';
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtEmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployee", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+

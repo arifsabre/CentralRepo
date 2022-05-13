@@ -1,0 +1,198 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.RfqTenderMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <h4><b>RFQ Tender List</b></h4>
+
+    <p>
+        @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+    </p>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndex", "RfqTender", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+            <div class="form-group">
+                @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+                <table class="table table-bordered">
+                    <tr>
+                        <td><b>From</b></td>
+                        <td>@Html.TextBox("txtDtFrom", null, new { @class = "datepicker" })</td>
+                        <td><b>Offer Type</b></td>
+                        <td>@Html.DropDownList("ddlOfferType", ViewBag.OfferTypeList as SelectList, "--Select--")</td>
+                    </tr>
+                    <tr>
+                        <td><b>To</b></td>
+                        <td>@Html.TextBox("txtDtTo", null, new { @class = "datepicker" })</td>
+                        <td><b>Apply Date Filter</b></td>
+                        <td>
+                            <input type="checkbox" name="chkFilterByDT" @if (ViewBag.FilterByDT) { <text> checked</text>}
+                                   style="width: 80px; height: 20px; padding: 0; text-align:center;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Item</b></td>
+                        <td>@Html.TextBox("txtItemCode", null, new { @placeholder = "start typing, then select" })</td>
+                        <td>
+                            <button class="btn btn-default">Submit</button>
+                        </td>
+                        <td>
+                            <input type="submit" class="btn btn-default" value="Report"
+                                   onclick="target = '_blank';" formaction="@Url.Action("DisplayReport")" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;">
+        <tr>
+            <th style="width:30px;">
+                S.No.
+            </th>
+            <th style="width:100px;">
+                @Html.DisplayNameFor(model => model.RailwayName)
+            </th>
+            <th style="width:100px;">
+                Offer&nbsp;Type<br />Reference&nbsp;No
+            </th>
+            <th style="width:70px;">
+                RFQ&nbsp;Date
+            </th>
+            <th style="width:auto;">
+                Items
+            </th>
+            <th style="width:70px;">
+                Quotation&nbsp;No<br />Quotation&nbsp;Date
+            </th>
+            <th style="width:auto;">
+                @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th style="width:60px;">Action&nbsp;Links</th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.RailwayName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.OfferTypeName)
+                    <br />@Html.DisplayFor(model => item.ReferenceNo)
+                </td>
+                <td>
+                    @Html.ValueFor(model => item.RfqDate, "{0:dd/MM/yyyy}")
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Items)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.QuotationNo)
+                    @if (item.QuotationNo.Length > 0)
+                    {
+                        <br />@Html.ValueFor(model => item.QuotationDate, "{0:dd/MM/yyyy}")
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Remarks)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RfqId })
+                    <br />@Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+        new { tblid = 92, pkval = item.RfqId }, new { @target = "_blank" })
+                    <br />@Html.ActionLink("Delete", null, new { recid = item.RfqId },
+             new { onclick = "deleteRecord('" + item.RfqId + "')" })
+                    <br />@Html.ActionLink("Upload", "UploadFile", new { rfqid = item.RfqId, referenceno = item.ReferenceNo })
+                    <br />@Html.ActionLink("Display", "ShowDocument", new { rfqid = item.RfqId },
+             new { @target = "_blank;" })
+                </td>
+            </tr>
+            i++;
+        }
+    </table>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+            document.getElementById("hfItemId").value = '@ViewBag.ItemId';
+            document.getElementById("txtItemCode").value = '@ViewBag.ItemCode';
+            document.getElementById("ddlOfferType").value = '@ViewBag.OfferType';
+        });
+        </script>
+
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script type="text/javascript">
+        $("#txtItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                //var liObj = document.getElementById("ddlCompany");
+                //var objIndex = liObj.selectedIndex;
+                //var objId = liObj.options[objIndex].value;
+                //var objName = liObj.options[objIndex].text;//OK
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompletePOSaleItemList", "Item"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                    for (var i = 0; i < data.length ; i++) {
+                        customer[i] = { label: data[i].Value, Id: data[i].Key };
+                    }
+                }
+            });
+            response(customer);
+        }, minLength: 1,
+        select: function (event, ui) {
+            document.getElementById('hfItemId').value = ui.item.Id;//no need
+        }
+    });
+        </script>
+
+        <script>
+        function deleteRecord(rfqid) {
+            var a = confirm("Are you sure to delete this record?");
+            if (a == false) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("deleteRFQ", "RfqTender")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    rfqid: rfqid
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    //location.reload();
+                }
+            });
+        }
+        </script>
+
+    }

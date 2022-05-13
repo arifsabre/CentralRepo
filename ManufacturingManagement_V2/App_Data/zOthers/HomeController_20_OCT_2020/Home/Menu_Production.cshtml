@@ -1,0 +1,53 @@
+﻿<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    @*Views*@
+    <li class="treeview" id="mnuViewsProduction">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Production">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuViewsProduction');">&nbsp;&nbsp;Views</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/ProductionPlan/IndexStatus">Production Plan Status</a></li>
+            <li><a href="/ProductionEntry/Index">Daily Production View</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Transaction Entry*@
+    <li class="treeview" id="mnuTransactionEntriesProduction">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Production">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuTransactionEntriesProduction');">&nbsp;&nbsp;Transaction Entries</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/ProductionEntry/CreateUpdate">Daily Production Entry</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Reports*@
+    <li class="treeview" id="mnuReportsProduction">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Production">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuReportsProduction');">&nbsp;&nbsp;Reports</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/ProductionReport/ProductionPlanStatusIndex">Production Plan Status Report</a></li>
+            <li><a href="/ProductionReport/ProductionTargetStatusIndex">Production Target Status Report</a></li>
+            <li><a href="/ProductionReport/Index">Daily Production Report</a></li>
+        </ul>
+        @*</li>*@
+
+</ul>
+@*ul-end*@

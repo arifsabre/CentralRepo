@@ -1,0 +1,113 @@
+﻿@model ManufacturingManagement_V2.Models.AgentMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Agent Detail</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <table class="table table-bordered">
+            @Html.HiddenFor(model => model.AgentId)
+            @Html.HiddenFor(model => model.CityId)
+            <tr>
+                <td style="width:12%;">@Html.LabelFor(model => model.SVPTypeName)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.SVPTypeId, ViewBag.SVPTypeList as SelectList)
+                    @Html.ValidationMessageFor(model => model.SVPTypeName)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.AgentName)</td>
+                <td>
+                    @Html.EditorFor(model => model.AgentName)
+                    @Html.ValidationMessageFor(model => model.AgentName)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Company)</td>
+                <td>
+                    @Html.EditorFor(model => model.Company)
+                    @Html.ValidationMessageFor(model => model.Company)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.ContactNo)</td>
+                <td>
+                    @Html.EditorFor(model => model.ContactNo)
+                    @Html.ValidationMessageFor(model => model.ContactNo)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.CityName)</td>
+                <td>
+                    @Html.EditorFor(model => model.CityName)
+                    @Html.ValidationMessageFor(model => model.CityId)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.EMail)</td>
+                <td>
+                    @Html.EditorFor(model => model.EMail)
+                    @Html.ValidationMessageFor(model => model.EMail)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.PostalAddress)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.PostalAddress, 0, 0,
+                        new { @style = "width:410px;height:60px;" })
+                    @Html.ValidationMessageFor(model => model.PostalAddress)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        <h5><b>@ViewBag.Message</b></h5>
+    </p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById('AgentName').focus();
+            $("#EMail").attr("style", "width:410px;");
+            $("#CityName").attr("placeholder", "start typing, then select");
+        });
+    </script>
+    <script type="text/javascript">
+        $("#CityName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteCity", "City"))",
+                data: { "term": request.term },
+                success: function (data) {
+                    for (var i = 0; i < data.length ; i++) {
+                        customer[i] = { label: data[i].Value, Id: data[i].Key };
+                    }
+                }
+            });
+            response(customer);
+        }, minLength: 2,
+        select: function (event, ui) {
+            document.getElementById('CityId').value = ui.item.Id;
+        }
+    });
+    </script>
+
+}

@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "UploadFile";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Upload Attachment(s)</b></h4>
+
+<fieldset>
+    @using (Html.BeginForm("UploadFile", "Correspondence", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="hidden" name="recid" id="recid" value='@ViewBag.recid'>
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:12%;"><label for="file"><i>Letter No:</i></label></td>
+                <td>
+                @ViewBag.letterno</td>
+            </tr>
+            <tr>
+                <td><label for="file"><i>Select file(s) to upload:</i></label></td>
+                <td>
+                    <input style="color:green;font-weight:bold;"
+                           type="file" name="docfiles" id="docfiles" multiple="multiple" />
+                </td>
+            </tr>
+        </table>
+        <p>
+            <input type="submit" class="btn btn-default" value="Upload File" />
+            @Html.ActionLink("View Attachment(s)", "Downloads", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Back To List", "Index", null, new { @class = "btn btn-default" })
+            <h5><b>@ViewBag.Message</b></h5>
+        </p>
+    }
+</fieldset>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#empname").attr("placeholder", "start typing, then select");
+            document.getElementById("recid").value = '@ViewBag.recid';
+            document.getElementById("letterno").value = '@ViewBag.letterno';
+        });
+
+    </script>
+
+    @*<script type="text/javascript">
+        $("#empname").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('newempid').value = ui.item.Id;
+            }
+        });
+</script>*@
+
+}
+
+

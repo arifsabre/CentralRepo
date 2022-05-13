@@ -1,0 +1,147 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.EmailTrackMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Email Track List -Reply</b></h4>
+
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndexReply", "EMailTrack", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>Date From</td>
+                            <td>@Html.TextBox("txtDtFrom", null, new { @class = "datepicker" })</td>
+                            <td>Date To</td>
+                            <td>@Html.TextBox("txtDtTo", null, new { @class = "datepicker" })</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>@Html.DropDownList("ddlEmStatus", ViewBag.EmStatusList as SelectList)</td>
+                        </tr>
+                    </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.EmDate)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.EmFrom)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.Railway)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.EmSubject)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.EmStatusName)
+        </th>
+        <th style="width:250px;">
+            @Html.DisplayNameFor(model => model.Remarks)
+        </th>
+        <th style="width:50px;">Action</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.ValueFor(model => item.EmDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EmFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Railway)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EmSubject)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EmStatusName)
+            </td>
+            <td>
+                @Html.TextArea("txtRemarks" + i.ToString(), item.Remarks, new
+                {
+                    @id = "Remarks" + (i - 1),
+                 style = "width: 250px; height: 40px; padding: 0; text-align:left;"
+                })
+            </td>
+            <td>
+                @Html.ActionLink("SetCompleted", null, new { recid = item.RecId },
+                new { onclick = "updateReply('" + item.RecId + "','c','" + i + "')", style = "color:black;" })
+                <br />@Html.ActionLink("SetPending", null, new { recid = item.RecId },
+     new { onclick = "updateReply('" + item.RecId + "','p','" + i + "')", style = "color:black;" })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("ddlEmStatus").value = '@ViewBag.emstatus';
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+    <script>
+        function updateReply(recid,opt,indx) {
+            var a = confirm("Are you sure to update reply?");
+            var remarks = $('#Remarks' + (indx - 1)).val();
+            if (a == false) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("updateReply", "EMailTrack")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    recid: recid,
+                    opt: opt,
+                    remarks: remarks
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+</script>
+
+}
+

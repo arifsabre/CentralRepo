@@ -1,0 +1,81 @@
+﻿@model ManufacturingManagement_V2.Models.B_INTEGRATIONMDI
+@{
+    ViewBag.Title = "Network Device Minitoring System";
+    // Layout = "~/views/shared/_LayoutCommon.cshtml";
+    //Layout = "~/views/shared/MyLayoutHR.cshtml";
+   // Layout = null;
+}
+<html>
+<head>
+    <title></title>
+    @*<meta http-equiv="refresh" content="5" />*@
+</head>
+@*onload="JavaScript:timedRefresh(100000);"*@
+<body>
+
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>DeciceNo</th>
+                                    <th>Location</th>
+                                    <th>IPAddress</th>
+                                    <th>DateTime</th>
+                                    <th>Status</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @Html.TextBoxFor(model => item.DeviceId)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => item.DeviceLocation)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => item.DeviceIP)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => item.ReaderPingdateTime)
+                                        </td>
+                                        @if (item.DeviceStatus == "TimedOut" || item.DeviceStatus == "DestinationHostUnreachable")
+                                        {
+                                            <td>
+                                                @Html.TextBoxFor(model => item.DeviceStatus, new { @style = "font-size:10pt;color:red" })
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @Html.TextBoxFor(model => item.DeviceStatus, new { @style = "font-size:10pt;color:green" })
+                                            </td>
+                                        }
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
+
+

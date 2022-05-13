@@ -1,0 +1,399 @@
+﻿@{
+    ViewBag.Title = "User Manual";
+    Layout = "~/views/shared/LayoutHelpContent.cshtml";
+}
+
+<h2>PRAG ERP User Manual: Stores</h2>
+
+<table>
+    <tr>
+        <td style="width:7%;text-align:left;"><h3><label id="shDesc" style="color:blue;" onclick="ShowHideALL()">Show</label></h3></td>
+        <td style="text-align:left;font-size:10pt;"><h3>@Html.ActionLink("Back", null,null,new{@onclick="window.close()", @style="color:blue;"})</h3></td>
+    </tr>
+</table>
+
+<div style="font-family:Verdana;">
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv1)"><u>1. Master Entries</u></label>
+    </span>
+    <div id="MDiv1" style="display:none;margin-left:20px;">
+    
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div1)">1. Vendor Address</label></h4>
+        <div id="div1" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Existing vendor address list entry master.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div2)">2. Vendor Master</label></h4>
+        <div id="div2" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Vendor master entry.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div3)">3. Item Master</label></h4>
+        <div id="div3" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Item master entry.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div4)">4. Item Group Master</label></h4>
+        <div id="div4" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Item group master entry.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div5)">5. Order Type Master</label></h4>
+        <div id="div5" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Order type master entry.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;"  onclick="ShowHideDiv(div6)">6. City Master</label></h4>
+        <div id="div6" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            City master entry
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div7)">7. Government Department Master</label></h4>
+        <div id="div7" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Master of government departments used in compliances.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;"  onclick="ShowHideDiv(div8)">8. Unit Conversion Master</label></h4>
+        <div id="div8" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Unit conversion definition entry.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div9)">9. [Tally Data Import]</label></h4>
+        <div id="div9" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Module for data import from Tally.
+        </div>
+
+    @*<br/> extra 1
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div10)">10. new</label></h4>
+        <div id="div10" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+    @*<br/> extra 2
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div11)">11. new</label></h4>
+        <div id="div11" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+    </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv2)"><u>2. Indent</u></label>
+    </span>
+    <div id="MDiv2" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div12)">1. View All Indents</label></h4>
+        <div id="div12" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays list indents.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div13)">2. Indent Execution</label></h4>
+        <div id="div13" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays indents to be executed after admin's approval.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div14)">3. Generate Purchase Slip</label></h4>
+        <div id="div14" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Generation of purchase slips from indent.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div15)">4. View Purchase Slip</label></h4>
+        <div id="div15" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays all purchase slips generated.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div16)">5. Generate Purchase Order</label></h4>
+        <div id="div16" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Generation of purchase order from purchase slip.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div17)">6. Pending Issue</label></h4>
+        <div id="div17" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Issue of materials from pending indents .
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div18)">7. View Indent Issue</label></h4>
+        <div id="div18" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays issued items for indent.
+        </div>
+
+    @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div26)">15. New</label></h4>
+        <div id="div26" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div27)">16. New</label></h4>
+        <div id="div27" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+  </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv3)"><u>3. Transaction Entries</u></label>
+    </span>
+    <div id="MDiv3" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div28)">1. Order Entry</label></h4>
+        <div id="div28" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Purchase order entry.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div29)">2. Stock Entry</label></h4>
+        <div id="div29" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Entry of issue, receipt and damage items records.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div30)">3. Purchase Entry</label></h4>
+        <div id="div30" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Purchase entry.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div31)">4. Jobwork Issue</label></h4>
+        <div id="div31" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Entry of jobwork issue records.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div32)">5. Jobwork Receipt</label></h4>
+        <div id="div32" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Entry of items received from jobwork.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div33)">6. Item Receipt -Indent</label></h4>
+        <div id="div33" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Item receipt entry from indent.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div34)">7. Item Receipt -Purchase Order</label></h4>
+        <div id="div34" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Item receipt entry from purchase order.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div35)">8. BOM Definition</label></h4>
+        <div id="div35" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Entry of BOM definition for finished goods/assemblies.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div36)">9. Import List</label></h4>
+        <div id="div36" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Entry of records to be imported for purchase orders.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div37)">10. PO Projection List</label></h4>
+        <div id="div37" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays projection list report based on purchase orders and import entries.
+        </div>
+
+    @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div38)">7. New</label></h4>
+        <div id="div38" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div39)">8. New</label></h4>
+        <div id="div39" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+</div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv4)"><u>4. Reports</u></label>
+    </span>
+    <div id="MDiv4" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div40)">1. Jobwork Report</label></h4>
+        <div id="div40" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Jobwork report.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div41)">2. Indent Report</label></h4>
+        <div id="div41" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays indent report.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div42)">3. Indent Purchase Slip</label></h4>
+        <div id="div42" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays indent purchase slip report.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div43)">4. Order Report</label></h4>
+        <div id="div43" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays order report.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div44)">5. Pending Orders</label></h4>
+        <div id="div44" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays pending order report. 
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div45)">6. Stock Reports</label></h4>
+        <div id="div45" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays stock reports- Stock Statement and Stock Ledger.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div46)">7. Order Planning Report</label></h4>
+        <div id="div46" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays order planning report.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div47)">8. Projection List Report</label></h4>
+        <div id="div47" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays PO projection list report.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div48)">9. Material Requirement List</label></h4>
+        <div id="div48" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays material requirement list report.
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div49)">10. Material Requirement Summary</label></h4>
+        <div id="div49" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Displays material requirement summary report.
+        </div>
+
+        @*<br/> extra
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div45)">10. New</label></h4>
+        <div id="div45" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>
+
+        <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div46)">11. New</label></h4>
+        <div id="div46" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Desc 1
+        </div>*@
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideALL() {
+            var all = document.getElementsByClassName("lnk");
+            var mx = all.length;
+            if (document.getElementById('shDesc').innerText == 'Show') {
+                document.getElementById('shDesc').innerHTML = 'Hide';
+                var x;
+                for (x = 0; x < mx ; x++) {
+                    all[x].style.display = "block";
+                }
+            }
+            else if (document.getElementById('shDesc').innerText == 'Hide') {
+                document.getElementById('shDesc').innerText = 'Show';
+                var x;
+                for (x = 0; x < mx ; x++) {
+                    all[x].style.display = "none";
+                }
+            }
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+
+}
+

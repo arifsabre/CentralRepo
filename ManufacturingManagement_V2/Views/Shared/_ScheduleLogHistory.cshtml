@@ -1,0 +1,87 @@
+﻿@model ManufacturingManagement_V2.Models.MachineMaintenanceMDI
+<div class="panel panel-default">
+     <div id="printbar" class="pull-left" style="margin-right:3px;margin-bottom:3px;margin-top:3px">
+    </div>
+     <table id="jdtabledesktop3" class="table table-bordered table-hover condensed table-responssive " style="width:100%">
+         <thead style="background-color:lightgray">
+             <tr>
+                 @*<th>
+                     Id
+                 </th>*@
+                 <th>
+                     Company
+                 </th>
+                 <th>
+                    Machine 
+                 </th>
+                 <th>
+                     Responsibility
+                 </th>
+                 <th>
+                     Checking_By
+                 </th>
+                 <th>
+                     Detail_of_Work_Done
+                 </th>
+                 <th>
+                     Condition
+                 </th>
+                 <th>
+                     Schedule
+                 </th>
+                 <th>
+                     UpdatedBy
+                 </th>
+                 <th>
+                     UpdatedOn
+                 </th>
+
+             </tr>
+         </thead>
+         <tbody>
+             @foreach (var item in Model.Item_List)
+             {
+             <tr>
+                 @*<td>
+                     @Html.DisplayFor(modelItem => item.id)
+                 </td>*@
+                 <td>
+                     @Html.DisplayFor(modelItem => item.ShortName)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.machinename)
+                 </td>
+
+                 <td>
+                     @Html.DisplayFor(modelItem => item.EmpName)
+                 </td>
+
+                 <td>
+                     @Html.DisplayFor(modelItem => item.FullName)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.detailofworkdone)
+                 </td>
+
+                 <td>
+                     @Html.DisplayFor(modelItem => item.condition)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Schedule)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.UpdatedBy)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.UpdatedOn)
+                 </td>
+
+             </tr>
+             }
+         </tbody>
+         <tfoot>
+             <tr></tr>
+         </tfoot>
+     </table>
+  </div>
+<script src="~/Script/Site3.js"></script>

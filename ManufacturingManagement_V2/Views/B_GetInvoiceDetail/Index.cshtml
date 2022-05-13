@@ -1,0 +1,26 @@
+﻿@{  
+    ViewBag.Title = "FileDetails";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}  
+  
+@using (Html.BeginForm())  
+{ 
+    <br />
+@*<div>
+ 
+</div>*@
+    @Html.AntiForgeryToken()    
+        @*<div class="form-group">  
+            <div class="col-md-offset-2 col-md-10 text-success">  
+                @ViewBag.FileStatus  
+            </div>  
+        </div>*@  
+          <div class="form-group">  
+            <div class="col-md-12">  
+                @Html.Action("FileDetails", "B_GetInvoiceDetail")  
+              </div>  
+        </div>  
+   }   <script src="~/Script/Site.js"></script>
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>  
+<script src="~/Scripts/jquery.validate.min.js"></script>  
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@  

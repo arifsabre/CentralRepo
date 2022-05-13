@@ -1,0 +1,159 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.JobworkIssueMdl>
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <h4><b>WIP List to Jobwork</b></h4>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndexWipToJobwork", "JobworkIssue", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+            <div class="form-group">
+                From
+                @Html.TextBox("txtDtFrom", null, new { @class = "datepicker", @style = "width:90px;" })
+
+                &nbsp;To
+                @Html.TextBox("txtDtTo", null, new { @class = "datepicker", @style = "width:90px;" })
+
+                &nbsp;&nbsp;<button class="btn btn-default">Submit</button>
+
+            </div>
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;">
+        <tr>
+            <th style="width:35px;">
+                S.No.
+            </th>
+            <th style="width:90px;">
+                Slip&nbsp;No
+            </th>
+            <th style="width:120px;">
+                Slip&nbsp;Date
+            </th>
+            <th style="width:auto;">
+                @Html.DisplayNameFor(model => model.VendorName)
+            </th>
+            <th style="width:auto;">
+                @Html.DisplayNameFor(model => model.ProcessDesc)
+            </th>
+            <th style="width:auto;">
+                Item&nbsp;Code<br />Short&nbsp;Name
+            </th>
+            <th style="width:60px;">
+                Qty<br />Unit
+            </th>
+            <th style="width:60px;">
+                Balance<br />Qty
+            </th>
+            <th style="width:60px;">
+                Challan&nbsp;No
+            </th>
+            <th style="width:80px;">Action</th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ChallanNo)
+                </td>
+                <td>
+                    @Html.ValueFor(model => item.ChallanDate, "{0:dd/MM/yyyy}")
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.VendorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ProcessDesc)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.RMItemCode)
+                    <br />@Html.DisplayFor(model => item.RMShortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.IssuedQty)
+                    <br />@Html.DisplayFor(model => item.RMUnitName)
+                </td>
+                <td>
+                    @Html.TextBox("txtQty" + i.ToString(), item.RemIssueQty.ToString(),
+                      new { @id = "txtQty" + (i - 1), style = "width: 60px;"})
+                </td>
+                <td>
+                    @Html.TextBox("txtChallanNo" + i.ToString(), "",
+                      new { @id = "txtChallanNo" + (i - 1), style = "width: 60px;" })
+                </td>
+                <td>
+                    @Html.ActionLink("Update", null, null,
+                   new { onclick = "updateWipToJwChallan('" + i + "', '" + item.DispId + "')" })
+                </td>
+            </tr>
+            i++;
+        }
+
+    </table>
+
+    @section Scripts{
+        @*@Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/jqueryui")
+            @Styles.Render("~/Content/themes/base/css")*@
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+        });
+        </script>
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script>
+            function updateWipToJwChallan(indx, dispid) {
+
+                var _qty = $('#txtQty' + (indx - 1)).val();
+                if (_qty == '') {
+                    alert('Invalid Qty!');
+                    return;
+                }
+
+                var _challanno = $('#txtChallanNo' + (indx - 1)).val();
+                if (_challanno == '') {
+                    alert('Empty Challan No!');
+                    return;
+                }
+
+                var data = {
+                    wipdispid: dispid,
+                    jwchallanno: _challanno,
+                    qty: _qty
+                }
+                $.ajax({
+                    url: '/JobworkIssue/GenerateJobworkChallanByWip',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+    }
+

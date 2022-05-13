@@ -1,0 +1,576 @@
+﻿@model ManufacturingManagement_V2.Models.MachineMaintenanceMDI
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>BreakDown Maintenance</title>
+     <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        function GetDetails(id) {
+            $.ajax({
+                url: "/MachineMaintenance/Edit_BreakDownRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#machineid4').val(response.machineid);
+                    $('#breakid4').val(response.breakid);
+                    $('#ShortName4').val(response.ShortName);
+                    $('#machinename4').val(response.machinename);
+                    $('#EmpName4').val(response.EmpName);
+                    $('#FullName4').val(response.FullName);
+                    $('#detailofworkdone4').val(response.detailofworkdone);
+                    $('#breakreason4').val(response.breakreason);
+                    $('#breakdate4').val(response.breakdate);
+                    $('#MachineUp_Date4').val(response.MachineUp_Date);
+                    $('#UpdatedBy4').val(response.UpdatedBy);
+                    $('#UpdatedOn4').val(response.UpdatedOn);
+                    $('#UpTime4').val(response.UpTime);
+                    $('#BreakTime4').val(response.BreakTime);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        //details
+        function GetBreak(id) {
+            $.ajax({
+                url: "/MachineMaintenance/Detail_BreakDownRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#breakid1').val(response.breakid);
+                    $('#ShortName1').val(response.ShortName);
+                    $('#machinename1').val(response.machinename);
+                    $('#EmpName1').val(response.EmpName);
+                    $('#FullName5').val(response.FullName);
+                    // $('#checkdetail1').val(response.checkdetail);
+                    $('#detailofworkdone1').val(response.detailofworkdone);
+                    $('#breakreason1').val(response.breakreason);
+                    // $('#duedate1').val(response.duedate);
+                    $('#breakdate1').val(response.breakdate);
+                    $('#MachineUp_Date1').val(response.MachineUp_Date);
+                    $('#CreatedBy1').val(response.CreatedBy);
+                    $('#CreatedOn1').val(response.CreatedOn);
+                    $('#UpdatedBy1').val(response.UpdatedBy);
+                    $('#UpdatedOn1').val(response.UpdatedOn);
+                    $('#UpTime1').val(response.UpTime);
+                    $('#BreakTime1').val(response.BreakTime);
+                    $('#modal-Break').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        function BreakHistory(id) {
+            $.ajax({
+                // url: "/Trainning/Edit_TrainneeRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    // $('#RecordId5').val(response.RecordId);
+                    // $('#TrainningTopic5').val(response.Trainning_Topic);
+                    $('#modal-BreakHistory').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+   
+
+</head>
+<body>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-Insert" style="margin-top:3px;margin-bottom:3px">
+        Add Breakdown Machine
+    </button>
+
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-BreakHistory" style="margin-top:3px;margin-bottom:3px">
+        Breakdown History
+    </button>
+    <div id="printbar" class="pull-right" style="margin-top:3px;margin-bottom:3px">
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th> Action</th>
+                                    <th>
+                                        Id
+                                    </th>
+                                    @*<th>
+            Company
+        </th>*@
+                                    <th>
+                                        Machine
+                                    </th>
+                                    <th>
+                                        Down Reason
+                                    </th>
+
+                                    @*<th>
+            Responsibility
+        </th>*@
+                                    <th>
+                                        Checking_By
+                                    </th>
+                                    @*<th>
+            Created_By
+        </th>*@
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List1)
+                                {
+                                <tr>
+                                    <td>
+                                        <a onclick="GetBreak(@item.breakid)">
+                                            <i class="fa fa-eye">
+                                            </i>
+                                        </a>
+                                        <a onclick="GetDetails(@item.breakid)">
+                                            <i class="fa fa-edit">
+                                            </i>
+                                        </a>
+                                        <a>
+                                            @Html.ActionLink(" ", "Delete_Breakdown", "MachineMaintenance", new { id = item.breakid }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.breakid)
+                                    </td>
+                                    @*<td>
+            @Html.DisplayFor(modelItem => item.ShortName)
+        </td>*@
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.machinename)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.breakreason)
+                                    </td>
+
+
+                                    @*<td>
+            @Html.DisplayFor(modelItem => item.EmpName)
+        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FullName)
+                                    </td>
+                                    @*<td>
+            @Html.DisplayFor(modelItem => item.CreatedBy)
+        </td>*@
+
+                                </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Breakdown Machine </h3>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("AddBreakDown", "MachineMaintenance", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Select Company</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.compcode, ViewBag.LocationList as SelectList)
+                                    <br />
+                                    <label>Select Machine</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.machineid, ViewBag.MachineList as SelectList)
+                                    <br />
+                                    <label>Responsibility</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.NewEmpId, ViewBag.ResponsibilityList as SelectList)
+                                    <br />
+                                    <label>Checking Responsibility</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.userid, ViewBag.CheckResponsibilityList as SelectList)
+                                    @Html.ValidationMessageFor(model => model.userid, "", new { @class = "text-danger" })
+                                    <br />
+
+                                    @*<label>Detail of Work Done</label>
+        @Html.EditorFor(model => model.detailofworkdone, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = @Html.DisplayNameFor(m => m.detailofworkdone) } })
+        @Html.ValidationMessageFor(model => model.detailofworkdone, "", new { @class = "text-danger" })
+
+        <label>BreakDown Reason</label>
+        @Html.EditorFor(model => model.breakreason, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = @Html.DisplayNameFor(m => m.breakreason) } })
+        @Html.ValidationMessageFor(model => model.breakreason, "", new { @class = "text-danger" })
+        <br />*@
+                                    <label>Machine BreakDown Date</label>
+                                    <br />
+                                    @* @Html.ValidationMessageFor(model => model.breakdate)*@
+                                    @Html.EditorFor(m => m.breakdate,new {@id= "breakidDate4" })
+                                    @Html.ValidationMessageFor(model => model.breakdate, "", new { @class = "text-danger" })
+                                    <br />
+                                    <label> BreakDown Time</label>
+                                    <br />
+                                    <input type="time" class="form-control" id="BreakTime" name="BreakTime" value="10:20" style="width:120px">
+                                    @*<br />
+        <label>MachineUp Date</label>
+        <br />
+        @Html.EditorFor(m => m.MachineUp_Date)
+        @Html.ValidationMessageFor(model => model.MachineUp_Date, "", new { @class = "text-danger" })*@
+
+
+                                    @Html.HiddenFor(model => model.CreatedBy)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit"   class="btn btn-success">Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-Update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Update Breakdown </h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("UpdateBreakDown", "MachineMaintenance", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Break Id</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.breakid, 5, 5, new { @class = "Editor", @style = "width:100px;height:25px;", @id = "breakid4" })
+                                        <br />
+                                        <input type="hidden" class="form-control" id="machineid4" name="machineid" readonly="readonly">
+                                        @*  @Html.TextAreaFor(model => model.machineid, 5, 5, new { @class = "Editor", @style = "width:400px;height:30px;", @id = "machineid4" })*@
+                                        @*<br />*@
+                                        <label>Company</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.ShortName, 5, 5, new { @class = "Editor", @style = "width:500px;height:25px;", @id = "ShortName4" })
+                                        <br />
+                                        <label>Machine</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.machinename, 5, 5, new { @class = "Editor", @style = "width:500px;height:25px;", @id = "machinename4" })
+                                        <br />
+                                        <label>Responsibility</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.EmpName, 5, 5, new { @class = "Editor", @style = "width:400px;height:30px;", @id = "EmpName4" })
+                                        <br />
+                                        <label>Checking Responsibility</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.FullName, 5, 5, new { @class = "Editor", @style = "width:400px;height:30px;", @id = "FullName4" })
+                                        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                                        <br />
+                                        <label>BreakDown Reason</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.breakreason, 5, 5, new { @class = "Editor", @style = "width:500px;height:60px;", @id = "breakreason4" })
+                                        @Html.ValidationMessageFor(model => model.breakreason, "", new { @class = "text-danger" })
+                                        <br />
+                                        <label>Detail of Work Done</label>
+                                        <br />
+                                        @Html.TextAreaFor(model => model.detailofworkdone, 5, 5, new { @class = "Editor", @style = "width:500px;height:60px;", @id = "detailofworkdone4" })
+                                        @Html.ValidationMessageFor(model => model.detailofworkdone, "", new { @class = "text-danger" })
+                                        <br />
+                                        <label>MachineUp Date</label>
+                                        <br />
+                                        @Html.EditorFor(m => m.MachineUp_Date, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date", @id = "MachineUpId4" } })
+                                        @Html.ValidationMessageFor(model => model.MachineUp_Date, "", new { @class = "text-danger" })
+                                        <br />
+                                        <label> BreakDown Time</label>
+                                        <br />
+                                        <input type="time" class="form-control" id="BreakTime4" name="BreakTime" style="width:150px">
+                                        <br />
+                                        <label>UpTime</label>
+                                        <br />
+                                        <input type="time" class="form-control" id="UpTime4" name="UpTime" style="width:150px">
+                                        @Html.ValidationMessageFor(model => model.UpTime, "", new { @class = "text-danger" })
+                                        @Html.HiddenFor(model => model.UpdatedBy, new { @id = "UpdatedBy4" })
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit"   class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//Break*@
+    <div class="modal fade" id="modal-Break">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:850px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Machine Breakdown Detail</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_HODApproval", "ContractorIndent", FormMethod.Post))
+                        {
+                            <div>
+                                <table>
+
+                                    <tr>
+                                        <td style="padding:10px">Id </td>
+                                        <td><input type="number" class="form-control" id="breakid1" name="id" style="border:none"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Company</td>
+                                        <td> <input type="text" class="form-control" id="ShortName1" name="ShortName" style="border:none;width:350px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Machine Name
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="machinename1" name="machinename" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td style="padding:10px">
+                                            Breakdown Reason
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="breakreason1" name="breakreason" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Machine Breakdown Date
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="breakdate1" name="breakdate" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            BreakdownTime
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="BreakTime1" name="BreakTime" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            MachineUp Date
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="MachineUp_Date1" name="MachineUp_Date" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            UpTime
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="UpTime1" name="UpTime" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Responsibility
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="EmpName1" name="EmpName" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Checking By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="FullName5" name="FullName" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Detail of Work Done
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="detailofworkdone1" name="detailofworkdone" style="border:none;width:350px">
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Assignee
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="CreatedBy1" name="CreatedBy" style="border:none">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Created On
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="CreatedOn1" width="450" name="CreatedOn" style="width:700px;height:30px;border:none">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Updated By
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="UpdatedBy1" width="450" name="UpdatedBy" style="width:700px;height:30px;border:none">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            UpdatedOn
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="UpdatedOn1" width="450" name="CreatedOn" style="width:700px;height:30px;border:none">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+
+                                @*  @*<button type="submit" id="modal-hodApproval" class="btn btn-primary">Submit</button>*@
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-BreakHistory">
+        <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @using (Html.BeginForm("Edit_TopicMaste1r", "Trainning1", FormMethod.Post))
+                    {
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:50%;color:black">
+                            <thead>
+                                <tr>
+                                     <th>
+                                        Machine
+                                    </th>
+
+                                    <th>
+                                        Reason
+                                    </th>
+                                    <th>
+                                        WorkDone
+                                    </th>
+
+                                    <th>
+                                        Breakdown Date
+                                    </th>
+                                    <th>
+                                        BreakTime
+                                    </th>
+                                    <th>
+                                        MachineUP Date
+                                    </th>
+                                    <th>
+                                        UpTime
+                                    </th>
+                                    <th>
+                                    Checking_By
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model.Item_List3)
+                                {
+
+                                <tr>
+                              
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.machinename)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.breakreason)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.detailofworkdone)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.breakdate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.BreakTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MachineUp_Date)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UpTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FullName)
+                                    </td>
+                                </tr>
+    }
+    </tbody>
+    <tfoot></tfoot>
+    </table>
+    <div class="modal-footer">
+    </div>
+    }
+    </div>
+    </div>
+    </div>
+
+    </div>
+    <script src="~/Script/Site.js"></script>
+
+</body>
+</html>
+

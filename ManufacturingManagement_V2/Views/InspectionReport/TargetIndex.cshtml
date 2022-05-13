@@ -1,0 +1,40 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Inspection Target Status Report</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <h5><b>Report Options</b></h5>
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:12%;">Company</td>
+                <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)</td>
+            </tr>
+            <tr>
+                <td>Month/Year From</td>
+                <td>
+                    @Html.EditorFor(model => model.DateFrom)
+                </td>
+            </tr>
+            <tr>
+                <td>Month/Year To</td>
+                <td>@Html.EditorFor(model => model.DateTo)</td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value="Submit" onclick="target='_blank';"
+               formaction="@Url.Action("InspectionTargetStatusReport")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+    <span style="font-family:Verdana;color:blue;">[Note: List of Items is as per Item Group accessibility provided to logged-in user]</span>
+}
+

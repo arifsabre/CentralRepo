@@ -1,0 +1,32 @@
+﻿@model ManufacturingManagement_V2.Models.EmployeeMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Employee List from API Call [Get Async]</b></h4>
+
+<div class="form-group">
+    <table class="table table-bordered">
+        <tr>
+            <td style="width:10%;">@Html.LabelFor(model => model.EmpName)</td>
+            <td>
+                @Html.EditorFor(model => model.EmpName)
+                @Html.ValidationMessageFor(model => model.EmpName)
+            </td>
+        </tr>
+    </table>
+</div>
+
+@ViewBag.Message
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+        });
+    </script>
+}

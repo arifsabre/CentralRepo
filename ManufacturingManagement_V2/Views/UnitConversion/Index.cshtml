@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.UnitConversionMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Unit Conversion List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "UnitConversion", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                        <table>
+                            <tr>
+                                <td><b>Main Unit&nbsp;&nbsp;</b>@Html.DropDownList("ddlMainUnit", ViewBag.MainUnitList as SelectList,"ALL") 
+                                    <button style="height:35px;">Submit</button></td>
+                            </tr>
+                        </table>
+                      </div>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MainUnitName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ConvFactor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AltUnitName)
+        </th>
+        <th>Edit</th>
+        <th>Details</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.MainUnitName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ConvFactor)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AltUnitName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.RecId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+        });
+    </script>
+}

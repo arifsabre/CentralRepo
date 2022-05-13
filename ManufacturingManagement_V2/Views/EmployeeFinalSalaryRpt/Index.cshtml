@@ -1,0 +1,88 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Final Salary Settlement</b></h4>
+<div style="font-family:Verdana;font-size:9pt;">
+    <h5><b><br/>NOTE: To Generate this Report</b></h5>
+    <table class="table table-bordered">
+        <tr>
+            <td>
+                1. Update attendance.
+            </td>
+            <td>
+                2. Clear advance deductions(if any).
+            </td>
+        </tr>
+        <tr>
+            <td>
+                3. Generate Salary.
+            </td>
+            <td>
+                4. Mark employee inactive.
+            </td>
+        </tr>
+    </table>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.HiddenFor(model => model.NewEmpId)
+            <b>Select Employee</b>
+            <br/><br/>
+            @Html.EditorFor(model => model.EmpName)
+        </div>
+
+    <p>
+       <input type="submit" class="btn btn-default" value="Submit" onclick="target='_blank';" 
+           formaction="@Url.Action("EmpFinalSalaryReport")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#EmpName").attr("placeholder", "start typing, then select");
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#EmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeInactive", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('NewEmpId').value = ui.item.Id;
+            }
+        });
+</script>
+
+}
+

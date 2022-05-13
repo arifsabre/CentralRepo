@@ -1,0 +1,64 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Indent Purchase Slip Report</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="container" style="max-width:600px;">
+    <div class="form-group">
+        <h3><br/>Report Options</h3>
+        <table>
+            @*<tr>
+                <td style="width:7%;"><b>Slip&nbsp;No&nbsp;From</b></td>
+            </tr>
+            <tr>
+                <td>@Html.EditorFor(model => model.VNoFrom)</td> 
+            </tr>
+            <tr>
+                <td><b>Slip&nbsp;No&nbsp;To</b></td>
+            </tr>
+            <tr>
+                <td>@Html.EditorFor(model => model.VNoTo)</td>
+            </tr>*@
+            <tr>@*as slipno*@ 
+                <td style="width:7%;"><b>Slip&nbsp;No&nbsp;From</b></td>
+                <td>@Html.EditorFor(model => model.VNoFrom)</td> 
+            </tr>
+            <tr>@*as slipno*@ 
+                <td><b>Slip&nbsp;No&nbsp;To</b></td>
+                <td>@Html.EditorFor(model => model.VNoTo)</td>
+            </tr>
+            <tr>@*as hiderate*@ 
+                <td><b>Print&nbsp;Rates</b></td>
+                <td>@Html.EditorFor(model => model.Above58)</td>
+            </tr>
+        </table>
+      </div>
+ </div>
+    <p>
+        <br/>
+       <input type="submit" class="btn btn-default" style="width:300px;" value="Indent Purchase Slip" onclick="target = '_blank';" 
+           formaction="@Url.Action("IndentPurchaseSlip")" />
+        <br/><input type="submit" class="btn btn-default" style="width:300px;" value="Purchase Slip Detail" onclick="target = '_blank';" 
+           formaction="@Url.Action("IndentPurchaseSlipDetail")" />
+        <br/><input type="submit" class="btn btn-default" style="width:300px;" value="Purchase Orders Detail" onclick="target = '_blank';" 
+           formaction="@Url.Action("PurchaseOrderSlipDetail")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("#DateFrom").focus();
+            $("#Above58").attr("style", "width:55px;height:25px;");
+        });
+    </script>
+}

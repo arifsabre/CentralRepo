@@ -1,0 +1,71 @@
+﻿@model ManufacturingManagement_V2.Models.TenderDispatchMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Tender-Dispatch Entry</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    <br />
+    @Html.HiddenFor(model => model.RecId)
+    @Html.HiddenFor(model => model.TenderId)
+    @Html.HiddenFor(model => model.ItemId)
+
+    @Html.LabelFor(model => model.DelvDate)
+    @Html.EditorFor(model => model.DelvDate)
+    @Html.ValidationMessageFor(model => model.DelvDate)
+
+    @Html.LabelFor(model => model.Qty)
+    @Html.EditorFor(model => model.Qty)
+    @Html.ValidationMessageFor(model => model.Qty)
+
+    @Html.LabelFor(model => model.Remarks)
+    @Html.EditorFor(model => model.Remarks)
+    @Html.ValidationMessageFor(model => model.Remarks)
+
+    <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+    @Html.ActionLink("Back to List", "Index", new { tenderid = @ViewBag.tenderid }, new { @class = "btn btn-default" })
+    <b>@ViewBag.Message</b>
+</div>
+}
+<br/><b>Dispatch Detail</b>
+@Html.Raw(@Model.DetailInfo)
+<br/><b>Tender Detail</b>
+@Html.Raw(ViewBag.TenderInfo)
+<br/><b>Item Detail</b>
+@Html.Raw(ViewBag.ItemInfo)
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //$("#EmpId").attr("placeholder", "start typing, then select");
+            $("#Remarks").attr("placeholder", "Max Length: 150 Chars");
+            $("#Remarks").attr("maxlength", "150");
+            document.getElementById("DelvDate").focus();
+        });
+
+        //Date Picker 
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+    </script>
+
+}

@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "User Manual";
+    Layout = "~/views/shared/LayoutHelpContent.cshtml";
+    //Layout = "~/views/shared/MyLayoutTestV.cshtml";// to check
+}
+
+<h2>PRAG ERP User Manual: General Topics</h2>
+
+<table>
+    <tr>
+        <td style="width:7%;text-align:left;"><h3><label id="shDesc" style="color:blue;" onclick="ShowHideALL()">Show</label></h3></td>
+        <td style="text-align:left;font-size:10pt;"><h3>@Html.ActionLink("Back", null,null,new{@onclick="window.close()", @style="color:blue;"})</h3></td>
+    </tr>
+</table>
+
+<div style="font-family:Verdana;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div1)">1. How to log into ERP</label></h4>
+        <div id="div1" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Procedure to connect to PRAG GROUP ERP:
+                <br/><br/>
+                1.	Connect to ERP network [Either by Wi-Fi connect or by SEQRITE login]
+                <br/>(If there is any network problem, please contact to Mr. Devendra Shukla at: Extn. 332 / +91 99 36 036 702)
+                <br/>
+                <br/>2.	Open browser, enter URL: http://192.168.0.218:85
+                <br/><br/>
+                3.	Enter your User ID and Password to log in
+                <br/><br/>
+                (If ERP Login/Password is not created for any staff member, they are requested to contact at above numbers for the same).
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div2)">2. Understanding Dashboard</label></h4>
+        <div id="div2" class="lnk" style="display:none;margin-left:50px;">
+            <br/>After login, display of dashboard tabs/icons are generated according to accessibility to the logged in user.
+            @*<br/><br/><img src="~/Images/HelpAbout/MainDashboard.png" width="100%">*@
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div3)">3. How to view Company Policies</label></h4>
+        <div id="div3" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            To view company documents, click on 'Company Documents' tab.
+            It will dispaly list of company documents with description and on 
+            click of a particular file name it will display the document.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div4)">4. How to View Company Documents</label></h4>
+        <div id="div4" class="lnk" style="display:none;margin-left:50px;">
+            <br />
+            To view company policy, click on 'Company Policies' tab.
+            It will dispaly list of company policies with description and on 
+            click of a particular file name it will display the document.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div5)">5. How to Send Notification/Reply Notification</label></h4>
+        <div id="div5" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            On click of 'Send Notification', we are redirected to an entry page of send notification
+            form where we write notification to sent it to single, all or a set of users.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div6)">6. How to View PRAG Group Telephone Directory</label></h4>
+        <div id="div6" class="lnk" style="display:none;margin-left:50px;">
+            <br />
+            On click of 'Directory', we get list of employee and workers 
+            list of telephone directory to communicate whenever required.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div7)">7. How to Register Complaints</label></h4>
+        <div id="div7" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            To register any kind of complaint click on 'Complaints', which will be resolved  
+            by concerned authority. Staus about compalint will also be viewed from the same portal.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div8)">8. How to Enter Feedback</label></h4>
+        <div id="div8" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            To enter any feedback or suggestion about ERP system click on 'Feedback', which will be 
+            reviewd and considered after approval of the authorities.
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div12)">9. How to manage Compliances</label></h4>
+        <div id="div12" class="lnk" style="display:none;margin-left:50px;">
+            <br/>This module is to facilitate distraction free compliance management in a very easy and efficient manner.
+            We can get this module by 'Compliance' tab on dashboard.
+            <br/><br/>This module provides manageability of various types of compliances of company/departments 
+            to create, get alert and to set completed. Compliances dashboard displays number of pending 
+            tasks to be completed within 30 days. It indicates urgetnt, moderate and next coming tasks separately. We can 
+            also upload and download related documents for every task entered. 
+        </div>
+
+    <br/>
+    <span style="font-size:10pt;color:blue;font-weight:bold;">
+        <label onclick="ShowHideDiv(MDiv6)"><u>Document Control/Collaboration</u></label>
+    </span>
+    <div id="MDiv6" style="display:none;margin-left:20px;">
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div9)">1. Upload Project File</label></h4>
+        <div id="div9" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            To upload and update collaboration files
+        </div>
+
+     <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div10)">2. Update Project File</label></h4>
+        <div id="div10" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            To upload and update collaboration files
+        </div>
+
+    <br/>
+    <h4><label style="color:darkmagenta;" onclick="ShowHideDiv(div11)">3. Define Category</label></h4>
+        <div id="div11" class="lnk" style="display:none;margin-left:50px;">
+            <br/>
+            Master to define category/ Item Group
+        </div>
+   </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideALL() {
+            var all = document.getElementsByClassName("lnk");
+            var mx = all.length;
+            if (document.getElementById('shDesc').innerText == 'Show') {
+                document.getElementById('shDesc').innerHTML = 'Hide';
+                var x;
+                for (x = 0; x < mx ; x++) {
+                    all[x].style.display = "block";
+                }
+            }
+            else if (document.getElementById('shDesc').innerText == 'Hide') {
+                document.getElementById('shDesc').innerText = 'Show';
+                var x;
+                for (x = 0; x < mx ; x++) {
+                    all[x].style.display = "none";
+                }
+            }
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+
+}
+

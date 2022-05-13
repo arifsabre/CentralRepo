@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.ItemGroupMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Item Group List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:25px;">
+            S.No.
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.GroupName)
+        </th>
+        <th>Edit</th>
+        <th>Details</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.GroupId })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.GroupId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+

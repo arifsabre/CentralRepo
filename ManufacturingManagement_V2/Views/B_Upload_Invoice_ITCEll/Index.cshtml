@@ -1,0 +1,86 @@
+﻿@model ManufacturingManagement_V2.Models.AAA_ITAssestCell_MDI
+
+@{
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+   
+</head>
+<body>
+    <br />
+       @using (Html.BeginForm("Index", "B_Upload_Invoice_ITCEll", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <table>
+            
+            <tr>
+                <td style="width: 80px">Order No:</td>
+                <td>@Html.TextBoxFor(m => m.OrderNo,new { @class = "form-control"})</td>
+                  @Html.ValidationMessageFor(model => model.OrderNo, "", new { @class = "error" })
+            </tr>
+            <tr>
+                <td style="width: 80px">Invoice No:</td>
+                <td>@Html.TextBoxFor(m => m.Invoice_No, new { @class = "form-control"})</td>
+            </tr>
+            <tr>
+                <td style="width: 80px">Bill No:</td>
+                <td>@Html.TextBoxFor(m => m.BillNo, new { @class = "form-control"})</td>
+            </tr>
+            <tr>
+                <td style="width: 80px">Item Quantity:</td>
+                <td>@Html.TextBoxFor(m => m.ItemQty, new { @class = "form-control" })</td>
+                @Html.ValidationMessageFor(model => model.ItemQty, "", new { @class = "error" })
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td >Item Detail:</td>
+                <td>@Html.TextAreaFor(m => m.ItemDescription, new { @rows = 5, @cols = 10})</td>
+            </tr>
+
+            <tr>
+                <td >Remark:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Remark)
+                     </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Select Invoice:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.files, "", new { @type = "file", @multiple = "multiple" })
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Save" /></td>
+            </tr>
+        </table>
+    }
+     <script type="text/javascript">
+        var message = "@ViewBag.Message";
+        $(function () {
+            if (message != "") {
+                alert(message);
+            }
+        });
+    </script>
+     <script src="~/Script/Site.js"></script>
+</body>
+</html>

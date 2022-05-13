@@ -1,0 +1,177 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.CalibrationMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Calibration List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Deletion Mark", "MarkDeletion", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+    @*<legend>Text</legend>*@
+    @using (Ajax.BeginForm("FilterIndex", "Calibration", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td><b>Calib.Date&nbsp;From</b></td>
+                    <td>@Html.TextBox("txtDtFrom", null, new { @class = "datepicker" })</td>
+                    <td><b>To Date</b></td>
+                    <td>@Html.TextBox("txtDtTo", null, new { @class = "datepicker" })</td>
+                </tr>
+                <tr>
+                    <td><b>IMTE Type</b></td>
+                    <td>
+                        @Html.DropDownList("ddlImteType", ViewBag.ImteTypeList as SelectList, "--Select--",
+                new { @onclick = "fillImteList()" })
+                    </td>
+                    <td><b>IMTE Id No</b></td>
+                    <td>@Html.DropDownList("ddlImte", ViewBag.ImteList as SelectList, "--Select--")</td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="btn btn-default">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:30px;">
+            RecId
+        </th>
+        <th style="width:60px;">
+            IMTE Type
+        </th>
+        <th style="width:60px;">
+            Id No
+        </th>
+        <th style="width:60px;">
+            Calib. Date
+        </th>
+        <th style="width:60px;">
+            Certificate No
+        </th>
+        <th style="width:60px;">
+            Certified By
+        </th>
+        <th style="width:60px;">
+            Next Calib. Date
+        </th>
+        <th style="width:60px;">
+            Status
+        </th>
+        <th style="width:60px;">Action Links</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.RecId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ImteTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IdNo)
+            </td>
+            <td>
+                @Html.ValueFor(model => item.CalibDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CertificateNo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CertifiedBy)
+            </td>
+            <td>
+                @Html.ValueFor(model => item.NextCalibDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsInUse)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+                <br />@Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+             new { tblid = 20, pkval = item.RecId }, new { @target = "_blank" })
+                <br />@Html.ActionLink("Details", "Details", new { id = item.RecId })
+            </td>
+        </tr>
+        i++;
+    }
+    @{i = i - 1;}
+    @i.ToString()&nbsp;&nbsp;&nbsp;Record(s) found.
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+        });
+    </script>
+
+    <script>
+        function fillImteList() {
+            var liObj = document.getElementById("ddlImteType");
+            var sIndex = liObj.selectedIndex;
+            var ccode = liObj.options[sIndex].value;
+            if (ccode.length == 0) {
+                ccode = 0;
+            }
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getImteList", "HelpUtility"))",
+                data: { "imtetypeid": ccode },
+                success: function (data) {
+                    //getting multiple records as (key,value) pair type list
+                    $("#ddlImte").empty(); // clear before appending new list
+
+                    $("#ddlImte").append($('<option />', {
+                        value: "0",
+                        text: "--Select--"
+                    }));
+
+                    $.each(data, function (i, item) {
+                        $("#ddlImte").append($('<option />', {
+                            value: item.Key,
+                            text: item.Value
+                        }));
+                    });
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+}
+
+

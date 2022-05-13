@@ -1,0 +1,159 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.AttendanceDetailMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Attendance Detail List</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+    @*@Html.ActionLink("Incentive Entry Batchwise", "getAttendanceDetailBatchwise")*@
+</p>
+
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "AttendanceDetail", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            @Html.Hidden("hfNewEmpId", null, new { @id = "hfNewEmpId" })
+                        <td>Shift</td>
+                        <td>@Html.DropDownList("ddlShift", ViewBag.ShiftList as SelectList)</td>
+                        <td>Attendance For</td>
+                        <td>@Html.DropDownList("ddlAttValue", ViewBag.AttValueList as SelectList, "All")</td>
+                    </tr>
+                    <tr>
+                        <td>From</td>
+                        <td>@Html.TextBox("txtDtFrom", null, new { @class = "datepicker" })</td>
+                        <td>To</td>
+                        <td>@Html.TextBox("txtDtTo", null, new { @class = "datepicker" })</td>
+                    </tr>
+                    <tr>
+                        <td>Company</td>
+                        <td>@Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList, "--Select--")</td>
+                        <td>Employee</td>
+                        <td>@Html.TextBox("txtEmpName", null, new { @placeholder = "start typing, then select" })</td>
+                    </tr>
+                    </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th>
+            S.No.
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AttDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AttShift)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AttValue)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AttHours)
+        </th>
+        <th>Edit</th>
+        <th>Details</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AttDate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ShiftName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EmpId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EmpName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AttValueName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AttHours)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.RecId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("hfNewEmpId").value = '@ViewBag.newempid';
+            document.getElementById("txtEmpName").value = '@ViewBag.empname';
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtEmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfNewEmpId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+
+

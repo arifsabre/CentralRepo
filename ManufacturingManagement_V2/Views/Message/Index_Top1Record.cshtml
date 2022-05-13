@@ -1,0 +1,52 @@
+﻿@model ManufacturingManagement_V2.Models.MessageModel
+
+@{
+    ViewBag.Title = "Message";
+    // Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+    // Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+<br />
+<br />
+<div>
+    <table id="jdtabledesktop" class="table-condensed table-responsive" style="width:100%" ;>
+        Memo saved Successfully.Electronic Copy Sent to the below Email Address and also Notification on the  Phone
+        <tbody>
+            @foreach (var item in Model.Item_List1)
+            {
+                <tr>
+                   
+                    <td style="font-weight:bold;color:green">
+                        Memo No:
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.RecordId)
+                    </td>
+                </tr>
+
+              
+                <tr>
+                    <td style="font-weight: bold; color: green">
+                        Email To :
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.SendTo)
+                    </td>
+                </tr>
+
+
+            }
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+    <p style="color:red;font-size:large;font-weight:bolder">
+        Press F5 Key to close the window
+    </p>
+</div>
+<script src="~/Script/Site.js"></script>
+
+

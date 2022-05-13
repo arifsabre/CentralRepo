@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "ChangeFinYear";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Change Financial Year</b></h4>
+<h3><span style="color:black;background-color:white;font-size:10pt;font-family:verdana;font-weight:bold;">
+[*Note: Be sure that all other tabs/pages are closed before changing the financial year]</span></h3>
+<h3><span style="color:black;background-color:white;font-size:9pt;font-family:verdana;font-weight:bold;">
+[Working in multi tabs/pages is restricted to a single financial year]</span></h3>
+
+<fieldset>
+    @using (Ajax.BeginForm("ChangeFinYear", "Login",
+                            new AjaxOptions { UpdateTargetId = "dvChangeFinYear" }))
+    {
+    <div class="form-group" id="dvChangeFinYear">
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:15%;">@Html.Label("Select Financial Year")</td>
+                <td>@Html.DropDownList("ddlFinYear", ViewBag.FinYearList as SelectList)</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="btn btn-default">Submit</button>
+                    <h5>@ViewBag.Result</h5>
+                </td>
+            </tr>
+        </table>
+    </div>
+    }
+</fieldset>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=DropDownList]").first().focus();
+        });
+    </script>
+}

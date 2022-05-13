@@ -1,0 +1,42 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>In/Out Missing of Staff & Manager</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:10%;">Select From</td>
+                    <td>@Html.EditorFor(model => model.DateFrom)</td>
+                </tr>
+                <tr>
+                    <td>Select To</td>
+                    <td>@Html.EditorFor(model => model.DateTo)</td>
+                </tr>
+                <tr>
+                    <td>Report Format</td>
+                    <td>@Html.DropDownListFor(model => model.ReportFormat, ViewBag.ReportFormatList as SelectList)</td>
+                </tr>
+            </table>
+    </div>
+        <table class="table table-bordered">
+            <tr>
+                <td style="column-gap:normal">
+                    <input type="submit" class="btn btn-default" value="In/Out Missing" onclick="target = '_blank';"
+                           formaction="@Url.Action("Get_B_InoutMising")" />
+                    <input type="submit" class="btn btn-default" value="AbsentList" onclick="target = '_blank';"
+                           formaction="@Url.Action("Get_B_AbsentListSMS")" />
+                </td>
+            </tr>
+        </table>
+        
+}
+<h5><b>@ViewBag.Message</b></h5>
+    
+

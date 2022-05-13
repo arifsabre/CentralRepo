@@ -1,0 +1,166 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Stock Reports (* Under Testing)</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr><td colspan="3"><h5><b>Report Options</b></h5></td></tr>
+                <tr>
+                    @Html.HiddenFor(model => model.GroupId)
+                @Html.HiddenFor(model => model.RmItemId)
+                <td><b>Company</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)
+                    @Html.ValidationMessageFor(model => model.CompCode)
+                </td>
+                <td><b>Fin. Year</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.FinYear, ViewBag.FinYearList as SelectList,
+                    new { @onchange = "javascript:getDateRange(this.value);" })
+                    @Html.ValidationMessageFor(model => model.FinYear)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Date From</b></td>
+                <td>
+                    @Html.EditorFor(model => model.DateFrom)
+                    @Html.ValidationMessageFor(model => model.DateFrom)
+                </td>
+                <td><b>Date To</b></td>
+                <td>
+                    @Html.EditorFor(model => model.DateTo)
+                    @Html.ValidationMessageFor(model => model.DateTo)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Item Type</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.ItemType, ViewBag.ItemTypeList as SelectList)
+                    @Html.ValidationMessageFor(model => model.ItemType)
+                </td>
+                <td><b>Item Group</b>
+                <td>
+                    @Html.EditorFor(model => model.GroupName)
+                    @Html.ValidationMessageFor(model => model.GroupId)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Item</b></td>
+                <td>
+                    @Html.EditorFor(model => model.RmItemCode)
+                    @Html.ValidationMessageFor(model => model.RmItemId)
+                </td>
+            </tr>
+            </table>
+        </div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class="btn btn-default" value="Stock Statement" onclick="target = '_blank';"
+                formaction="@Url.Action("StockStatementReport")" />
+            <input type="submit" class="btn btn-default" value="Stock Ledger" onclick="target = '_blank';"
+                formaction="@Url.Action("StockLedgerReport")" />
+        </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#GroupName").attr("placeholder", "start typing, then select");
+            $("#RmItemCode").attr("placeholder", "start typing, then select");
+            document.getElementById("FinYear").value = '@Model.FinYear';
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#GroupName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteItemGroup", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('GroupId').value = ui.item.Id;
+            }
+        });
+</script>
+
+    <script type="text/javascript">
+        $("#RmItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var groupId = '0';
+                if (document.getElementById('GroupId').value != "0") {
+                    groupId = document.getElementById('GroupId').value;
+                }
+                var ddlSIndex = document.getElementById("CompCode").selectedIndex;
+                var ccode = document.getElementsByTagName("option")[ddlSIndex].value;
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAllItemListGroup", "HelpUtility"))",
+                    data: { "term": request.term, "ccode": ccode, "groupid": groupId },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('RmItemId').value = ui.item.Id;
+            }
+        });
+</script>
+
+    <script type="text/javascript">
+        function getDateRange(fy) {
+            var ddlSIndex = document.getElementById("CompCode").selectedIndex;
+            var ccode = document.getElementsByTagName("option")[ddlSIndex].value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getDateRangeByFinYear", "HelpUtility"))",
+                data: { "ccode": ccode, "finyr": fy },
+                success: function (data) {
+                    document.getElementById('DateFrom').value = data.fromdt;
+                    document.getElementById('DateTo').value = data.todt;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });//
+
+        }
+</script>
+
+}

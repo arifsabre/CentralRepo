@@ -1,0 +1,135 @@
+﻿@model ManufacturingManagement_V2.Models.OrderMdl
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Order Cancellation</b></h4>
+
+@Html.HiddenFor(model => model.OrderId)
+
+<div class="form-group">
+    <table class="table table-bordered">
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;width:10%;">Order&nbsp;Id</td>
+            <td>
+                @*@Html.Hidden("CompId", Model.CompId.ToString(), new { @id = "hfCompId" })*@
+                @Html.Label("lblOrderId", Model.OrderId.ToString(), new { @id = "OrderId" })
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;width:10%;">Order&nbsp;No</td>
+            <td>
+                @Html.Label("lblOrderNo", Model.OrderNo.ToString(), new { @id = "OrderNo" })
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;">Calcellation&nbsp;Date</td>
+            <td>
+                <input type="text" id="txtCancelledOn" maxlength="25" class="datepicker" />
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;font-weight:bold;">Reason</td>
+            <td>
+                <input type="text" id="txtReason" maxlength="500" />
+            </td>
+        </tr>
+    </table>
+</div>
+<br/>
+<p>
+    <input id="cancel" type="button" class="btn btn-default" value="Cancel Order"/>
+    @Html.ActionLink("Back To List", "Index", "Order", null, new { id = "mylink", @class="btn btn-default" })
+</p>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtReason").value = '@Model.Reason';
+            document.getElementById("txtCancelledOn").value = '@Model.CancelledOn';
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            //cancel
+            $('#cancel').click(function () {
+
+                var isAllValid = true;
+                //validation
+                if (!($('#txtReason').val().trim() != '')) {
+                    isValidItem = false;
+                    alert('Reason not entered!')
+                    $('#txtReason').focus();
+                    return;
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        //order fields
+                        OrderId: '@Model.OrderId',
+                        CancelledOn: $('#txtCancelledOn').val().trim(),
+                        Reason: $('#txtReason').val().trim()
+                    }
+                    $(this).val('Please wait...');
+                    $.ajax({
+                        url: '/Order/CancelOrder',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                //$('#orderDate').val('');
+                                window.location.href = $('#mylink').attr('href');
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#cancel').val('Cancel Order');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            $('#cancel').val('Cancel Order');
+                        }
+                    });
+                }
+            });
+            //end-reply
+
+        });
+    </script>
+
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display:block;
+        visibility:hidden;
+        color:red;
+        font-size:90%;
+    }
+</style>

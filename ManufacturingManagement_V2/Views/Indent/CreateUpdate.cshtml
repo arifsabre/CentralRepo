@@ -1,0 +1,504 @@
+﻿@model ManufacturingManagement_V2.Models.IndentMdl
+@using Newtonsoft.Json
+
+@{
+        ViewBag.Title = "CreateUpdate";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+ 
+    <h2>Indent Entry</h2>
+    <div class="container" style="max-width:640px">
+        <div class="form-group">
+            <h4>Indent Detail</h4>
+            <table>
+                @Html.Hidden("hfItemId", null, new { @id = "hfItemId" })
+                <tr>
+                    <td colspan="4"><input type="hidden" id="txtIndentId"/>
+                        @*<input type="hidden" id="txtHODUserId"/>*@
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.VDate)</td>
+                    <td><input type="text" id="txtVDate" readonly="true" value='@ViewBag.VDate' />
+                    <span class="error">Invalid VDate!</span></td>  
+                    <td colspan="2">@Html.DisplayNameFor(model => model.VNo) <label id="lblVNo"></label >
+                        <span class="error">Invalid VNo!</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.HODUserName)</td>
+                    <td>@Html.DropDownList("ddlHODUser", ViewBag.HODUserList as SelectList)
+                    <span class="error">HOD not selected!</span></td>  
+                </tr>
+                <tr>
+                    @*note-- working, but not applicable here, because it refreshes this page after closing its popup page*@
+                    @*<td colspan="4"><h4>Item Detail   <span style="font-size:10pt;color:yellow;">(click @Html.ActionLink("here", null, null,new { onclick = "openItemPage('');" }) to add/edit item)</span></h4></td>*@
+                    <td colspan="4"><h4>Item Detail  <span style="font-size:10pt;color:yellow;">(click @Html.ActionLink("here", "../Item/CreateUpdate", null, new { id = "itemLink", @target = "_new;",@style="font-size:12pt;" }) to add/edit item)</span></h4></td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align:left;">
+                        <span style="font-size:10pt;color:white;font-weight:bold;">[Note: (1) Max. 5 items are allowed per indent. (2) Please enter approx rate or confirm it from stores.]</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Item</td>
+                    <td><input type="text" id="txtItemCode" placeholder="start typing, then select" />
+                    <span class="error">Item not selected!</span></td>
+                    <td>Quantity</td>
+                    <td><input type="text" id="txtIndQty" />
+                        <span class="error">Invalid Qty!</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">Item Description</td>
+                    <td colspan="3"><textarea id="txtItemDesc" rows="4" cols="20" maxlength="5000" ></textarea> 
+                        <span class="error">Item description not entered!</span></td>
+                </tr>
+                <tr>
+                    <td>Unit</td>
+                    <td>
+                        @Html.DropDownList("ddlUnit", ViewBag.UnitList as SelectList,new { disabled = "true" })
+                        <span class="error">Unit not selected!</span>
+                    </td>
+                    <td>Rate (Approx.)</td>
+                    <td>
+                        <input type="text" id="txtApproxRate" />
+                        <span class="error">Invalid Rate!</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Reason</td>
+                    <td colspan="2">
+                        <input type="text" id="txtRemarks" maxlength="100" />
+                        <span class="error">Reason not entered!</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align:right;">
+                        <input type="button" id="add" value="Add" />
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+
+        <div id="orderItems" class="tablecontainer">
+ 
+        </div>
+        
+        <br/>
+        <div style="padding:10px 0px; text-align:left;">
+            <input id="submit" type="button" value="Save" style="padding:10px 20px" />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    </div>
+ 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=TextBox]").first().focus();
+            document.getElementById('ddlHODUser').focus();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtHODUserName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var opt = 'hod';
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteUsersListByPermission", "HelpUtility"))",
+                    data: { "term": request.term, "opt": opt },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('txtHODUserId').value = ui.item.Id;
+            }
+        });
+</script>
+
+<script type="text/javascript">
+    $("#txtItemCode").autocomplete({
+        source: function (request, response) {
+            var customer = new Array();
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("AutoCompleteStockItemList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+            response(customer);
+        }, minLength: 2,
+        select: function (event, ui) {
+            document.getElementById('hfItemId').value = ui.item.Id;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                        data: { "itemid": ui.item.Id },
+                        success: function (data) {
+                            $('#txtApproxRate').val(data.purchaserate);
+                            $('#ddlUnit').val(data.unit);
+                            $('#txtItemDesc').val(data.itemname);
+                            $('#txtIndQty').focus();
+                            action = data.Action;
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to retrieve data.');
+                        }
+            });
+            //detail-2
+            //fillUnitList(ui.item.Id);
+            //
+            }
+    });
+</script>
+
+    <script>
+        function fillUnitList(itemid) {
+            //var itemId = $('#ddlItem').val();
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getTransactionUnitList", "HelpUtility"))",
+                data: { "itemid": itemid },
+                success: function (data) {
+                    //getting multiple records as (key,value) pair type list
+                    $("#ddlUnit").empty(); // clear before appending new list 
+                    $.each(data, function (i, item) {
+                        $("#ddlUnit").append($('<option />', {
+                            value: item.Key,
+                            text: item.Value
+                        }));
+                    });
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+</script>
+
+    <script> //note--not used due to reason described above
+        function openItemPage(icode) {
+            var url = 'http://192.168.0.218:105';//'http://localhost:59468';
+            if (icode != '') {
+                url = url.concat('/Item/Index');
+            }
+            else {
+                url = url.concat('/Item/CreateUpdate?iname=' + icode);
+            }
+            window.open(url, '', 'width=1050,height=600,scrollbars=1,top=0,left=50');
+        }
+</script>
+
+    <script>
+        //Date Picker
+        //$(function () {
+        //    $('#txtVDate').datepicker({
+        //        dateFormat: 'dd/mm/yy'
+        //    });
+        //});
+
+        $(document).ready(function () {
+            var orderItems = [];
+
+            //Add button click function
+            $('#add').click(function () {
+                //Check validation of order item
+                var isValidItem = true;
+                if (orderItems.length == 5) {
+                    alert('Only a maximum of 5 items per indent is allowed!');
+                    return;
+                }
+                if (!($('#hfItemId').val().trim() != '')) {
+                    isValidItem = false;
+                    $('#txtItemCode').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtItemCode').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#txtItemDesc').val().trim() != '')) {
+                    isValidItem = false;
+                    $('#txtItemDesc').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtItemDesc').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#txtIndQty').val().trim() != '' && !isNaN($('#txtIndQty').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtIndQty').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtIndQty').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#txtApproxRate').val().trim() != '' && !isNaN($('#txtApproxRate').val().trim()))) {
+                    isValidItem = false;
+                    $('#txtApproxRate').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtApproxRate').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (parseFloat($('#txtApproxRate').val().trim()) <= 0) {
+                    alert('Invalid rate entered! Please enter approx rate or confirm it from stores.');
+                    return;
+                }
+
+                if (!($('#txtRemarks').val().trim() != '')) {
+                    isValidItem = false;
+                    $('#txtRemarks').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtRemarks').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Add item to list if valid
+                if (isValidItem) {
+                    var liUnit = document.getElementById("ddlUnit");
+                    var unitIndex = liUnit.selectedIndex;
+                    var unitId = liUnit.options[unitIndex].value;
+                    var unitName = liUnit.options[unitIndex].text;
+                    orderItems.push({
+                        ItemId: $('#hfItemId').val(),
+                        ItemSlNo: orderItems.length + 1,
+                        ItemCode: $('#txtItemCode').val(),
+                        ItemDesc: $('#txtItemDesc').val(),
+                        IndQty: parseFloat($('#txtIndQty').val().trim()),
+                        UnitId: unitId,
+                        UnitName: unitName,
+                        ApproxRate: parseFloat($('#txtApproxRate').val().trim()),
+                        Remarks: $('#txtRemarks').val().trim()
+                    });
+                    //Clear fields
+                    //$('#itemName').val('').focus();
+                    $('#txtItemCode,#txtIndQty,#txtApproxRate,#hfItemId').val('');
+                    $('#txtItemCode').focus();
+                }
+                //populate order items
+                GeneratedItemsTable();
+            });
+
+            //Save button click function
+            $('#submit').click(function () {
+                var isAllValid = true;
+                //validation of order
+                if ($('#txtVDate').val().trim() == '') {
+                    $('#txtVDate').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#txtVDate').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //if ($('#txtHODUserId').val().trim() == '') {
+                //    $('#txtHODUserName').siblings('span.error').css('visibility', 'visible');
+                //    isAllValid = false;
+                //}
+                //else {
+                //    $('#txtHODUserName').siblings('span.error').css('visibility', 'hidden');
+                //}
+
+                if (orderItems.length == 0) {
+                    $('#orderItems').html('<span style="color:red;">Please add items</span>');
+                    isAllValid = false;
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var vtype = document.getElementById("ddlHODUser");
+                    var vindex = vtype.selectedIndex;
+                    if (vindex == -1)
+                    {
+                        alert('HOD not selected!');
+                        return;
+                    }
+                    var vid = vtype.options[vindex].value;
+                    var data = {
+                        //order fields
+                        IndentId: parseInt($('#txtIndentId').val().trim()),
+                        VNo: parseInt($('#lblVNo').val()),
+                        VDate: $('#txtVDate').val().trim(),
+                        HODUserId: parseInt(vid),
+                        //ledger fields
+                        Ledgers: orderItems
+                    }
+                    $(this).val('Please wait...');
+                    $.ajax({
+                        url: '/Indent/CreateUpdate',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database 
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert(d.message);
+                                //clear form
+                                orderItems = [];
+                                //$('#orderNo').val('');
+                                //$('#orderDate').val('');
+                                $('#orderItems').empty();
+                            }
+                            else {
+                                alert(d.message);
+                            }
+                            $('#submit').val('Save');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            $('#submit').val('Save');
+                        }
+                    });
+                }
+            });
+
+            @*//edit mode not required here
+            $(function () {
+                var mainObject = @Html.Raw(Json.Encode(Model))
+                orderItems = @Html.Raw(Json.Encode(Model.Ledgers))
+                //
+                txtIndentId.value = mainObject.IndentId;
+                $('#lblVNo').text(mainObject.VNo);
+                txtVDate.value = mainObject.VDate.substring(0, 10);
+                txtHODUserId.value = mainObject.HODUserId;
+                txtHODUserName.value = mainObject.HODUserName;
+                //
+                GeneratedItemsTable();
+            });*@
+
+            //function for show added items in table
+            function GeneratedItemsTable() {
+                if (orderItems.length > 0) {
+                    var $table = $('<table id="myTable"/>');
+                    $table.append('<th>S.No.</th>');//0
+                    $table.append('<th>Item Code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');//1//note spaces for width
+                    $table.append('<th>Item Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>');//2//note spaces for width
+                    $table.append('<th>Quantity</th>');//3
+                    $table.append('<th>Unit Name</th>');//4
+                    $table.append('<th>Rate</th>');//5
+                    $table.append('<th>Reason</th>');//6
+                    $table.append('<th>Remove</th>');//7
+                    $table.append('<th>Edit</th>');//8
+                    $table.append('<th style="visibility:hidden;width:0px;">ItemId</th>');//9
+                    $table.append('<th style="visibility:hidden;width:0px;">UnitId</th>');//10
+                    $table.append('</tr></thead>');
+                    var $tbody = $('<tbody/>');
+                    $.each(orderItems, function (i, val) {
+                        var $row = $('<tr/>');
+                        //static for all rows---------------
+                        //$row.append($('<td/>').html(val.ItemSlNo));//0
+                        $row.append($('<td/>').html(i + 1));//0
+                        $row.append($('<td/>').html(val.ItemCode));//1
+                        $row.append($('<td/>').html(val.ItemDesc));//2
+                        $row.append($('<td/>').html(val.IndQty));//3
+                        $row.append($('<td/>').html(val.UnitName));//4
+                        $row.append($('<td/>').html(val.ApproxRate));//5
+                        $row.append($('<td/>').html(val.Remarks));//6
+                        //--------------------------------------------
+                        var $remove = $('<a href="#">Remove</a>');
+                        $remove.click(function (e) {
+                            var opt = confirm("Are you sure to delete this entry?");
+                            if (opt == true) {
+                                e.preventDefault();
+                                orderItems.splice(i, 1);
+                                GeneratedItemsTable();
+                            }
+                        });
+                        $row.append($('<td/>').html($remove));//7
+                        //--------------------------------------------
+                        var $edit = $('<a href="#">Edit</a>');
+                        $edit.click(function (e) {
+                            e.preventDefault();
+                            //slno = $(this).closest('tr').find('td:eq(0)').text();
+                            txtItemCode.value = $(this).closest('tr').find('td:eq(1)').text();
+                            txtItemDesc.value = $(this).closest('tr').find('td:eq(2)').text();
+                            txtIndQty.value = $(this).closest('tr').find('td:eq(3)').text();
+                            //unit name =4
+                            txtApproxRate.value = $(this).closest('tr').find('td:eq(5)').text();
+                            txtRemarks.value = $(this).closest('tr').find('td:eq(6)').text();
+                            //remove=7
+                            //edit=8
+                            hfItemId.value = $(this).closest('tr').find('td:eq(9)').text();//itemid
+                            //fillUnitList($(this).closest('tr').find('td:eq(9)').text());//note: fill unitlist then set unit //cl
+                            ddlUnit.value = $(this).closest('tr').find('td:eq(10)').text();//unitid
+                            orderItems.splice(i, 1);
+                            GeneratedItemsTable();
+                        });
+                        //--------------------------------------------
+                        $row.append($('<td/>').html($edit));//8
+                        $row.append($('<td style="visibility:hidden;width:0px;"/>').html(val.ItemId));//9
+                        $row.append($('<td style="visibility:hidden;width:0px;"/>').html(val.UnitId));//10
+                        $tbody.append($row);
+                    });
+                    console.log("current", orderItems);
+                    $table.append($tbody);
+                    $('#orderItems').html($table);
+                }
+                else {
+                    $('#orderItems').html('');
+                }
+            }//
+        });
+    </script>
+}
+ 
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display:block;
+        visibility:hidden;
+        color:red;
+        font-size:90%;
+    }
+    /*css for table*/
+    .container td {
+        vertical-align: top;
+    }
+    .tablecontainer table {
+        width: 100%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+    }
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }
+    .tablecontainer th, .tablecontainer td {
+        text-align: left;
+        border-left: 1px solid #BFAEAE;
+        padding: 5px;
+        border-bottom: 1px solid #BFAEAE;
+    }
+    .ui-widget {
+        font-size:12px !important;
+    }
+</style>
+

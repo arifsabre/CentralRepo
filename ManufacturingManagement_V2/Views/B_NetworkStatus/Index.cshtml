@@ -1,0 +1,35 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    // Layout = "~/views/shared/_DarkLayout.cshtml";
+    Layout = "~/views/shared/_LayoutITAssest.cshtml";
+}
+<h2>Network Log History</h2>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="container" style="max-width:600px;">
+        <div class="master">
+        </div>
+    </div>
+    <table>
+        <tr>
+            <td style="column-gap:normal;">
+                <input type="submit" style="width:100px;" value="Sumbit " onclick="target = '_blank';"
+                       formaction="@Url.Action("GetNetworkStatusLog")" />
+            </td>
+        </tr>
+
+    </table>
+    <br />
+    @*@Html.ActionLink("Back to Home", "../Home/HRDashboard")*@
+    <a href="/../Home/HRDashboard"><img id="add" alt="" src="http://192.168.0.20:80/Images/backarrow1.png" /></a>
+
+}
+<h2>@ViewBag.Message<br /></h2>
+
+
+
+

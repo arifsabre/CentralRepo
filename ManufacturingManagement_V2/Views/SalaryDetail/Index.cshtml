@@ -1,0 +1,222 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.SalaryDetailMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Salary Updation List</b></h4>
+
+@*<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>*@
+
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "SalaryDetail", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                        <table class="table table-bordered">
+                            <tr>@Html.Hidden("hfNewEmpId", null, new { @id = "hfNewEmpId" })
+                                <td>Date From</td>
+                                <td>@Html.TextBox("txtDtFrom",null,new { @class = "datepicker" })</td>
+                                <td colspan="2">Date To&nbsp;
+                                @Html.TextBox("txtDtTo",null,new { @class = "datepicker" })</td>
+                            </tr>
+                            <tr>
+                                <td>Employee</td>
+                                <td>@Html.TextBox("txtEmpName", null, new { @placeholder = "start typing, then select"})</td>
+                                <td>
+                                    <button class="btn btn-default">Submit</button>
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Add New Detail", "AddNewDetail", "SalaryDetail", 
+                                    null, new { id = "mylink", @target = "_new;", @class="btn btn-default"})
+                                </td>
+                            </tr>
+                        </table>
+                      </div>
+                
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th>
+            S.No.
+        </th>
+        <th>Edit</th>
+        <th>
+            Inc Date
+        </th>
+        <th>
+            Basic Rate
+        </th>
+        <th>
+            DA
+        </th>
+        <th>
+            Conv. Allow.
+        </th>
+        <th>
+            HRA
+        </th>
+        <th>
+            Med. Allow.
+        </th>
+        <th>
+            Comp. Allow.
+        </th>
+        <th>
+            DW Allow.
+        </th>
+        <th>
+            Special Pay
+        </th>
+        <th>
+            Others
+        </th>
+        <th>
+            Inc. Amount
+        </th>
+        <th>
+            TDS Ded.
+        </th>
+        <th>
+            Gross Salary
+        </th>
+        <th>
+            Old Gross
+        </th>
+        <th>
+            ESI&nbsp;Appl.
+        </th>
+        <th>
+            PF&nbsp;Dedl.
+        </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId }, new { target = "_new" })
+                @if (@ViewBag.IsAdmin == "1")
+                {
+                    @Html.ActionLink("Delete", "Delete", new { id = item.RecId },
+                    new
+                         {
+                             target = "_new",
+                             style = "color:black;",
+                    onclick = "return confirm('Are you sure to delete this record?');"
+                         })
+                }
+            </td>
+            <td>
+                @Html.ValueFor(model => item.IncDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.BasicRate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DA)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ConvAllowance)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.HRA)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.MedicalAllowance)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CompAllowance)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DWAllowance)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.SpecialPay)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Others)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IncAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.TdsDeduction)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.GrossSalary)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.OldGross)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EsiApplicable)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PFDeductable)
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("hfNewEmpId").value = '@ViewBag.newempid';
+            document.getElementById("txtEmpName").value = '@ViewBag.empname';
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+            $('#mylink').attr('href', '/SalaryDetail/AddNewDetail' + '?newempid=' + '@ViewBag.newempid');
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#txtEmpName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteEmployeeNew", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('hfNewEmpId').value = ui.item.Id;
+                $('#mylink').attr('href', '/SalaryDetail/AddNewDetail' + '?newempid=' + ui.item.Id);
+            }
+        });
+</script>
+
+}
+

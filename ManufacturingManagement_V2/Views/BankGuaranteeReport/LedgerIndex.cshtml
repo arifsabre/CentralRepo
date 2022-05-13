@@ -1,0 +1,55 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+@Html.Partial("../BankGuarantee/BGLinks")
+<h4><b>Bank Guarantee Ledger</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <h5><b>Report Options</b></h5>
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:10%;">Company</td>
+                <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)</td>
+            </tr>
+            <tr>
+                <td>BG Date From</td>
+                <td>
+                    @Html.EditorFor(model => model.DateFrom)
+                </td>
+            </tr>
+            <tr>
+                <td>BG Date To</td>
+                <td>@Html.EditorFor(model => model.DateTo)</td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value="Submit" onclick="target = '_blank';"
+               formaction="@Url.Action("DisplayBankGuaranteeLedger")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+    </script>
+
+}
+

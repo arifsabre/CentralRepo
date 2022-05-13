@@ -1,0 +1,100 @@
+﻿<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    @*Master Entries*@
+    <li class="treeview" id="mnuMasterEntriesStores">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Stores">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuMasterEntriesStores');">&nbsp;&nbsp;Master Entries</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/VendorAddress/Index">Vendor Address</a></li>
+            <li><a href="/Vendor/Index">Vendor Master</a></li>
+            <li><a href="/Item/Index">View Item</a></li>
+            <li><a href="/Item/CreateUpdate">Create Item</a></li>
+            <li><a href="/ItemGroup/Index">Item Group</a></li>
+            <li><a href="/OrderType/Index">Order Type</a></li>
+            <li><a href="/City/Index">City Master</a></li>
+            <li><a href="/GovtDepartment/Index">Government Department</a></li>
+            <li><a href="/UnitConversion/Index">Unit Conversion</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Transaction Entries*@
+    <li class="treeview" id="mnuTransactionEntriesStores">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Stores">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuTransactionEntriesStores');">&nbsp;&nbsp;Transaction Entries</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Order/Index">Order Entry</a></li>
+            <li><a href="/Stock/Index">Stock Entry</a></li>
+            <li><a href="/Purchase/Index">Purchase Entry</a></li>
+            <li><a href="/JobworkIssue/Index">Jobwork Issue</a></li>
+            <li><a href="/JobworkReceipt/Index">Jobwork Receipt</a></li>
+            @*<li><a href="/ItemReceipt/Index">Item Receipt<br/>-Indent</a></li>
+                <li><a href="/ItemReceipt/IndexPOItemReceipt">Item Receipt<br/>-Purchase Order</a></li>*@
+            <li><a href="/BOM/Index">BOM Definition</a></li>
+            <li><a href="/ImportList/Index">Import List</a></li>
+            <li><a href="/ImportList/ProjectionList">PO Projection List</a></li>
+        </ul>
+        @*</li>*@
+
+        @*Indent*@
+    <li class="treeview" id="mnuIndent">
+        @*<li>*@
+        @*<a href="/Home/Index?deptt=Stores">
+                <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+                <span onclick="setOpt('mnuIndent');">&nbsp;&nbsp;Indent</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="/Indent/AllIndentIndex">View All Indents</a></li>
+                <li><a href="/Indent/IndentExecution">Indent Excecution</a></li>
+                <li><a href="/Indent/IndentPurchaseSlipGeneration">Generate Purchase Slip</a></li>
+                <li><a href="/Indent/IndentPurchaseSlipView">View Purchase Slip</a></li>
+                <li><a href="/Indent/IndentPurchaseOrderGeneration">Generate Purchase Order</a></li>
+                <li><a href="/Indent/PendingIndentIssue">Pending Issue</a></li>
+                <li><a href="/Stock/ViewIndentIssue">View Indent Issue</a></li>
+                <li><a href="/Indent/PendingToIssue">Pending Purchase</a></li>
+            </ul>*@
+        @*</li>*@
+
+        @*Reports*@
+    <li class="treeview" id="mnuReportsStores">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Stores">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuReportsStores');">&nbsp;&nbsp;Reports</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/JobworkIssueRecReport/Index">Jobwork Report</a></li>
+            @*<li><a target="_new" href="/IndentReport/IndentReport">Indent Report</a></li>
+                <li><a href="/IndentPurchaseSlipReport/Index">Indent Purchase Slip</a></li>*@
+            <li><a href="/OrderReport/Index">Order Report</a></li>
+            <li><a href="/OrderReport/OrderPendingReport">Pending Orders</a></li>
+            <li><a href="/StockReport/Index">Stock Reports</a></li>
+            <li><a href="/StockRegister/Index">Stock Register</a></li>
+            <li><a href="/PurchaseRegister/Index">Purchase Register</a></li>
+            <li><a href="/OrderPlanningReport/Index">Order Planning Report</a></li>
+            <li><a href="/ImportListReport/Index">Projection List Report</a></li>
+            <li><a href="/MaterialRequirementReport/Index">Material Requirement<br />List</a></li>
+            <li><a href="/MaterialRequirementReport/MaterialRequirementSummary">Material Requirement<br />Summary</a></li>
+        </ul>
+        @*</li>*@
+
+</ul>
+@*ul-end*@

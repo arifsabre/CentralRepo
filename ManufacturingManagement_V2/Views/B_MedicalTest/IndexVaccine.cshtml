@@ -1,0 +1,423 @@
+﻿@model ManufacturingManagement_V2.Models.AAA_MedicalTest
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+        $(document).ready(function () {
+            $('#Apply').prop('disabled', true);
+            $("#files").change(function () {
+                // Get uploaded file extension
+                var extension = $(this).val().split('.').pop().toLowerCase();
+                // Create array with the files extensions that we wish to upload
+               // var validFileExtensions = ['doc', 'docx', 'pdf', 'ppt', 'xls', 'xlsx'];
+                var validFileExtensions = ['pdf'];
+                // var validFileExtensions = ['pdf'];
+                //Check file extension in the array.if -1 that means the file extension is not in the list.
+                if ($.inArray(extension, validFileExtensions) == -1) {
+                    alert("Sorry!! Upload only 'pdf' file")
+                    // alert("Sorry!! Upload only 'doc', 'docx', 'pdf' 'ppt' file")
+                    // Clear fileuload control selected file
+                    $(this).replaceWith($(this).val('').clone(true));
+                    //Disable Submit Button
+                    $('#Apply').prop('disabled', true);
+                } else {
+                    // Check and restrict the file size to 128 KB.
+                    if ($(this).get(0).files[0].size > (131072131)) {
+                        alert("Sorry!! Max allowed file size is 2MB");
+                        // Clear fileuload control selected file
+                        $(this).replaceWith($(this).val('').clone(true));
+                        //Disable Submit Button
+                        $('#Apply').prop('disabled', true);
+                    } else {
+                        //Enable Submit Button
+                        $('#Apply').prop('disabled', false);
+                    }
+                }
+            });
+            $("#Apply").click(function () {
+                if ($("#NewEmpId").val() = null) {
+                    alert("Please fill out required fields(*)");
+                    return false;
+                }
+                return true;
+            });
+        });
+
+        function GetVacDetails(id) {
+            $.ajax({
+                url: "/B_MedicalTest/InsertVaccineRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#NewEmpId').val(response.NewEmpId);
+                    $('#EmpName').val(response.EmpName);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function VaccineCertificateII(id) {
+            $.ajax({
+                url: "/B_MedicalTest/UploadSecondCertificatetRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId4').val(response.RecordId);
+
+                    $('#modal-SecondCertificate').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        function GetVacDetailsUpdate(id) {
+            $.ajax({
+                url: "/B_MedicalTest/Edit_VanSecordDose_Record/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId2').val(response.RecordId);
+                    $('#VacId2').val(response.VacId);
+                   /* $('#Dose12').val(response.Dose1);*/
+                    $('#Dose22').val(response.Dose2);
+                  /*  $('#Dose1Date12').val(response.Dose1Date);*/
+                    $('#Dose2Date2').val(response.Dose2Date);
+                  //  $('#NewEmpId2').val(response.NewEmpId);
+                    $('#modal-VacUpdate').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        function ShowCertificate(recid) {
+            $('#modal-ShowFiles').modal('show');
+            var ifrm = document.getElementById("frmUpdate");
+            //ifrm.setAttribute('src', "http://localhost:58521//B_MedicalTest/IndexCertificate?id=" + recid)
+            ifrm.setAttribute('src', "https://pragerp.com/B_MedicalTest/IndexCertificate?id=" + recid)
+        }
+    </script>
+  </head>
+<body>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-Insert" style="margin-top:2px;margin-bottom:2px">
+        Add New Record
+    </button>
+    <div id="printbar" class="pull-right" style="margin-top:2px;margin-bottom:2px">
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="box">
+                        <div class="box-header">
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="jdtabledesktop" class="table table-striped table-bordered table-hover" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>SNO</th>
+                                        <th>EmpId</th>
+                                        <th>Name</th>
+                                        <th>Vac_Type</th>
+                                        <th>Dose1</th>
+                                        <th>Dose1_Date</th>
+                                        <th>Dose2</th>
+                                        <th>Dose2_Date</th>
+                                        <th>Certificate</th>
+                                        <th>
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Item_List)
+                                    {
+                                        <tr>
+
+                                            <td>
+
+                                                @Html.DisplayFor(model => item.RecordId)
+
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => item.EmpId)
+
+                                            </td>
+                                            <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                            <td>@Html.DisplayFor(model => item.VacType)</td>
+                                            <td>@Html.DisplayFor(model => item.Dose1)</td>
+                                            <td>@Html.DisplayFor(model => item.Dose1Date)</td>
+                                            <td>
+                                                @Html.DisplayFor(model => item.Dose2)
+                                            </td>
+                                            <td>@Html.DisplayFor(model => item.Dose2Date)</td>
+                                            <td>
+                                                <a>
+
+                                                    <a onclick="ShowCertificate(@item.RecordId)">
+                                                        <i class="fa fa-eye" style="font-size:12pt;"></i>
+                                                    </a>
+                                                    @*@Html.ActionLink("View", "GetQutation", new { id = item.RecordId })*@
+
+
+
+                                                </a>
+                                                <a onclick="VaccineCertificateII(@item.RecordId)">
+                                                    <i class="fa fa-upload">
+                                                    </i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a>
+                                                    @Html.HiddenFor(model => model.UserId)
+                                                    @Html.ActionLink(" ", "DeleteVaccine", "B_MedicalTest", new { id = item.RecordId }, new { onclick = "return confirm('Are sure wants to delete?');", @class = "fa fa-trash-o" })
+                                                </a>
+                                                <a onclick="GetVacDetailsUpdate(@item.RecordId)">
+                                                    <i class="fa fa-edit">
+                                                    </i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @*//InsertRecord*@
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title"> Vaccination Entry</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("IndexVaccine1", "B_MedicalTest", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div>
+                                @*  <hr />*@
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.MedicalId, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.HiddenFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+                                @*@Html.EditorFor(model => model.NewEmpId, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @*<input type="hidden" class="form-control" id="NewEmpId1" name="NewEmpId" />*@
+                                @*<input type="hidden" class="form-control" id="NewEmpId" name="NewEmpId" />*@
+                                <div class="form-group">
+                                    &nbsp;&nbsp;&nbsp;<label>EmpName</label>
+                                    <br />
+                                    @Html.DropDownListFor(model => model.NewEmpId, ViewBag.EmpName as SelectList, "Select")
+                                    @Html.ValidationMessageFor(model => model.NewEmpId, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div>
+                                &nbsp;&nbsp;&nbsp;<label>Vaccine Type</label>
+                                <br />
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(model => model.VacId, ViewBag.VacType as SelectList)
+                                </div>
+                                <br />
+                                &nbsp;&nbsp;&nbsp; <label>Dose1</label>
+                                @Html.CheckBoxFor(model => model.Dose1)
+                                <br />
+                                <div class="form-group">
+                                    &nbsp;&nbsp;&nbsp; <label>Dose1 Date</label>
+                                    <br />
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Dose1Date, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Dose1Date, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;<label>Dose2</label>
+                                @Html.CheckBoxFor(model => model.Dose2)
+                                <br />
+                                <div class="form-group">
+                                    &nbsp;&nbsp;&nbsp; <label>Dose2 Date</label>
+                                    <br />
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Dose2Date, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Dose2Date, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="form-group">
+                                    &nbsp;&nbsp;&nbsp;<label>Attached Certificate</label>
+                                    <br />
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(model => model.files, "", new { @type = "file", @multiple = "multiple" })
+                                        @Html.ValidationMessageFor(model => model.files, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="Apply" class="btn btn-success">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<script src="~/Script/SiteP.js"></script>*@
+
+    @*//updateVaccine*@
+    <div class="modal fade" id="modal-VacUpdate">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">  Update Vaccination Record</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_VaccineRecord", "B_MedicalTest"))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div>
+                                @*  <hr />*@
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <input type="hidden" id="RecordId2" name="RecordId" readonly="readonly" />
+                            </div>
+                            <div>
+                                &nbsp;&nbsp;&nbsp;<label>Vaccine Type</label>
+                                <br />
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(model => model.VacId, ViewBag.VacType as SelectList, new { id = "VacId2" })
+                                </div>
+                                <br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;<label>Dose2</label>
+                                @Html.CheckBoxFor(model => model.Dose2, new { htmlAttributes = new { @class = "form-control", id = "Dose22" } })
+                                <br />
+                                <div class="form-group">
+                                    &nbsp;&nbsp;&nbsp; <label>Dose2 Date</label>
+                                    <br />
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Dose2Date, new { htmlAttributes = new { @class = "form-control", id = "Dose2Date2" } })
+                                        @Html.ValidationMessageFor(model => model.Dose2Date, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <br />
+                                @*<div class="form-group">
+                                        &nbsp;&nbsp;&nbsp;<label>Attached Certificate</label>
+                                        <br />
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(model => model.files, "", new { @type = "file", @multiple = "multiple" })
+                                            @Html.ValidationMessageFor(model => model.files, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>*@
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="Apply" class="btn btn-success">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*SecondDoseUpdateCerticate*@
+
+    <div class="modal fade" id="modal-SecondCertificate">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Upload Certificate</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("UploadSecondVaccinedCertificate", "B_MedicalTest", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    @* @Html.HiddenFor(model => model.HODApprovalBy)*@
+                                    <label>Record Number</label>
+                                    <input type="number" class="form-control" id="RecordId4" readonly="readonly" name="RecordId">
+                                    @* <input type="number" class="form-control" id="DOC4" readonly="readonly" name="DOC" min="1" max="1" value="1">*@
+                                    @*@Html.HiddenFor(model => model.UserId)*@
+                                    @* @Html.HiddenFor(model => model.Doc)*@
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <br />
+                                    <input type="file" name="postedFile" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" id="btnUpload" value="Upload" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-ShowFiles">
+        <div class="modal-dialog">
+            <div class="modal-content modal-sm" style="width:600px;height:250px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">File List</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmUpdate" runat="server" scrolling="no" frameborder="0"
+                                style="width:600px;height:250px;opacity:100">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Script/Site.js"></script>
+</body>
+</html >

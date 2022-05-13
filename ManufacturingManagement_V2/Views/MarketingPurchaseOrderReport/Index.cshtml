@@ -1,0 +1,175 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "PO Report";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Purchase Order Report</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <h5><b>Report Options</b></h5>
+        <table class="table table-bordered">
+            <tr>
+                @Html.HiddenFor(model => model.GroupId)
+                @Html.HiddenFor(model => model.ItemId)
+                @Html.HiddenFor(model => model.RailwayId)
+                <td style="width:10%;"><b>Company</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)
+                    @Html.ValidationMessageFor(model => model.CompCode)
+                </td>
+                <td><b>PO Type</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.POType, ViewBag.POTypeList as SelectList)
+                    @Html.ValidationMessageFor(model => model.POType)
+                </td>
+            </tr>
+            <tr>
+                <td><b>PO&nbsp;Date&nbsp;From</b></td>
+                <td>
+                    @Html.EditorFor(model => model.DateFrom)
+                    @Html.ValidationMessageFor(model => model.DateFrom)
+                </td>
+                <td><b>Railway</b></td>
+                <td>
+                    @Html.EditorFor(model => model.RailwayName)
+                    @Html.ValidationMessageFor(model => model.RailwayName)
+                </td>
+            </tr>
+            <tr>
+                <td><b>PO&nbsp;Date&nbsp;To</b></td>
+                <td>
+                    @Html.EditorFor(model => model.DateTo)
+                    @Html.ValidationMessageFor(model => model.DateTo)
+                </td>
+                <td><b>Item&nbsp;Group</b>
+                <td>
+                    @Html.EditorFor(model => model.GroupName)
+                    @Html.ValidationMessageFor(model => model.GroupName)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Item</b></td>
+                <td>
+                    @Html.EditorFor(model => model.ItemCode)
+                    @Html.ValidationMessageFor(model => model.ItemCode)
+                </td>
+                <td><b>Order Status</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.OrderStatus, ViewBag.OrderStatusList as SelectList)
+                    @Html.ValidationMessageFor(model => model.OrderStatus)
+                </td>
+                @*<td><b>Format</b></td>
+                    <td>@Html.DropDownListFor(model => model.ReportFormat, ViewBag.ReportFormatList as SelectList)
+                    </td> *@
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" value="Submit" onclick="target = '_blank';" style="width:150px;"
+               formaction="@Url.Action("DisplayPOReport")" />
+        <h5><b>@ViewBag.Message</b></h5>
+    </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#GroupName").attr("placeholder", "start typing, then select");
+            $("#ItemCode").attr("placeholder", "start typing, then select");
+            $("#RailwayName").attr("placeholder", "start typing, then select");
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#GroupName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteItemGroup", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('GroupId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#ItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                var groupId = '0';
+                if (document.getElementById('GroupId').value != "0" && document.getElementById('GroupName').value != "") {
+                    groupId = document.getElementById('GroupId').value;
+                }
+                var ddlSIndex = document.getElementById("CompCode").selectedIndex;
+                var ccode = document.getElementsByTagName("option")[ddlSIndex].value;
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAllItemListGroup", "HelpUtility"))",
+                    data: { "term": request.term, "ccode": ccode, "groupid": groupId },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('ItemId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#RailwayName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteRailway", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('RailwayId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

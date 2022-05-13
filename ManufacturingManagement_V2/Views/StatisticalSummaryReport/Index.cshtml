@@ -1,0 +1,87 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Statistical Summary</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <h5><b>Report Options</b></h5>
+            <table class="table table-bordered">
+                <tr>
+                   <td style="width:10%;">Company</td>
+                   <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList, "Prag Group")</td>   
+                </tr>
+                <tr>
+                   <td>Section</td>
+                   <td>@Html.DropDownListFor(model => model.AttShift, ViewBag.SectionList as SelectList, "ALL", new { @onchange = "javascript:getEntry(this.value);" })</td>   
+                </tr>
+                <tr>
+                   <td>Segment</td>
+                   <td>@Html.DropDownListFor(model => model.CTypeName, ViewBag.SegmentList as SelectList,"ALL")</td>   
+                </tr>
+                <tr>
+                   <td>As On Date</td>
+                   <td>  
+                    @Html.EditorFor(model => model.ReportDate)
+                   </td> 
+                </tr>
+            </table>
+        </div>
+    <p>
+       <input type="submit" value="Display View" class="btn btn-default" style="width:200px;" formaction="@Url.Action("IndexView")" />
+       @*<input type="submit" value="Report View" style="width:200px;" onclick="target='_blank';" 
+           formaction="@Url.Action("StatisticalReport")" />*@
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //$("#RegNo").attr("placeholder", "start typing, then select");
+        });
+    </script>
+
+    <script type="text/javascript">
+        function getEntry(grpId) {
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getSegmentList", "HelpUtility"))",//working
+                data: { "sccode": grpId },
+                success: function (data) {
+                    //getting multiple records as (key,value) pair type list
+                    $("#CTypeName").empty(); // clear before appending new list 
+                    $.each(data, function (i, item) {
+                        $("#CTypeName").append($('<option />', {
+                            value: item.Key,
+                            text: item.Value
+                        }));
+                    });
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });//
+
+        }
+</script>
+
+}

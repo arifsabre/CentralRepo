@@ -1,0 +1,44 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Daily Cash Balance Report</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    <h5><b>Report Options</b></h5>
+    <table class="table table-bordered">
+        <tr>
+            <td style="width:10%;"><b>Company</b></td>
+            <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)</td>
+        </tr>
+        <tr>
+            <td><b>Financial Year</b></td>
+            <td>@Html.DropDownListFor(model => model.FinYear, ViewBag.FinYearList as SelectList)</td>
+        </tr>
+    </table>
+</div>
+    <p>
+       <input type="submit" class="btn btn-default" style="width:120px;" value="Submit" onclick="target = '_blank';" 
+           formaction="@Url.Action("DisplayDailyCashBalance")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+@section Scripts{
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+        });
+    </script>
+    
+}
+

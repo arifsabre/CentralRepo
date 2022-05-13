@@ -1,0 +1,66 @@
+﻿@model ManufacturingManagement_V2.Models.BankGuaranteeMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4>Bank Guarantee Detail</h4>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id=Model.TenderId }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+</p>
+
+<fieldset>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.TenderNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.TenderNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.OpeningDate)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.OpeningDate, "{0:dd/MM/yyyy}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.PODetail)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PODetail)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.BGNumber)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.BGNumber)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.BGDate)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.BGDate, "{0:dd/MM/yyyy}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.SdBgAmount)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.SdBgAmount, "{0:##,##,##,##,##0.00}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Validity)</td>
+                    <td style="vertical-align:top;">: @Html.ValueFor(model => model.Validity, "{0:dd/MM/yyyy}")</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.StatusName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.StatusName)</td>
+                </tr>
+
+            </table>
+        </div>
+</fieldset>
+
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

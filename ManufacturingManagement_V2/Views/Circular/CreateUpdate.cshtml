@@ -1,0 +1,122 @@
+﻿@model ManufacturingManagement_V2.Models.CircularMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+
+<h4><b>Circular Entry</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        @Html.HiddenFor(model => model.RecId)
+        @Html.HiddenFor(model => model.UserId)
+        <table class="table table-bordered">
+            <tr>
+                <td colspan="2">
+                    @Html.LabelFor(model => model.CircularNo)
+                    &nbsp;&nbsp;<b>@Html.DisplayFor(model => model.CircularNo)</b>
+                    @Html.ValidationMessageFor(model => model.CircularNo)
+                </td>
+            </tr>
+            <tr>
+                <td style="width:10%;">@Html.LabelFor(model => model.CircularDate)</td>
+                <td>
+                    @Html.EditorFor(model => model.CircularDate)
+                    @Html.ValidationMessageFor(model => model.CircularDate)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.DepCode)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.DepCode, ViewBag.DepartmentList as SelectList)
+                    @Html.ValidationMessageFor(model => model.DepCode)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.UserName)</td>
+                <td>
+                    @Html.EditorFor(model => model.UserName, new { placeholder = "Username" })
+                    @Html.ValidationMessageFor(model => model.UserName)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.SubjectOn)</td>
+                <td>
+                    @Html.TextAreaFor(model => model.SubjectOn, 0, 0,
+                    new { @style = "width:268px;height:60px;" })
+                    @Html.ValidationMessageFor(model => model.SubjectOn)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+    </p>
+    <h5>@ViewBag.Message</h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            $("#SubjectOn").attr("placeholder", "Max Length: 250 Chars");
+            $("#SubjectOn").attr("maxlength", "250");
+            document.getElementById("DepCode").value = '@Model.DepCode';
+            $("#UserName").attr("placeholder", "start typing, then select");
+            document.getElementById("CircularDate").focus();
+            //
+            if (@ViewBag.Status == '1') {
+
+                    alert('@ViewBag.Message');
+                    window.parent.location.reload();
+            }
+            //
+        });
+
+        //Date Picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#UserName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteUsersList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('UserId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

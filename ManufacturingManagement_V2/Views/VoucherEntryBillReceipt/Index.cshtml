@@ -1,0 +1,142 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.VoucherMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Payment Receipt List</b></h4>
+
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "VoucherEntryBillReceipt", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+            <div class="form-group">
+                @Html.Hidden("hfEmpId", null, new { @id = "hfEmpId" })
+                @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+
+                &nbsp;&nbsp;&nbsp;
+                <b>Date From&nbsp;</b>
+                @Html.TextBox("txtDtFrom", null, new { @class = "datepicker", @style = "width:90px;" })
+
+                &nbsp;&nbsp;<b>To&nbsp;</b>
+                @Html.TextBox("txtDtTo", null, new { @class = "datepicker", @style = "width:90px;" })
+
+                &nbsp;&nbsp;<button class="btn btn-default">Submit</button>
+            </div>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:50px;">
+            Voucher&nbsp;No
+        </th>
+        <th style="width:50px;">
+            Voucher&nbsp;Date
+        </th>
+        <th style="width:250px;">
+            Account
+        </th>
+        <th style="width:250px;">
+            Bill&nbsp;No
+        </th>
+        <th style="width:70px;">
+            Amount
+        </th>
+        <th style="width:50px;">Links</th>
+        <th style="width:50px;">Delete</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @i
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.VNo)
+    </td>
+    <td>
+        @Html.ValueFor(model => item.VDate, "{0:dd/MM/yyyy}")
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.Info[0].AcDesc)
+    </td>
+    <td>
+        @Html.DisplayFor(model => item.Info[0].dispBillNo)
+    </td>
+    <td>
+        @Html.ValueFor(modelItem => item.Info[0].Amount, "{0:##,##,##,##,##0.00}")
+    </td>
+    <td>
+        @Html.ActionLink("Preview", null, null, new { onclick = "displayRpt('" + item.VNo + "')" })
+        <br />@Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+        new { tblid = 11, pkval = item.PKValStr }, new { @target = "_blank" })
+        <br />@Html.ActionLink("Edit", "CreateUpdate", new { id = item.VNo })
+    </td>
+    <td>
+        @Html.ActionLink("Delete", null, null,
+        new { onclick = "deleteVoucher('" + item.VNo + "')" })
+    </td>
+</tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            //document.getElementById("hfEmpId").value = '@ViewBag.empid';
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+    <script>
+        function deleteVoucher(vno) {
+            var a = confirm("Are you sure to delete this voucher?");
+            if (a == false) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "VoucherEntryBillReceipt")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    vno: vno
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+</script>
+
+<script>
+    function displayRpt(vno) {
+        window.open('../VoucherReport/DisplayVoucherSlipDirect?vtype=bpr&vno=' + vno);
+    }
+</script>
+
+}
+

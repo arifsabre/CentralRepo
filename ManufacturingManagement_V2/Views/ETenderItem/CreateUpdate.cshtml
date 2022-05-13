@@ -1,0 +1,280 @@
+﻿@model ManufacturingManagement_V2.Models.ETenderItemMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<table style="width:100%;">
+    <tr>
+        <td><h4><b>E-Tender (Step-2)</b></h4></td>
+        <td>
+            @Html.ActionLink("Step-1 (E-Tender Item Entry)", "../ETender/CreateUpdate",
+            new { id = Model.TenderId }, new { style = "color:blue;text-decoration:underline;" })
+        </td>
+        <td>
+            @Html.ActionLink("Step-3 (E-Tender Consignee Entry)", "../ETenderConsignee/CreateUpdate",
+            new { tenderid = Model.TenderId }, new { style = "color:blue;text-decoration:underline;" })
+        </td>
+        <td>
+            @Html.ActionLink("Display E.T.Format", "../Tender/ETFormatReport", new { tenderid = Model.TenderId },
+            new { @target = "_blank", style = "color:blue;text-decoration:underline;" })
+        </td>
+    </tr>
+</table>
+
+<h5><b>@Model.TenderInfo</b></h5>
+
+<span>List of Items from Tender Checksheet:-</span>
+@Html.Raw(@Model.TendetDetailItemsHtml)
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div class="form-group">
+
+        <table class="table table-bordered">
+            @Html.HiddenFor(model => model.TenderId)
+            @Html.HiddenFor(model => model.ItemId)
+            @Html.HiddenFor(model => model.ItemName)
+            @Html.HiddenFor(model => model.ItemRecId)
+            @Html.HiddenFor(model => model.TDRecId)
+
+            <tr>
+                <td colspan="4">
+                    <b>F-   Special Conditions / Check List for Vendor -- (As per NIT of the tender) </b>
+                    &nbsp;
+                    @Html.RadioButtonFor(model => model.SpcChkList, "a")
+                    &nbsp;Accepted
+                    &nbsp;&nbsp;
+                    @Html.RadioButtonFor(model => model.SpcChkList, "l")
+                    &nbsp;Leave Unattended
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Reason (if unattended)</b></td>
+                <td colspan="3">
+                    @Html.EditorFor(model => model.SpcRemarks)
+                    @Html.ValidationMessageFor(model => model.SpcRemarks)
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4"><b>4. Financial Rate Page for Supply</b></td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                    <b>Item Description (As per NIT Download)</b>
+                    <label id="lblItemName" style="font-weight:normal;"></label>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                    @Html.RadioButtonFor(model => model.ItemDescOpt, "a")
+                    &nbsp;I Agree
+                    &nbsp;&nbsp;
+                    @Html.RadioButtonFor(model => model.ItemDescOpt, "d")
+                    &nbsp;I want offer Deviation
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Our Offer</b></td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.ItemDescOffered, 0, 0,
+                    new { @style = "width:640px;height:40px;" })
+                    @Html.ValidationMessageFor(model => model.ItemDescOffered)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Item Name</b></td>
+                <td colspan="3">
+                    <label id="lblShortName" style="font-weight:normal;"></label>
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Full Tender Quantity</b></td>
+                <td>
+                    @Html.EditorFor(model => model.FullTDQty)
+                    @Html.ValidationMessageFor(model => model.FullTDQty)
+                </td>
+                <td><b>Unit of Measurement as per Tender</b></td>
+                <td>
+                    @Html.EditorFor(model => model.UnitOfMeasurement)
+                    @Html.ValidationMessageFor(model => model.UnitOfMeasurement)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Basic Rate/Unit (Rs.)</b></td>
+                <td>
+                    @Html.EditorFor(model => model.BasicRatePerUnit)
+                    @Html.ValidationMessageFor(model => model.BasicRatePerUnit)
+                </td>
+                <td><b>Unconditional Discount on Basic (if any)(%)</b></td>
+                <td>
+                    @Html.EditorFor(model => model.UncDiscountPer)
+                    @Html.ValidationMessageFor(model => model.UncDiscountPer)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Packaging on Basic(%)</b></td>
+                <td>
+                    @Html.EditorFor(model => model.BasicPkgPer)
+                    @Html.ValidationMessageFor(model => model.BasicPkgPer)
+                </td>
+                <td><b>Excise Duty Type/GST</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.EDType, ViewBag.EDtypeList as SelectList)
+                    @Html.ValidationMessageFor(model => model.EDType)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>E.D. Maximum Applicable(%)</b></td>
+                <td>
+                    @Html.EditorFor(model => model.EDMaxPerApplicable)
+                    @Html.ValidationMessageFor(model => model.EDMaxPerApplicable)
+                </td>
+                <td><b>Cess on E.D.(%)</b></td>
+                <td>
+                    @Html.EditorFor(model => model.CessOnEDPer)
+                    @Html.ValidationMessageFor(model => model.CessOnEDPer)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Other Chages Type(if any)</b></td>
+                <td>
+                    @Html.EditorFor(model => model.OtherChgType)
+                    @Html.ValidationMessageFor(model => model.OtherChgType)
+                </td>
+                <td><b>Other Charges Amt/Unit(Rs.)</b></td>
+                <td>
+                    @Html.EditorFor(model => model.OtherChgPerUnit)
+                    @Html.ValidationMessageFor(model => model.OtherChgPerUnit)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Price Variation Clause</b></td>
+                <td colspan="3">
+                    (Max. 250 Characters)
+                    &nbsp;&nbsp;
+                    @Html.RadioButtonFor(model => model.PriceVarReq, true)
+                    &nbsp;Yes
+                    &nbsp;&nbsp;
+                    @Html.RadioButtonFor(model => model.PriceVarReq, false)
+                    &nbsp;No
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Price Variation Clause (If Yes)</b></td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.PriceVarClause, 0, 0,
+                    new { @style = "width:640px;height:40px;" })
+                    @Html.ValidationMessageFor(model => model.PriceVarClause)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Remarks</b></td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.Remarks, 0, 0,
+                     new { @style = "width:640px;height:250px;" })
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <h5><b>@ViewBag.Message</b></h5>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+        @Html.ActionLink("Close", null, null, new { @onclick = "window.close();", @class = "btn btn-default" })
+    </p>
+}
+
+<span>List of Items from E-Tender Item:-</span>
+@Html.Raw(@Model.ETenderItemsHtml)
+<br /> <br />
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("SpcRemarks").setAttribute("style","width:640px;");
+        });
+    </script>
+
+    <script type="text/javascript">
+        function selectItem(itemid) {
+            document.getElementById("ItemId").value = itemid;
+            $("#tdItem tr").each(function (index, item) {
+                if (index > -1) {
+                    var tds = $(this).find("td");
+                    if (parseInt($(this).closest('tr').find('td:eq(1)').text()) == itemid) {
+                        $('#lblShortName').text($(this).closest('tr').find('td:eq(3)').text());
+                    }
+                }
+            });
+
+            var tenderid = document.getElementById("TenderId").value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getTenderDetailItemDesc", "ETenderItem"))",
+                data: { "itemid": itemid, "tenderid": tenderid },
+                success: function (data) {
+                    $('#lblItemName').text(data.itemname);
+                    document.getElementById("ItemName").value = data.itemname;//to save
+                    document.getElementById("TDRecId").value = data.tdrecid;//to save
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+
+        }
+    </script>
+
+    <script>
+        function deleteETenderItem(itemrecid) {
+            var a = confirm("Are you sure to delete this item?");
+            if (a == false) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteETenderItem", "ETenderItem")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    itemrecid: itemrecid
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+    </script>
+
+}

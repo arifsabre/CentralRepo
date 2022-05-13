@@ -1,0 +1,103 @@
+﻿@model ManufacturingManagement_V2.Models.ContractorIndentMDI
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+@using (Html.BeginForm())
+{
+    <br />
+<div style="margin-left:50px" class="pull-left">
+
+
+    <p style="font-size:medium;font-weight:bold">
+        Task Informarion
+    </p>
+    <p>
+        Task Number :        @Html.DisplayFor(model => model.RecordId)
+    </p>
+    <p>
+        Company:            @Html.DisplayTextFor(model => model.cmpname)
+    </p>
+    <p>
+        Location:         @Html.DisplayTextFor(model => model.Location)
+    </p>
+    <p>
+        Work Category :    @Html.DisplayTextFor(model => model.Category)
+    </p>
+    <p>
+        Work Status :    @Html.DisplayTextFor(m => m.Status)
+    </p>
+    <p>
+        Work Priority : @Html.DisplayTextFor(m => m.Priority)
+    </p>
+    <p>
+        Esimated Amount : @Html.DisplayTextFor(m => m.EstimateAmount)
+    </p>
+    <p>
+        Contractor: @Html.DisplayTextFor(m => m.Contractor)
+    </p>
+    <p>
+        Completion Date : @Html.DisplayTextFor(m => m.CompletionDate)
+    </p>
+    <p>
+        Created By : @Html.DisplayTextFor(m => m.CreatedBy)
+    </p>
+    <p>
+        Created On : @Html.DisplayTextFor(m => m.CreatedOn)
+    </p>
+    <p>
+        UpdatedBy: @Html.DisplayTextFor(m => m.UpdatedBy)
+    </p>
+    <p>
+        Updated On : @Html.DisplayTextFor(m => m.UpdatedOn)
+    </p>
+    <p>
+        Remark: @Html.DisplayTextFor(m => m.Remark)
+    </p>
+    </div>
+    <div class="pull-left" style="margin-left:30px">
+        <p style="font-size:medium;font-weight:bold">
+            HOD Approval Status<br />
+        </p>
+        <p>
+            HOD Name : @Html.DisplayTextFor(m => m.hodname)
+        </p>
+        <p style="font-size:medium;color:red">
+            HOD Approval Status: @Html.DisplayTextFor(m => m.HODApproval)
+        </p>
+        <p>
+            Approved By: @Html.DisplayTextFor(m => m.HODApprovalBy)
+        </p>
+        <p>
+            HOD Approved On: @Html.DisplayTextFor(m => m.HODApprovalDate)
+        </p>
+        @*<p>
+
+            Work Start Date: @Html.DisplayTextFor(m => m.WorkStartDate)
+        </p>
+        <p>
+            Work completed Date: @Html.DisplayTextFor(m => m.WorkComplatedDate)
+            </p>*@
+        @*<p>
+            Remark: @Html.DisplayTextFor(m => m.Remark)
+        </p>*@
+        </div>
+
+        <div class="pull-left " style="margin-left:30px">
+        <p style="font-size:medium;font-weight:bold;">
+            Final Approval Status<br />
+        </p>
+        <p style="font-size:medium;color:red">
+            Final Approval Status : @Html.DisplayTextFor(m => m.FinalApproval)
+        </p>
+        <p>
+            Approved By : @Html.DisplayTextFor(m => m.FinalApprovalBY)
+        </p>
+        <p>
+            Final Approval Date: @Html.DisplayTextFor(m => m.FinalApprovalDate)
+
+        </p>
+    </div>
+
+    }
+

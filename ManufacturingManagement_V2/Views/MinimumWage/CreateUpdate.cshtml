@@ -1,0 +1,81 @@
+﻿@model ManufacturingManagement_V2.Models.MinimumWageMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Minumum Wage Detail</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                @Html.HiddenFor(model => model.RecId)
+                <tr>
+                    <td>@Html.LabelFor(model => model.CompCode)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)
+                        @Html.ValidationMessageFor(model => model.CompCode)
+                    </td>
+                    <td>@Html.LabelFor(model => model.Skilled)</td>
+                    <td>
+                        @Html.EditorFor(model => model.Skilled)
+                        @Html.ValidationMessageFor(model => model.Skilled)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.AttYear)</td>
+                    <td>
+                        @Html.EditorFor(model => model.AttYear)
+                        @Html.ValidationMessageFor(model => model.AttYear)
+                    </td>
+                    <td>@Html.LabelFor(model => model.SemiSkilled)</td>
+                    <td>
+                        @Html.EditorFor(model => model.SemiSkilled)
+                        @Html.ValidationMessageFor(model => model.SemiSkilled)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.AttMonth)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.AttMonth, ViewBag.MonthList as SelectList)
+                        @Html.ValidationMessageFor(model => model.AttMonth)
+                    </td>
+                    <td>@Html.LabelFor(model => model.UnSkilled)</td>
+                    <td>
+                        @Html.EditorFor(model => model.UnSkilled)
+                        @Html.ValidationMessageFor(model => model.UnSkilled)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.BonusPer)</td>
+                    <td>
+                        @Html.EditorFor(model => model.BonusPer)
+                        @Html.ValidationMessageFor(model => model.BonusPer)
+                    </td>
+                    @*<td>
+                @Html.EditorFor(model => model.SetToAll)
+                @Html.ValidationMessageFor(model => model.SetToAll)
+            </td>
+            <td><b>Set&nbsp;To&nbsp;All</b></td>*@
+                </tr>
+            </table>
+        </div>
+    <h5><b>@ViewBag.Message</b></h5>
+        <p>
+            <input type="submit" class="btn btn-default" value=@ViewBag.AddEdit />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //$("#SetToAll").attr("style", "width:55px;height:25px;");
+        });
+    </script>
+}

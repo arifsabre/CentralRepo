@@ -1,0 +1,73 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Profit & Loss Statement</b></h4>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    <h5><b>Report Options</b></h5>
+    <table class="table table-bordered">
+        <tr>
+            <td style="width:10%;"><b>Company</b></td>
+            <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)</td>
+        </tr>
+        <tr>
+            <td><b>Financial&nbsp;Year</b></td>
+            <td>
+                @Html.DropDownListFor(model => model.FinYear, ViewBag.FinYearList as SelectList,
+                new { @onchange = "javascript:getDateRange(this.value);" })
+                @Html.ValidationMessageFor(model => model.FinYear)
+            </td>
+        </tr>
+        <tr>
+            <td><b>As on Date</b></td>
+            <td>@Html.EditorFor(model => model.ReportDate)</td>
+        </tr>
+    </table>
+</div>
+    <p>
+       <input type="submit" class="btn btn-default" style="width:120px;" value="Submit" onclick="target = '_blank';" 
+           formaction="@Url.Action("DisplayProfitNdLossReport")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+@section Scripts{
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+        });
+    </script>
+    
+    <script type="text/javascript">
+        function getDateRange(fy) {
+            var ddlSIndex = document.getElementById("CompCode").selectedIndex;
+            var ccode = document.getElementsByTagName("option")[ddlSIndex].value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getDateRangeByFinYear", "HelpUtility"))",
+                data: { "ccode": ccode, "finyr": fy },
+                success: function (data) {
+                    document.getElementById('ReportDate').value = data.todt;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });//
+
+        }
+</script>
+
+
+}
+

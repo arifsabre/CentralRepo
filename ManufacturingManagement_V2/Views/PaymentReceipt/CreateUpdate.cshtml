@@ -1,0 +1,423 @@
+﻿@model ManufacturingManagement_V2.Models.PaymentReceiptMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Receipt Entry</b></h4>
+<p>
+    @*@Html.ActionLink("PO Detail", "GeneratePO",
+        new { porderid = Model.POrderId }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+        &nbsp;&nbsp;
+        @Html.ActionLink("Item Detail", "../PurchaseOrderItem/CreateUpdate",
+        new { porderid = Model.POrderId, itemrecid = 0 }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+        &nbsp;&nbsp;
+        @Html.ActionLink("MA Detail", "../ModifyAdvice/CreateUpdate",
+        new { porderid = Model.POrderId, recslno = 0 }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+        &nbsp;&nbsp;
+        @Html.ActionLink("PO Checksheet", "POChecksheet",
+        new { porderid = Model.POrderId }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+        &nbsp;&nbsp;
+        @Html.ActionLink("BG Detail", "../BankGuarantee/CreateUpdate",
+        new { id = Model.TenderId }, new { target = "_blank", style = "color:blue;text-decoration:underline;font-weight:bold;" })*@
+</p>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    @Html.Raw(ViewBag.SaleInfo)
+    <div class="form-group">
+
+        @Html.HiddenFor(model => model.SaleRecId)
+        @Html.HiddenFor(model => model.BillPerP1)
+        @Html.HiddenFor(model => model.BillAmountP1)
+        @Html.HiddenFor(model => model.BillPerP2)
+        @Html.HiddenFor(model => model.BillAmountP2)
+
+        <table class="table table-bordered">
+            <tr>
+                <td style="color:blue;"><b><u>Bill&nbsp;Part&nbsp;1</u></b></td>
+                <td>
+                    <b>@Html.DisplayFor(model => model.BillPerP1)%</b>
+                    @Html.ValidationMessageFor(model => model.BillPerP1)
+                </td>
+                <td style="color:blue;"><b><u>Deductions</u></b></td>
+            </tr>
+
+            <tr>
+                <td><b>Bill&nbsp;Date</b></td>
+                <td>
+                    <b>@Html.ValueFor(model => model.B1LetterDate, "{0:dd/MM/yyyy}")</b>
+                    @Html.ValidationMessageFor(model => model.B1LetterDate)
+                </td>
+                <td style="width:15%;">@Html.LabelFor(model => model.LDCharge)</td>
+                <td>
+                    @Html.EditorFor(model => model.LDCharge)
+                    @Html.ValidationMessageFor(model => model.LDCharge)
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:10%;">@Html.LabelFor(model => model.BillAmount)</td>
+                <td>
+                    <b>@Html.DisplayFor(model => model.BillAmount)</b>
+                    @Html.ValidationMessageFor(model => model.BillAmount)
+                </td>
+                <td>@Html.LabelFor(model => model.EDDeduction)</td>
+                <td>
+                    @Html.EditorFor(model => model.EDDeduction)
+                    @Html.ValidationMessageFor(model => model.EDDeduction)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Received&nbsp;Amount</b></td>
+                <td>
+                    @Html.EditorFor(model => model.RecAmountP1)
+                    @Html.ValidationMessageFor(model => model.RecAmountP1)
+                </td>
+                <td>@Html.LabelFor(model => model.VatDiff)</td>
+                <td>
+                    @Html.EditorFor(model => model.VatDiff)
+                    @Html.ValidationMessageFor(model => model.VatDiff)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Memo&nbsp;No</b></td>
+                <td>
+                    @Html.EditorFor(model => model.VNoP1)
+                    @Html.ValidationMessageFor(model => model.VNoP1)
+                </td>
+                <td>@Html.LabelFor(model => model.RateDiff)</td>
+                <td>
+                    @Html.EditorFor(model => model.RateDiff)
+                    @Html.ValidationMessageFor(model => model.RateDiff)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>NEFT&nbsp;Date</b></td>
+                <td>
+                    @Html.EditorFor(model => model.NeftDetailP1)
+                    @Html.ValidationMessageFor(model => model.NeftDetailP1)
+                </td>
+                <td>@Html.LabelFor(model => model.Rejection)</td>
+                <td>
+                    @Html.EditorFor(model => model.Rejection)
+                    @Html.ValidationMessageFor(model => model.Rejection)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Excess&nbsp;Amount</b></td>
+                <td>
+                    @Html.EditorFor(model => model.ExcessAmountP1)
+                    @Html.ValidationMessageFor(model => model.ExcessAmountP1)
+                </td>
+                <td>@Html.LabelFor(model => model.WtClaim)</td>
+                <td>
+                    @Html.EditorFor(model => model.WtClaim)
+                    @Html.ValidationMessageFor(model => model.WtClaim)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Non&nbsp;Recoverable&nbsp;Amt</b></td>
+                <td>
+                    @Html.EditorFor(model => model.ShortAmountP1) (Short Amt)
+                    @Html.ValidationMessageFor(model => model.ShortAmountP1)
+                </td>
+                <td>@Html.LabelFor(model => model.CalMist)</td>
+                <td>
+                    @Html.EditorFor(model => model.CalMist)
+                    @Html.ValidationMessageFor(model => model.CalMist)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Recoverable&nbsp;Amount</b></td>
+                <td>
+                    @Html.EditorFor(model => model.RecoverableAmtP1)
+                    @Html.ValidationMessageFor(model => model.RecoverableAmtP1)
+                </td>
+                <td>@Html.LabelFor(model => model.BankCharge)</td>
+                <td>
+                    @Html.EditorFor(model => model.BankCharge)
+                    @Html.ValidationMessageFor(model => model.BankCharge)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Reason&nbsp;of&nbsp;short&nbsp;Pmt</b></td>
+                <td>
+                    @Html.EditorFor(model => model.ShortAmtReasonP1)
+                    @Html.ValidationMessageFor(model => model.ShortAmtReasonP1)
+                </td>
+                <td>@Html.LabelFor(model => model.Miscellaneous)</td>
+                <td>
+                    @Html.EditorFor(model => model.Miscellaneous)
+                    @Html.ValidationMessageFor(model => model.Miscellaneous)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>R.&nbsp;Note&nbsp;&&nbsp;Date&nbsp;(RO&nbsp;II&nbsp;No.)</b></td>
+                <td>
+                    @Html.EditorFor(model => model.RNoteInfo)
+                    @Html.ValidationMessageFor(model => model.RNoteInfo)
+                </td>
+                <td>@Html.LabelFor(model => model.TdsDedSgst)</td>
+                <td>
+                    @Html.EditorFor(model => model.TdsDedSgst)
+                    @Html.ValidationMessageFor(model => model.TdsDedSgst)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>RNote&nbsp;Qty</b></td>
+                <td>
+                    @Html.EditorFor(model => model.RNoteQty)
+                    @Html.ValidationMessageFor(model => model.RNoteQty)
+                </td>
+                <td>@Html.LabelFor(model => model.TdsDedIgst)</td>
+                <td>
+                    @Html.EditorFor(model => model.TdsDedIgst)
+                    @Html.ValidationMessageFor(model => model.TdsDedIgst)
+                </td>
+            </tr>
+
+            <tr>
+                <td style="color:blue;"><b><u>Bill&nbsp;Part&nbsp;2</u></b></td>
+                <td>
+                    <b>@Html.DisplayFor(model => model.BillPerP2)%</b>
+                    @Html.ValidationMessageFor(model => model.BillPerP2)
+                </td>
+                <td>@Html.LabelFor(model => model.TcsDeduction)</td>
+                <td>
+                    @Html.EditorFor(model => model.TcsDeduction)
+                    @Html.ValidationMessageFor(model => model.TcsDeduction)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Bill&nbsp;Date</b></td>
+                <td>
+                    <b>@Html.ValueFor(model => model.B2LetterDate, "{0:dd/MM/yyyy}")</b>
+                    @Html.ValidationMessageFor(model => model.B2LetterDate)
+                </td>
+                <td style="color:blue;"><b><u>Security Deposit</u></b></td>
+            </tr>
+
+            <tr>
+                <td><b>Bill&nbsp;Amount</b></td>
+                <td>
+                    <b>@Html.DisplayFor(model => model.BillAmountP2)</b>
+                    @Html.ValidationMessageFor(model => model.BillAmountP2)
+                </td>
+                <td>@Html.LabelFor(model => model.SecurityAmount)</td>
+                <td>
+                    @Html.EditorFor(model => model.SecurityAmount)
+                    @Html.ValidationMessageFor(model => model.SecurityAmount)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Received&nbsp;Amount</b></td>
+                <td>
+                    @Html.EditorFor(model => model.RecAmountP2)
+                    @Html.ValidationMessageFor(model => model.RecAmountP2)
+                </td>
+                <td>@Html.LabelFor(model => model.SDReceivedAmount)</td>
+                <td>
+                    @Html.EditorFor(model => model.SDReceivedAmount)
+                    @Html.ValidationMessageFor(model => model.SDReceivedAmount)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Memo&nbsp;No</b></td>
+                <td>
+                    @Html.EditorFor(model => model.VNoP2)
+                    @Html.ValidationMessageFor(model => model.VNoP2)
+                </td>
+                <td>@Html.LabelFor(model => model.SDRemarks)</td>
+                <td>
+                    @Html.EditorFor(model => model.SDRemarks)
+                    @Html.ValidationMessageFor(model => model.SDRemarks)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>NEFT&nbsp;Date</b></td>
+                <td>
+                    @Html.EditorFor(model => model.NeftDetailP2)
+                    @Html.ValidationMessageFor(model => model.NeftDetailP2)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Excess&nbsp;Amount</b></td>
+                <td>
+                    @Html.EditorFor(model => model.ExcessAmountP2)
+                    @Html.ValidationMessageFor(model => model.ExcessAmountP2)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Non&nbsp;Recoverable&nbsp;Amt</b></td>
+                <td>
+                    @Html.EditorFor(model => model.ShortAmountP2) (Short Amt)
+                    @Html.ValidationMessageFor(model => model.ShortAmountP2)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Recoverable&nbsp;Amount</b></td>
+                <td>
+                    @Html.EditorFor(model => model.RecoverableAmtP2)
+                    @Html.ValidationMessageFor(model => model.RecoverableAmtP2)
+                </td>
+            </tr>
+
+            <tr>
+                <td><b>Reason&nbsp;of&nbsp;short&nbsp;Pmt</b></td>
+                <td>
+                    @Html.EditorFor(model => model.ShortAmtReasonP2)
+                    @Html.ValidationMessageFor(model => model.ShortAmtReasonP2)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.Remarks)</td>
+                <td>
+                    @Html.EditorFor(model => model.Remarks)
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                    <input type="submit" class="btn btn-default" value='Submit' />
+                    @Html.ActionLink("Close", null, null, new { @onclick = "window.close();", @class = "btn btn-default" })
+                    <h5><b>@ViewBag.Message</b></h5>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <br />
+    <br />
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById("Remarks").setAttribute("style", "width:340px;");
+            document.getElementById("SDRemarks").setAttribute("style", "width:340px;");
+            document.getElementById("ShortAmtReasonP1").setAttribute("style", "width:340px;");
+            document.getElementById("ShortAmtReasonP2").setAttribute("style", "width:340px;");
+
+            document.getElementById("RecAmountP1").setAttribute("onchange", "setAmounPart1()");
+            document.getElementById("ShortAmountP1").setAttribute("onchange", "setAmounPart1()");
+
+            document.getElementById("RecAmountP2").setAttribute("onchange", "setAmounPart2()");
+            document.getElementById("ShortAmountP2").setAttribute("onchange", "setAmounPart2()");
+        });
+
+        //Date Picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        function setAmounPart1() {
+            var recamountp1 = parseFloat(document.getElementById("RecAmountP1").value);
+            var billamountp1 = parseFloat(document.getElementById("BillAmountP1").value);
+            var shortamountp1 = parseFloat(document.getElementById("ShortAmountP1").value);
+            document.getElementById("ExcessAmountP1").value = 0;
+            if (recamountp1 > billamountp1) {
+                document.getElementById("ExcessAmountP1").value = recamountp1 - billamountp1;
+            }
+            var excessamountp1 = parseFloat(document.getElementById("ExcessAmountP1").value);
+            document.getElementById("RecoverableAmtP1").value = billamountp1 - recamountp1 - shortamountp1 + excessamountp1;
+        }
+    </script>
+
+    <script type="text/javascript">
+        function setAmounPart2() {
+            var recamountp2 = parseFloat(document.getElementById("RecAmountP2").value);
+            var billamountp2 = parseFloat(document.getElementById("BillAmountP2").value);
+            var shortamountp2 = parseFloat(document.getElementById("ShortAmountP2").value);
+            document.getElementById("ExcessAmountP2").value = 0;
+            if (recamountp2 > billamountp2) {
+                document.getElementById("ExcessAmountP2").value = recamountp2 - billamountp2;
+            }
+            var excessamountp2 = parseFloat(document.getElementById("ExcessAmountP2").value);
+            document.getElementById("RecoverableAmtP2").value = billamountp2 - recamountp2 - shortamountp2 + excessamountp2;
+        }
+    </script>
+
+}
+
+<style>
+    .container td {
+        vertical-align: top;
+    }
+
+    .tblcontainer table {
+        width: 100%;
+        border-collapse: collapse;
+        border-top: 1px thin black;
+        border-right: 1px thin black;
+    }
+
+    .tblcontainer th {
+        border-bottom: 1px thin black !important; /*1px*/
+        border-top: 1px thin black !important; /*1px*/
+        background-color: lightgray; /*CHK*/
+    }
+
+    .firstrow {
+        border-top: thin;
+        border-bottom: thin;
+        border-width: 1px;
+        border-top-color: black;
+        border-bottom-color: black;
+    }
+
+    .tblrow {
+        border-bottom: thin;
+        border-width: 1px;
+        border-bottom-color: black;
+    }
+
+    .tblcontainer th, .tblcontainer td {
+        /*text-align: left;*/
+        border-left: 1px thin black;
+        border-right: 1px thin black;
+        padding: 3px;
+        border-bottom: 1px thin #BFAEAE;
+        vertical-align: top;
+    }
+
+    .ui-widget {
+        font-size: 12px !important;
+    }
+</style>

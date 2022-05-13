@@ -1,0 +1,62 @@
+﻿@model ManufacturingManagement_V2.Models.VendorAddressMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Vendor Address Detail</h2>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id=Model.VendorAddId }) |
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+
+<fieldset>
+    <legend>VendorAddressMdl</legend>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.VendorName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.VendorName)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.ContactPerson)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ContactPerson)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.VAddress)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.VAddress)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.City)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.City)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.ContactNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ContactNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.EMail)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EMail)</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;">@Html.DisplayNameFor(model => model.FaxNo)</td>
+                    <td colspan="3" style="vertical-align:top;">: @Html.DisplayFor(model => model.FaxNo)</td>
+                </tr>
+
+            </table>
+     </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

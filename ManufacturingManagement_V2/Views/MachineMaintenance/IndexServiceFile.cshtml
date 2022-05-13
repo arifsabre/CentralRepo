@@ -1,0 +1,55 @@
+﻿@model ManufacturingManagement_V2.Models.MachineMaintenanceMDI
+@{
+    ViewBag.Title = "Index";
+
+    Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Service Report</title>
+    <script>
+    </script>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <div>
+            @*<p>
+                    @Html.ActionLink("Go To Library", "Index", "Letter", null, new { @class = "btn btn-success" })
+                </p>*@
+            <table m class="table table-bordered">
+                <thead>
+                    <tr>
+                        @*<th>Id</th>*@
+                        <th>File_No</th>
+                        <th>File_Name</th>
+                        <th>View</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Item_List2)
+                    {
+                    <tr>
+                        @*<td>@Html.DisplayFor(model => item.id)</td>*@
+                        <td>@Html.DisplayFor(model => item.FileId)</td>
+                        <td>@Html.DisplayFor(model => item.FileName)</td>
+                        <td> @Html.ActionLink("View", "GetServiceReport", new { id = item.FileId }, new { target = "_blank" })</td>
+                        <td>
+                            @Html.ActionLink("Downlaod", "DownLoadFile", new { id = item.FileId })
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                </tfoot>
+            </table>
+
+
+        </div>
+    }
+</body>
+</html>

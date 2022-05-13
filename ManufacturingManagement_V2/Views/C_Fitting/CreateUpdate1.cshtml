@@ -1,0 +1,91 @@
+﻿@model ManufacturingManagement_V2.Models.C_Fitting_ItemMDI
+@{
+    ViewBag.Title = "CreateUpdate";
+    // Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<link href="~/Contents/bootstrap.min.css" rel="stylesheet" />
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+<div class="form-group">
+    @Html.HiddenFor(model => model.srno)
+    @Html.HiddenFor(model => model.updatedby)
+    @*  @Html.HiddenFor(model => model.updatedby)*@
+    @*<table class="table table-bordered" style="width:1000px">*@
+
+    @Html.LabelFor(model => model.cmpname)
+    <br />
+    @Html.DropDownListFor(model => model.compcode, ViewBag.CompanyList as SelectList)
+    @Html.ValidationMessageFor(model => model.compcode)
+    <br />
+    @Html.LabelFor(model => model.pragno)
+    <br />
+    @Html.EditorFor(model => model.pragno)
+    @Html.ValidationMessageFor(model => model.pragno)
+    <br />
+    @Html.LabelFor(model => model.itemname)
+    <br />
+    @Html.DropDownListFor(model => model.itemid, ViewBag.ItemList as SelectList)
+    @Html.ValidationMessageFor(model => model.itemid)
+    @Html.LabelFor(model => model.invoiceno)
+    <br />
+    @Html.EditorFor(model => model.invoiceno)
+    @Html.ValidationMessageFor(model => model.invoiceno)
+    <br />
+    @Html.LabelFor(model => model.invoicedate)
+    <br />
+    @Html.EditorFor(model => model.invoicedate)
+    @Html.ValidationMessageFor(model => model.invoicedate)
+    <br />
+    @Html.LabelFor(model => model.consigneename)
+    <br />
+    @Html.DropDownListFor(model => model.consigneeId, ViewBag.Consigneelist as SelectList)
+    @Html.ValidationMessageFor(model => model.consigneeId)
+
+    <br />
+    @Html.LabelFor(model => model.rakenoorderagency)
+    <br />
+    @Html.EditorFor(model => model.rakenoorderagency)
+    @Html.ValidationMessageFor(model => model.rakenoorderagency)
+    <br />
+    @Html.LabelFor(model => model.coachno)
+    <br />
+    @Html.EditorFor(model => model.coachno)
+    @Html.ValidationMessageFor(model => model.coachno)
+    <br />
+    @Html.LabelFor(model => model.rakenorailway)
+    <br />
+    @Html.EditorFor(model => model.rakenorailway)
+    @Html.ValidationMessageFor(model => model.rakenorailway)
+    <br />
+    @Html.LabelFor(model => model.rakenouserrailway)
+    <br />
+    @Html.EditorFor(model => model.rakenouserrailway)
+    @Html.ValidationMessageFor(model => model.rakenouserrailway)
+    <br />
+    @Html.LabelFor(model => model.shedname)
+    <br />
+    @Html.EditorFor(model => model.shedname)
+    @Html.ValidationMessageFor(model => model.shedname)
+    <br />
+    @Html.LabelFor(model => model.fittingdate)
+    <br />
+    @Html.EditorFor(model => model.fittingdate)
+    @Html.ValidationMessageFor(model => model.fittingdate)
+    <br />
+    @Html.LabelFor(model => model.validity)
+    <br />
+    @Html.EditorFor(model => model.validity)
+    @Html.ValidationMessageFor(model => model.validity)
+    @Html.HiddenFor(model => model.solddate)
+</div>
+  <div style="margin-left:350px">
+        <input type="submit" class="btn btn-success" value='@ViewBag.AddEdit' />
+        <h5>@ViewBag.Message</h5>
+    </div>
+    <h5>@ViewBag.Message</h5>
+}
+
+
+
+

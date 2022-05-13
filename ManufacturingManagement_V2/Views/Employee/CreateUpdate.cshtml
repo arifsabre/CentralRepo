@@ -1,0 +1,764 @@
+﻿@model ManufacturingManagement_V2.Models.EmployeeMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+
+<h5><b><label onclick="displayAll()">Employee Detail</label></b></h5>
+<div style="font-family:Verdana;font-size:9pt;">
+    @*<marquee><h3>Important Notes:</h3></marquee>*@
+    <h5><b>Important Notes:</b></h5>
+    <table>
+        <tr>
+            <td valign="top">1.</td>
+            <td valign="top">
+                Updation of fields 'Joining Date' and 'Leaving Date' affects 'Salary Generation'.
+            </td>
+            <td valign="top">2.</td>
+            <td valign="top">
+                'Designation' and 'Category' fields are editable only from 'Promotion Entry' link. 'Joining Unit' is not editable at all.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">3.</td>
+            <td valign="top">
+                Payment variables are editable only from 'Salary Updation' link.
+                <br />Select or enter applicable fields only.
+            </td>
+            <td valign="top">4.</td>
+            <td valign="top">
+                All payment variables, excluding 'PF Allow.', are not editable from Payment Section at all.
+            </td>
+        </tr>
+    </table>
+    <br />
+</div>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <h5><b><label onclick="ShowHideDiv(divJoiningDet)">Joining Details</label></b></h5>
+        <div id="divJoiningDet" style="display:block;">
+            <table class="table table-bordered">
+                <tr>
+                    @Html.HiddenFor(model => model.NewEmpId)
+                    @Html.HiddenFor(model => model.hdnUpdationLog)
+                    <td>@Html.LabelFor(model => model.EmpName)</td>
+                    <td>
+                        @Html.EditorFor(model => model.EmpName)
+                        @Html.ValidationMessageFor(model => model.EmpName)
+                    </td>
+                    <td><label id="newcode" style="text-decoration:underline;" onclick="getNewId()">EMPCode</label></td>
+                    <td>
+                        <b>@Html.EditorFor(model => model.EmpId)</b>
+                        @Html.ValidationMessageFor(model => model.EmpId)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.JoiningUnit)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.JoiningUnit, ViewBag.CompanyList as SelectList)
+                        @Html.ValidationMessageFor(model => model.JoiningUnit)
+                    </td>
+                    <td>@Html.LabelFor(model => model.Grade)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.Grade, ViewBag.GradeList as SelectList)
+                        @Html.ValidationMessageFor(model => model.Grade)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.CategoryId)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.CategoryId, ViewBag.EmpCategoryList as SelectList)
+                        @Html.ValidationMessageFor(model => model.CategoryId)
+                    </td>
+                    <td>@Html.LabelFor(model => model.DepCode)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.DepCode, ViewBag.DepartmentList as SelectList)
+                        @Html.ValidationMessageFor(model => model.DepCode)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.DesigId)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.DesigId, ViewBag.DesignationList as SelectList)
+                        @Html.ValidationMessageFor(model => model.DesigId)
+                    </td>
+                    <td>@Html.LabelFor(model => model.JobDesc)</td>
+                    <td>
+                        @Html.EditorFor(model => model.JobDesc)
+                        @Html.ValidationMessageFor(model => model.JobDesc)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.Qualification)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.QualId, ViewBag.QualificationList as SelectList)
+                        @Html.ValidationMessageFor(model => model.Qualification)
+                    </td>
+                    <td>@Html.LabelFor(model => model.JoiningDate)</td>
+                    <td>
+                        @Html.EditorFor(model => model.JoiningDate)
+                        @Html.ValidationMessageFor(model => model.JoiningDate)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.AppDate)</td>
+                    <td>
+                        @Html.EditorFor(model => model.AppDate)
+                        @Html.ValidationMessageFor(model => model.AppDate)
+                    </td>
+                    <td>@Html.LabelFor(model => model.IsActive)</td>
+                    <td>
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.ValidationMessageFor(model => model.IsActive)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.ReferredBy)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ReferredBy)
+                        @Html.ValidationMessageFor(model => model.ReferredBy)
+                    </td>
+                    <td>@Html.LabelFor(model => model.Title)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.Title, ViewBag.TitleList as SelectList)
+                        @Html.ValidationMessageFor(model => model.Title)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.TransferDate)</td>
+                    <td>
+                        @Html.EditorFor(model => model.TransferDate)
+                        @Html.ValidationMessageFor(model => model.TransferDate)
+                    </td>
+                    <td>@Html.LabelFor(model => model.GroupJoiningDate)</td>
+                    <td>
+                        @Html.EditorFor(model => model.GroupJoiningDate)
+                        @Html.ValidationMessageFor(model => model.GroupJoiningDate)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.ContValidUpto)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ContValidUpto)
+                        @Html.ValidationMessageFor(model => model.ContValidUpto)
+                    </td>
+                    <td>@Html.LabelFor(model => model.LocationName)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.LocationId, ViewBag.LocationList as SelectList)
+                        @Html.ValidationMessageFor(model => model.LocationName)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.AgencyName)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.AgencyId, ViewBag.AgencyList as SelectList)
+                        @Html.ValidationMessageFor(model => model.AgencyName)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <h5><b><label onclick="ShowHideDiv(divPaymentDet)">Payment Details</label></b></h5>
+        <div id="divPaymentDet" style="display:none;">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:12%;">@Html.LabelFor(model => model.BasicRate)</td>
+                    <td>
+                        @Html.EditorFor(model => model.BasicRate)
+                        @Html.ValidationMessageFor(model => model.BasicRate)
+                    </td>
+                    <td style="width:10%;">@Html.LabelFor(model => model.DA)</td>
+                    <td>
+                        @Html.EditorFor(model => model.DA)
+                        @Html.ValidationMessageFor(model => model.DA)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.ConvAllowance)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ConvAllowance)
+                        @Html.ValidationMessageFor(model => model.ConvAllowance)
+                    </td>
+                    <td>@Html.LabelFor(model => model.HRA)</td>
+                    <td>
+                        @Html.EditorFor(model => model.HRA)
+                        @Html.ValidationMessageFor(model => model.HRA)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.MedicalAllowance)</td>
+                    <td>
+                        @Html.EditorFor(model => model.MedicalAllowance)
+                        @Html.ValidationMessageFor(model => model.MedicalAllowance)
+                    </td>
+                    <td>@Html.LabelFor(model => model.CompAllowance)</td>
+                    <td>
+                        @Html.EditorFor(model => model.CompAllowance)
+                        @Html.ValidationMessageFor(model => model.CompAllowance)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.DWAllowance)</td>
+                    <td>
+                        @Html.EditorFor(model => model.DWAllowance)
+                        @Html.ValidationMessageFor(model => model.DWAllowance)
+                    </td>
+                    <td>@Html.LabelFor(model => model.SpecialPay)</td>
+                    <td>
+                        @Html.EditorFor(model => model.SpecialPay)
+                        @Html.ValidationMessageFor(model => model.SpecialPay)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.IncAmount)</td>
+                    <td>
+                        @Html.EditorFor(model => model.IncAmount)
+                        @Html.ValidationMessageFor(model => model.IncAmount)
+                    </td>
+                    <td><b>TDS&nbsp;Deduction</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.TDSDeduction)
+                        @Html.ValidationMessageFor(model => model.TDSDeduction)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.Others)</td>
+                    <td>
+                        @Html.EditorFor(model => model.Others)
+                        @Html.ValidationMessageFor(model => model.Others)
+                    </td>
+                    <td>@Html.LabelFor(model => model.GrossSalary)</td>
+                    <td>
+                        @Html.DisplayFor(model => model.GrossSalary)
+                        @Html.ValidationMessageFor(model => model.GrossSalary)
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>PF Allow.</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.PFApplicable)
+                        @Html.ValidationMessageFor(model => model.PFApplicable)
+                    </td>
+                    <td><b>ESI Allow.</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.ESIApplicable)
+                        @Html.ValidationMessageFor(model => model.ESIApplicable)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <h5><b><label onclick="ShowHideDiv(divPersonalDet)">Personal Details</label></b></h5>
+        <div id="divPersonalDet" style="display:none;">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:10%;">@Html.LabelFor(model => model.PrevExp)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PrevExp)
+                        @Html.ValidationMessageFor(model => model.PrevExp)
+                    </td>
+                    <td style="width:15%;">@Html.LabelFor(model => model.BirthDate)</td>
+                    <td>
+                        @Html.EditorFor(model => model.BirthDate)
+                        @Html.ValidationMessageFor(model => model.BirthDate)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.Gender)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.Gender, ViewBag.GenderList as SelectList)
+                        @Html.ValidationMessageFor(model => model.Gender)
+                    </td>
+                    <td>@Html.LabelFor(model => model.MaritalStatus)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.MaritalStatus, ViewBag.MStatusList as SelectList)
+                        @Html.ValidationMessageFor(model => model.MaritalStatus)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.FatherName)</td>
+                    <td>
+                        @Html.EditorFor(model => model.FatherName)
+                        @Html.ValidationMessageFor(model => model.FatherName)
+                    </td>
+                    <td>@Html.LabelFor(model => model.FatherOccupation)</td>
+                    <td>
+                        @Html.EditorFor(model => model.FatherOccupation)
+                        @Html.ValidationMessageFor(model => model.FatherOccupation)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.MotherName)</td>
+                    <td>
+                        @Html.EditorFor(model => model.MotherName)
+                        @Html.ValidationMessageFor(model => model.MotherName)
+                    </td>
+                    <td>@Html.LabelFor(model => model.MotherOccupation)</td>
+                    <td>
+                        @Html.EditorFor(model => model.MotherOccupation)
+                        @Html.ValidationMessageFor(model => model.MotherOccupation)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.SpouseName)</td>
+                    <td>
+                        @Html.EditorFor(model => model.SpouseName)
+                        @Html.ValidationMessageFor(model => model.SpouseName)
+                    </td>
+                    <td>@Html.LabelFor(model => model.SpouseAge)</td>
+                    <td>
+                        @Html.EditorFor(model => model.SpouseAge)
+                        @Html.ValidationMessageFor(model => model.SpouseAge)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.AnnivDate)</td>
+                    <td>
+                        @Html.EditorFor(model => model.AnnivDate)
+                        @Html.ValidationMessageFor(model => model.AnnivDate)
+                    </td>
+                    <td>@Html.LabelFor(model => model.SpouseOccupation)</td>
+                    <td>
+                        @Html.EditorFor(model => model.SpouseOccupation)
+                        @Html.ValidationMessageFor(model => model.SpouseOccupation)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.SpouseQual)</td>
+                    <td>
+                        @Html.EditorFor(model => model.SpouseQual)
+                        @Html.ValidationMessageFor(model => model.SpouseQual)
+                    </td>
+                    <td>@Html.LabelFor(model => model.Religion)</td>
+                    <td>
+                        @Html.EditorFor(model => model.Religion)
+                        @Html.ValidationMessageFor(model => model.Religion)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.IdentMark)</td>
+                    <td>
+                        @Html.EditorFor(model => model.IdentMark)
+                        @Html.ValidationMessageFor(model => model.IdentMark)
+                    </td>
+                    <td>@Html.LabelFor(model => model.BGroup)</td>
+                    <td>
+                        @Html.EditorFor(model => model.BGroup)
+                        @Html.ValidationMessageFor(model => model.BGroup)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PanNo)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PanNo)
+                        @Html.ValidationMessageFor(model => model.PanNo)
+                    </td>
+                    <td>@Html.LabelFor(model => model.AadharNo)</td>
+                    <td>
+                        @Html.EditorFor(model => model.AadharNo)
+                        @Html.ValidationMessageFor(model => model.AadharNo)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.VoterIdNo)</td>
+                    <td>
+                        @Html.EditorFor(model => model.VoterIdNo)
+                        @Html.ValidationMessageFor(model => model.VoterIdNo)
+                    </td>
+                    <td>@Html.LabelFor(model => model.DrvLicNo)</td>
+                    <td>
+                        @Html.EditorFor(model => model.DrvLicNo)
+                        @Html.ValidationMessageFor(model => model.DrvLicNo)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PassportNo)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PassportNo)
+                        @Html.ValidationMessageFor(model => model.PassportNo)
+                    </td>
+                    <td>@Html.LabelFor(model => model.CasteId)</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.CasteId, ViewBag.CasteList as SelectList)
+                        @Html.ValidationMessageFor(model => model.CasteId)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <h5><b><label onclick="ShowHideDiv(divContactDet)">Contact Details</label></b></h5>
+        <div id="divContactDet" style="display:none;">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="vertical-align:top;width:15%;">@Html.LabelFor(model => model.CAddress)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.CAddress, new { style = "width:550px;" })
+                        @Html.ValidationMessageFor(model => model.CAddress)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.PAddress)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.PAddress, new { style = "width:550px;" })
+                        @Html.ValidationMessageFor(model => model.PAddress)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.CCity)</td>
+                    <td>
+                        @Html.EditorFor(model => model.CCity)
+                        @Html.ValidationMessageFor(model => model.CCity)
+                    </td>
+                    <td>@Html.LabelFor(model => model.PCity)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PCity)
+                        @Html.ValidationMessageFor(model => model.PCity)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.VillageName)</td>
+                    <td>
+                        @Html.EditorFor(model => model.VillageName)
+                        @Html.ValidationMessageFor(model => model.VillageName)
+                    </td>
+                    <td>@Html.LabelFor(model => model.PoliceStation)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PoliceStation)
+                        @Html.ValidationMessageFor(model => model.PoliceStation)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.SubDivision)</td>
+                    <td>
+                        @Html.EditorFor(model => model.SubDivision)
+                        @Html.ValidationMessageFor(model => model.SubDivision)
+                    </td>
+                    <td>@Html.LabelFor(model => model.PostOffice)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PostOffice)
+                        @Html.ValidationMessageFor(model => model.PostOffice)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.ContactNo)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ContactNo)
+                        @Html.ValidationMessageFor(model => model.ContactNo)
+                    </td>
+                    <td>@Html.LabelFor(model => model.Email)</td>
+                    <td>
+                        @Html.EditorFor(model => model.Email)
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PhoneNo)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PhoneNo)
+                        @Html.ValidationMessageFor(model => model.PhoneNo)
+                    </td>
+                    <td>@Html.LabelFor(model => model.PhoneExtNo)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PhoneExtNo)
+                        @Html.ValidationMessageFor(model => model.PhoneExtNo)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <h5><b><label onclick="ShowHideDiv(divEmergencyDet)">Emergency Details</label></b></h5>
+        <div id="divEmergencyDet" style="display:none;">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:12px;">@Html.LabelFor(model => model.EmgContactPer)</td>
+                    <td>
+                        @Html.EditorFor(model => model.EmgContactPer)
+                        @Html.ValidationMessageFor(model => model.EmgContactPer)
+                    </td>
+                    <td style="width:12px;">@Html.LabelFor(model => model.EmgContactNo)</td>
+                    <td>
+                        @Html.EditorFor(model => model.EmgContactNo)
+                        @Html.ValidationMessageFor(model => model.EmgContactNo)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.EmgContactPer2)</td>
+                    <td>
+                        @Html.EditorFor(model => model.EmgContactPer2)
+                        @Html.ValidationMessageFor(model => model.EmgContactPer2)
+                    </td>
+                    <td>@Html.LabelFor(model => model.EmgContactNo2)</td>
+                    <td>
+                        @Html.EditorFor(model => model.EmgContactNo2)
+                        @Html.ValidationMessageFor(model => model.EmgContactNo2)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <h5><b><label onclick="ShowHideDiv(divReferenceDet)">Reference Details</label></b></h5>
+        <div id="divReferenceDet" style="display:none;">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:12px;">@Html.LabelFor(model => model.RefName1)</td>
+                    <td>
+                        @Html.EditorFor(model => model.RefName1)
+                        @Html.ValidationMessageFor(model => model.RefName1)
+                    </td>
+                    <td style="width:12px;">@Html.LabelFor(model => model.RefName2)</td>
+                    <td>
+                        @Html.EditorFor(model => model.RefName2)
+                        @Html.ValidationMessageFor(model => model.RefName2)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.RefAddress1)</td>
+                    <td>
+                        @Html.EditorFor(model => model.RefAddress1)
+                        @Html.ValidationMessageFor(model => model.RefAddress1)
+                    </td>
+                    <td>@Html.LabelFor(model => model.RefAddress2)</td>
+                    <td>
+                        @Html.EditorFor(model => model.RefAddress2)
+                        @Html.ValidationMessageFor(model => model.RefAddress2)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.RefContactNo1)</td>
+                    <td>
+                        @Html.EditorFor(model => model.RefContactNo1)
+                        @Html.ValidationMessageFor(model => model.RefContactNo1)
+                    </td>
+                    <td>@Html.LabelFor(model => model.RefContactNo2)</td>
+                    <td>
+                        @Html.EditorFor(model => model.RefContactNo2)
+                        @Html.ValidationMessageFor(model => model.RefContactNo2)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <h5><b><label onclick="ShowHideDiv(divBankDet)">Bank Details</label></b></h5>
+        <div id="divBankDet" style="display:none;">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:12px;">@Html.LabelFor(model => model.BankName)</td>
+                    <td>
+                        @Html.EditorFor(model => model.BankName)
+                        @Html.ValidationMessageFor(model => model.BankName)
+                    </td>
+                    <td style="width:12px;">@Html.LabelFor(model => model.BranchAddress)</td>
+                    <td>
+                        @Html.EditorFor(model => model.BranchAddress)
+                        @Html.ValidationMessageFor(model => model.BranchAddress)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.NameOnPassbook)</td>
+                    <td>
+                        @Html.EditorFor(model => model.NameOnPassbook)
+                        @Html.ValidationMessageFor(model => model.NameOnPassbook)
+                    </td>
+                    <td>@Html.LabelFor(model => model.AccountNo)</td>
+                    <td>
+                        @Html.EditorFor(model => model.AccountNo)
+                        @Html.ValidationMessageFor(model => model.AccountNo)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.IfscCode)</td>
+                    <td>
+                        @Html.EditorFor(model => model.IfscCode)
+                        @Html.ValidationMessageFor(model => model.IfscCode)
+                    </td>
+                    <td>@Html.LabelFor(model => model.MicrCode)</td>
+                    <td>
+                        @Html.EditorFor(model => model.MicrCode)
+                        @Html.ValidationMessageFor(model => model.MicrCode)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <h5><b><label onclick="ShowHideDiv(divPfEsiDet)">PF/ESI Details</label></b></h5>
+        <div id="divPfEsiDet" style="display:none;">
+            <table class="table table-bordered">
+                <tr>
+                    <td>@Html.LabelFor(model => model.PFNumber)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PFNumber)
+                        @Html.ValidationMessageFor(model => model.PFNumber)
+                    </td>
+                    <td>@Html.LabelFor(model => model.ESINumber)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ESINumber)
+                        @Html.ValidationMessageFor(model => model.ESINumber)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PFNominee)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PFNominee)
+                        @Html.ValidationMessageFor(model => model.PFNominee)
+                    </td>
+                    <td>@Html.LabelFor(model => model.ESINominee)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ESINominee)
+                        @Html.ValidationMessageFor(model => model.ESINominee)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PFNomineeAge)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PFNomineeAge)
+                        @Html.ValidationMessageFor(model => model.PFNomineeAge)
+                    </td>
+                    <td>@Html.LabelFor(model => model.ESINomineeAge)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ESINomineeAge)
+                        @Html.ValidationMessageFor(model => model.ESINomineeAge)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PFNomineeRelation)</td>
+                    <td>
+                        @Html.EditorFor(model => model.PFNomineeRelation)
+                        @Html.ValidationMessageFor(model => model.PFNomineeRelation)
+                    </td>
+                    <td>@Html.LabelFor(model => model.ESINomineeRelation)</td>
+                    <td>
+                        @Html.EditorFor(model => model.ESINomineeRelation)
+                        @Html.ValidationMessageFor(model => model.ESINomineeRelation)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.UAN)</td>
+                    <td>
+                        @Html.EditorFor(model => model.UAN)
+                        @Html.ValidationMessageFor(model => model.UAN)
+                    </td>
+                    <td>@Html.LabelFor(model => model.LICId)</td>
+                    <td>
+                        @Html.EditorFor(model => model.LICId)
+                        @Html.ValidationMessageFor(model => model.LICId)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <h5><b><label onclick="ShowHideDiv(divLeavingDet)">Leaving/Updation Detail</label></b></h5>
+        <div id="divLeavingDet" style="display:none;">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:12%;">@Html.LabelFor(model => model.LeavingDate)</td>
+                    <td>
+                        @Html.EditorFor(model => model.LeavingDate)
+                        @Html.ValidationMessageFor(model => model.LeavingDate)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.Reason)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.Reason, new { style = "width:550px;" })
+                        @Html.ValidationMessageFor(model => model.Reason)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.Remarks)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.Remarks, new { style = "width:550px;" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">@Html.LabelFor(model => model.UpdationLog)</td>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.UpdationLog, new { style = "width:550px;" })
+                        @Html.ValidationMessageFor(model => model.UpdationLog)
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#IsActive").attr("style", "width:55px;height:25px;");
+            $("#PFApplicable").attr("style", "width:55px;height:25px;");
+            $("#ESIApplicable").attr("style", "width:55px;height:25px;");
+            document.getElementById("Title").value = '@Model.Title';//note
+            $("#IfscCode").attr("maxlength", "11");
+            $("#IfscCode").attr("placeholder", "Max Length: 11 Chars");
+        });
+
+        //Date Picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        function displayAll() {
+            divJoiningDet.style.display = "block";
+            divPaymentDet.style.display = "block";
+            divPersonalDet.style.display = "block";
+            divContactDet.style.display = "block";
+            divEmergencyDet.style.display = "block";
+            divReferenceDet.style.display = "block";
+            divBankDet.style.display = "block";
+            divPfEsiDet.style.display = "block";
+            divLeavingDet.style.display = "block";
+        }
+    </script>
+
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function getNewId() {
+            var liComp = document.getElementById("JoiningUnit");
+            var compIndex = liComp.selectedIndex;
+            var compId = liComp.options[compIndex].value;
+            var compName = liComp.options[compIndex].text;
+
+            var liGrade = document.getElementById("Grade");
+            var gradeIndex = liGrade.selectedIndex;
+            var gradeId = liGrade.options[gradeIndex].value;
+            var gradeName = liGrade.options[gradeIndex].text;
+
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getNewEmpCode", "Employee"))",
+                    data: { "compcode": compId, "grade": gradeId },
+                    success: function (data) {
+                        //$('#EmpId').val(data.corpaddress);
+                        $('#newcode').text('EMPCode:-' + data.empid);
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                    }
+            });
+
+        }
+    </script>
+
+}
+

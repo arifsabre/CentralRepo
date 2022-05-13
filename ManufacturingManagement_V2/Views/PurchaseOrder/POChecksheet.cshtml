@@ -1,0 +1,192 @@
+﻿@model ManufacturingManagement_V2.Models.PurchaseOrderMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Purchase Order -Checksheet</b></h4>
+@if (@Model.POrderId != 0)
+{
+<p>
+    @Html.ActionLink("PO Detail", "GeneratePO",
+    new { porderid = Model.POrderId }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("Item Detail", "../PurchaseOrderItem/CreateUpdate",
+    new { porderid = Model.POrderId, itemrecid = 0 }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("MA Detail", "../ModifyAdvice/CreateUpdate",
+    new { porderid = Model.POrderId, recslno = 0 }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("PO Checksheet", "PurchaseOrder/POChecksheet",
+    new { porderid = Model.POrderId }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("BG Detail", "../BankGuarantee/CreateUpdate",
+    new { id = Model.TenderId }, new { target = "_blank", style = "color:blue;text-decoration:underline;font-weight:bold;" })
+</p>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+
+        @Html.HiddenFor(model => model.RailwayId)
+        @Html.HiddenFor(model => model.POrderId)
+        @Html.HiddenFor(model => model.WForPOrderId)
+        @Html.HiddenFor(model => model.AcCode)
+        @Html.HiddenFor(model => model.TenderId)
+        @Html.HiddenFor(model => model.PayingAuthId)
+        @Html.HiddenFor(model => model.HdnOrderStatus)
+
+        <table class="table table-bordered">
+
+            <tr>
+                <td colspan="2">
+                    <b>@Html.DisplayFor(model => model.POInfo)</b>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:10%;">@Html.LabelFor(model => model.ProductDescChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.ProductDescChk)
+                    @Html.ValidationMessageFor(model => model.ProductDescChk)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.DrgSpcChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.DrgSpcChk)
+                    @Html.ValidationMessageFor(model => model.DrgSpcChk)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.BasicRateChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.BasicRateChk)
+                    @Html.ValidationMessageFor(model => model.BasicRateChk)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.TaxesChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.TaxesChk)
+                    @Html.ValidationMessageFor(model => model.TaxesChk)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.PmtTermsChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.PmtTermsChk)
+                    @Html.ValidationMessageFor(model => model.PmtTermsChk)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.InspByChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.InspByChk)
+                    @Html.ValidationMessageFor(model => model.InspByChk)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.ConsigneeChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.ConsigneeChk)
+                    @Html.ValidationMessageFor(model => model.ConsigneeChk)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.DelvScheduleChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.DelvScheduleChk)
+                    @Html.ValidationMessageFor(model => model.DelvScheduleChk)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.ConsgQtyDPChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.ConsgQtyDPChk)
+                    @Html.ValidationMessageFor(model => model.ConsgQtyDPChk)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.DispatchModeChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.DispatchModeChk)
+                    @Html.ValidationMessageFor(model => model.DispatchModeChk)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.BGSecurityChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.BGSecurityChk)
+                    @Html.ValidationMessageFor(model => model.BGSecurityChk)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.AnyOtherChk)</td>
+                <td>
+                    @Html.EditorFor(model => model.AnyOtherChk)
+                    @Html.ValidationMessageFor(model => model.AnyOtherChk)
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+    <table>
+        <tr>
+            <td>
+                <input type="submit" class="btn btn-default" value='Submit' />
+            <td>
+                @Html.ActionLink("Close", null, null, new { @onclick = "window.close();", @class = "btn btn-default" })
+            </td>
+        </tr>
+    </table>
+
+    <h5><b>@ViewBag.Message</b></h5>
+    <br />
+    <br />
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#ProductDescChk").attr("style", "width:480px;");
+            $("#DrgSpcChk").attr("style", "width:480px;");
+            $("#BasicRateChk").attr("style", "width:480px;");
+            $("#TaxesChk").attr("style", "width:480px;");
+            $("#PmtTermsChk").attr("style", "width:480px;");
+            $("#InspByChk").attr("style", "width:480px;");
+            $("#ConsigneeChk").attr("style", "width:480px;");
+            $("#DelvScheduleChk").attr("style", "width:480px;");
+            $("#ConsgQtyDPChk").attr("style", "width:480px;");
+            $("#DispatchModeChk").attr("style", "width:480px;");
+            $("#BGSecurityChk").attr("style", "width:480px;");
+            $("#AnyOtherChk").attr("style", "width:480px;");
+        });
+    </script>
+
+}
+

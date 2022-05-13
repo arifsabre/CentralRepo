@@ -1,0 +1,54 @@
+﻿@model ManufacturingManagement_V2.Models.MessageModel
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+    Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Letter</title>
+    <script>
+    </script>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <div>
+            @*<p>
+                    @Html.ActionLink("Go To Library", "Index", "Letter", null, new { @class = "btn btn-success" })
+                </p>*@
+            <table m class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>File_No</th>
+                        <th>File_Name</th>
+                        <th>View</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Item_List1)
+                    {
+                        <tr>
+
+                            <td>@Html.DisplayFor(model => item.Id)</td>
+                            <td>@Html.DisplayFor(model => item.FileName)</td>
+                            <td> @Html.ActionLink("View", "ViewAttachedFile", new { id = item.Id }, new { target = "_blank" })</td>
+                            <td>
+                                @Html.ActionLink("Downlaod", "DownLoadFile", new { id = item.Id })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                </tfoot>
+            </table>
+
+
+        </div>
+    }
+</body>
+</html>

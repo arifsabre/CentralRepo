@@ -1,0 +1,123 @@
+﻿@model ManufacturingManagement_V2.Models.AlertsMdl
+@{
+    ViewBag.Title = "HRDashboard";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<h2>HR Department</h2>
+<div style="width:100%;border:solid;border-width:1px;border-color:blue;border-radius:4px;padding-left:2px;">
+@Html.Partial("AlertPartialSummary",Model)
+
+<div id="dialog" style="display: none">
+</div>
+@*<input id="forward" type="button" value="Forward" style="padding:10px 20px;height:25px;" />
+    <label id="lblAdminQuery"></label >*@
+@*<a class="details" href="javascript:;">View</a>*@
+
+<br/>
+<h4><label onclick="ShowHideDiv(divEntry)">Entries</label></h4>
+    <div id="divEntry" style="display:block;">
+        <table>
+            <tr>
+                <td style="width:50%">@Html.ActionLink("Employee Master", "../Employee/Index")</td>
+                <td style="width:50%">@Html.ActionLink("Attendance Entry", "../Attendance/Index")</td>
+            </tr>
+            
+            <tr>
+                <td>@Html.ActionLink("Incentives Entry", "../AttendanceDetail/CreateUpdate")</td>
+                <td>@Html.ActionLink("Salary Generation", "../Salary/GenerateSalary")</td>
+            </tr>
+            
+            <tr>
+                <td>@Html.ActionLink("Incentive Generation", "../Salary/GenerateIncentive")</td>
+                <td>@Html.ActionLink("Compliance", "../Home/ComplianceDashboard", null, new { @target="_new"})</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>  
+<br/><br/>
+<h4><label onclick="ShowHideDiv(divReport)">Reports</label></h4>
+    <div id="divReport" style="display:block;">
+        <table>
+            <tr>
+                <td style="width:50%">@Html.ActionLink("Employee Report", "../EmployeeReport/Index") </td>
+                <td style="width:50%">@Html.ActionLink("Attendance Report", "../AttendanceReport/Index")</td>
+            </tr>
+            
+            <tr>
+                <td>@Html.ActionLink("Salary Report", "../SalaryReport/Index") 
+                <td>@Html.ActionLink("Advance Report", "../AdvanceReport/Index") </td>
+            </tr>
+            
+            <tr>
+                <td>@Html.ActionLink("Live Attendance", "../B_Live_Data/Index")</td>
+                <td>@Html.ActionLink("Form 14 / 15", "../Form1415Report/Index")</td>
+            </tr>
+        </table>
+    </div>  
+    <br/>
+</div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        function ShowHideDiv(id) {
+            if (id.style.display == "block") {
+                id.style.display = "none";
+            }
+            else {
+                id.style.display = "block";
+            }
+        }
+    </script>
+
+    @*Popup Display*@
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+    <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript">
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                title: "View Details",
+                beforeClose: function (event, ui) {
+                    if (!$("#terms").prop("checked")) {
+                        event.preventDefault();
+                        //$("[for = terms]").addClass("invalid");
+                        $('#lblAdminQuery').text('Not OK');
+                    }
+                    else {
+                        $('#lblAdminQuery').text('OK');
+                    }
+                }
+            });
+            //$("#CustomerGrid .details").click(function () {
+            $("#forward").click(function () {
+                var customerId = '0';//$(this).closest("tr").find("td").eq(0).html();
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/PopupModalDialogPartial",
+                    data: '{customerId: "' + customerId + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#dialog').html(response);
+                        $('#dialog').dialog('open');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+                
+            });
+        });
+    </script>
+
+}
+

@@ -1,0 +1,125 @@
+﻿@model ManufacturingManagement_V2.Models.QuailBookMdl
+@{
+    ViewBag.Title = "QuailAttendance";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>QUAIL Attendance</h2>
+<br/>
+<div class="master" style="font-size:10pt;color:black;font-weight:bold;">
+@ViewBag.QmInfo
+</div>
+<br/>
+<p>
+    <span style="font-weight:bold;">Member:</span> 
+    <input type="text" style="width:250px;" placeholder="start typing, then select" id="txtUserName"/>
+    <input id="submit" type="button" value='Add' onclick="AddAttendance();" style="height:35px;" />
+    @Html.ActionLink("Close", null,null,new{@onclick="window.close()", @style="color:blue;"})
+</p>
+@Html.HiddenFor(model => model.QmId)
+@Html.Hidden("hfUserId", null, new { @id = "hfUserId" })
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:auto;">
+            Member
+        </th>
+        <th style="width:45px;"> Remove </th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model.Attendance)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.UserName)
+            </td>
+            <td>
+                @Html.ActionLink("Remove", null, null,
+                new { onclick = "RemoveAttendance('" + item.UserId + "')" })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")*@
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $("#txtUserName").autocomplete({
+            source: function (request, response) {
+                //var x = document.getElementsByClassName(".autoc");
+                //alert(request.term);
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteUsersList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                //setting userid value to hidden field
+                document.getElementById('hfUserId').value = ui.item.Id;
+            }
+        });
+</script>
+
+    <script>
+    function AddAttendance() {
+        var userid = document.getElementById("hfUserId").value;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AddAttendance", "QuailBook")',
+            dataType: 'html',
+            data: ({
+                qmid: '@Model.QmId',
+                userid: userid
+            }),
+            success: function () {
+                //alert("Successfully posted!");
+                location.reload();
+            }
+        });
+        //window.location.href = "../QuailBook/QuailAttendance?qmid=" + @Model.QmId + "";
+    }
+</script>
+
+<script>
+    function RemoveAttendance(userid) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DeleteAttendance", "QuailBook")',
+            dataType: 'html',
+            data: ({
+                qmid: '@Model.QmId',
+                userid: userid
+            }),
+            success: function () {
+                location.reload();
+            }
+        });
+        //window.location.href = "../QuailBook/QuailAttendance?qmid=" + @Model.QmId + "";
+    }
+</script>
+
+}

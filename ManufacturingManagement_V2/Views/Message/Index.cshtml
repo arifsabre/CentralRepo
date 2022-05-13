@@ -1,0 +1,401 @@
+﻿@model ManufacturingManagement_V2.Models.MessageModel
+@{
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+    // Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Script/Site.js"></script>
+    <script>
+        function SendMail() {
+            $('#modal-Insert').modal('show');
+            var ifrm = document.getElementById("frmInsert");
+            ifrm.setAttribute('src', "http://localhost:58521//Message/Create")
+            //ifrm.setAttribute('src', "https://pragerp.com/Message/Create")
+        }
+
+
+        function DisplayFiles(recid) {
+            $('#modal-ShowFiles').modal('show');
+            var ifrm = document.getElementById("frmFile");
+            ifrm.setAttribute('src', "http://localhost:58521//Message/Details?id=" + recid)
+            //ifrm.setAttribute('src', "https://pragerp.com/Message/Details?id=" + recid)
+        }
+
+        function MailList() {
+            $('#modal-Lists').modal('show');
+            var ifrm = document.getElementById("frmMail");
+            ifrm.setAttribute('src', "http://localhost:58521//Message/MailList")
+            //ifrm.setAttribute('src', "https://pragerp.com/Message/MailList")
+        }
+
+        function UploadMemoFile(id) {
+            $.ajax({
+                url: "/Message/Memo_UploadRecord/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId5').val(response.RecordId);
+
+                    $('#modal-UploadMemoFile').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        //RecordDetails
+        function GetRecord(id) {
+            $.ajax({
+                url: "/Message/MemoRecord_V/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#RecordId_V').val(response.RecordId);
+                    $('#ShortName_V').val(response.ShortName);
+                    $('#Subject_V').val(response.Subject);
+                    $('#MemoNo_V').val(response.MemoNo);
+                    $('#SendDate_V').val(response.SendDate1);
+                    $('#EmailFrom_V').val(response.EMailFrom);
+                    $('#SendTo_V').val(response.SendTo);
+                    $('#Detail_V').val(response.Detail);
+                    $('#CreatedBy_V').val(response.UserName);
+                    $('#CreatedOn_V').val(response.CreatedOn);
+                    $('#UpdatedOn_V').val(response.UpdatedOn);
+                    $('#UpdatedBy_V').val(response.UserName);
+                    $('#FullName_V').val(response.FullName);
+                    $('#modal-RecordDetail').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <div style="margin-top:2px;margin-bottom:2px">
+        <button type="button" class="btn btn-success"
+                data-toggle="modal" onclick="SendMail()">
+            Add New Record
+        </button>
+        <div id="printbar" class="pull-right" style="margin-right:3px;margin-bottom:2px;margin-top:2px">
+        </div>
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover table-condensed table-responsive" style="width:100%">
+                            <thead>
+                                <tr>
+
+                                    @*<th>Memo No</th>*@
+                                    <th>Memo No</th>
+                                    <th>Company</th>
+                                    <th>Memo Date</th>
+                                    <th>Send From</th>
+                                    <th>Send To</th>
+                                    <th>File</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+                                        @Html.HiddenFor(model => item.RecordId)
+                                        @*<td>
+
+                                            <td>*@
+                                        <td>
+                                            @Html.DisplayFor(model => item.MemoNo)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(model => item.ShortName)
+                                        </td>
+                                        <td>@Html.DisplayFor(model => item.SendDate)</td>
+                                        <td>@Html.DisplayFor(model => item.EMailFrom)</td>
+                                        <td style="word-break: break-all;">@Html.DisplayFor(model => item.SendTo)</td>
+                                        <td>
+                                            <a onclick="DisplayFiles(@item.RecordId)">
+                                                <i class="fa fa-file-pdf-o " style="font-size:12pt;"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a onclick="GetRecord(@item.RecordId)">
+                                                <i class="fa fa-eye">
+                                                </i>
+                                            </a>
+                                            <a onclick="UploadMemoFile(@item.RecordId)">
+                                                <i class="fa fa-upload">
+                                                </i>
+                                            </a>
+
+                                            @*<a>
+                                                    @Html.ActionLink(" ", "DeleteMemo", "Message", new { id = item.RecordId }, new { onclick = "return confirm('Are you sure wants to delete?');", @class = "fa fa-trash-o" })
+                                                </a>*@
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Insert" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content modal-sm" style="width:900px;height:800px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Add New Record</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmInsert" runat="server" scrolling="no" frameborder="0"
+                                style="width:850px;height:700px;opacity:100">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*///*@
+    <div class="modal fade" id="modal-ShowFiles">
+        <div class="modal-dialog">
+            <div class="modal-content modal-sm" style="width:600px;height:250px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Attached Files</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmFile" runat="server" scrolling="no" frameborder="0"
+                                style="width:550px;height:150px;opacity:100">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-RecordDetail">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:800px;height:1000px">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Message Detail</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Edit_HODApproval12", "ContractorIndent", FormMethod.Post))
+                        {
+                            <div class="pull-right">
+
+
+                                <input type="submit" class="btn btn-success" value="Priview & Print" onclick="target = '_blank';" style="width:150px;"
+                                       formaction="@Url.Action("Memo_PrintMail")" />
+
+
+                            </div>
+                            <div>
+                                <table style="width:100%">
+
+                                    <tr>
+                                        @*<td style="padding:10px;">Memo No: </td>*@
+                                        <td><input type="hidden" class="form-control" id="RecordId_V" name="RecordId" style="border:none;width:100px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">Memo No: </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="MemoNo_V" name="MemoNo" style="border:none;width:100px">
+
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Date:
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="SendDate_V" name="SendDate" style="border:none;width:300px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            Subject:
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="Subject_V" name="Subject" style="border:none;width:500px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px;vertical-align:top">
+                                            Send To:
+                                        </td>
+                                        <td>
+                                            @*<input type="text" class="form-control" id="SendTo_V" name="SendTo" style="width:600px;height:100px;word-wrap:break-word">*@
+                                            @Html.TextAreaFor(m => m.SendTo, new { @id = "SendTo_V", name = "SendTo", @style = "width:600px;height:120px;font-weight:bold;word-wrap:break-word" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px">
+                                            From:
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="EmailFrom_V" name="EmailFrom" style="border:none;width:500px">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 10px">
+                                            Sender(Onbehalf of)
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="FullName_V" name="FullName" style="border:none;width:500px">
+                                        </td>
+                                    </tr>
+
+
+
+                                </table>
+                            </div>
+                            <br />
+                            <div>
+                                @*<td style="padding:10px">
+                                    </td>*@
+
+                                @Html.TextAreaFor(model => model.Detail, 0, 0, new { @class = "Editor", @style = "width:780px;height:350px;word-wrap:break-word;border:none", id = "Detail_V" })
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-UploadMemoFile">
+        <div class="modal-dialog" style="width:400px;height:400px">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Upload Memo File</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        @using (Html.BeginForm("Memo_UploadFile", "Message", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="modal-body">
+                                <div class="col-lg-10">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    @* @Html.HiddenFor(model => model.HODApprovalBy)*@
+                                    <label>Record No</label>
+                                    <input type="number" class="form-control" id="RecordId5" name="RecordId">
+
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <br />
+                                    <input type="file" name="postedFile" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" id="btnUpload1" class="btn-success" value="Submit" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="modal fade" id="modal-EmailList">
+        <div class="modal-dialog" style="width:400px;height:400px">
+            <div class="modal-content">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="box-title">Email and Name</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:50%;height:600px;color :black">
+                            <thead>
+                                <tr>
+                                    <th>UserName</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List1)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(model => item.FullName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.Email)
+                                        </td>
+
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+</body>
+</html>
+

@@ -1,0 +1,78 @@
+﻿@model ManufacturingManagement_V2.Models.AgentMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Agent Detail</b></h4>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id = Model.AgentId }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("View Log", "../EventLogReport/getLogDetail",
+    new { tblid = 91, pkval = Model.AgentId }, new { @target = "_blank", @class = "btn btn-default" })
+</p>
+
+<fieldset>
+    <div class="form-group">
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.SVPTypeName)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.SVPTypeName)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.AgentId)</td>
+                <td style="vertical-align:top;">: <b>@Html.DisplayFor(model => model.AgentId)</b></td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.AgentName)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.AgentName)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.Railway)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Railway)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.CityName)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.CityName)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.ContactNo)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.ContactNo)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.Company)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.Company)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.EMail)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EMail)</td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;font-weight:bold;vertical-align:top;">@Html.DisplayNameFor(model => model.PostalAddress)</td>
+                <td style="vertical-align:top;">: @Html.DisplayFor(model => model.PostalAddress)</td>
+            </tr>
+
+        </table>
+    </div>
+</fieldset>
+
+@if (ViewBag.IsAdmin == "1")
+{
+    using (Html.BeginForm())
+    {
+        <p>
+            <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+        </p>
+    }
+}

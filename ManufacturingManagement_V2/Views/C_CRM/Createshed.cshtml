@@ -1,0 +1,70 @@
+﻿@model ManufacturingManagement_V2.Models.C_ComplaintMDI
+
+@{
+    ViewBag.Title = "Createshed";
+    // Layout = "~/Views/Shared/_LayoutCommon1.cshtml";
+}
+<link href="~/Contents/bootstrap.min.css" rel="stylesheet" />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @*<h4>C_ComplaintMDI</h4>*@
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @*@Html.HiddenFor(model => model.userid, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.createdby, new { htmlAttributes = new { @class = "form-control" } })*@
+        @*<div class="form-group">
+                @Html.HiddenFor(model => model.ShecId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.HiddenFor(model => model.userid, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => model.updatedby, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ShecId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.ShedName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ShedName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ShedName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tranner, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Tranner, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tranner, "", new { @class = "text-danger" })
+               
+                @Html.HiddenFor(model => model.createdby)
+                @Html.HiddenFor(model => model.userid)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-success" value='@ViewBag.AddEdit' />
+            </div>
+        </div>
+    </div>
+ 
+}
+<script src="~/Script/Site4.js"></script>
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@

@@ -1,0 +1,137 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.SaleMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Sales Return List</b></h4>
+
+<fieldset>
+    @using (Ajax.BeginForm("FilterIndex", "SaleGSTReturn", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" })
+
+            &nbsp;&nbsp;From
+            @Html.TextBox("txtDtFrom", null, new { @class = "datepicker", @style = "width:90px;" })
+
+            &nbsp;To
+            @Html.TextBox("txtDtTo", null, new { @class = "datepicker", @style = "width:90px;" })
+
+            &nbsp;<button class="btn btn-default">Submit</button>
+        </div>
+    }
+</fieldset>
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:50px;">
+            @Html.DisplayNameFor(model => model.VNo)
+        </th>
+        <th style="width:70px;">
+            @Html.DisplayNameFor(model => model.VDate)
+        </th>
+        <th style="width:70px;">
+            AgainstInvoice
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.PayingAuthName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.ConsigneeName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.RCInfo)
+        </th>
+        <th>Links</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @i
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.VNo)
+    </td>
+    <td>
+        @Html.ValueFor(model => item.VDate, "{0:dd/MM/yyyy}")
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RetInvoiceNo)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.PayingAuthName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ConsigneeName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RCInfo)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "CreateUpdate", new { id = item.SaleRecId })
+        @if (ViewBag.lgtype == 0)
+        {
+            @Html.ActionLink("Delete", null, null,
+            new { onclick = "deleteSaleReturn('" + item.SaleRecId + "')", style = "color:black;" })
+        }
+        <br />@Html.ActionLink("ViewLog", "../EventLogReport/getLogDetail",
+           new { tblid = 15, pkval = item.SaleRecId }, new { @target = "_blank" })
+    </td>
+</tr>
+        i++;
+    }
+
+</table>
+
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            //document.getElementById("txtAttDay").focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.DtFrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.DtTo';
+        });
+    </script>
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy"
+        });
+    </script>
+
+    <script>
+        function deleteSaleReturn(salerecid) {
+            var a = confirm("Are you sure to delete this record?");
+            if (a == false) {
+                return;
+            }
+            var data = {
+                salerecid: salerecid
+            }
+            $.ajax({
+                url: '/SaleGSTReturn/Delete',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    alert(d.message);
+                    if (d.status == true) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+
+}
+
+

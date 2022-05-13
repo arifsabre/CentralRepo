@@ -1,0 +1,55 @@
+﻿@model ManufacturingManagement_V2.Models.LoginMdl
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Login</h2>
+@ViewBag.Result
+<fieldset>
+        <legend>Login</legend>
+            @using (Ajax.BeginForm("LoginUser", "Login",
+                                    new AjaxOptions { UpdateTargetId = "divLoginUser" }))
+            {
+                <div id="divInterestDeatils"></div>
+                    <ol>
+                        <li>
+                            @Html.Label("User Id")
+                            @Html.TextBox("txtUserId", null, new { autocomplete="off"})
+                        </li>
+                        <li>
+                            @Html.Label("Password")
+                            @Html.Password("txtPassword")
+                        </li>
+                        @*<li>
+                            <div>
+                                <a href="@Url.Action("CaptchaImage1")">
+                                   <img alt="Captcha" src="@Url.Action("CaptchaImage1")" /> 
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            @Html.Label("Captcha")
+                            @Html.TextBox("txtCaptcha", null, new { autocomplete="off"})
+                        </li>*@
+                    </ol>
+                @*<button onclick="return alert('* NOTICE *\r\n1. Always keep notification page open.\r\n2. Be sure that all other tabs/pages are closed before changing the company/financial year.\r\n3. [Working in multi tabs/pages is restricted to a single company/financial year.]\r\n4. Close all other tabs/pages before logout.')">*@
+                <button class="btn btn-default">Submit</button>
+                @*<a href="http://192.168.0.218:85" style="width: 57px; font-weight:normal;">ERP V.1</a>*@
+                <br/><br/>
+                @*<a target="_blank" href="http://localhost:59772/Login/ForgetPassword"
+                style="width: 57px; font-weight:normal;color:blue;">Forgot Password ?</a>*@
+                <a target="_blank" href="http://192.168.0.218:105/Login/ForgetPassword"
+                style="width: 57px; font-weight:normal;color:blue;">Forgot Password ?</a>
+            }   
+</fieldset>
+
+@section Scripts{
+<script type="text/javascript">
+    $(function () {
+        $("input[type=text]").first().focus();
+    });
+</script>
+}
+

@@ -1,0 +1,45 @@
+﻿@model ManufacturingManagement_V2.Models.ContractorIndentMDI
+@{
+    ViewBag.Title = "IndexlApprovalDashboard";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<br />
+<div class="row">
+    <div class="col-md-12">
+              <div class="col-md-6 pull-left">
+            <div class="panel panel-primary">
+                <div class="panel panel-heading">
+                    <h4 class="panel-title">Task Approval Dashboard</h4>
+                </div>
+                <div class="panel-body text-center">
+                    <div class="col-md-4">
+                        <a href='@Url.Action("Index", "ContractorIndent")'>
+                           @* <i class="fa fa-calendar-o fa-lg"></i>*@
+                            <h4>HOD Pending</h4>
+                            <h4>@ViewBag.HODApproval</h4>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href='@Url.Action("Index", "ContractorIndent")'>
+                           @* <i class="fa fa-calendar-o fa-lg"></i>*@
+                            <h4 style="text-align:right">Final Pending</h4>
+                           <h4>@ViewBag.FinalApproval</h4>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href='@Url.Action("IndexHODFinalApproval", "ContractorIndent")'>
+                            @*<i class="fa fa-calendar-o fa-lg"></i>*@
+                            <h4>Monitor Task</h4>
+                            <h4>@ViewBag.FinalHODApproval</h4>
+                        </a>
+                    </div>
+                   </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Script/Site.js"></script>
+
+
+
+

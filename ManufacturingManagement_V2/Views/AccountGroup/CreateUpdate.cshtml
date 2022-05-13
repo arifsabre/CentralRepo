@@ -1,0 +1,89 @@
+﻿@model ManufacturingManagement_V2.Models.AccountMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Account Group</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <table class="table table-bordered">
+            @Html.HiddenFor(model => model.RecId)
+            @Html.HiddenFor(model => model.AcCode)
+            @Html.HiddenFor(model => model.GrCode)
+            <tr>
+                <td style="width:12%;">@Html.LabelFor(model => model.GrDesc)</td>
+                <td>
+                    @Html.EditorFor(model => model.GrDesc)
+                    @Html.ValidationMessageFor(model => model.GrDesc)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.AcDesc)</td>
+                <td>
+                    @Html.EditorFor(model => model.AcDesc)
+                    @Html.ValidationMessageFor(model => model.AcDesc)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.BSheet)</td>
+                <td>
+                    @Html.EditorFor(model => model.BSheet)
+                    @Html.ValidationMessageFor(model => model.BSheet)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#BSheet").attr("style", "width:55px;height:25px;");
+            $("#GrDesc").attr("placeholder", "start typing, then select");
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#GrDesc").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteAccountWithGroup", "HelpUtility"))",
+                    data: { "term": request.term, "rectype": 'g' },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('GrCode').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}

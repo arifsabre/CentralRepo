@@ -1,0 +1,137 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "MaterialRequirementSummary";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Material Requirement Summary Report  (* Under Testing)</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <h5><b>Report Options</b></h5>
+        <table class="table table-bordered">
+            <tr>
+                @Html.HiddenFor(model => model.FgItemId)
+                @Html.HiddenFor(model => model.RmItemId)
+                <td style="width:10%;"><b>Company</b></td>
+                <td>
+                    @Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)
+                    @Html.ValidationMessageFor(model => model.CompCode)
+                </td>
+                <td><b>Finished Product</b></td>
+                <td>
+                    @Html.EditorFor(model => model.FgItemCode)
+                    @Html.ValidationMessageFor(model => model.FgItemCode)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Date From</b></td>
+                <td>
+                    @Html.EditorFor(model => model.DateFrom)
+                    @Html.ValidationMessageFor(model => model.DateFrom)
+                </td>
+                <td><b>Raw Material</b></td>
+                <td>
+                    @Html.EditorFor(model => model.RmItemCode)
+                    @Html.ValidationMessageFor(model => model.RmItemCode)
+                </td>
+            </tr>
+            <tr>
+                <td><b>Date To</b></td>
+                <td>
+                    @Html.EditorFor(model => model.DateTo)
+                    @Html.ValidationMessageFor(model => model.DateTo)
+                </td>
+                <td><b>Apply&nbsp;Date&nbsp;Range</b></td>
+                <td>
+                    @Html.EditorFor(model => model.FilterByDT)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p>
+        <input type="submit" class="btn btn-default" value="Submit" onclick="target = '_blank';"
+               formaction="@Url.Action("MaterialRequirementSummaryReport")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#FgItemCode").attr("placeholder", "start typing, then select");
+            $("#RmItemCode").attr("placeholder", "start typing, then select");
+            $("#FilterByDT").attr("style", "width:55px;height:25px;");
+            //document.getElementById("FinYear").value = '@Model.FinYear';
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#FgItemCode").autocomplete({
+            source: function (request, response) {
+                var liObj = document.getElementById("CompCode");
+                var objIndex = liObj.selectedIndex;
+                var objId = liObj.options[objIndex].value;
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteFinishedItemList", "HelpUtility"))",
+                    data: { "term": request.term, "ccode": objId },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('FgItemId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#RmItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                //
+                var ddlSIndex = document.getElementById("CompCode").selectedIndex;
+                var ccode = document.getElementsByTagName("option")[ddlSIndex].value;
+                //
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteStockItemList", "HelpUtility"))",
+                    data: { "term": request.term, "ccode": ccode },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('RmItemId').value = ui.item.Id;
+            }
+        });
+    </script>
+
+}
+

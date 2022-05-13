@@ -1,0 +1,331 @@
+﻿@model ManufacturingManagement_V2.Models.JobworkIssueMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+@{var lstTrpMode = new List<System.Web.UI.WebControls.ListItem>
+{
+          new System.Web.UI.WebControls.ListItem { Text = "N/A", Value="N/A" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Road", Value="By Road" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Rail", Value="By Rail" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Post", Value="By Post" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Hand", Value="By Hand" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Courier", Value="By Courier" },
+          new System.Web.UI.WebControls.ListItem { Text = "By Speed Post", Value="By Speed Post" },
+          new System.Web.UI.WebControls.ListItem { Text = " ", Value=" " }
+    };
+}
+
+<h4><b>WIP To Jobwork Slip</b></h4>
+
+<fieldset>
+    @using (Ajax.BeginForm("SearchChallan", "JobworkIssueListByWip", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            <table>
+                <tr>
+                    <td>
+                        &nbsp;<b>Search Challan</b>
+                        &nbsp;@Html.TextBox("txtChallanNo", null, new { style = "width:70px;" })
+                        &nbsp;<button style="height:27px;">Search</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</fieldset>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <table class="table table-bordered">
+            <tr><td colspan="4" style="color:blue;"><b><u>Challan Info</u></b></td></tr>
+            <tr>
+                @Html.HiddenFor(model => model.EntryType)
+                @Html.HiddenFor(model => model.DispId)
+                @Html.HiddenFor(model => model.VendorId)
+                @Html.HiddenFor(model => model.RMItemId)
+                <td style="width:12%;"><b>Slip No</b></td>
+                <td>
+                    @Html.EditorFor(model => model.ChallanNo)
+                    @Html.ValidationMessageFor(model => model.ChallanNo)
+                </td>
+                <td style="width:12%;"><b>Slip Date</b></td>
+                <td>
+                    @Html.EditorFor(model => model.ChallanDate)
+                    @Html.ValidationMessageFor(model => model.ChallanDate)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.VendorName)</td>
+                <td>
+                    @Html.EditorFor(model => model.VendorName)
+                    @Html.ValidationMessageFor(model => model.VendorName)
+                </td>
+                <td>@Html.LabelFor(model => model.VendorAddId)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.VendorAddId, ViewBag.VAddressList as SelectList)
+                    @Html.ValidationMessageFor(model => model.VendorAddId)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.TrpMode)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.TrpMode, new SelectList(lstTrpMode, "Value", "Text"))
+                    @Html.ValidationMessageFor(model => model.TrpMode)
+                </td>
+                <td>@Html.LabelFor(model => model.TrpDetail)</td>
+                <td>
+                    @Html.EditorFor(model => model.TrpDetail)
+                    @Html.ValidationMessageFor(model => model.TrpDetail)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.InvNote)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.InvNote, 0, 0,
+                     new { @style = "width:550px;height:50px;" })
+                    @Html.ValidationMessageFor(model => model.InvNote)
+                </td>
+            </tr>
+            <tr><td colspan="4" style="color:blue;"><b><u>Item Info</u></b></td></tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.RMItemCode)</td>
+                <td>
+                    @Html.EditorFor(model => model.RMItemCode)
+                    @Html.ValidationMessageFor(model => model.RMItemCode)
+                </td>
+                <td>@Html.LabelFor(model => model.ProcessDesc)</td>
+                <td>
+                    @Html.EditorFor(model => model.ProcessDesc)
+                    @Html.ValidationMessageFor(model => model.ProcessDesc)
+                </td>
+            </tr>
+            <tr>
+                <td><b>To&nbsp;Issue&nbsp;Qty</b></td>
+                <td>
+                    @Html.EditorFor(model => model.IssuedQty)
+                    @Html.ValidationMessageFor(model => model.IssuedQty)
+                </td>
+                <td>@Html.LabelFor(model => model.UnitId)</td>
+                <td>
+                    @Html.DropDownListFor(model => model.UnitId,
+                        ViewBag.UnitList as SelectList,
+                        new { @disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.UnitId)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Rate)</td>
+                <td>
+                    @Html.EditorFor(model => model.Rate)
+                    @Html.ValidationMessageFor(model => model.Rate)
+                </td>
+                <td>@Html.LabelFor(model => model.ApproxValue)</td>
+                <td>
+                    @Html.ValueFor(model => model.ApproxValue, "{0:##,##,##,##,##0.00}")
+                    @Html.ValidationMessageFor(model => model.ApproxValue)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.HSNCode)</td>
+                <td>
+                    @Html.EditorFor(model => model.HSNCode)
+                    @Html.ValidationMessageFor(model => model.HSNCode)
+                </td>
+                <td><input type="submit" class="btn btn-default" value='Add' /></td>
+                <td><h5><b>@ViewBag.Message</b></h5></td>
+            </tr>
+        </table>
+    </div>
+    @Html.Raw(@Model.ChallanItems)
+    <br />
+    @Html.ActionLink("Submit", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    <br />
+    <br />
+    <br />
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            document.getElementById('txtChallanNo').value = '@Model.ChallanNo';
+            $("#VendorName").attr("placeholder", "start typing, then select");
+            $("#RMItemCode").attr("placeholder", "start typing, then select");
+            $("#InvNote").attr("maxlength", "250");
+            $("#VendorName").attr("style", "width:300px;");
+            $("#RMItemCode").attr("style", "width:300px;");
+            $("#VendorAddId").attr("style", "width:300px;");
+            $("#InvNote").attr("placeholder", "Max Length: 250 Chars");
+        });
+
+        //Date Picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+</script>
+
+    <script type="text/javascript">
+        $("#RMItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteStockItemList", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('RMItemId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                    data: { "itemid": ui.item.Id },
+                    success: function (data) {
+                        $('#Rate').val(data.purchaserate);
+                        $('#HSNCode').val(data.hsncode);
+                        $('#UnitId').val(data.unit);
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                    }
+                });
+                //detail-2
+                //fillUnitList(ui.item.Id);
+                //
+            }
+        });
+    </script>
+
+    <script>
+        function fillUnitList(itemid) {
+            //var itemId = $('#ddlItem').val();
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getTransactionUnitList", "HelpUtility"))",
+                data: { "itemid": itemid },
+                success: function (data) {
+                    //getting multiple records as (key,value) pair type list
+                    $("#ddlUnit").empty(); // clear before appending new list
+                    $.each(data, function (i, item) {
+                        $("#ddlUnit").append($('<option />', {
+                            value: item.Key,
+                            text: item.Value
+                        }));
+                    });
+                    action = data.Action;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        $("#VendorName").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteVendor", "HelpUtility"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('VendorId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    //url: "@(Url.Action("getVendorDetail", "HelpUtility"))",
+                    url: "@(Url.Action("getAddressListForVendor", "HelpUtility"))",
+                    data: { "vendorid": ui.item.Id },
+                    success: function (data) {
+                        //ok for model based single record values
+                        //$('#txtRate').val(data.purchaserate);
+                        //$('#ddlUnit').val(data.unit);
+                        //alert(data.caddress);
+                        //getting multiple records as (key,value) pair type list
+                        $('#VendorAddId').empty(); // clear before appending new list
+                        $.each(data, function (i, item) {
+                            $("#VendorAddId").append($('<option />', {
+                                value: item.Key,
+                                text: item.Value
+                            }));
+                        });
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        function deleteRecord(dispid) {
+            var a = confirm("Are you sure to delete this work?");
+            if (a == false) {
+                return;
+            }
+            var data = {
+                dispid: parseInt(dispid)
+            }
+            $.ajax({
+                url: '/JobworkIssueListByWip/Delete',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    alert(d.message);
+                    if (d.status == true) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+
+}

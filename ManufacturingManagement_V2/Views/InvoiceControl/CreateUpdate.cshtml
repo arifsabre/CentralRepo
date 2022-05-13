@@ -1,0 +1,141 @@
+﻿@model ManufacturingManagement_V2.Models.InvoiceControlMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Invoice Control</b></h4>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <table class="table table-bordered">
+                @Html.HiddenFor(model => model.SaleRecId)
+                <tr>
+                    <td><b>Invoice&nbsp;No</b></td>
+                    <td>
+                        <b>@Html.DisplayFor(model => model.BillNo)</b>
+                        @Html.ValidationMessageFor(model => model.BillNo)
+                    </td>
+                    <td><b>Invoice&nbsp;Date</b></td>
+                    <td>
+                        <b>@Html.ValueFor(model => model.VDate, "{0:dd/MM/yyyy}")</b>
+                        @Html.ValidationMessageFor(model => model.VDate)
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Is&nbsp;Unloaded</b></td>
+                    <td>
+                        @Html.EditorFor(model => model.IsUnloaded)
+                    @Html.ValidationMessageFor(model => model.IsUnloaded)
+                </td>
+                <td><b>Unloading&nbsp;Date</b></td>
+                <td>
+                    @Html.EditorFor(model => model.UnloadingDate)
+                @Html.ValidationMessageFor(model => model.UnloadingDate)
+            </td>
+            </tr>
+            <tr>
+                <td><b>Is&nbsp;RC&nbsp;Received</b></td>
+                <td>
+                    @Html.EditorFor(model => model.IsRCReceived)
+                @Html.ValidationMessageFor(model => model.IsRCReceived)
+            </td>
+            <td><b>RC&nbsp;Receiving&nbsp;Date</b></td>
+            <td>
+                @Html.EditorFor(model => model.RCRecDate)
+            @Html.ValidationMessageFor(model => model.RCRecDate)
+            </td>
+            </tr>
+            <tr>
+                <td><b>Is&nbsp;R&nbsp;Note&nbsp;Received</b></td>
+                <td>
+                    @Html.EditorFor(model => model.IsRNoteReceived)
+                @Html.ValidationMessageFor(model => model.IsRNoteReceived)
+            </td>
+            <td><b>R&nbsp;Note&nbsp;Date</b></td>
+            <td>
+                @Html.EditorFor(model => model.RNoteDate)
+            @Html.ValidationMessageFor(model => model.RNoteDate)
+            </td>
+            </tr>
+            <tr>
+                <td><b>Is&nbsp;Bill&nbsp;Submitted&nbsp;P1</b></td>
+                <td>
+                    @Html.EditorFor(model => model.IsBillSubmitted)
+                @Html.DisplayFor(model => model.BillPerP1) %
+                @Html.ValidationMessageFor(model => model.IsBillSubmitted)
+            </td>
+            <td><b>Bill&nbsp;Submission&nbsp;Date&nbsp;P1</b></td>
+            <td>
+                @Html.EditorFor(model => model.BillSubmitDate)
+            @Html.ValidationMessageFor(model => model.BillSubmitDate)
+            </td>
+            </tr>
+            <tr>
+                <td><b>Is&nbsp;Bill&nbsp;Submitted&nbsp;P2</b></td>
+                <td>
+                    @Html.EditorFor(model => model.IsBillSubmittedP2)
+                @Html.DisplayFor(model => model.BillPerP2) %
+                @Html.ValidationMessageFor(model => model.IsBillSubmittedP2)
+            </td>
+            <td><b>Bill&nbsp;Submission&nbsp;Date&nbsp;P2</b></td>
+            <td>
+                @Html.EditorFor(model => model.BillSubmitDateP2)
+            @Html.ValidationMessageFor(model => model.BillSubmitDateP2)
+            </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;"><b>Remarks&nbsp(RC&nbsp;Info)</b></td>
+                <td colspan="3">
+                    @Html.TextAreaFor(model => model.RCInfo, 0, 0,
+                    new { @style = "width:90%;height:40px;" })
+                @Html.ValidationMessageFor(model => model.RCInfo)
+            </td>
+            </tr>
+            </table>
+        </div>
+        <p>
+            <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Close", null,null,new{@onclick="window.close()", @class = "btn btn-default" })
+            <h5><b>@ViewBag.Message</b></h5>
+        </p>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //$("#EmpId").attr("placeholder", "start typing, then select");
+            $("#IsUnloaded").attr("style", "width:55px;height:25px;");
+            $("#IsRCReceived").attr("style", "width:55px;height:25px;");
+            $("#IsRNoteReceived").attr("style", "width:55px;height:25px;");
+            $("#IsBillSubmitted").attr("style", "width:55px;height:25px;");
+            $("#IsBillSubmittedP2").attr("style", "width:55px;height:25px;");
+        });
+
+        //Date Picker 
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        //or
+        $(document).ready(function () {
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+
+
+    </script>
+
+}
+

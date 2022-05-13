@@ -1,0 +1,121 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.DocumentFileMdl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Company Document List</b></h4>
+
+<fieldset>
+    @using (Ajax.BeginForm("FilterIndex", "DocumentFile", new AjaxOptions { UpdateTargetId = "divFilter" }))
+    {
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:10%;">@Html.DisplayNameFor(model => model.CCode)</td>
+                    <td>@Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.CategoryId)</td>
+                    <td>@Html.DropDownList("ddlCategory", ViewBag.CatgeoryList as SelectList, "All Documents")</td>
+                </tr>
+                <tr>
+                    <td>Sub&nbsp;Category</td>
+                    <td>
+                        @Html.DropDownList("ddlSubCategory", ViewBag.SubCatgeoryList as SelectList, "All")
+                        <button class="btn btn-default">Submit</button>
+                        @Html.ActionLink("Upload File", "UploadFile", null, new { @class= "btn btn-default" })
+                    </td>
+            </tr>
+            </table>
+        </div>
+                
+    }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th style="width:30px;">
+            S.No.
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </th>
+        <th style="width:100px;">
+            Sub&nbsp;Category
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.DocFileName)
+        </th>
+        <th style="width:auto;">
+            @Html.DisplayNameFor(model => model.FileDesc)
+        </th>
+        <th style="width:40px;">Link</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubCategoryName)
+            </td>
+            <td>
+                @Html.ActionLink(item.DocFileName, "../DocumentFile/ShowDocument",
+                new { fileName = item.DocFileName, categoryid = item.CategoryId, subcategoryid = item.SubCategoryId, ccode = item.CCode },
+                new { target = "_blank", style = "font-weight:normal;" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileDesc)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", null, new { recid = item.RecId },
+                new { onclick = "deleteFile('" + item.RecId + "')", style = "color:black;" })
+            </td>
+        </tr>
+        i++;
+    }
+    @{i = i - 1;}
+    @i.ToString()&nbsp;&nbsp;&nbsp;Document(s) found.
+</table><br/>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts{
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    
+    <script>
+        function deleteFile(recid) {
+            var a = confirm("Are you sure to delete this file?");
+            if (a == false) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "DocumentFile")',
+                dataType: 'html',
+                data: ({
+                    //insert your parameters to pass to controller
+                    id: recid
+                }),
+                success: function () {
+                    //alert("Marked Pending Successfully");
+                    location.reload();
+                }
+            });
+        }
+</script>
+
+}
+
+
+

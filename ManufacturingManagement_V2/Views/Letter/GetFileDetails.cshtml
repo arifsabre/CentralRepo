@@ -1,0 +1,30 @@
+﻿@model ManufacturingManagement_V2.Models.LetterMDI
+<table id="jdtabledesktop" class="table table-bordered table-hover " style="width:60%">
+        <thead>
+            <tr>
+                @Html.TextAreaFor(model => model.RecordId, 0, 0, new { @class = "Editor", @style = "width:50px;height:25px;", @id = "RecordId6" })
+               <th>File_No</th>
+                <th>File_Name</th>
+                <th>Download</th>
+           </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Item_List1)
+            {
+
+                <tr>
+
+                    <td>@Html.DisplayFor(model => item.Id)</td>
+
+
+                    <td>@Html.DisplayFor(model => item.FileName)</td>
+                    <td>
+                        @Html.ActionLink("Downlaod", "DownLoadFile", new { id = item.Id })
+                    </td>
+                  
+                </tr>
+            }
+        </tbody>
+      
+    </table>
+

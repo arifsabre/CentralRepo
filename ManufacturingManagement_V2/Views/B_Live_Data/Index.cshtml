@@ -1,0 +1,102 @@
+﻿@model ManufacturingManagement_V2.Models.B_INTEGRATIONMDI
+
+@{
+    ViewBag.Title = "Index";
+    // Layout = "~/views/shared/MyLayoutCommon.cshtml";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+<html>
+
+<head>
+    <title></title>
+    @*<meta http-equiv="refresh" content="10" />*@
+    <meta>
+
+
+    <script>
+        function callInsert(recid) {
+            $('#modal-Insert').modal('show');
+            var ifrm = document.getElementById("frmInsert");
+            ifrm.setAttribute('src', "http://localhost:58521//B_Live_Data/GetAllNetworkStatusLog")
+           //ifrm.setAttribute('src', "https://pragerp.com//B_Live_Data/GetAllNetworkStatusLog")
+        }
+    </script>
+
+    @*<script>
+        function reloadThis() {
+            window.location.reload();
+        }
+    </script>*@
+</head>
+@*onload="JavaScript:timedRefresh(10000);"*@
+<body>
+    <div id="printbar" class="pull-left" style="margin-top:3px;margin-bottom:3px">
+    </div>
+    <div class="pull-right" style="margin-top:3px">
+        <button type="button" class="btn btn-success"
+                data-toggle="modal" onclick="callInsert()">
+            Reader Status
+        </button>
+    </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div class="box box-primary">
+                <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>EmpId</th>
+                                    <th>Name</th>
+                                    <th>BioId</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Reader</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                <tr>
+                                    <td>@Html.DisplayFor(model => item.EmpId)</td>
+                                    <td>@Html.DisplayFor(model => item.EmpName)</td>
+                                    <td>@Html.DisplayFor(model => item.ECode)</td>
+                                    <td>@Html.DisplayFor(model => item.EDate)</td>
+                                    <td>@Html.DisplayFor(model => item.ETime)</td>
+                                    <td>@Html.DisplayFor(model => item.MCNo)</td>
+                                </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-Insert">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:900px;position:center">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Reader Status</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmInsert" runat="server" scrolling="auto" frameborder="0" style="width:850px;height:500px;opacity:100;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Script/Site.js"></script>
+</body>
+</html>
+
+

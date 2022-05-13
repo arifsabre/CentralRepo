@@ -1,0 +1,139 @@
+﻿@model ManufacturingManagement_V2.Models.ModifyAdviceMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Purchase Order -MA Detail</b></h4>
+@if (@Model.POrderId != 0)
+{
+<p>
+    @Html.ActionLink("PO Detail", "../PurchaseOrder/GeneratePO",
+    new { porderid = Model.POrderId }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("Item Detail", "../PurchaseOrderItem/CreateUpdate",
+    new { porderid = Model.POrderId, itemrecid = 0 }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("MA Detail", "../ModifyAdvice/CreateUpdate",
+    new { porderid = Model.POrderId, recslno = 0 }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("PO Checksheet", "../PurchaseOrder/POChecksheet",
+    new { porderid = Model.POrderId }, new { style = "color:blue;text-decoration:underline;font-weight:bold;" })
+    &nbsp;&nbsp;
+    @Html.ActionLink("BG Detail", "../BankGuarantee/CreateUpdate",
+    new { id = Model.TenderId }, new { target = "_blank", style = "color:blue;text-decoration:underline;font-weight:bold;" })
+</p>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+
+    @Html.HiddenFor(model => model.RailwayId)
+    @Html.HiddenFor(model => model.POrderId)
+    @Html.HiddenFor(model => model.editRecSlNo)
+
+    <table class="table table-bordered">
+
+        <tr>
+            <td colspan="2">
+                <b>@Html.DisplayFor(model => model.POInfo)</b>
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.RecSlNo)</td>
+            <td>
+                @Html.EditorFor(model => model.RecSlNo)
+                @Html.ValidationMessageFor(model => model.RecSlNo)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.ModifyAdvNo)</td>
+            <td>
+                @Html.EditorFor(model => model.ModifyAdvNo)
+                @Html.ValidationMessageFor(model => model.ModifyAdvNo)
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(model => model.MAFor)</td>
+            <td>
+                @Html.TextAreaFor(model => model.MAFor, 0, 0,
+                 new { @style = "width:580px;height:50px;" })
+                @Html.ValidationMessageFor(model => model.MAFor)
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+    <table>
+        <tr>
+            <td>
+                <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+            </td>
+            <td>
+                @Html.ActionLink("Close", null, null, new { @onclick = "window.close();", @class = "btn btn-default" })
+            </td>
+            <td colspan="2">
+                <h5><b>&nbsp;&nbsp;@ViewBag.Message</b></h5>
+            </td>
+        </tr>
+    </table>
+
+    <br />
+    <span>MA LIst:-</span>
+    @Html.Raw(@Model.MADetailHtml)
+    <br />
+    <br />
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById('RecSlNo').focus();
+            $("#ModifyAdvNo").attr("style", "width:280px;");
+        });
+    </script>
+
+    <script>
+        function deleteMARecord(porderid,recslno) {
+            var a = confirm("Are you sure to delete this record?");
+            if (a == false) {
+                return;
+            }
+            var data = {
+                porderid: porderid,
+                recslno: recslno
+            }
+            $.ajax({
+                url: '/ModifyAdvice/DeleteMARecord',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    alert(d.message);
+                    if (d.status == true) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+
+}
+

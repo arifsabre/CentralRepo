@@ -1,0 +1,165 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.SaleMdl>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/views/shared/_LayoutCommon.cshtml";
+    }
+
+    <h4><b>Sale Entry -Draft/Proforma To Main</b></h4>
+
+    <fieldset>
+        @using (Ajax.BeginForm("FilterIndexConvertToMain", "SaleGSTOthers", new AjaxOptions { UpdateTargetId = "divFilter" }))
+        {
+        <div class="form-group">
+            <b>Date&nbsp;From</b>
+            @Html.TextBox("txtDtFrom", null, new { @class = "datepicker", @style = "width:90px;" })
+
+            &nbsp;<b>To</b>
+            @Html.TextBox("txtDtTo", null, new { @class = "datepicker", @style = "width:90px;" })
+
+            &nbsp;<b>Draft/Proforma</b>
+            @Html.DropDownList("ddlInvSeries", ViewBag.DraftPrfList as SelectList)
+
+            &nbsp;<button class="btn btn-default">Submit</button>
+
+            &nbsp;&nbsp;&nbsp;
+            @Html.ActionLink("Back To List", "../SaleGSTOthers/Index", null,
+            new { @style = "color:blue;text-decoration:underline;" })
+
+        </div>
+        }
+    </fieldset>
+
+    <table class="tablecontainer" style="width:100%;" id="tblsl">
+        <tr>
+            <th style="width:30px;">S.No.</th>
+            <th style="width:50px;">
+                Invoice&nbsp;No
+            </th>
+            <th style="width:50px;">
+                Date
+            </th>
+            <th style="width:auto;">
+                PO&nbsp;Number
+            </th>
+            <th style="width:auto;">
+                Paying&nbsp;Authority
+            </th>
+            <th style="width:auto;">
+                Consignee
+            </th>
+            <th style="width:auto;">
+                Items&nbsp;-&nbsp;Qty
+            </th>
+            <th style="width:50px;">
+                Sub&nbsp;Total
+            </th>
+            <th style="width:50px;">
+                Net&nbsp;Amount
+            </th>
+            <th style="width:50px;">Action</th>
+            <th style="width:50px;">Links</th>
+        </tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+    <tr>
+        <td>
+            @i
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BillNo)
+            <br />[@Html.DisplayFor(modelItem => item.SaleRecId)]
+        </td>
+        <td>
+            @Html.ValueFor(model => item.VDate, "{0:dd/MM/yyyy}")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PONumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PayingAuthName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ConsigneeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemQty)
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.SubTotal, "{0:##,##,##,##,##0.00}")
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.NetAmount, "{0:##,##,##,##,##0.00}")
+        </td>
+        <td>
+            @Html.ActionLink("Proceed", "../SaleGST/CreateUpdate", new { id = item.SaleRecId})
+            <br />
+            @Html.ActionLink("Delete", null, null,
+            new { onclick = "deleteDraftProforma('" + item.InvSeries + "','" + item.SaleRecId + "')" })
+        </td>
+        <td>
+            @Html.ActionLink("Invoice", "../SaleInvoiceReport/DisplaySaleInvoice",
+                new { salerecid = item.SaleRecId, chinv = 'i' }, new { @target = "_blank" })
+            <br />
+            @Html.ActionLink("Challan", "../SaleInvoiceReport/DisplaySaleInvoice",
+                new { salerecid = item.SaleRecId, chinv = 'c' }, new { @target = "_blank" })
+        </td>
+    </tr>
+            i++;
+        }
+        @{i = i - 1;}
+        @i.ToString()&nbsp;&nbsp;Records found.
+    </table>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    @section Scripts{
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+        <script type="text/javascript">
+        $(function () {
+            //$("input[type=text]").first().focus();
+            document.getElementById("txtDtFrom").value = '@ViewBag.dtfrom';
+            document.getElementById("txtDtTo").value = '@ViewBag.dtto';
+        });
+        </script>
+        <script type="text/javascript">
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy"
+            });
+        </script>
+
+        <script>
+            function deleteDraftProforma(invseries, salerecid) {
+                var a = confirm("Are you sure to delete this record?");
+                if (a == false) {
+                    return;
+                }
+                var data = {
+                    invseries: invseries,
+                    salerecid: salerecid
+                }
+                $.ajax({
+                    url: '/SaleGSTOthers/DeleteDraftProformaSale',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        alert(d.message);
+                        if (d.status == true) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        </script>
+
+    }
+
+

@@ -1,0 +1,79 @@
+﻿<ul class="sidebar-menu" data-widget="tree">
+    @*ul-start*@
+
+    <li class="active">
+        <a href="/Copplaint/ComplaintDashboard">
+            <i class="fa fa-server" aria-hidden="true"></i>
+            <span>System Monitoring <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;& Reparing </span>
+        </a>
+    </li>
+
+    <li class="treeview" id="mnuManageComplaint">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Maintenance">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuManageComplaint');">&nbsp;&nbsp;Manage Complaint</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Copplaint/LockNewComplaint"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Enter New Compalint</a></li>
+            <li><a href="/Copplaint/index"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Track Status</a></li>
+            <li><a href="/Copplaint/IndexAssignTo"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Assign Complaint</a></li>
+            <li><a href="/Copplaint/IndexClosedTo"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Closed Compalint</a></li>
+            @*<li><a href="/B_MedicalTest/History"><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i>MedicaTest</a></li>*@
+        </ul>
+        @*</li>*@
+
+    <li class="treeview" id="mnuSystemMaintenance">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Maintenance">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuSystemMaintenance');">&nbsp;&nbsp;System Mentainance</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/MachineMaintenance/IndexMachineName"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Define Machine</a></li>
+            <li><a href="/MachineMaintenance/IndexMachineCheckpint"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Define CheckPoint</a></li>
+            <li><a href="/MachineMaintenance/index"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Add Maintenance Task</a></li>
+            <li><a href="/MachineMaintenance/IndexBreakDownList"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i>Add BreakDown</a></li>
+        </ul>
+        @*</li>*@
+
+    <li class="treeview" id="mnuPowerFactor">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Maintenance">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuPowerFactor');">&nbsp;&nbsp;Power Factor</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/PowerConsuption/index">Power Reading</a></li>
+            @*<li><a href="/B_Update_OrgChart/index">Update Org</a></li>
+                <li><a href="/UserPermission/index">User Permission</a></li>*@
+        </ul>
+        @*</li>*@
+
+    <li class="treeview" id="mnuCivilElctIndent">
+        @*<li>*@
+        <a href="/Home/Index?deptt=Maintenance">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+            <span onclick="setOpt('mnuCivilElctIndent');">&nbsp;&nbsp;Civil/Electrical Indent</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/ContractorIndent/Index">Create New Indent</a></li>
+            <li><a href="/ContractorIndent/Index_GetFile">DownLoad Qutation</a></li>
+            <li><a href="/ContractorIndentReport/Index">Print Qutation Form </a></li>
+        </ul>
+        @*</li>*@
+
+</ul>
+@*ul-end*@

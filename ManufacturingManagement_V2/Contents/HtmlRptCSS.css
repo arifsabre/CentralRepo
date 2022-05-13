@@ -1,0 +1,45 @@
+﻿
+/*css for table copied from _OLD*/
+.container td {
+    vertical-align: top;
+}
+
+.tblcontainer table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.tblcontainer th {
+    border-bottom: 1px solid black !important; /*1px*/
+    border-top: 1px solid black !important; /*1px*/
+    /*background-color: lightgray;*/ /*CHK*/
+}
+
+.firstrow {
+    border-top: solid;
+    border-bottom: solid;
+    border-width: 1px;
+    border-top-color: black;
+    border-bottom-color: black;
+}
+
+.tblrow {
+    border-bottom: solid;
+    border-width: 1px;
+    border-bottom-color: black;
+}
+
+.tblcontainer th, .tblcontainer td {
+    /*text-align: left;*/
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    padding: 5px;
+    /*border-bottom: 1px solid #BFAEAE;*/
+    vertical-align: top;
+}
+
+.ui-widget {
+    font-size: 12px !important;
+}

@@ -1,0 +1,222 @@
+﻿@model ManufacturingManagement_V2.Models.BomMdl
+
+@{
+    ViewBag.Title = "CreateUpdate";
+    Layout = "~/views/shared/_LayoutIFramePopup.cshtml";
+}
+
+<h4><b>BOM Detail</b></h4>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <table class="table table-bordered">
+            <tr>
+                @Html.HiddenFor(model => model.RecId)
+                @Html.HiddenFor(model => model.FgItemId)
+                @Html.HiddenFor(model => model.RmItemId)
+                <td style="vertical-align:top;width:20%;">
+                    <b>Latest&nbsp;Revision&nbsp;No</b>
+                </td>
+                <td>
+                    <label id="lblRevNo"></label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Revision Date</b>
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.RevDate)
+                    @Html.ValidationMessageFor(model => model.RevDate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.FgItemId)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.FgItemCode)
+                    <label id="lblFgUnit"></label>
+                    @Html.ValidationMessageFor(model => model.FgItemCode)
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">
+                    @Html.LabelFor(model => model.RmItemId)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.RmItemCode)
+                    <label id="lblRmUnit"></label>
+                    @Html.ValidationMessageFor(model => model.RmItemCode)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.RmQty)</td>
+                <td>
+                    @Html.EditorFor(model => model.RmQty)
+                    @Html.ValidationMessageFor(model => model.RmQty)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.WasteQty)</td>
+                <td>
+                    @Html.EditorFor(model => model.WasteQty)
+                    @Html.ValidationMessageFor(model => model.WasteQty)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Remarks)</td>
+                <td>
+                    @Html.EditorFor(model => model.Remarks)
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.RevisionUpdate)</td>
+                <td>
+                    @Html.EditorFor(model => model.RevisionUpdate)
+                    @Html.ValidationMessageFor(model => model.RevisionUpdate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" class="btn btn-default" value='@ViewBag.AddEdit' />
+                </td>
+                <td>
+                    <b>@ViewBag.Message</b>
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            $("#FgItemCode").attr("placeholder", "start typing, then select");
+            $("#RmItemCode").attr("placeholder", "start typing, then select");
+            $("#RevisionUpdate").attr("style", "width:55px;height:25px;");
+            $('#lblFgUnit').text('@ViewBag.fgunitname');
+            $('#lblRmUnit').text('@ViewBag.rmunitname');
+            SetRevisionInfo('@ViewBag.fgitemid');
+            //
+            if (@ViewBag.Status == '1') {
+
+                    alert('@ViewBag.Message');
+                    window.parent.location.reload();
+            }
+            //
+        });
+    </script>
+
+    <script>
+        function SetRevisionInfo(fgitem) {
+            $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("GetLatestBomRevisionDetail", "Bom"))",
+                    data: { "itemid": fgitem },
+                success: function (data) {
+                            if (data.revdate != '0') {
+                                $('#lblRevNo').text(data.revno + ', Rev. Date: ' + data.revdate);
+                                document.getElementById('RevDate').value = data.revdate.substring(6, 10) + '-' + data.revdate.substring(3, 5) + '-' + data.revdate.substring(0, 2);
+                            }
+                            action = data.Action;
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to retrieve data.');
+                        }
+                });
+        }
+    </script>
+
+    <script type="text/javascript">
+        $("#FgItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteFinishedAndAssembledItems", "Item"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('FgItemId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                        data: { "itemid": ui.item.Id },
+                        success: function (data) {
+                            $('#lblFgUnit').text(data.unitname);
+                            action = data.Action;
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to retrieve data.');
+                        }
+                });
+                SetRevisionInfo(document.getElementById('FgItemId').value);
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#RmItemCode").autocomplete({
+            source: function (request, response) {
+                var customer = new Array();
+                $.ajax({
+                    async: false,
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("AutoCompleteOtherThanFinishedItemsForBOM", "BOM"))",
+                    data: { "term": request.term },
+                    success: function (data) {
+                        for (var i = 0; i < data.length ; i++) {
+                            customer[i] = { label: data[i].Value, Id: data[i].Key };
+                        }
+                    }
+                });
+                response(customer);
+            }, minLength: 2,
+            select: function (event, ui) {
+                document.getElementById('RmItemId').value = ui.item.Id;
+                $.ajax({
+                    cache: false,
+                    async: false,
+                    type: "POST",
+                    url: "@(Url.Action("getItemDetail", "HelpUtility"))",
+                    data: { "itemid": ui.item.Id },
+                    success: function (data) {
+                        $('#lblRmUnit').text(data.unitname);
+                        action = data.Action;
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                    }
+                });
+            }
+        });
+    </script>
+
+}

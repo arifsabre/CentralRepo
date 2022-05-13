@@ -1,0 +1,90 @@
+﻿@model IEnumerable<ManufacturingManagement_V2.Models.MinimumWageMdl>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Minimum Wages</b></h4>
+
+<p>
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+
+<fieldset>
+            @using (Ajax.BeginForm("FilterIndex", "MinimumWage", new AjaxOptions { UpdateTargetId = "divFilter" }))
+            {
+                <div class="form-group">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.CompCode)</td>
+                            <td>@Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)</td>
+                        </tr>
+                    </table>
+                      </div>
+                <button class="btn btn-default">Submit</button>
+            }   
+</fieldset>
+
+<table class="tablecontainer" style="width:100%;">
+    <tr>
+        <th>
+            S.No.
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AttYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AttMonth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Skilled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SemiSkilled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UnSkilled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BonusPer)
+        </th>
+        <th>Edit</th>
+        <th>Details</th>
+    </tr>
+    @{int i = 1;}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AttYear)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AttMonth)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Skilled)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.SemiSkilled)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.UnSkilled)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.BonusPer)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "CreateUpdate", new { id = item.RecId })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.RecId })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+

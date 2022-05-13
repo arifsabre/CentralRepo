@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "PerformLogin";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h2>Perform Login</h2>
+@ViewBag.Result
+<fieldset>
+        <legend>Login</legend>
+            @using (Ajax.BeginForm("PerformLogin", "Login",
+                                    new AjaxOptions { UpdateTargetId = "dvPerformLogin" }))
+            {
+                <div id="divInterestDeatils"></div>
+                    <ol>
+                       @* <li>//note
+                            @Html.Label("Enter OTP")
+                            @Html.Password("txtOTP")
+                        </li>*@
+                        <li>
+                            @Html.Label("Company")
+                            @Html.DropDownList("ddlCompany", ViewBag.CompanyList as SelectList)
+                        </li>
+                        <li>
+                            @Html.Label("Financial Year")
+                            @Html.DropDownList("ddlFinYear", ViewBag.FinYearList as SelectList)
+                        </li>
+                    </ol>
+                <button class="btn btn-default">Submit</button>
+                @Html.ActionLink("Back to Login", "LoginUser")
+            }   
+</fieldset>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=password]").first().focus();
+        });
+    </script>
+}
+

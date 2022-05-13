@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - PRAG ERP</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/Site.css")
+        @Styles.Render("~/Content/MenuH.css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+
+        @Html.Partial("../Home/pageHeader")
+        <div id="main">
+
+            @*st-deciding menu*@
+            @if(@ViewBag.Dept == "Admin")
+                {
+                    @Html.Partial("../Home/Menu_Admin")
+                }
+                else if(@ViewBag.Dept == "HR")
+                {
+                    @Html.Partial("../Home/Menu_HR")
+                }
+                else if (@ViewBag.Dept == "Stores")
+                { 
+                    @Html.Partial("../Home/Menu_Stores")
+                }
+                else if (@ViewBag.Dept == "Production")
+                { 
+                    @Html.Partial("../Home/Menu_Production")
+                }
+                else if (@ViewBag.Dept == "Compliance")
+                { 
+                    @Html.Partial("../Home/Menu_Compliance")
+                }
+                else if (@ViewBag.Dept == "Indent")
+                { 
+                    @Html.Partial("../Home/Menu_Indent")
+                }
+                else if (@ViewBag.Dept == "Marketing")
+                { 
+                    @Html.Partial("../Home/Menu_Marketing")
+                }
+                else if (@ViewBag.Dept == "QuailBook")
+                { 
+                    @Html.Partial("../Home/Menu_Quail")
+                }
+                else if (@ViewBag.Dept == "Accounts")
+                { 
+                    @Html.Partial("../Home/Menu_Account")
+                }
+                else if (@ViewBag.Dept == "Quality")
+                { 
+                    @Html.Partial("../Home/Menu_Quality")
+                }
+            @*cl-deciding menu*@
+
+            <div id="body" style="min-height:400px;">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+
+        <div id="slideCtr"> </div>
+        </div>
+
+        @Html.Partial("../Home/pageFooter")
+
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+
+        <iframe id="Iframe1" runat="server" scrolling="no" frameborder="0"
+            src="http://192.168.0.218:105/Notification/Index"
+            style="width:90%;height:15px;opacity:0.00;">
+        </iframe>
+
+    </body>
+</html>

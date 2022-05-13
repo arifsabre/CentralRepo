@@ -1,0 +1,404 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title PRAG ERP</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  @*<link href="~/Content/fontawesome.min.css" rel="stylesheet" />*@
+    @*<link href="~/Content/font-awesome.min.css" rel="stylesheet" />*@
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Site.css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <style>
+        .collapse {
+            width: 15px;
+            background-image: url('../Images/ui-icons_cd0a0a_256x240.png');
+            background-repeat: no-repeat;
+            background-position: -36px -17px;
+            display: inline-block;
+            /*cursor: zoom-in;*/
+            cursor: pointer;
+        }
+
+        .expand {
+            width: 15px;
+            background-image: url('../Images/ui-icons_cd0a0a_256x240.png');
+            background-repeat: no-repeat;
+            background-position: -50px -17px;
+            display: inline-block;
+            cursor: pointer;
+            /*cursor: zoom-in;*/
+        }
+
+        .treeview ul {
+            font: 16px Arial, Sans-Serif;
+            margin: 5px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .treeview > li > a {
+            font-weight: normal;
+        }
+
+        .treeview li {
+        }
+
+            .treeview li a {
+                padding: 5px;
+                font-size: 14px;
+                display: inline-block;
+                text-decoration: none;
+                width: auto;
+            }
+
+        header {
+            height: 100px;
+            width: 100%;
+            /*background-color:white;*/
+        }
+
+        nav {
+            float: left;
+            width: 220px;
+            height: auto;
+            background-color: whitesmoke;
+            font-size: small;
+            border: solid;
+            border-color: whitesmoke;
+            font-family: Calibri;
+            margin-left: 0px;
+            margin-right: 20px;
+        }
+
+        .content {
+            background-color: white;
+            padding: 0px;
+            color: black;
+        }
+
+        footer {
+            width: 20%;
+            height: 35px;
+            float: none;
+            text-align: center;
+            vertical-align: central;
+            position: fixed;
+            bottom: 0px;
+        }
+
+        /*fortopheaderhorizontal*/
+        body {
+            margin: 0;
+        }
+
+        .icon-bar {
+            width: 100%;
+            background-color: teal;
+            overflow: auto;
+        }
+
+            .icon-bar a {
+                float: left;
+                width: 4%;
+                text-align: center;
+                padding: 12px 0;
+                transition: all 0.3s ease;
+                color: white;
+                font-size: 20px;
+                /*margin-left:55px;*/
+            }
+
+                .icon-bar a:hover {
+                    background-color: mediumvioletred;
+                }
+
+        .active {
+            background-color: #4CAF50;
+        }
+        /*ForDropdown Hover*/
+        .dropbtn {
+            background-color: lightgray; /*background-color: #4CAF50;*/
+            color: black;
+            padding: 5px;
+            font-size: small;
+            border: none;
+            border-radius: 10px;
+            font-family: Calibri;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: navajowhite;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 10px;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 5px 8px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+                border-radius: 10px;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #ddd;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+            border-radius: 10px;
+            color: white;
+        }
+        /*End of dropdown hover*/
+
+        #img1 {
+            height: 40px;
+            width: 70px;
+        }
+
+        #img2 {
+            width: 70px;
+            height: 50px;
+        }
+
+        #hr {
+            width: 25px;
+            height: 25px;
+        }
+
+        #img3 {
+            width: 60px;
+            height: 60px;
+        }
+
+        #img4 {
+            height: 40px;
+            width: 120px;
+        }
+
+        #img5 {
+            height: 25px;
+            width: 25px;
+        }
+
+        #logout {
+            height: 30px;
+            width: 35px;
+        }
+
+        #add {
+            height: 35px;
+            width: 35px;
+        }
+
+        #network {
+            height: 20px;
+            width: 20px;
+        }
+
+        /* Style the links inside the sidenav */
+        #mySidenav a {
+            position: absolute; /* Position them relative to the browser window */
+            right: -80px; /* Position them outside of the screen */
+            transition: 0.6s; /* Add transition on hover */
+            padding: 15px; /* 15px padding */
+            width: 100px; /* Set a specific width */
+            text-decoration: none; /* Remove underline */
+            font-size: small; /* Increase font size */
+            color: white; /* White text color */
+            border-radius: 0 5px 5px 0; /* Rounded corners on the top right and bottom right side */
+            margin-top: 28px;
+            text-align: right;
+        }
+
+            #mySidenav a:hover {
+                right: 0; /* On mouse-over, make the elements appear as they should */
+            }
+
+        /* The about link: 20px from the top with a green background */
+        #company {
+            top: 80px;
+            background-color: #4CAF50;
+        }
+
+        #policy {
+            top: 140px;
+            background-color: #2196F3; /* Blue */
+        }
+
+        #notification {
+            top: 200px;
+            background-color: #f44336;
+        }
+
+        #mannual {
+            top: 260px;
+            background-color: deeppink
+        }
+
+        #itassest {
+            top: 320px;
+            background-color:maroon
+        }
+        #empheath {
+            top: 380px;
+            background-color:fuchsia
+        }
+        #event {
+            top: 440px;
+            background-color:deepskyblue
+        }
+        #directory{
+            top: 500px;
+            background-color:darkgreen
+        }
+        #complaint{
+            top: 560px;
+            background-color:darkviolet
+        }
+
+        /*notification Button*/
+        body {
+            font-family: Calibri;
+        }
+
+        .notification {
+            background-color: lightgray;
+            color: black;
+            text-decoration: none;
+            padding: 10px 15px;
+            position: relative;
+            display: inline-block;
+            border-radius: 10px;
+            font-family: Calibri;
+            font-size: small;
+        }
+
+            .notification:hover {
+                background: red;
+                color: white;
+            }
+
+            .notification .badge {
+                position: absolute;
+                top: -10px;
+                left: -10px;
+                padding: 6px 10px;
+                border-radius: 50%;
+                background-color: red;
+                color: white;
+            }
+    </style>
+
+
+
+</head>
+<body>
+    <header style="background-color:white;height:45px;margin-left:0px;margin-top:0px;width:100%">
+        <div>
+            <table style="border:none">
+                <tr>
+                    <td style="color:black; font-weight:bold;border-radius:0px;border:none;font-family:Calibri;font-size:small">
+                        <img id="img1" alt="" src="http://192.168.0.20:80/Images/Praglogo.png" />
+
+                    </td>
+                    <td style="color: black; font-weight:bold;border:none;text-align:left;font-family:Calibri;font-size:small">
+                        Welcome To -  @ViewBag.CompName @ViewBag.FinYear
+                         <td style="text-align:right;background-color:white;font-family:Calibri;font-size:small">
+                        @*<a href="/Notification/Index" class="notification">
+                            <span class="Notification" style="font:x-small">Notification</span>
+                            <span class="badge">3</span>
+                        </a>*@
+                        <div class="dropdown" style="font-weight:bold;text-align:right;border:thin;background-color:white;font-family:Calibri;font-size:small">
+                        <button class="dropbtn"> Hi!&nbsp;@ViewBag.UserName</button>
+                        <div class="dropdown-content">
+                                <a href="/UserAdmin/UpdateProfile">User Profile</a>
+                                <a href="/Login/ChangeCompany">Change Company</a>
+                                <a href="/Login/ChangeFinYear">Change FinYear</a>
+                                <a href="/Login/LoginUser">Logout</a>
+                            </div>
+                        </div>
+                    </td>
+                  </tr>
+            </table>
+        </div>
+
+    </header>
+    <div id="mySidenav" class="sidenav">
+        <a href="/DocumentFile/IndexView" id="company"><i class="fa fa-newspaper-o" aria-hidden="true"></i>Company</a>
+        <a href="/CompanyPolicy/IndexView" id="policy"><i class="fa fa-file-text" aria-hidden="true"></i>Policy</a>
+        <a href="/Feedback/FeedbackView" id="notification"><i class="fa fa-comment" aria-hidden="true"></i>FeedBack</a>
+        <a href="/Home/HelpContent_General" id="mannual">Manual</a>
+        <a href="/B_Issue_Item_ITCELLList/Index" id="itassest">ITAssest</a>
+        <a href="/B_MedicalTest/History" id="empheath">Heath</a>
+        <a href="/AAA_Events/Index" id="event"><i class="fa fa-calendar" aria-hidden="true"></i>Calendar</a>
+        <a href="/Employee/EmployeeDirectory" id="directory"><i class="fa fa-address-card" aria-hidden="true"></i>Directory</a>
+        <a href="/Complaint/ComplaintView" id="complaint"><i class="fa fa-comments" aria-hidden="true"></i>Complaint</a>
+       </div>
+        <div id="myDIV" class="icon-bar" style="font-family:Calibri;font-size:small;height:50px">
+        @*<a class="active" href="/Home/Index"> <i class="fa fa-home" aria-hidden="true"></i></a>*@
+        <a class="active" href="/Home/Index"> <i class="fa fa-home"></i></a>
+        <a href="http://192.168.0.218:85/Dashboard/ManagementDsb.aspx" title="Marketing"><i class="fa fa-line-chart"></i></a>
+        <a href="#" title="HR"><i class="fa fa-users"></i></a>
+        <a href="#" title="Doccument Controle" Title="DoccumentControle"><i class="fa fa-book"></i></a>
+        <a href="#" title="Purchase"><i class="fa fa-cart-plus"></i></a>
+        <a href="#" title="Production"><i class="fa fa-cogs"></i></a>
+        <a href="/Notification/Index" title="Email Notification"><i class="fa fa-envelope"></i></a>
+        <a href="#" title="Tendar"> <i class="fa fa-briefcase"></i></a>
+        <a href="#" title="Birthday"> <i class="fa fa-birthday-cake"></i></a>
+        <a href="javascript:sidetreeview()"><i class="fa fa-toggle-on"></i></a>
+       @* <a href="javascript:sidetreeview()"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>*@
+        @*<a href="javascript:buttom2()"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>*@
+    </div>
+
+    <div id="sidetree" style="margin-left:0px;margin-top:0px;font-family:Calibri;font-size:small">
+        <nav>
+            @*@Html.Action("_PartialTreeView", "Home")
+        <hr />*@
+            <hr />
+            <a href="/Employee/Index"><i class="fa fa-users"></i>Employee</a><br />
+            <hr />
+            <a href="/Attendance/Index"><i class="fa fa-users"></i>Time & Attendance</a><br />
+            <hr />
+            <a href="/Salary/GenerateSalary"><i class="fa fa-dollar"></i>Salary</a><br />
+            <hr />
+            <a href="/Salary/GenerateSalary"><i class="fa fa-newspaper-o"></i>Doccument</a><br />
+            <hr />
+            <a href="/EmployeeReport/Index"><i class="fa fa-user"></i>Report</a>
+            <hr />
+        </nav>
+    </div>
+
+
+
+
+
+    <!-- End of Left Sidebar -->
+    <!-- Content Body -->
+    <div class="content" style="width:1000px ;height:500px;float:left;margin-top:0px; background-color:white;overflow:auto">
+        @RenderBody()
+    </div>
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/_DarlLayputJs.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+   </body>
+</html >

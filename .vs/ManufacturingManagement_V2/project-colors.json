@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "fd5a2b8e-3d03-4f0b-9112-069ba6479bf0": {
+      "ProjectGuid": "fd5a2b8e-3d03-4f0b-9112-069ba6479bf0",
+      "DisplayName": "ManufacturingManagement_V2",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 1
+}

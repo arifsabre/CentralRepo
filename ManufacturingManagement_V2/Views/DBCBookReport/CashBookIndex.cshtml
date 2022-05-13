@@ -1,0 +1,92 @@
+﻿@model ManufacturingManagement_V2.Models.rptOptionMdl
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>Cash Book Report</b></h4>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+<div class="form-group">
+    <h5><b>Report Options</b></h5>
+    <table class="table table-bordered">
+        <tr>
+            <td style="width:12%;"><b>Company</b></td>
+            <td>@Html.DropDownListFor(model => model.CompCode, ViewBag.CompanyList as SelectList)</td>
+        </tr>
+        <tr>
+            <td><b>Financial&nbsp;Year</b></td>
+            <td>
+                @Html.DropDownListFor(model => model.FinYear, ViewBag.FinYearList as SelectList,
+                new { @onchange = "javascript:getDateRange(this.value);" })
+                @Html.ValidationMessageFor(model => model.FinYear)
+            </td>
+        </tr>
+        <tr>
+            <td><b>From Date</b></td>
+            <td>@Html.EditorFor(model => model.DateFrom)</td>
+        </tr>
+        <tr>
+            <td><b>Date To</b></td>
+            <td>@Html.EditorFor(model => model.DateTo)</td>
+        </tr>
+        <tr>
+            <td><b>Print VNo</b></td>
+            <td>@Html.EditorFor(model => model.Detailed)</td>
+        </tr>
+        <tr>
+            <td><b>Print Narration</b></td>
+            <td>@Html.EditorFor(model => model.Above58)</td>
+        </tr>
+    </table>
+</div>
+    <p>
+       <input type="submit" class="btn btn-default" style="width:120px;" value="Submit" onclick="target = '_blank';" 
+           formaction="@Url.Action("DisplayCashBook")" />
+    </p>
+    <h5><b>@ViewBag.Message</b></h5>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+            //$("#BSheet").attr("style", "width:55px;height:25px;");
+            $("#ItemCode").attr("placeholder", "start typing, then select");
+            $("#Above58").attr("style", "width:55px;height:25px;");
+            $("#Detailed").attr("style", "width:55px;height:25px;");
+        });
+    </script>
+
+    <script type="text/javascript">
+        function getDateRange(fy) {
+            var ddlSIndex = document.getElementById("CompCode").selectedIndex;
+            var ccode = document.getElementsByTagName("option")[ddlSIndex].value;
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("getDateRangeByFinYear", "HelpUtility"))",
+                data: { "ccode": ccode, "finyr": fy },
+                success: function (data) {
+                    document.getElementById('DateFrom').value = data.fromdt;
+                    document.getElementById('DateTo').value = data.todt;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });//
+
+        }
+</script>
+
+}

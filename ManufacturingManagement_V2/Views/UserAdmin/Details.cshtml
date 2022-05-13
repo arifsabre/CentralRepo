@@ -1,0 +1,57 @@
+﻿@model ManufacturingManagement_V2.Models.UserMdl
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/shared/_LayoutCommon.cshtml";
+}
+
+<h4><b>User Detail</b></h4>
+
+<p>
+    @Html.ActionLink("Edit", "CreateUpdate", new { id=Model.UserId }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Create New", "CreateUpdate", null, new { @class = "btn btn-default" }) 
+</p>
+
+<fieldset>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.UserName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.UserName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EmpName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EmpName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.FullName)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.FullName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.LoginType)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.LoginName)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.MobileNo)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.MobileNo)</td>
+                </tr>
+
+                <tr>
+                    <td style="width:120px;font-weight:bold;">@Html.DisplayNameFor(model => model.EMail)</td>
+                    <td style="vertical-align:top;">: @Html.DisplayFor(model => model.EMail)</td>
+                </tr>
+
+            </table>
+        </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        @ViewBag.Message
+        <input type="submit" class="btn btn-default" value="Delete" onclick="return confirm('Are you sure to delete this record?');" />
+    </p>
+}

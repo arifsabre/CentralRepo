@@ -1,0 +1,103 @@
+﻿@model ManufacturingManagement_V2.Models.CiviRateMDI
+@{
+    ViewBag.Title = "Index Detail";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>IndexPage</title>
+    <script>
+        function GoIndexPage(recid) {
+            $('#modal-GoIndexPageDetail').modal('show');
+            var ifrm = document.getElementById("frmIndexDetail");
+            //ifrm.setAttribute('src', "http://localhost:58521//Civil_Rate/ChapterDetailIndex?id=" + recid)
+             ifrm.setAttribute('src', "https://pragerp.com://Civil_Rate/ChapterDetailIndex?id=" + recid)
+        }
+        </script>
+</head>
+<body>
+   
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                    </div>
+                    <div class="box-body">
+                        <table id="jdtabledesktop" class="table table-bordered table-hover " style="width:100%;color:black">
+                            <thead>
+                                <tr>
+                                    <th>SRNo</th>
+                                    <th>Chapter No</th>
+                                    <th>Chapter Name</th>
+                                    <th>GoTo Chapter Detail</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Item_List)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @Html.DisplayFor(model => item.SubCategoryId)
+
+                                        </td>
+                                        <td>
+
+                                            @Html.DisplayFor(model => item.Category)
+
+
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.SubCategory)
+                                        </td>
+
+                                        <td>
+                                            <a onclick="GoIndexPage(@item.SubCategoryId)">
+                                                <i class="fa fa-eye" style="font-size:12pt;"></i>
+
+                                            </a>
+
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                        @*<div class="modal-footer">
+                            <button type="submit" id="modal-TopicList" class="btn btn-success">Submit</button>
+                            <button type="button" id="modal-TopicList" class="btn btn-success" data-dismiss="modal">Close</button>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="modal fade" id="modal-GoIndexPageDetail" style="margin-left:50px; margin-top:30px">
+        <div class="modal-dialog col-lg-12">
+            <div class="modal-content" style="width: 1150px; height:1600px;">
+                <div class="modal-header with-border">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="reloadThis()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="box-title">Index Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <iframe id="frmIndexDetail" runat="server" scrolling="yes" frameborder="0"
+                                style="width:1050px;height:1500px;opacity:50;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   <script src="~/Script/Site.js"></script>
+</body>
+</html>
