@@ -27,46 +27,34 @@ namespace ManufacturingManagement_V2.Controllers
         // GET: /Treeview/
 
         AAA_SiteMenu_BLL lists = new AAA_SiteMenu_BLL();
+
         public ActionResult Index()
         {
             if (objCookie.checkSessionState() == false) { return RedirectToAction("LoginUser", "Login"); };
             SetViewData();
 
-            //List<SiteMenu> all = new List<SiteMenu>();
-            //using (ErpConnection dc = new ErpConnection())
-            //{
-            //    all = dc.SiteMenu.OrderBy(a => a.ParentMenuID).ToList();
-            //}
-            //return View(all);
-            return View();
+            List<Menu_MenuName> all = new List<Menu_MenuName>();
+            using (ErpConnection dc = new ErpConnection())
+            {
+                all = dc.Menu_MenuName.OrderBy(a => a.ParentMenuId).ToList();
+            }
+            return View(all);
         }
 
-        public ActionResult Simple()
-        {
-            //List<SiteMenu> all = new List<SiteMenu>();
-            //using (ErpConnection dc = new ErpConnection())
-            //{
-            //    all = dc.SiteMenu.OrderBy(a => a.ParentMenuID).ToList();
-            //}
-            //return View(all);
-            return View();
-        }
-        public PartialViewResult _Index()
-        {
+       
+        //public PartialViewResult _Index()
+        //{
 
-            return PartialView();
-        }
-        public ActionResult _Simple()
-        {
-            return PartialView();
-        }
+        //    return PartialView();
+        //}
+      
         public ActionResult ParentList()
         {
             if (objCookie.checkSessionState() == false) { return RedirectToAction("LoginUser", "Login"); };
             SetViewData();
             //ViewBag.CompanyList = new SelectList(Lists.get_Item_Type_ITCell(), "Item_Type_Id", "Item_Type", objCookie.getCompCode());
             ModelState.Clear();
-            AAA_SiteMenu model = new AAA_SiteMenu
+            Menu_MenuName model = new Menu_MenuName
             {
                 Item_List = lists.Get_ParentMenu_List()
             };
@@ -77,13 +65,13 @@ namespace ManufacturingManagement_V2.Controllers
         public JsonResult Edit_ParentMenu_Record(int? id)
         {
 
-            var hl = lists.Get_ParentMenu_List().Find(x => x.ParentMenuID.Equals(id));
+            var hl = lists.Get_ParentMenu_List().Find(x => x.ParentMenuId.Equals(id));
             return Json(hl, JsonRequestBehavior.AllowGet);
 
         }
 
         [HttpPost]
-        public ActionResult Edit_ParentMenu(AAA_SiteMenu objModel)
+        public ActionResult Edit_ParentMenu(Menu_MenuName objModel)
         {
             try
             {
@@ -111,7 +99,7 @@ namespace ManufacturingManagement_V2.Controllers
 
 
         [HttpPost]
-        public ActionResult Add_ParentMenu(AAA_SiteMenu objModel)
+        public ActionResult Add_ParentMenu(Menu_MenuName objModel)
         {
             try
             {

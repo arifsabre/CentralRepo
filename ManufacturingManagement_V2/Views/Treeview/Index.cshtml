@@ -1,6 +1,6 @@
-﻿@model List<ManufacturingManagement_V2.Models.SiteMenu>
+﻿@model List<ManufacturingManagement_V2.Models.Menu_MenuName>
 @{
-    // Layout = null;
+     Layout = null;
     ViewBag.Title = "Simple";
 }
 <h2>Menu Hierarchy</h2>
@@ -51,7 +51,7 @@
         @if (Model != null && Model.Count() > 0)
         {
             <ul>
-                @TreeView.GetTreeView(Model, Model.FirstOrDefault().ParentMenuID)
+                @TreeView.GetTreeView(Model, Model.FirstOrDefault().ParentMenuId)
             </ul>
         }
     </div>

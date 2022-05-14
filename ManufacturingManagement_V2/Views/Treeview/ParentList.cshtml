@@ -1,4 +1,4 @@
-﻿@model ManufacturingManagement_V2.Models.AAA_SiteMenu
+﻿@model ManufacturingManagement_V2.Models.Menu_ManuName
 @{
     ViewBag.Title = "Index";
  }
@@ -27,7 +27,7 @@
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
                 success: function (response) {
-                    $('#ParentMenuID').val(response.ParentMenuID);
+                    $('#ParentMenuId').val(response.ParentMenuId);
                     $('#ParentMenuName').val(response.ParentMenuName);
                     $('#modal-Update').modal('show');
                 },
@@ -81,7 +81,7 @@
                                 @foreach (var item in Model.Item_List)
                                 {
                                     <tr>
-                                        <td>@Html.DisplayFor(model => item.ParentMenuID)</td>
+                                        <td>@Html.DisplayFor(model => item.ParentMenuId)</td>
                                         <td>@Html.DisplayFor(model => item.ParentMenuName)</td>
 
                                         <td>

@@ -16,6 +16,7 @@ namespace ManufacturingManagement_V2.Models
         public DbSet<AAA_Events> AAA_Events { get; set; }
         public DbSet<AAA_NetworkStatusLog> AAA_NetworkStatusLog { get; set; }
         public DbSet<tbl_users> tbl_users { get; set; }
-       
+        public DbSet<Menu_MenuName> Menu_MenuName { get; set; }
+
     }
 }

@@ -333,13 +333,13 @@
     <Compile Include="Models\AAA_MedicalTestBLL.cs" />
     <Compile Include="Models\AAA_NetworkStatusLog.cs" />
     <Compile Include="Models\AAA_SendSMS_BLL.cs" />
-    <Compile Include="Models\AAA_SiteMenu.cs" />
     <Compile Include="Models\AAA_SiteMenu_BLL.cs" />
     <Compile Include="Models\BioLive.cs" />
     <Compile Include="Models\ETenderConsigneeBLL.cs" />
     <Compile Include="Models\ETenderItemBLL.cs" />
     <Compile Include="Models\ETenderConsigneeMdl.cs" />
     <Compile Include="Models\ETenderItemMdl.cs" />
+    <Compile Include="Models\Menu_MenuName.cs" />
     <Compile Include="Models\PaymentReceiptBLL.cs" />
     <Compile Include="Models\ModifyAdviceBLL.cs" />
     <Compile Include="Models\ETenderBLL.cs" />
@@ -2448,6 +2448,7 @@
     <Content Include="manufacturingmgtdbv1DataSet.xsc">
       <DependentUpon>manufacturingmgtdbv1DataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="App_Code\Treeview.cshtml" />
     <None Include="manufacturingmgtdbv1DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>manufacturingmgtdbv1DataSet.Designer.cs</LastGenOutput>
@@ -4338,6 +4339,10 @@
     <Content Include="Views\B_Daily_Attendance_Status\AbsentList.cshtml" />
     <Content Include="Views\B_Daily_Attendance_Status\AbsentAllCompany.cshtml" />
     <Content Include="Views\B_Daily_Attendance_Status\AbsentOneday.cshtml" />
+    <Content Include="Views\Treeview\Index.cshtml" />
+    <Content Include="Views\Treeview\ParentList.cshtml" />
+    <Content Include="Views\Treeview\Simple.cshtml" />
+    <Content Include="Views\Treeview\_Simple.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

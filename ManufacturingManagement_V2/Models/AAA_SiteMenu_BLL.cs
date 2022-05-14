@@ -15,7 +15,7 @@ namespace ManufacturingManagement_V2.Models
     {
         clsMyClass mc = new clsMyClass();
 
-        public List<AAA_SiteMenu> Get_ParentMenu_List()
+        public List<Menu_MenuName> Get_ParentMenu_List()
         {
             //clsMyClass mc = new clsMyClass();
 
@@ -23,7 +23,7 @@ namespace ManufacturingManagement_V2.Models
             //List<AAA_SiteMenu> HList = new List<AAA_SiteMenu>();
             using (SqlConnection con = new SqlConnection(cs))
             {
-                List<AAA_SiteMenu> HList = new List<AAA_SiteMenu>();
+                List<Menu_MenuName> HList = new List<Menu_MenuName>();
                 con.Open();
                 SqlCommand com = new SqlCommand("Tree_List_ParentMenu", con)
                 {
@@ -32,9 +32,9 @@ namespace ManufacturingManagement_V2.Models
                 SqlDataReader rdr = com.ExecuteReader();
                 while (rdr.Read())
                 {
-                    HList.Add(new AAA_SiteMenu
+                    HList.Add(new Menu_MenuName
                     {
-                        ParentMenuID = Convert.ToInt32(rdr["ParentMenuID"]),
+                        ParentMenuId = Convert.ToInt32(rdr["ParentMenuId"]),
                         ParentMenuName = rdr["ParentMenuName"].ToString(),
 
                     });
@@ -43,7 +43,7 @@ namespace ManufacturingManagement_V2.Models
             }
         }
 
-        public int Insert_ParentMenu(AAA_SiteMenu hld)
+        public int Insert_ParentMenu(Menu_MenuName hld)
         {
             clsMyClass mc = new clsMyClass();
             string cs = mc.strconn;
@@ -60,7 +60,7 @@ namespace ManufacturingManagement_V2.Models
             }
             return i;
         }
-        public int Update_ParentMenu(AAA_SiteMenu hld)
+        public int Update_ParentMenu(Menu_MenuName hld)
         {
             clsMyClass mc = new clsMyClass();
             string cs = mc.strconn;
@@ -70,7 +70,7 @@ namespace ManufacturingManagement_V2.Models
                 con.Open();
                 SqlCommand com = new SqlCommand("Tree_Update_ParentMenu", con);
                 com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@ParentMenuID", hld.ParentMenuID);
+                com.Parameters.AddWithValue("@ParentMenuId", hld.ParentMenuId);
                 com.Parameters.AddWithValue("@ParentMenuName", hld.ParentMenuName);
                 i = com.ExecuteNonQuery();
             }
