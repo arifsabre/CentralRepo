@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Data;
 using System.Web;
 
 namespace ManufacturingManagement_V2.Models
 {
     [Table("Menu_MenuName")]
-    public class Menu_MenuName
+    public class Menu_MenuName1
     {
         [Key]
         public int MenuId { get; set; }
@@ -24,6 +25,6 @@ namespace ManufacturingManagement_V2.Models
 
         [Required(ErrorMessage = "Parent Menu Required")]
         public string ParentMenuName { get; set; }
-        public List<Menu_MenuName> Item_List { get; set; }
+        public List<Menu_MenuName1> Item_List { get; set; }
     }
 }

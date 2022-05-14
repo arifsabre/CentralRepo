@@ -339,7 +339,7 @@
     <Compile Include="Models\ETenderItemBLL.cs" />
     <Compile Include="Models\ETenderConsigneeMdl.cs" />
     <Compile Include="Models\ETenderItemMdl.cs" />
-    <Compile Include="Models\Menu_MenuName.cs" />
+    <Compile Include="Models\Menu_MenuName1.cs" />
     <Compile Include="Models\PaymentReceiptBLL.cs" />
     <Compile Include="Models\ModifyAdviceBLL.cs" />
     <Compile Include="Models\ETenderBLL.cs" />

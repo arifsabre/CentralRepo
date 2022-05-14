@@ -15,7 +15,7 @@ namespace ManufacturingManagement_V2.Models
     {
         clsMyClass mc = new clsMyClass();
 
-        public List<Menu_MenuName> Get_ParentMenu_List()
+        public List<Menu_MenuName1> Get_ParentMenu_List()
         {
             //clsMyClass mc = new clsMyClass();
 
@@ -23,7 +23,7 @@ namespace ManufacturingManagement_V2.Models
             //List<AAA_SiteMenu> HList = new List<AAA_SiteMenu>();
             using (SqlConnection con = new SqlConnection(cs))
             {
-                List<Menu_MenuName> HList = new List<Menu_MenuName>();
+                List<Menu_MenuName1> HList = new List<Menu_MenuName1>();
                 con.Open();
                 SqlCommand com = new SqlCommand("Tree_List_ParentMenu", con)
                 {
@@ -32,7 +32,7 @@ namespace ManufacturingManagement_V2.Models
                 SqlDataReader rdr = com.ExecuteReader();
                 while (rdr.Read())
                 {
-                    HList.Add(new Menu_MenuName
+                    HList.Add(new Menu_MenuName1
                     {
                         ParentMenuId = Convert.ToInt32(rdr["ParentMenuId"]),
                         ParentMenuName = rdr["ParentMenuName"].ToString(),
@@ -43,7 +43,7 @@ namespace ManufacturingManagement_V2.Models
             }
         }
 
-        public int Insert_ParentMenu(Menu_MenuName hld)
+        public int Insert_ParentMenu(Menu_MenuName1 hld)
         {
             clsMyClass mc = new clsMyClass();
             string cs = mc.strconn;
@@ -60,7 +60,7 @@ namespace ManufacturingManagement_V2.Models
             }
             return i;
         }
-        public int Update_ParentMenu(Menu_MenuName hld)
+        public int Update_ParentMenu(Menu_MenuName1 hld)
         {
             clsMyClass mc = new clsMyClass();
             string cs = mc.strconn;

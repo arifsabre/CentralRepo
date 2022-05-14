@@ -1,5 +1,5 @@
 ﻿
-@helper GetTreeView(List<ManufacturingManagement_V2.Models.Menu_MenuName> siteMenu, int parentID)
+@helper GetTreeView(List<ManufacturingManagement_V2.Models.Menu_MenuName1> siteMenu, int parentID)
 {
     foreach (var i in siteMenu.Where(a => a.ParentMenuId.Equals(parentID)))
     {
